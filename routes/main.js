@@ -3,8 +3,8 @@ const router = express.Router();
 const homeController = require('../controlers/home');
 
 
-router.get("/", homeController.getIndex);
-
+router.get("/", homeController.getLogin);
+router.get("/register", homeController.getRegister)
 
 
 module.exports = router;
