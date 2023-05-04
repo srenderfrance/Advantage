@@ -9,6 +9,7 @@ const passport = require('passport')
 const connectDB = require('./config/db');
 const morgan = require('morgan')
 const mainRoutes = require("./routes/main");
+const adminRoutes = require("./routes/admin")
 const path = require('path');
 //const multer = require('multer')
 if (process.env.NODE_ENV === 'development') {
@@ -32,3 +33,4 @@ app.use(express.static(path.join(__dirname, 'public')))
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
 
 app.use("/", mainRoutes); 
+app.use("/admin", adminRoutes)

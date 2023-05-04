@@ -1,1 +1,17 @@
 <h1>ADMIN PAGE</h1>
+<form action="/admin" method="POST">
+    <div>
+        <h2>Create New Class</h2>
+        <label for="className">New Class Name</label>
+        <input type="text" id="className" name="className"
+        required>
+         <label for="language">Native Languages</label>
+        <input type="text" id="language" name="language"
+        required>
+        <label for="adminCode">password</label>
+        <input type="text" id="adminCode" name="adminCode"
+        required> 
+    </div>
+    <button type="submit">Register</button>
+</form>
+<a href="login.html">Login</a>

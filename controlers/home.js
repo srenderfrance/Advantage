@@ -15,3 +15,11 @@ module.exports.postRegister = async (req, res, next) => {
     console.log(user)
     res.redirect("login.html");
    }
+
+module.exports.postLogin = async (req, res, next) => {
+    
+    
+     console.log("You have been logged in!");
+     //console.log(user)
+     res.redirect("userP.html");
+    }
