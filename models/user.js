@@ -4,23 +4,23 @@ const UserSchema = new mongoose.Schema({
     userName: {
         type: String, 
         unique: true,
-        //required: true
+        required: true
     },
     password: {
         type: String,
-       // required: true
+        required: true
     },
     email: {
         type: String,
-       // required: true
+        required: true
     },
     className: {
         type: String,
-       // required: true
+        required: true
     },
     nativeLanguage: {
         type: String,
-      //  reuired: true
+        reuired: true
     },
     hasReviewed: {
         type: Array,
@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema({
     problemWords: {
         type:Array,
     },
+    corhortAdmin: {
+        type: Boolean,
+        required: true
+    }
 
 })
 const User = mongoose.model('User', UserSchema);

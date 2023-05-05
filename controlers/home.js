@@ -5,11 +5,12 @@ module.exports.postRegister = async (req, res, next) => {
         userName: req.body.userName,
         password: req.body.password,
         email: req.body.email,
-        className: req.body.className,
+        cohort: req.body.cohort,
         nativeLanguage: req.body.nativeLanguage,
         hasReviewed: [],
         individualExercises: [],
         problemWords: [],
+        cohortAdmin: false,
         });
     console.log("You have been registered!");
     console.log(user)
