@@ -16,7 +16,8 @@ const ActivitySchema = new mongoose.Schema({
     },
     vocabWords: {
         type: Array,
-    }
+        default: [],
+    },
     
 })
 const Activity = mongoose.model('Activity', ActivitySchema);

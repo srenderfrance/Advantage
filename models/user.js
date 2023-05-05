@@ -24,18 +24,21 @@ const UserSchema = new mongoose.Schema({
     },
     hasReviewed: {
         type: Array,
+        default: [],
     },
     individualExercises: {
         type: Array,
+        default: [],
     },
     problemWords: {
         type:Array,
+        default:[],
     },
     corhortAdmin: {
         type: Boolean,
-        required: true
-    }
-
+        default: false
+    },
 })
+
 const User = mongoose.model('User', UserSchema);
 module.exports = User

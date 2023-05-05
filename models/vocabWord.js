@@ -1,6 +1,10 @@
 const { default: mongoose } = require("mongoose");
 
 const VocabWordSchema = new mongoose.Schema({
+    cohort: {
+        type:Array,
+        required: true,
+    },
     catagory: {
         type: String,
     },
@@ -9,36 +13,33 @@ const VocabWordSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        require: true,
+        default: "",
       },
     cloudinaryIdImage: {
         type: String,
-        require: true,
+        default: "",
       },
     audioQ: {
         type: String,
-        required: true
+         default: "",
     },
     cloudinaryIdQ: {
         type: String,
-        required: true
+        default: "",
     },
     audioW: {
         type: String,
-        reuired: true
+        default: "",
     },
     cloudinaryIdW: {
-        type: Array,
-        
+        type: String,
+        default: "",
     },
     exercise: {
         type: Array,
+        default: [],
     },
-    cohort: {
-        type:Array,
-        required: true,
-    },
-
+   
 })
 const VocabWord = mongoose.model('VocabWord', VocabWordSchema);
 module.exports = VocabWord

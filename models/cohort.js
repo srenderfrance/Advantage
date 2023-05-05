@@ -14,24 +14,29 @@ const CohortSchema = new mongoose.Schema({
         type: String,
         reuired: true
     },
-    exercises: {
-        type: Array,
-    },
     startDate: {
         type: Date,
     },
+    Activities: {
+        type: Array,
+        default: [],
+    },
     endDate: {
         type: Date,
+        default: '',
     },
     students: {
         type: Array,
+        default: [],
     },
     vocabWords: {
         type: Array,
+        default: [],
     },
-    Exercises: {
-        type: Array
-    }
+    activities: {
+        type: Array,
+        default: [],
+    },
 
 })
 const Cohort = mongoose.model('Cohort', CohortSchema);
