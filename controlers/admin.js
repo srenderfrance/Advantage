@@ -2,11 +2,10 @@
 const Cohort = require('../models/cohort');
 const Activty = require('../models/activity');
 
-module.exports.postcreateCohort = async (req, res, next) => { //change to postCohort
+module.exports.postCohort = async (req, res, next) => {
     
    const cohort = await Cohort.create({
-      cohort: req.body.cohort,
-      adminCode: req.body.admonCode,
+      cohortName: req.body.cohort,
       language: req.body.language,
       startDate: req.body.startDate,
       Activities: undefined,

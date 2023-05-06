@@ -13,7 +13,7 @@ module.exports.postRegister = async (req, res, next) => {
       problemWords: undefined,
       corhortAdmin: undefined,
 
-        });
+   });
 
     console.log("You have been registered!");
     console.log(user)
@@ -23,7 +23,7 @@ module.exports.postRegister = async (req, res, next) => {
 module.exports.postLogin = async (req, res, next) => {
     
     
-     console.log("You have been logged in!");
-     console.log(user)
-     res.redirect("userP.html");
-    }
+   console.log("You have been logged in!");
+   console.log(user);
+   res.redirect("userP.html");
+}

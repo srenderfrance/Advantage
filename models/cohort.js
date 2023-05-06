@@ -6,10 +6,6 @@ const CohortSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    adminCode: {
-        type: String,
-        required: true
-    },
     language: {
         type: String,
         reuired: true
