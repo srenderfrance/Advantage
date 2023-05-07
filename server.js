@@ -31,4 +31,4 @@ app.listen(
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
 
 app.use("/", mainRoutes); 
-app.use("/admin", adminRoutes)
+app.use("/admin", adminRoutes);

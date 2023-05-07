@@ -1,4 +1,20 @@
 const User = require('../models/user')
+
+module.exports.getLogin = (req, res) => {
+   /*if (req.user) {
+     return res.redirect("/profile");
+   }*/
+   res.render("login.ejs", {
+     title: "Login",
+   });
+ };
+ 
+module.exports.getRegister = (req, res) => {
+     res.render("register.ejs", {
+     title: "Register",
+      })
+   };
+
 module.exports.postRegister = async (req, res, next) => {
     
    const user = await User.create({
@@ -17,13 +33,13 @@ module.exports.postRegister = async (req, res, next) => {
 
     console.log("You have been registered!");
     console.log(user)
-    res.redirect("login.html");
+    res.redirect("/");
    }
 
 module.exports.postLogin = async (req, res, next) => {
     
     
    console.log("You have been logged in!");
-   console.log(user);
+   //console.log(user);
    res.redirect("userP.html");
 }
