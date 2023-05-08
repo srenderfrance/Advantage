@@ -13,7 +13,7 @@ const flash = require("express-flash");
 
 
 const mainRoutes = require("./routes/main");
-const adminRoutes = require("./routes/admin")
+const reviewRoutes = require("./routes/review")
 const path = require('path');
 
 
@@ -31,4 +31,4 @@ app.listen(
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
 
 app.use("/", mainRoutes); 
-app.use("/admin", adminRoutes);
+app.use("/review", reviewRoutes);

@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const Cohort = require('../models/cohort');
+const Activty = require('../models/activity');
 
 module.exports.getLogin = (req, res) => {
    /*if (req.user) {
@@ -10,10 +12,28 @@ module.exports.getLogin = (req, res) => {
  };
  
 module.exports.getRegister = (req, res) => {
-     res.render("register.ejs", {
-     title: "Register",
-      })
-   };
+   res.render("register.ejs", {
+   title: "Register",
+   });
+};
+
+module.exports.getAdminLogin = (req, res) => {
+   res.render("adminLogin.ejs", {
+   title: "AdminLogin",
+   });
+ };
+
+module.exports.getAdmin = (req, res) => {
+      res.render("admin.ejs", {
+      title: "Admin",
+       });
+};
+
+module.exports.getActivities = (req, res) => {
+   res.render("activities.ejs", {
+   title: "Activities",
+    });
+};
 
 module.exports.postRegister = async (req, res, next) => {
     
@@ -43,3 +63,4 @@ module.exports.postLogin = async (req, res, next) => {
    //console.log(user);
    res.redirect("userP.html");
 }
+
