@@ -13,7 +13,7 @@ const flash = require("express-flash");
 
 
 const mainRoutes = require("./routes/main");
-const reviewRoutes = require("./routes/review")
+const secondaryRoutes = require("./routes/secondary");
 const path = require('path');
 
 
@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));}
 
 connectDB()
+app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
@@ -31,4 +32,4 @@ app.listen(
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
 
 app.use("/", mainRoutes); 
-app.use("/review", reviewRoutes);
+app.use("/student", secondaryRoutes);

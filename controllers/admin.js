@@ -1,4 +1,3 @@
-
 const Cohort = require('../models/cohort');
 const Activty = require('../models/activity');
 const VocabWord = require('../models/vocabWord');

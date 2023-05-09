@@ -8,8 +8,8 @@ module.exports.getStudent = (req, res) => {
 
  
 
-module.exports.getReview = (req, res) => {
-    res.render("review.ejs", {
-    title: "Review",
+module.exports.getStudy = (req, res) => {
+    res.render("study.ejs", {
+    title: "Study",
      });
  };
