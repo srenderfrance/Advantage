@@ -27,9 +27,30 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use("/", mainRoutes); 
+app.use("/student", secondaryRoutes);
+
+//Use flash messages for errors, info, ect...
+app.use(flash());
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Setup Sessions - stored in MongoDB
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.DB_STRING}),
+  })
+);
+
+//Use forms for put / delete
+app.use(methodOverride("_method"));
+
 app.listen(
   PORT,
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
 
-app.use("/", mainRoutes); 
-app.use("/student", secondaryRoutes);

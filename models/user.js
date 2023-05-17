@@ -18,6 +18,16 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    firstName: {
+        type: String, 
+        unique: true,
+        required: true
+    },
+    lastName: {
+        type: String, 
+        unique: true,
+        required: true
+    },
     nativeLanguage: {
         type: String,
         reuired: true

@@ -3,14 +3,13 @@ const Cohort = require('../models/cohort');
 const Activty = require('../models/activity');
 
 module.exports.getLogin = (req, res) => {
-   /*if (req.user) {
-     return res.redirect("/profile");
-   }*/
+
+
    res.render("login.ejs", {
      title: "Login",
-   });
- };
- 
+   });  
+};
+
 module.exports.getRegister = (req, res) => {
    res.render("register.ejs", {
    title: "Register",
@@ -57,10 +56,35 @@ module.exports.postRegister = async (req, res, next) => {
    }
 
 module.exports.postLogin = async (req, res, next) => {
-    
-    
-   console.log("You have been logged in!");
-   //console.log(user);
-   res.redirect("userP.html");
-}
-
+   const validationErrors = [];
+   if (!validator.isEmty(req.body.userName))
+     validationErrors.push({ msg: "User Name cannot be black." });
+   if (validator.isEmpty(req.body.password))
+     validationErrors.push({ msg: "Password cannot be blank." });
+ 
+   if (validationErrors.length) {
+     req.flash("errors", validationErrors);
+     return res.redirect("/");
+   }
+   req.body.email = validator.normalizeEmail(req.body.email, {
+     gmail_remove_dots: false,
+   });
+ 
+   passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      req.flash("errors", info);
+      return res.redirect("/login");
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash("success", { msg: "Success! You are logged in." });
+      res.redirect(req.session.returnTo || "/student");
+    });
+  })(req, res, next);
+ };
+  
