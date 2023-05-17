@@ -1,6 +1,8 @@
-const User = require('../models/user')
-const Cohort = require('../models/cohort');
-const Activty = require('../models/activity');
+const passport = require("passport")
+const validator = require("validator")
+const User = require("../models/user")
+const Cohort = require("../models/cohort");
+const Activty = require("../models/activity");
 
 module.exports.getLogin = (req, res) => {
 
@@ -85,6 +87,6 @@ module.exports.postLogin = async (req, res, next) => {
       req.flash("success", { msg: "Success! You are logged in." });
       res.redirect(req.session.returnTo || "/student");
     });
-  })(req, res, next);
+  })//(req, res, next);
  };
   
