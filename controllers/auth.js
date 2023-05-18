@@ -49,6 +49,7 @@ module.exports.postRegister = async (req, res, next) => {
       individualExercises: undefined,
       problemWords: undefined,
       corhortAdmin: undefined,
+      reviewHistory: undefined,
 
    });
 
@@ -60,7 +61,7 @@ module.exports.postRegister = async (req, res, next) => {
 module.exports.postLogin = async (req, res, next) => {
    const validationErrors = [];
    if (!validator.isEmty(req.body.userName))
-     validationErrors.push({ msg: "User Name cannot be black." });
+     validationErrors.push({ msg: "User Name cannot be blank." });
    if (validator.isEmpty(req.body.password))
      validationErrors.push({ msg: "Password cannot be blank." });
  

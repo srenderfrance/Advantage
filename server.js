@@ -23,9 +23,7 @@ if (process.env.NODE_ENV === 'development') {
 connectDB()
 app.set("view engine", "ejs");
 
-app.use(express.urlencoded({extended: false}));
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')))
+
 
 app.use("/", mainRoutes); 
 app.use("/student", secondaryRoutes);
@@ -33,9 +31,6 @@ app.use("/student", secondaryRoutes);
 //Use flash messages for errors, info, ect...
 app.use(flash());
 
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Setup Sessions - stored in MongoDB
 app.use(
@@ -46,6 +41,14 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.DB_STRING}),
   })
 );
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')))
 
 //Use forms for put / delete
 app.use(methodOverride("_method"));
