@@ -37,13 +37,15 @@ module.exports.getActivities = (req, res) => {
 };
 
 module.exports.postRegister = async (req, res, next) => {
-    
-   const user = await User.create({
+  console.log(req.body)
+  const user = await User.create({
 
       userName: req.body.userName,
       password: req.body.password,
       email: req.body.email,
       cohort: req.body.cohort,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       nativeLanguage: req.body.nativeLanguage,
       hasReviewed: undefined,
       individualExercises: undefined,
@@ -54,13 +56,14 @@ module.exports.postRegister = async (req, res, next) => {
    });
 
     console.log("You have been registered!");
-    console.log(user)
+    
     res.redirect("/");
    }
 
 module.exports.postLogin = async (req, res, next) => {
+
    const validationErrors = [];
-   if (!validator.isEmty(req.body.userName))
+   if (validator.isEmpty(req.body.userName))
      validationErrors.push({ msg: "User Name cannot be blank." });
    if (validator.isEmpty(req.body.password))
      validationErrors.push({ msg: "Password cannot be blank." });
@@ -69,10 +72,7 @@ module.exports.postLogin = async (req, res, next) => {
      req.flash("errors", validationErrors);
      return res.redirect("/");
    }
-   req.body.email = validator.normalizeEmail(req.body.email, {
-     gmail_remove_dots: false,
-   });
- 
+   console.log("validated")
    passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
@@ -81,13 +81,14 @@ module.exports.postLogin = async (req, res, next) => {
       req.flash("errors", info);
       return res.redirect("/login");
     }
+    console.log(user)
     req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
       req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(req.session.returnTo || "/student");
+      res.redirect(/*req.session.returnTo ||*/ "/student");
     });
-  })//(req, res, next);
+  }) //(req, res, next);
  };
   
