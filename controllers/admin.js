@@ -38,8 +38,8 @@ module.exports.postVocabWord = async (req, res, next) => {
    const vocabWord = await VocabWord.create({
        cohort: req.body.cohort,
        description: req.body.description,
-       excercise: req.body.excersise,
-       image: undefined,
+       activity: req.body.excersise,
+       imageUrl: undefined,
        cloudinaryIdImage: undefined,
        audioQ: undefined,
        cloudinaryIdQ: undefined,

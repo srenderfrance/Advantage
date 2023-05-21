@@ -1,6 +1,6 @@
-const passport = require("passport")
-const validator = require("validator")
-const User = require("../models/user")
+const passport = require("passport");
+const validator = require("validator");
+const User = require("../models/user");
 const Cohort = require("../models/cohort");
 const Activty = require("../models/activity");
 
@@ -25,9 +25,9 @@ module.exports.getAdminLogin = (req, res) => {
  };
 
 module.exports.getAdmin = (req, res) => {
-      res.render("admin.ejs", {
-      title: "Admin",
-       });
+    res.render("admin.ejs", {
+    title: "Admin",
+    });
 };
 
 module.exports.getActivities = (req, res) => {
@@ -61,7 +61,7 @@ module.exports.postRegister = async (req, res, next) => {
    }
 
 module.exports.postLogin = async (req, res, next) => {
-
+  console.log(req.body)
    const validationErrors = [];
    if (validator.isEmpty(req.body.userName))
      validationErrors.push({ msg: "User Name cannot be blank." });
@@ -73,6 +73,7 @@ module.exports.postLogin = async (req, res, next) => {
      return res.redirect("/");
    }
    console.log("validated")
+   console.log (user)
    passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
@@ -87,7 +88,7 @@ module.exports.postLogin = async (req, res, next) => {
         return next(err);
       }
       req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(/*req.session.returnTo ||*/ "/student");
+      res.redirect(/*req.session.returnTo ||*/ "student");
     });
   }) //(req, res, next);
  };

@@ -7,11 +7,16 @@ const VocabWordSchema = new mongoose.Schema({
     },
     catagory: {
         type: String,
+        required: true,
     },
     description: {
         type: String,
     },
-    image: {
+       activity: {
+        type: mongoose.Schema.Types.ObjectId,
+        required,
+    },
+    imageUrl: {
         type: String,
         default: "",
       },
@@ -35,11 +40,7 @@ const VocabWordSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    exercise: {
-        type: Array,
-        default: [],
-    },
-   
+ 
 })
 const VocabWord = mongoose.model('VocabWord', VocabWordSchema);
 module.exports = VocabWord

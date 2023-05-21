@@ -1,1 +1,45 @@
-<h1>UPLOAD PAGE</h1>
+<h1>UPLOAD PAGE for cohort</h1>
+<form action="/admin/activity" method="POST">
+    <div>
+        <h2>Create New Activity</h2>
+        <label for="activity">Activity Description</label>
+        <input type="text" id="activity" name="description"
+        required>
+        <label for="activityDate">Activity Date</label>
+        <input type="text" id="activityDate" name="date"
+        required>
+        <button type="submit">Create</button>   
+    </div>
+ </form>  
+ <form action="admin/vocabulary">
+ <div>
+    <h2>Add vocabulary word to Activity</h2>
+    <label for="activity">Activity</label>
+    <select name="activity" id="activityName" required>
+        <option value="activityName">Activyt 1</option>
+    </select>
+    <label for="category">Category</label>
+    <select name="category" id="category" required>
+        <option value="category">Animal</option>
+        <option value="category">Plant</option>
+        <option value="category">Thing</option>
+        <option value="category">Place</option>
+        <option value="category">Emotion/Feeling</option>
+        <option value="category">Verb</option>
+        <option value="category">Pronoun</option>
+        <option value="category">Other</option>
+    </select>
+    <label for="image">Description</label>
+    <input type="file" id="image" name="image">
+    <label for="audioQ">Question Audio</label>
+    <input type="file" id="audioQ" name="audioQ">
+    <label for="audioW">The Vocab Word Audio</label>
+    <input type="file" id="audioW" name="audioW">
+    <button type="submit">Upload</button>   
+</div>
+</form>
+<div>
+    <h2>Vocab Word Preview</h2>
+</div>
+
+<a href="student">Student Page</a>
