@@ -60,26 +60,26 @@ module.exports.postRegister = async (req, res, next) => {
     res.redirect("/");
    }
 
-module.exports.postLogin = async (req, res, next) => {
+module.exports.postLogin = (req, res, next) => {
   console.log(req.body)
-   const validationErrors = [];
+  /* const validationErrors = [];
    if (validator.isEmpty(req.body.userName))
      validationErrors.push({ msg: "User Name cannot be blank." });
    if (validator.isEmpty(req.body.password))
      validationErrors.push({ msg: "Password cannot be blank." });
  
    if (validationErrors.length) {
-     req.flash("errors", validationErrors);
+     //req.flash("errors", validationErrors);
      return res.redirect("/");
    }
    console.log("validated")
-   console.log (user)
+   //console.log (user) */
    passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
     }
     if (!user) {
-      req.flash("errors", info);
+      //req.flash("errors", info);
       return res.redirect("/login");
     }
     console.log(user)
@@ -87,7 +87,7 @@ module.exports.postLogin = async (req, res, next) => {
       if (err) {
         return next(err);
       }
-      req.flash("success", { msg: "Success! You are logged in." });
+      //req.flash("success", { msg: "Success! You are logged in." });
       res.redirect(/*req.session.returnTo ||*/ "student");
     });
   }) //(req, res, next);
