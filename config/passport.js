@@ -6,6 +6,7 @@ module.exports = function (passport) {
   passport.use(
     new LocalStrategy({ usernameField: userName }, async (userName, password, done) => {
       try {
+        console.log("passport is trying");
         const user = await User.findOne({ userName: userName });
         if (!user) {
           return done(null, false, { msg: `${userName} not found.` });
@@ -14,7 +15,7 @@ module.exports = function (passport) {
         if (isMatch) {
           return done(null, user);
         }
-        return done(null, false, { msg: "Invalid email or password." });
+        return done(null, false, { msg: "Invalid username or password." });
       } catch (err) {
         return done(err);
       }
