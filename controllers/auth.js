@@ -75,6 +75,7 @@ module.exports.postLogin = (req, res, next) => {
    console.log("validated")
    //console.log (user) */
    passport.authenticate("local", (err, user, info) => {
+    console.log("passport.authenticate is running")
     if (err) {
       return next(err);
     }

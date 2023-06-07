@@ -3,7 +3,6 @@ const { default: mongoose } = require("mongoose");
 const ActivitySchema = new mongoose.Schema({
     cohort: {
         type: String, 
-        unique: true,
         required: true
     },
     date: {
