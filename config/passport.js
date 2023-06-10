@@ -1,15 +1,15 @@
 const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
-const User = require("../models/User");
+const User = require("../models/user");
 
 module.exports = function (passport) {
   passport.use(
-    new LocalStrategy({ usernameField: userName }, async (userName, password, done) => {
+    new LocalStrategy( async (username, password, done) => {
       try {
         console.log("passport is trying");
-        const user = await User.findOne({ userName: userName });
+        const user = await User.findOne({ username: username });
         if (!user) {
-          return done(null, false, { msg: `${userName} not found.` });
+          return done(null, false, { msg: `${username} not found.` });
         }
         const isMatch = await user.comparePassword(password);
         if (isMatch) {

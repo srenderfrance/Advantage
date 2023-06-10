@@ -20,6 +20,9 @@ const path = require('path');
 if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));}
 
+// Passport config
+require("./config/passport")(passport);    
+
 connectDB()
 app.set("view engine", "ejs");
 
@@ -47,6 +50,7 @@ app.use(
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 
 
