@@ -61,7 +61,7 @@ module.exports.postRegister = async (req, res, next) => {
    }
 
 module.exports.postLogin = (req, res, next) => {
-  //console.log(req.body)
+  console.log(req.body)
   /* const validationErrors = [];
    if (validator.isEmpty(req.body.userName))
      validationErrors.push({ msg: "User Name cannot be blank." });
@@ -75,6 +75,7 @@ module.exports.postLogin = (req, res, next) => {
    console.log("validated")
    //console.log (user) */
    //next()
+   
    passport.authenticate("local", (err, user, info) => {
     console.log("passport.authenticate is running")
     if (err) {
