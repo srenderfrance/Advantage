@@ -40,21 +40,20 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.DB_STRING}),
-    //cookie: {
-    //  maxAge: 1000 * 60 * 60 * 24 // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
-   // }
-  })
-  );
+    cookie: {
+    maxAge: 1000 * 60 * 6 // 6 hours
+    }
+  }));
   
   // Passport middleware
-  app.use(passport.initialize());
-  app.use(passport.session());
-  
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 
   
   //Use forms for put / delete
-  app.use(methodOverride("_method"));
+app.use(methodOverride("_method"));
 
 const mainRoutes = require("./routes/main");
 const secondaryRoutes = require("./routes/secondary");

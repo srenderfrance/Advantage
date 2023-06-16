@@ -1,5 +1,6 @@
 const passport = require("passport");
 const validator = require("validator");
+//const passportLocalMongoose = require('passport-local-mongoose')
 const User = require("../models/user");
 const Cohort = require("../models/cohort");
 const Activty = require("../models/activity");
@@ -36,12 +37,11 @@ module.exports.getActivities = (req, res) => {
     });
 };
 
-module.exports.postRegister = async (req, res, next) => {
-  console.log(req.body)
-  const user = await User.create({
+module.exports.postRegister = function (req, res) {
+ // console.log(req.body)
+  User.register( new User ({
 
       username: req.body.username,
-      password: req.body.password,
       email: req.body.email,
       cohort: req.body.cohort,
       firstName: req.body.firstName,
@@ -53,12 +53,15 @@ module.exports.postRegister = async (req, res, next) => {
       corhortAdmin: undefined,
       reviewHistory: undefined,
 
-   });
-
-    console.log("You have been registered!");
+   }), req.body.password, function async (err, user) {
+    if (err) {
+        res.json({ success: false, message: "Your account could not be saved. Error: " + err });
+    }
+    else  { res.redirect("/")}
+  })},  
     
-    res.redirect("/");
-   }
+   
+   
 
 module.exports.postLogin = (req, res, next) => {
   console.log(req.body)
@@ -76,8 +79,13 @@ module.exports.postLogin = (req, res, next) => {
    //console.log (user) */
    //next()
    
-   passport.authenticate("local", (err, user, info) => {
+   //passport.authenticate("local"), function await (req, res) {
     console.log("passport.authenticate is running")
+    res.redirect(req.session.returnTo || "/student");
+    return next;
+  };
+   //}
+    /*
     if (err) {
       return next(err);
     }
@@ -91,8 +99,8 @@ module.exports.postLogin = (req, res, next) => {
         return next(err);
       }
       //req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(/*req.session.returnTo ||*/ "student");
+      res.redirect(req.session.returnTo || "student");
     });
   }) //(req, res, next);
- };
+ };*/
   
