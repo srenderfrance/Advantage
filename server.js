@@ -42,7 +42,7 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.DB_STRING}),
     cookie: {
     maxAge: 1000 * 60 * 6 // 6 hours
-    }
+    },
   }));
   
   // Passport middleware

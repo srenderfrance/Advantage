@@ -79,28 +79,23 @@ module.exports.postLogin = (req, res, next) => {
    //console.log (user) */
    //next()
    
-   //passport.authenticate("local"), function await (req, res) {
-    console.log("passport.authenticate is running")
-    res.redirect(req.session.returnTo || "/student");
-    return next;
+   passport.authenticate("local", {
+    successRedirect: '/student',
+    failureRedirect: '/l',
+    failureFlash: true // allow flash messages
+    })(req, res, next);
+
+
+    console.log("passport.authenticate finished");
+    console.log(passport.session.user)
+    res.redirect(/*req.session.returnTo ||*/ "/student");
+   
   };
-   //}
-    /*
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      //req.flash("errors", info);
-      return res.redirect("/login");
-    }
-    console.log(user)
-    req.logIn(user, (err) => {
-      if (err) {
-        return next(err);
-      }
-      //req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(req.session.returnTo || "student");
+
+  module.exports.getLogout = function (req, res, next) {
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/');
     });
-  }) //(req, res, next);
- };*/
+  };
   
