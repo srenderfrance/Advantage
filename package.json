@@ -33,6 +33,7 @@
     "@types/express-flash": "^0.0.2",
     "@types/method-override": "^0.0.32",
     "@types/morgan": "^1.9.4",
+    "@types/multer": "^1.4.7",
     "@types/passport": "^1.0.12",
     "@types/passport-local": "^1.0.35",
     "@types/validator": "^13.7.17",

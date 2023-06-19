@@ -61,10 +61,11 @@ module.exports.postRegister = function (req, res) {
   })},  
     
    
-   
+//const logUserIn = passport.authenticate('local' {failure: true, failureRedirect: '/'});
 
 module.exports.postLogin = (req, res, next) => {
   console.log(req.body)
+  console.log(req.session.user)
   /* const validationErrors = [];
    if (validator.isEmpty(req.body.userName))
      validationErrors.push({ msg: "User Name cannot be blank." });
@@ -79,16 +80,23 @@ module.exports.postLogin = (req, res, next) => {
    //console.log (user) */
    //next()
    
-   passport.authenticate("local", {
-    successRedirect: '/student',
-    failureRedirect: '/l',
-    failureFlash: true // allow flash messages
-    })(req, res, next);
+  passport.authenticate("local", function(err, user, info){
+    if (!err)
+    {
+    res.redirect('/student');
+    } else {
+      console.log(err)
+    res.redirect('/');
+    //failureFlash: true // allow flash messages
+    }
+  })
+    /*(req, res, next)*/;
 
 
     console.log("passport.authenticate finished");
     console.log(passport.session.user)
-    res.redirect(/*req.session.returnTo ||*/ "/student");
+    console.log(req.user)
+    res.redirect(/*req.session.returnTo ||*/"/student");
    
   };
 
