@@ -97,7 +97,7 @@ module.exports.postLogin = (req, res, next) => {
     console.log(passport.session.user)
     console.log(req.user)
     res.redirect(/*req.session.returnTo ||*/"/student");
-   
+    next();
   };
 
   module.exports.getLogout = function (req, res, next) {
@@ -106,4 +106,8 @@ module.exports.postLogin = (req, res, next) => {
       res.redirect('/');
     });
   };
+
+  module.exports.postAdminLogin = (req, res, next) => {
+    console.log(req.user)
+  }
   

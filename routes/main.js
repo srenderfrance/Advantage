@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authController = require('../controllers/auth');
 const reviewController = require("../controllers/review");
+const adminController = require("../controllers/admin")
 const passport = require("passport")
 //const { ensureAuth } = require("../middleware/auth");
 
@@ -12,12 +13,13 @@ router.get("/register", authController.getRegister);
 router.post("/register", authController.postRegister, /*passport.authenticate("local")*/);
 
 router.get("/adminLogin", authController.getAdminLogin);
-//router.post("/adminLogin", authController.postAdminLogin);
+router.post("/adminLogin", authController.postAdminLogin);
 
 router.get("/admin", authController.getAdmin);
-//router.post('/admin', authController.postCohort);
+router.post("/admin", adminController.postCohort);
 
 router.get("/activities", authController.getActivities);
+router.post("/activities", adminController.postActivity);
 
 router.get("/logout", authController.getLogout);
 

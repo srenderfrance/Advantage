@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const VocabWordSchema = new mongoose.Schema({
     cohort: {
@@ -14,7 +14,7 @@ const VocabWordSchema = new mongoose.Schema({
     },
        activity: {
         type: mongoose.Schema.Types.ObjectId,
-        required,
+        required: true,
     },
     imageUrl: {
         type: String,
@@ -42,5 +42,5 @@ const VocabWordSchema = new mongoose.Schema({
     },
  
 })
-const VocabWord = mongoose.model('VocabWord', VocabWordSchema);
-module.exports = VocabWord
+/*const VocabWord = mongoose.model('VocabWord', VocabWordSchema);*/
+module.exports = mongoose.model('VocabWord', VocabWordSchema);

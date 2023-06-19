@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const ActivitySchema = new mongoose.Schema({
     cohort: {
@@ -19,5 +19,5 @@ const ActivitySchema = new mongoose.Schema({
     },
     
 })
-const Activity = mongoose.model('Activity', ActivitySchema);
-module.exports = Activity
+//const Activity = mongoose.model('Activity', ActivitySchema);
+module.exports = mongoose.model('Activity', ActivitySchema);
