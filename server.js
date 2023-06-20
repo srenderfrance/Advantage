@@ -14,6 +14,8 @@ const flash = require("express-flash");
 
 const path = require('path');
 
+//Use flash messages for errors, info, ect..
+app.use(flash());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'));}
@@ -21,7 +23,7 @@ if (process.env.NODE_ENV === 'development') {
   // Passport config
 require("./config/passport")(passport);    
   
-connectDB()
+
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
@@ -29,8 +31,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')))
 
 
-//Use flash messages for errors, info, ect...
-app.use(flash());
+
+
 
 
 // Setup Sessions - stored in MongoDB
@@ -49,7 +51,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+connectDB()
 
   
   //Use forms for put / delete

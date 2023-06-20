@@ -58,8 +58,21 @@ module.exports.postRegister = function (req, res) {
         res.json({ success: false, message: "Your account could not be saved. Error: " + err });
     }
     else  { res.redirect("/")}
-  })},  
-    
+  })
+  //adds  new user to thier cohort
+    /*Cohort.findOneAndUpdate(
+      { cohorName: req.body.cohort }, 
+      { $push: { students: user._id  } },
+     function (error, success) {
+           if (error) {
+               console.log(error);
+           } else {
+               console.log(success);
+           }
+       });*/
+   
+  
+      }
    
 //const logUserIn = passport.authenticate('local' {failure: true, failureRedirect: '/'});
 
