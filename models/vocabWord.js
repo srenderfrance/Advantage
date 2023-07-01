@@ -14,7 +14,7 @@ const VocabWordSchema = new mongoose.Schema({
     },
        activity: {
         type: mongoose.Schema.Types.ObjectId,
-        required,
+        required: true,
     },
     imageUrl: {
         type: String,

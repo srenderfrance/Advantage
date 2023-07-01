@@ -1,7 +1,7 @@
 
 
 module.exports.getStudent = (req, res) => {
-    res.render("student.ejs", {
+    res.render("student.ejs",  { user: req.user }, {
     title: "Student",
      });
  };
@@ -9,7 +9,7 @@ module.exports.getStudent = (req, res) => {
  
 
 module.exports.getStudy = (req, res) => {
-    res.render("study.ejs", {
+    res.render("study.ejs", { user: req.user }, {
     title: "Study",
      });
  };

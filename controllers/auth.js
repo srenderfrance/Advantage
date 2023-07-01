@@ -12,10 +12,9 @@ module.exports.getLogin = (req, res) => {
    });  
 };
 
-module.exports.getRegister = (req, res) => {
-   res.render("register.ejs", {
-   title: "Register",
-   });
+module.exports.getRegister = async (req, res) => {
+  const cohorts = await Cohort.find()
+  res.render("register.ejs", {cohorts: cohorts});
 };
 
 module.exports.getAdminLogin = (req, res) => {
@@ -24,10 +23,11 @@ module.exports.getAdminLogin = (req, res) => {
    });
  };
 
-module.exports.getAdmin = (req, res) => {
-    res.render("admin.ejs", {
-    title: "Admin",
-    });
+module.exports.getAdmin = async (req, res) => {
+  const cohorts = await Cohort.find()
+  console.log (cohorts);
+  console.log(cohorts.length)
+  res.render("admin.ejs", {cohorts: cohorts} );
 };
 
 module.exports.getActivities = (req, res) => {
@@ -54,14 +54,35 @@ module.exports.postRegister = async (req, res, next) => {
       reviewHistory: undefined,
 
    });
+   console.log(res)
+  console.log("You have been registered!");
+  const cohort = await Cohort.findOne({cohortName: req.body.cohort})
+  console.log(cohort)  
+  const studentObject = 
+  {name: `${req.body.firstName} ${req.body.lastName}` };
+  console.log(studentObject);
+  res.redirect("/");
+  }
 
-    console.log("You have been registered!");
-    
-    res.redirect("/");
-   }
+module.exports.postLogin = async (req, res, next) => {
+  const newUser = req.body.username;
+  console.log(newUser);
+  const user = await User.findOne({ username: newUser });
+  console.log(req.body.password)
+  console.log(user.password)
+  if (user.password === req.body.password) {
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      res.render("student", { user: req.user });
+    });
+ (req, res, next);
+    console.log("You should be logged in...")
+    console.log(user)
+ } else{console.log("did't work")};
 
-module.exports.postLogin = (req, res, next) => {
-  console.log(req.body)
+ // console.log(req.body)
   /* const validationErrors = [];
    if (validator.isEmpty(req.body.userName))
      validationErrors.push({ msg: "User Name cannot be blank." });
@@ -75,7 +96,7 @@ module.exports.postLogin = (req, res, next) => {
    console.log("validated")
    //console.log (user) */
    //next()
-   
+   /*
    passport.authenticate("local", (err, user, info) => {
     console.log("passport.authenticate is running")
     if (err) {
@@ -91,8 +112,8 @@ module.exports.postLogin = (req, res, next) => {
         return next(err);
       }
       //req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(/*req.session.returnTo ||*/ "student");
+      res.redirect(/*req.session.returnTo || "student");
     });
-  }) //(req, res, next);
+  }) //(req, res, next);*/
  };
   

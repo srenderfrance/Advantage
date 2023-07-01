@@ -1,5 +1,5 @@
 <h1>ADMIN PAGE</h1>
-<form action="/admin" method="POST">
+<form action="/newCohort" method="POST">
     <div>
         <h2>Create New Class</h2>
         <label for="cohort">New Class Name</label>
@@ -11,17 +11,22 @@
         <label for="startDate">Start Dagte</label>
         <input type="text" id="startDate" name="startDate"
         required>
+    </div>    
     <button type="submit">Create</button>
 </form>
-<form action="/adminCohort" method="POST"> <!--not sure if the action will work right-->
-    <div>
+<form action="/adminCohortAdmin" method="POST">
         <h2>Give Cohort Admin Privileges</h2>
-        <label for="cohort">New Class Name</label>
-        <input type="text" id="cohort" name="cohort"
-        required>
+        <label for="cohort">Select Class</label>    
+            <select name="cohort" id="cohortName" required>
+                <option value="">Select Class</option>
+                <% for(var i=0; i < cohorts.length; i++) {%>   
+                <option value="<%= cohorts[i].cohortName %>"><%= cohorts[i].cohortName %></option>
+            <% } %>
+        </select>
          <label for="student">Student</label>
         <input type="text" id="student" name="student"
         required>
+    </div>    
     <button type="submit">Create</button>
 </form>
 <a href="/">Login</a>

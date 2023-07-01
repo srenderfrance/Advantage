@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
   // Passport config
 require("./config/passport")(passport);    
   
-connectDB()
+
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
@@ -50,7 +50,7 @@ app.use(
   app.use(passport.initialize());
   app.use(passport.session());
   
-
+connectDB()
 
   
   //Use forms for put / delete

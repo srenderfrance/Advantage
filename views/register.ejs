@@ -14,9 +14,12 @@
         <label for="email">Email</label>
         <input type="text" id="email" name="email"
         required>
-        <label for="cohort">Class Name</label>
-        <select name="cohort" id="cohortName" required>
-            <option value="Joel's Class">Joel's Class</option>
+        <label for="cohort">Select Class</label>    
+            <select name="cohort" id="cohortName" required>
+                <option value="">Select Class</option>
+                <% for(var i=0; i < cohorts.length; i++) {%>   
+                <option value="<%= cohorts[i].cohortName %>"><%= cohorts[i].cohortName %></option>
+            <% } %>
         </select>
         <label for="firstName">First Name</label>
         <input type="text" id="firstName" name="firstName"

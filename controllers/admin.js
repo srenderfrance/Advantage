@@ -1,11 +1,14 @@
+const passport = require("passport");
+const validator = require("validator");
 const Cohort = require('../models/cohort');
 const Activty = require('../models/activity');
 const VocabWord = require('../models/vocabWord');
 
 module.exports.postCohort = async (req, res, next) => {
+   console.log(req.body)
     
    const cohort = await Cohort.create({
-      cohortName: req.body.cohort,
+      cohortName: req.body.cohortName,
       language: req.body.language,
       startDate: req.body.startDate,
       Activities: undefined,
@@ -13,11 +16,11 @@ module.exports.postCohort = async (req, res, next) => {
       students: undefined,
       vocabWords: undefined,
       activities: undefined,
-     })
+     });
 
     console.log("A new class has been created!");
     console.log(cohort)
-    res.redirect("userP.html");
+    res.redirect("/admin");
    };
 
 module.exports.postActivity = async (req, res, next) => {
