@@ -75,7 +75,8 @@ module.exports.postRegister = async (req, res, next) => {
   console.log(cohort)  
   const studentObject = {
         name: `${req.body.firstName} ${req.body.lastName}`,
-        id: user._id};
+        id: user._id,
+        corhortAdmin: false,};
   console.log(studentObject);
     cohort.students.push(studentObject);
     await cohort.save(); //add try/catch for errors  
@@ -133,4 +134,4 @@ module.exports.postLogin = async (req, res, next) => {
     });
   }) //(req, res, next);*/
  };
-  
+

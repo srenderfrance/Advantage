@@ -22,27 +22,28 @@
         required>
     </div>    
     <button type="submit">Create</button>
-</form>
-<form action="/adminCohortAdmin" method="POST">
-    <div class = "dropDown">
-        <h2>Give Cohort Admin Privileges</h2>
+ </form>
+ <h2>Add/Remove class admin privleges</h2>
+<form action="/adminSelectCohort" method="POST" id="problem">
+    <div class="dropDown">
         <label for="cohort">Select Class</label>    
             <select name="cohort" id="cohortName" required>
                 <option value="">Select Class</option>
                 <% for(var i=0; i < cohorts.length; i++) {%>   
                 <option value="<%= cohorts[i].cohortName %>"><%= cohorts[i].cohortName %></option>
             <% } %>
+            </select>
     </div>    
-    <button type="submit">Select</button>
+    <button type="button" id="cohortSelection">Select</button>
 </form>
-
-<form action="">
+<form action="/adminUpdateCohortAdmin" method="PUT">
     <div class="dropDown">
         <label for="student">Student</label>
-            </select name="student" id="studentName" required>
+            <select name="student" id="StudentName">
             <option value="">Select Student</option>
+            </select>
     </div>
-    <button type="submit">Update</button>
+    <button type="button" id="selectedStudent">Update</button>
 </form>
 
 <a href="/">Login</a>

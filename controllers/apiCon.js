@@ -6,8 +6,8 @@ const VocabWord = require('../models/vocabWord');
 
 const adminController = require('../controllers/auth');
 
-
-module.exports.getStudents = async (req, res, next) => {
+/*
+module.exports.getStudentList = async (req, res, next) => {
     console.log(req.body)
     const cohort = await Cohort.find({cohortName: req.body.cohortSelection});
     
@@ -17,7 +17,8 @@ module.exports.getStudents = async (req, res, next) => {
 
 module.exports.updateCohortAdmin = async (req, res, next) => {
     console.log(req.body)
-     
+};*/
+
     /*const updateduser = await ........({
       corhortAdmin: true
       });
@@ -26,4 +27,4 @@ module.exports.updateCohortAdmin = async (req, res, next) => {
      console.log("Cohort Admin privliges updated.");
 
      res.redirect("/admin");*/
-    };
+    

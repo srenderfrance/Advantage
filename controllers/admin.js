@@ -61,3 +61,15 @@ module.exports.postVocabWord = async (req, res, next) => {
    console.log("A new vocab word has been created!");
    console.log(VocabWord);
   };
+
+  module.exports.getStudentList = async (req, res, next) => {
+   console.log(req.body)
+   const cohort = await Cohort.find({cohortName: req.body.cohortSelection});
+   
+   console.log(cohort);
+   res.json(cohort);
+ };
+ 
+ module.exports.updateCohortAdmin = async (req, res, next) => {
+   console.log(req.body)
+ };

@@ -62,7 +62,7 @@ const apiRoutes = require("./routes/apiR");
 
 app.use("/", mainRoutes); 
 app.use("/student", secondaryRoutes);
-app.use("/api", apiRoutes);
+//app.use("/api", apiRoutes);
 
 app.listen(
   PORT,

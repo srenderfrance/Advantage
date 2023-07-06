@@ -6,7 +6,6 @@ const adminController = require("../controllers/admin");
 const apiContoller = require("../controllers/apiCon");
 
 
-router.post("/admin", apiContoller.getStudents);
-router.put("/admin", apiContoller.updateCohortAdmin);
+
 
 module.exports = router;

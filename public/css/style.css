@@ -1,3 +1,16 @@
 body {
     margin: 15px;
 }
+
+form {
+    margin: 15px;
+    padding-top: 20px;
+}
+
+div {
+    margin: 15px;
+}
+
+.problem {
+    padding-bottom: 15px;
+}
