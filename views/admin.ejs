@@ -1,4 +1,13 @@
-<h1>ADMIN PAGE</h1>
+<head>   
+    <!-- external CSS link -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css" />
+	
+	
+</head><h1>ADMIN PAGE</h1>
+<body>
+    
+
 <form action="/newCohort" method="POST">
     <div>
         <h2>Create New Class</h2>
@@ -8,13 +17,14 @@
          <label for="language">Language</label>
         <input type="text" id="language" name="language"
         required>
-        <label for="startDate">Start Dagte</label>
+        <label for="startDate">Start Date</label>
         <input type="text" id="startDate" name="startDate"
         required>
     </div>    
     <button type="submit">Create</button>
 </form>
 <form action="/adminCohortAdmin" method="POST">
+    <div class = "dropDown">
         <h2>Give Cohort Admin Privileges</h2>
         <label for="cohort">Select Class</label>    
             <select name="cohort" id="cohortName" required>
@@ -22,11 +32,19 @@
                 <% for(var i=0; i < cohorts.length; i++) {%>   
                 <option value="<%= cohorts[i].cohortName %>"><%= cohorts[i].cohortName %></option>
             <% } %>
-        </select>
-         <label for="student">Student</label>
-        <input type="text" id="student" name="student"
-        required>
     </div>    
-    <button type="submit">Create</button>
+    <button type="submit">Select</button>
 </form>
+
+<form action="">
+    <div class="dropDown">
+        <label for="student">Student</label>
+            </select name="student" id="studentName" required>
+            <option value="">Select Student</option>
+    </div>
+    <button type="submit">Update</button>
+</form>
+
 <a href="/">Login</a>
+<script type="text/javascript" src="/js/admin.js"></script>
+</body>

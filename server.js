@@ -58,8 +58,11 @@ connectDB()
 
 const mainRoutes = require("./routes/main");
 const secondaryRoutes = require("./routes/secondary");
+const apiRoutes = require("./routes/apiR");
+
 app.use("/", mainRoutes); 
 app.use("/student", secondaryRoutes);
+app.use("/api", apiRoutes);
 
 app.listen(
   PORT,

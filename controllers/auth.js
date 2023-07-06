@@ -4,6 +4,7 @@ const User = require("../models/user");
 const Cohort = require("../models/cohort");
 const Activty = require("../models/activity");
 
+let adminCohortExport = {}
 module.exports.getLogin = (req, res) => {
 
 
@@ -27,8 +28,12 @@ module.exports.getAdmin = async (req, res) => {
   const cohorts = await Cohort.find()
   console.log (cohorts);
   console.log(cohorts.length)
+  adminCohortExport = cohorts
   res.render("admin.ejs", {cohorts: cohorts} );
+  console.log(adminCohortExport)
 };
+
+module.exports.adminCohortExport = adminCohortExport;
 
 module.exports.getActivities = (req, res) => {
    res.render("activities.ejs", {
@@ -54,15 +59,27 @@ module.exports.postRegister = async (req, res, next) => {
       reviewHistory: undefined,
 
    });
-   console.log(res)
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      } else
+      res.render("student", { user: req.user });
+    });
+ (req, res, next);
+    console.log("You should be logged in...")
+    console.log(user);
+
   console.log("You have been registered!");
-  const cohort = await Cohort.findOne({cohortName: req.body.cohort})
+  console.log(user)
+  const cohort = await Cohort.findOne({cohortName:user.cohort})
   console.log(cohort)  
-  const studentObject = 
-  {name: `${req.body.firstName} ${req.body.lastName}` };
+  const studentObject = {
+        name: `${req.body.firstName} ${req.body.lastName}`,
+        id: user._id};
   console.log(studentObject);
-  res.redirect("/");
-  }
+    cohort.students.push(studentObject);
+    await cohort.save(); //add try/catch for errors  
+};
 
 module.exports.postLogin = async (req, res, next) => {
   const newUser = req.body.username;
