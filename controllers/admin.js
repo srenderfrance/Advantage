@@ -1,8 +1,11 @@
 const passport = require("passport");
+//const { default: mongoose } = require("mongoose");
 const validator = require("validator");
 const Cohort = require('../models/cohort');
 const Activty = require('../models/activity');
 const VocabWord = require('../models/vocabWord');
+const User = require("../models/user");
+
 
 module.exports.postCohort = async (req, res, next) => {
    console.log(req.body)
@@ -71,5 +74,16 @@ module.exports.postVocabWord = async (req, res, next) => {
  };
  
  module.exports.updateCohortAdmin = async (req, res, next) => {
-   console.log(req.body)
+   console.log(req.body.studentId)
+   let studentId = `OjectId(${req.body.studentId})`
+   console.log(studentId)
+   let student = await User.findById(req.body.studentId);
+   console.log(student);
+   student.corhortAdmin = true;
+   await student.save();
+    //cohortAdmin: true
+   //let student = await User.findById(req.body.studentId);
+     // {$set: {corhortAdmin: true}});
+   //console.log(student);
+
  };
