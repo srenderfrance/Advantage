@@ -29,7 +29,7 @@
         <label for="cohort">Select Class</label>    
             <select name="cohort" id="cohortName" required>
                 <option value="">Select Class</option>
-                <% for(var i=0; i < cohorts.length; i++) {%>   
+                <% for(let i=0; i < cohorts.length; i++) {%>   
                 <option value="<%= cohorts[i].cohortName %>"><%= cohorts[i].cohortName %></option>
             <% } %>
             </select>
@@ -43,7 +43,8 @@
             <option value="">Select Student</option>
             </select>
     </div>
-    <button type="button" id="selectedStudent">Update</button>
+    <button type="button" id="giveToStudent">Give Class Admin Privileges</button>
+    <button type="button" id="removeFromStudent">Remove Class Admin Priviegs</button>
 </form>
 
 <a href="/">Login</a>

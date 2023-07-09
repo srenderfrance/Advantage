@@ -68,22 +68,67 @@ module.exports.postVocabWord = async (req, res, next) => {
   module.exports.getStudentList = async (req, res, next) => {
    console.log(req.body)
    const cohort = await Cohort.find({cohortName: req.body.cohortSelection});
-   
-   console.log(cohort);
    res.json(cohort);
  };
  
  module.exports.updateCohortAdmin = async (req, res, next) => {
-   console.log(req.body.studentId)
-   let studentId = `OjectId(${req.body.studentId})`
-   console.log(studentId)
-   let student = await User.findById(req.body.studentId);
+   console.log(req.body.infoToSend)
+   let studentId = req.body.infoToSend[0];
+   let cohortSelection = req.body.infoToSend[1];
+   console.log(`This is the studentId: ${studentId} and this is their cohort: ${cohortSelection}`)
+   /*let studentId = `OjectId(${req.body.studentId})`
+   console.log(studentId)*/
+   let student = await User.findById(studentId);
    console.log(student);
-   student.corhortAdmin = true;
+   if (student.adminLevel === null) {
+   student.adminLevel = 1;
    await student.save();
-    //cohortAdmin: true
-   //let student = await User.findById(req.body.studentId);
-     // {$set: {corhortAdmin: true}});
-   //console.log(student);
+   } else console.log(`${student.username} already has admin privlieges.`);
+   let cohort = await Cohort.findOne({cohortName: cohortSelection});
+   let studentArray = cohort.students;
+   
+   console.log(`This is the studendArray ${studentArray}`);
+   console.log(studentArray);
+    for (let i = 0; i < studentArray.length; i++) {    
+         if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === null){
+            studentArray[i].adminLevel = 1;
+            console.log(studentArray)
+            cohort.students = studentArray;
+            cohort.markModified('students');
+            console.log(`This is cohort.students`)
+            console.log(cohort.students)
+            await cohort.save();
+            console.log("It should have saved")
+         };
+ }};
 
- };
+ module.exports.removeCohortAdmin = async (req, res, next) => {
+   console.log(req.body.infoToSend)
+   let studentId = req.body.infoToSend[0];
+   let cohortSelection = req.body.infoToSend[1];
+   console.log(`This is the studentId: ${studentId} and this is their cohort: ${cohortSelection}`)
+   /*let studentId = `OjectId(${req.body.studentId})`
+   console.log(studentId)*/
+   let student = await User.findById(studentId);
+   console.log(student);
+   if (student.adminLevel === 1) {
+   student.adminLevel = null;
+   await student.save();
+   } else console.log(`${student.username} already has admin privlieges.`);
+   let cohort = await Cohort.findOne({cohortName: cohortSelection});
+   let studentArray = cohort.students;
+   
+   console.log(`This is the studendArray ${studentArray}`);
+   console.log(studentArray);
+    for (let i = 0; i < studentArray.length; i++) {    
+         if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === 1){
+            studentArray[i].adminLevel = null;
+            console.log(studentArray)
+            cohort.students = studentArray;
+            cohort.markModified('students');
+            console.log(`This is cohort.students`)
+            console.log(cohort.students)
+            await cohort.save();
+            console.log("It should have saved")
+         };
+ }};

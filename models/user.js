@@ -42,9 +42,9 @@ const UserSchema = new mongoose.Schema({
         type:Array,
         default:[],
     },
-    corhortAdmin: {
-        type: Boolean,
-        default: false
+    adminLevel: {
+        type: Number,
+        default: null,
     },
     reviewHistory: {
         type: Array,

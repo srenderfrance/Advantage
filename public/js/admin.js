@@ -1,7 +1,8 @@
 console.log("Hello World")
 
 document.querySelector("#cohortSelection").addEventListener("click", sendCohortSelection);
-document.querySelector("#selectedStudent").addEventListener("click", sendStudentId);
+document.querySelector("#giveToStudent").addEventListener("click", giveToStudent);
+document.querySelector("#removeFromStudent").addEventListener("click", removeFromStudent);
 
 
 
@@ -32,23 +33,34 @@ document.querySelector("#selectedStudent").addEventListener("click", sendStudent
     };
    
     
-async function sendStudentId () {
+async function giveToStudent () {
     let student = document.querySelector("#studentName").value;
     let studentList = JSON.parse(sessionStorage.getItem("sessionStoreStudentList"));
-
-    console.log(`Selection = ${student}`)
-    console.log(`Student 1 is ${studentList[0].name}`)
+    const cohortSelection = document.querySelector("#cohortName").value;
     let studentId
     for (let i=0; i<studentList.length; i++){
-        console.log(`Student I = ${studentList[i].name}`)
         if (studentList[i].name === student){
-            studentId = studentList[i].id;
-        };
-    };
-    console.log(studentId)
+            studentId = studentList[i].id};
+    }; let infoToSend = [studentId, cohortSelection]
     const response = await fetch("adminUpdateCohortAdmin", {method: 'POST',
     headers: {"Content-Type": "application/json",},    
-    body: JSON.stringify({studentId: studentId}),
+    body: JSON.stringify({infoToSend: infoToSend}),
+});
+const data = await response.json();
+}
+
+async function removeFromStudent () {
+    let student = document.querySelector("#studentName").value;
+    let studentList = JSON.parse(sessionStorage.getItem("sessionStoreStudentList"));
+    const cohortSelection = document.querySelector("#cohortName").value;
+    let studentId
+    for (let i=0; i<studentList.length; i++){
+        if (studentList[i].name === student){
+            studentId = studentList[i].id};
+    }; let infoToSend = [studentId, cohortSelection]
+    const response = await fetch("removeCohortAdmin", {method: 'POST',
+    headers: {"Content-Type": "application/json",},    
+    body: JSON.stringify({infoToSend: infoToSend}),
 });
 const data = await response.json();
 }

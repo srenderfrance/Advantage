@@ -76,7 +76,7 @@ module.exports.postRegister = async (req, res, next) => {
   const studentObject = {
         name: `${req.body.firstName} ${req.body.lastName}`,
         id: user._id,
-        corhortAdmin: false,};
+        adminLevel: null,};
   console.log(studentObject);
     cohort.students.push(studentObject);
     await cohort.save(); //add try/catch for errors  

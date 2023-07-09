@@ -20,6 +20,6 @@ router.get("/activities", authController.getActivities);
 
 router.post("/adminCohortName", adminController.getStudentList);
 router.post("/adminUpdateCohortAdmin", adminController.updateCohortAdmin);
-
+router.post("/removeCohortAdmin", adminController.removeCohortAdmin);
 
 module.exports = router;
