@@ -10,16 +10,7 @@ router.post("/", authController.postLogin);
 router.get("/register", authController.getRegister);
 router.post("/register", authController.postRegister);
 
-router.get("/adminLogin", authController.getAdminLogin);
-//router.post("/adminLogin", authController.postAdminLogin);
+router.get("/logout", authController.logout);
 
-router.get("/admin", authController.getAdmin);
-router.post("/newCohort", adminController.postCohort);
-
-router.get("/activities", authController.getActivities);
-
-router.post("/adminCohortName", adminController.getStudentList);
-router.post("/adminUpdateCohortAdmin", adminController.updateCohortAdmin);
-router.post("/removeCohortAdmin", adminController.removeCohortAdmin);
 
 module.exports = router;

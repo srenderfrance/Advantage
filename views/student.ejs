@@ -16,5 +16,12 @@
     </select>
 </div>
 <div>
-    <a href="activities">Class Admin</a> <%/* Should only be visible if the student has class admin privleges*/ %>
+    <% if (user.adminLevel = 1){ %>
+       <a href="admin">Class Admin</a> 
+   <% }
+    if (user.adminLevel = 2){ %>
+        <a href="admin/schoolAdmin">School Admin</a>
+    <% } %>
+    <a href="logout">Logout</a>   
+
 </div>

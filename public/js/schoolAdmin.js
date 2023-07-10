@@ -11,7 +11,7 @@ document.querySelector("#removeFromStudent").addEventListener("click", removeFro
 
  async function sendCohortSelection() {
     const cohortSelection = document.querySelector("#cohortName").value;
-    const response = await fetch("adminCohortName", {method: 'POST',
+    const response = await fetch("/admin/cohortName", {method: 'POST',
             headers: {"Content-Type": "application/json",},
             body: JSON.stringify({cohortSelection: cohortSelection}),
         });
@@ -42,12 +42,14 @@ async function giveToStudent () {
         if (studentList[i].name === student){
             studentId = studentList[i].id};
     }; let infoToSend = [studentId, cohortSelection]
-    const response = await fetch("adminUpdateCohortAdmin", {method: 'POST',
+    const response = await fetch("/admin/updateCohortAdmin", {method: 'POST',
     headers: {"Content-Type": "application/json",},    
     body: JSON.stringify({infoToSend: infoToSend}),
 });
-const data = await response.json();
-}
+console.log("Await response.reload")
+await response.reload();
+};
+
 
 async function removeFromStudent () {
     let student = document.querySelector("#studentName").value;
@@ -58,9 +60,10 @@ async function removeFromStudent () {
         if (studentList[i].name === student){
             studentId = studentList[i].id};
     }; let infoToSend = [studentId, cohortSelection]
-    const response = await fetch("removeCohortAdmin", {method: 'POST',
+    const response = await fetch("/admin/removeCohortAdmin", {method: 'POST',
     headers: {"Content-Type": "application/json",},    
     body: JSON.stringify({infoToSend: infoToSend}),
 });
-const data = await response.json();
-}
+console.log('await response.reload remove')
+await response.reload();
+};

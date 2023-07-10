@@ -18,27 +18,27 @@ module.exports.getRegister = async (req, res) => {
   res.render("register.ejs", {cohorts: cohorts});
 };
 
-module.exports.getAdminLogin = (req, res) => {
-   res.render("adminLogin.ejs", {
-   title: "AdminLogin",
-   });
+module.exports.logout = (req, res, next) => {
+  console.log("Starting to logout")
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect("/")
+  });
  };
 
-module.exports.getAdmin = async (req, res) => {
+module.exports.getSchoolAdmin = async (req, res) => {
   const cohorts = await Cohort.find()
   console.log (cohorts);
   console.log(cohorts.length)
   adminCohortExport = cohorts
-  res.render("admin.ejs", {cohorts: cohorts} );
+  res.render("schoolAdmin", {cohorts: cohorts} );
   console.log(adminCohortExport)
 };
 
 module.exports.adminCohortExport = adminCohortExport;
 
-module.exports.getActivities = (req, res) => {
-   res.render("activities.ejs", {
-   title: "Activities",
-    });
+module.exports.getCohortAdmin = (req, res) => {
+   res.render("cohortAdmin",{ user: req.user });
 };
 
 module.exports.postRegister = async (req, res, next) => {

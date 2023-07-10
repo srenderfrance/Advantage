@@ -23,7 +23,7 @@ module.exports.postCohort = async (req, res, next) => {
 
     console.log("A new class has been created!");
     console.log(cohort)
-    res.redirect("/admin");
+    res.redirect("/admin/schoolAdmin");
    };
 
 module.exports.postActivity = async (req, res, next) => {
@@ -83,7 +83,8 @@ module.exports.postVocabWord = async (req, res, next) => {
    if (student.adminLevel === null) {
    student.adminLevel = 1;
    await student.save();
-   } else console.log(`${student.username} already has admin privlieges.`);
+   } else {console.log(`${student.username} already has admin privlieges.`);
+};
    let cohort = await Cohort.findOne({cohortName: cohortSelection});
    let studentArray = cohort.students;
    
@@ -99,8 +100,10 @@ module.exports.postVocabWord = async (req, res, next) => {
             console.log(cohort.students)
             await cohort.save();
             console.log("It should have saved")
-         };
- }};
+        
+         }}; 
+ res.redirect("/admin/schoolAdmin");
+};
 
  module.exports.removeCohortAdmin = async (req, res, next) => {
    console.log(req.body.infoToSend)
@@ -130,5 +133,8 @@ module.exports.postVocabWord = async (req, res, next) => {
             console.log(cohort.students)
             await cohort.save();
             console.log("It should have saved")
+           
          };
- }};
+       
+ }; res.redirect("/admin/schoolAdmin");
+};
