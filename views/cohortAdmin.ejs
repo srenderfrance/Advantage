@@ -1,4 +1,8 @@
-<h1>UPLOAD PAGE for <%=user.cohort %></h1>
+
+<body>
+    
+<h1 id="cohort"> <%=user.cohort %></h1>
+<h2>Class Admin Page</h2>
 <form action="/admin/activity" method="POST">  
         <h2>Create New Activity</h2>
         <label for="activity">Activity Description</label>
@@ -11,27 +15,7 @@
     </div>
  </form>  
 
-<form action="admin/vocabulary">
-    <div>
-    <h2>Add vocabulary word to Activity</h2>
-        <label for="vocabWord">Enter new vocab word description:</label>
-        <input type="text" id="newVocabWord" name="vocabWord" required>
-   
-    <label for="category">Category</label>
-    <select name="category" id="category" required>
-        <option value="category">Animal</option>
-        <option value="category">Plant</option>
-        <option value="category">Thing</option>
-        <option value="category">Place</option>
-        <option value="category">Emotion/Feeling</option>
-        <option value="category">Verb</option>
-        <option value="category">Pronoun</option>
-        <option value="category">Adjective/Adverb</option>
-        <option value="category">Mix</option>
-        <option value="category">Other</option>
-    </select>
-    </div>
-</form>
+<form action="/admin/createVocab" method="POST">
     <div>
         <label for="activity">Select activity to edit</label>
         <select name="activity" id="activityName" required>
@@ -39,7 +23,28 @@
             <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
         <% } %>
         </select>
-        <button type="submit">Select</button>
+        <button type="button" id="selectActivity">Select</button>
+        <h2>Add vocabulary word to Activity</h2>
+        <label for="vocabWord">Enter new vocab word description:</label>
+        <input type="text" id="newVocabWord" name="description" required>
+   
+    <label for="category">Category</label>
+    <select name="category" id="category" required>
+        <option value="Animal">Animal</option>
+        <option value="Plant">Plant</option>
+        <option value="Thing">Thing</option>
+        <option value="Place">Place</option>
+        <option value="Emotion/Feeling">Emotion/Feeling</option>
+        <option value="Verb">Verb</option>
+        <option value="Pronoun">Pronoun</option>
+        <option value="Adjective/Adverb">Adjective/Adverb</option>
+        <option value="Mix">Mix</option>
+        <option value="Other">Other</option>
+    </select>
+    </div>
+    <button type="submit">Create</button>
+</form>
+    <div>
         <label for="existingVocabWords">Existing Vocab Words</label>
         <select name="existingVocabWords" id="existingVocabWords">
             <option value="">Vocab Words</option>
@@ -60,5 +65,8 @@
     <h2>Vocab Word Preview</h2>
 </div>
 
-<a href="student">Student Page</a>
+<a href="/student">Student Page</a>
 <a href="logout">Logout</a>
+
+<script type="text/javascript" src="/js/cohortAdmin.js"></script>
+</body>

@@ -2,7 +2,6 @@ const passport = require("passport");
 //const { default: mongoose } = require("mongoose");
 const validator = require("validator");
 const Cohort = require('../models/cohort');
-const Activty = require('../models/activity');
 const VocabWord = require('../models/vocabWord');
 const User = require("../models/user");
 const Activity = require("../models/activity");
@@ -28,7 +27,7 @@ module.exports.postCohort = async (req, res, next) => {
    };
 
 module.exports.postActivity = async (req, res, next) => {
-   const activity = await Activty.create({
+   const activity = await Activity.create({
         cohort: req.user.cohort,
         date: req.body.date,
         description: req.body.description, //activity names need to be unique with a cohort
@@ -44,12 +43,15 @@ module.exports.postActivity = async (req, res, next) => {
 };
 
 module.exports.postVocabWord = async (req, res, next) => {
-   const result = await cloudinary.uploader.upload(req.file.path); //need to figure out how to have 3
-
+   //const result = await cloudinary.uploader.upload(req.file.path); //need to figure out how to have 3
+   console.log(req.body)
+   const activity = await Activity.where("description").equals(req.body.activity).where("cohort").equals(req.user.cohort);
+   console.log(activity[0]._id)
    const vocabWord = await VocabWord.create({
-       cohort: req.body.cohort,
+       cohort: req.user.cohort,
        description: req.body.description,
-       activity: req.body.excersise,
+       activity: activity[0]._id,
+       category: req.body.category,
        imageUrl: undefined,
        cloudinaryIdImage: undefined,
        audioQ: undefined,
@@ -66,8 +68,10 @@ module.exports.postVocabWord = async (req, res, next) => {
        cloudinaryIdW: result.public_id,*/
 
        });
+   const activities = await Activity.find({cohort: req.user.cohort})    
    console.log("A new vocab word has been created!");
-   console.log(VocabWord);
+   console.log(vocabWord);
+   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities})
   };
 
   module.exports.getStudentList = async (req, res, next) => {
@@ -143,3 +147,10 @@ module.exports.postVocabWord = async (req, res, next) => {
        
  }; res.redirect(308, "/admin/schoolAdmin");
 };
+module.exports.postVocab = async (req, res, next) => {
+   console.log(req.body)
+}
+module.exports.getActivity = async (req, res, next) => {
+   const activitySelection = await Activity.where("cohort").equals(cohort).where("description").equals(activity);
+   res.json(activitySelection);
+}

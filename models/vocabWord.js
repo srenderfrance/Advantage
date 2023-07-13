@@ -9,7 +9,7 @@ const VocabWordSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
     },
-    catagory: {
+    category: {
         type: String,
         required: true,
     },

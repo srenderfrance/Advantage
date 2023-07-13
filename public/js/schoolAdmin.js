@@ -1,13 +1,7 @@
-console.log("Hello World")
-
 document.querySelector("#cohortSelection").addEventListener("click", sendCohortSelection);
 document.querySelector("#giveToStudent").addEventListener("click", giveToStudent);
 document.querySelector("#removeFromStudent").addEventListener("click", removeFromStudent);
 
-
-
-
-  
 
  async function sendCohortSelection() {
     const cohortSelection = document.querySelector("#cohortName").value;
