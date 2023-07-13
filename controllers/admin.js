@@ -5,6 +5,7 @@ const Cohort = require('../models/cohort');
 const Activty = require('../models/activity');
 const VocabWord = require('../models/vocabWord');
 const User = require("../models/user");
+const Activity = require("../models/activity");
 
 
 module.exports.postCohort = async (req, res, next) => {
@@ -28,14 +29,18 @@ module.exports.postCohort = async (req, res, next) => {
 
 module.exports.postActivity = async (req, res, next) => {
    const activity = await Activty.create({
-        cohort: req.body.cohort,
+        cohort: req.user.cohort,
         date: req.body.date,
-        desctiption: req.body.description,
-        vocabWords: undefined,
+        description: req.body.description, //activity names need to be unique with a cohort
+        vocabWords: []
 
    });
    console.log("A new activity has been created!");
-   console.log(activity)
+   console.log(activity);
+   const cohort = await Cohort.findOne({cohortName:activity.cohort})
+   cohort.activities.push(activity._id);
+   await cohort.save(); //add try/catch for errors  
+   res.redirect("/admin");
 };
 
 module.exports.postVocabWord = async (req, res, next) => {
@@ -80,7 +85,7 @@ module.exports.postVocabWord = async (req, res, next) => {
    console.log(studentId)*/
    let student = await User.findById(studentId);
    console.log(student);
-   if (student.adminLevel === null) {
+   if (student.adminLevel === 0) {
    student.adminLevel = 1;
    await student.save();
    } else {console.log(`${student.username} already has admin privlieges.`);
@@ -91,7 +96,7 @@ module.exports.postVocabWord = async (req, res, next) => {
    console.log(`This is the studendArray ${studentArray}`);
    console.log(studentArray);
     for (let i = 0; i < studentArray.length; i++) {    
-         if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === null){
+         if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === 0){
             studentArray[i].adminLevel = 1;
             console.log(studentArray)
             cohort.students = studentArray;
@@ -102,7 +107,7 @@ module.exports.postVocabWord = async (req, res, next) => {
             console.log("It should have saved")
         
          }}; 
- res.redirect("/admin/schoolAdmin");
+ res.redirect(308, "/admin/schoolAdmin", { user: req.user });
 };
 
  module.exports.removeCohortAdmin = async (req, res, next) => {
@@ -115,9 +120,9 @@ module.exports.postVocabWord = async (req, res, next) => {
    let student = await User.findById(studentId);
    console.log(student);
    if (student.adminLevel === 1) {
-   student.adminLevel = null;
+   student.adminLevel = 0;
    await student.save();
-   } else console.log(`${student.username} already has admin privlieges.`);
+   } else console.log(`${student.username} cannot remove admin privlieges.`);
    let cohort = await Cohort.findOne({cohortName: cohortSelection});
    let studentArray = cohort.students;
    
@@ -125,7 +130,7 @@ module.exports.postVocabWord = async (req, res, next) => {
    console.log(studentArray);
     for (let i = 0; i < studentArray.length; i++) {    
          if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === 1){
-            studentArray[i].adminLevel = null;
+            studentArray[i].adminLevel = 0;
             console.log(studentArray)
             cohort.students = studentArray;
             cohort.markModified('students');
@@ -136,5 +141,5 @@ module.exports.postVocabWord = async (req, res, next) => {
            
          };
        
- }; res.redirect("/admin/schoolAdmin");
+ }; res.redirect(308, "/admin/schoolAdmin");
 };

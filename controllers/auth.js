@@ -2,7 +2,7 @@ const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/user");
 const Cohort = require("../models/cohort");
-const Activty = require("../models/activity");
+const Activity = require("../models/activity");
 
 let adminCohortExport = {}
 module.exports.getLogin = (req, res) => {
@@ -37,8 +37,14 @@ module.exports.getSchoolAdmin = async (req, res) => {
 
 module.exports.adminCohortExport = adminCohortExport;
 
-module.exports.getCohortAdmin = (req, res) => {
-   res.render("cohortAdmin",{ user: req.user });
+module.exports.getCohortAdmin = async (req, res) => {
+  const cohorts = await Cohort.find()
+  const activities = await Activity.find({cohort: req.user.cohort})
+  console.log(activities);
+  console.log (cohorts);
+  console.log(cohorts.length)
+  console.log(req.user)
+  res.render("cohortAdmin",{cohorts: cohorts, user: req.user, activities: activities });
 };
 
 module.exports.postRegister = async (req, res, next) => {
@@ -76,7 +82,7 @@ module.exports.postRegister = async (req, res, next) => {
   const studentObject = {
         name: `${req.body.firstName} ${req.body.lastName}`,
         id: user._id,
-        adminLevel: null,};
+        adminLevel: 0,};
   console.log(studentObject);
     cohort.students.push(studentObject);
     await cohort.save(); //add try/catch for errors  
@@ -99,39 +105,5 @@ module.exports.postLogin = async (req, res, next) => {
     console.log("You should be logged in...")
     console.log(user)
  } else{console.log("did't work")};
-
- // console.log(req.body)
-  /* const validationErrors = [];
-   if (validator.isEmpty(req.body.userName))
-     validationErrors.push({ msg: "User Name cannot be blank." });
-   if (validator.isEmpty(req.body.password))
-     validationErrors.push({ msg: "Password cannot be blank." });
- 
-   if (validationErrors.length) {
-     //req.flash("errors", validationErrors);
-     return res.redirect("/");
-   }
-   console.log("validated")
-   //console.log (user) */
-   //next()
-   /*
-   passport.authenticate("local", (err, user, info) => {
-    console.log("passport.authenticate is running")
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      //req.flash("errors", info);
-      return res.redirect("/login");
-    }
-    console.log(user)
-    req.logIn(user, (err) => {
-      if (err) {
-        return next(err);
-      }
-      //req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(/*req.session.returnTo || "student");
-    });
-  }) //(req, res, next);*/
  };
 

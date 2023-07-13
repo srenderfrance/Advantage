@@ -1,6 +1,5 @@
-<h1>UPLOAD PAGE for cohort</h1>
-<form action="/admin/activity" method="POST">
-    <div>
+<h1>UPLOAD PAGE for <%=user.cohort %></h1>
+<form action="/admin/activity" method="POST">  
         <h2>Create New Activity</h2>
         <label for="activity">Activity Description</label>
         <input type="text" id="activity" name="description"
@@ -11,13 +10,13 @@
         <button type="submit">Create</button>   
     </div>
  </form>  
- <form action="admin/vocabulary">
- <div>
+
+<form action="admin/vocabulary">
+    <div>
     <h2>Add vocabulary word to Activity</h2>
-    <label for="activity">Activity</label>
-    <select name="activity" id="activityName" required>
-        <option value="activityName">Activyt 1</option>
-    </select>
+        <label for="vocabWord">Enter new vocab word description:</label>
+        <input type="text" id="newVocabWord" name="vocabWord" required>
+   
     <label for="category">Category</label>
     <select name="category" id="category" required>
         <option value="category">Animal</option>
@@ -27,16 +26,35 @@
         <option value="category">Emotion/Feeling</option>
         <option value="category">Verb</option>
         <option value="category">Pronoun</option>
+        <option value="category">Adjective/Adverb</option>
+        <option value="category">Mix</option>
         <option value="category">Other</option>
     </select>
-    <label for="image">Description</label>
-    <input type="file" id="image" name="image">
-    <label for="audioQ">Question Audio</label>
-    <input type="file" id="audioQ" name="audioQ">
-    <label for="audioW">The Vocab Word Audio</label>
-    <input type="file" id="audioW" name="audioW">
-    <button type="submit">Upload</button>   
-</div>
+    </div>
+</form>
+    <div>
+        <label for="activity">Select activity to edit</label>
+        <select name="activity" id="activityName" required>
+        <% for(let i=0; i < activities.length; i++) {%>   
+            <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+        <% } %>
+        </select>
+        <button type="submit">Select</button>
+        <label for="existingVocabWords">Existing Vocab Words</label>
+        <select name="existingVocabWords" id="existingVocabWords">
+            <option value="">Vocab Words</option>
+        </select>
+    </div>    
+<form action="">  
+    <div>  
+        <label for="image">Description</label>
+        <input type="file" id="image" name="image">
+        <label for="audioQ">Question Audio</label>
+        <input type="file" id="audioQ" name="audioQ">
+        <label for="audioW">The Vocab Word Audio</label>
+        <input type="file" id="audioW" name="audioW">
+        <button type="submit">Upload</button>   
+    </div>
 </form>
 <div>
     <h2>Vocab Word Preview</h2>

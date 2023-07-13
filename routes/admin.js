@@ -13,6 +13,7 @@ router.post("/cohortName", adminController.getStudentList);
 router.post("/updateCohortAdmin", adminController.updateCohortAdmin);
 router.post("/removeCohortAdmin", adminController.removeCohortAdmin);
 
+router.post("/activity", adminController.postActivity);
 
 
 

@@ -4,6 +4,10 @@ const VocabWordSchema = new mongoose.Schema({
     cohort: {
         type:Array,
         required: true,
+    }, 
+    activity: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
     },
     catagory: {
         type: String,
@@ -11,11 +15,7 @@ const VocabWordSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-    },
-       activity: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-    },
+    },  
     imageUrl: {
         type: String,
         default: "",
@@ -37,6 +37,14 @@ const VocabWordSchema = new mongoose.Schema({
         default: "",
     },
     cloudinaryIdW: {
+        type: String,
+        default: "",
+    },
+    audioTis: {
+        type: String,
+        default: "",
+    },
+    cloudinaryIdTis: {
         type: String,
         default: "",
     },

@@ -18,8 +18,8 @@ document.querySelector("#removeFromStudent").addEventListener("click", removeFro
     const data = await response.json();
     console.log(data);
     studentList =data[0].students;
-    console.log(studentList);
-    console.log(studentList.length)
+    /*console.log(studentList);
+    console.log(studentList.length)*/
     
     sessionStorage.setItem("sessionStoreStudentList", JSON.stringify(studentList));
 
@@ -27,7 +27,7 @@ document.querySelector("#removeFromStudent").addEventListener("click", removeFro
     for (let i = 0; i < studentList.length; i++){
        toInsert += `<option value="${studentList[i].name}">${studentList[i].name}</option> `
     }
-    console.log(toInsert)
+    //console.log(toInsert)
     dropDownDefaultElement = document.querySelector("#studentName");
     dropDownDefaultElement.insertAdjacentHTML("beforeend", `${toInsert}`)
     };
@@ -46,8 +46,8 @@ async function giveToStudent () {
     headers: {"Content-Type": "application/json",},    
     body: JSON.stringify({infoToSend: infoToSend}),
 });
-console.log("Await response.reload")
-await response.reload();
+console.log("location.reload")
+location.reload();
 };
 
 
@@ -64,6 +64,6 @@ async function removeFromStudent () {
     headers: {"Content-Type": "application/json",},    
     body: JSON.stringify({infoToSend: infoToSend}),
 });
-console.log('await response.reload remove')
-await response.reload();
+console.log("location.reload")
+location.reload();
 };

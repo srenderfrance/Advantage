@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema({
     },
     adminLevel: {
         type: Number,
-        default: null,
+        default: 0,
     },
     reviewHistory: {
         type: Array,
