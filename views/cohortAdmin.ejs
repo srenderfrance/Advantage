@@ -1,23 +1,29 @@
-
+<head>   
+    <!-- external CSS link -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css" />
+	
+	
+</head>
 <body>
     
 <h1 id="cohort"> <%=user.cohort %></h1>
 <h2>Class Admin Page</h2>
 <form action="/admin/activity" method="POST">  
         <h2>Create New Activity</h2>
-        <label for="activity">Activity Description</label>
+        <label for="activity" class="secondaryLabel">Activity Description</label>
         <input type="text" id="activity" name="description"
         required>
-        <label for="activityDate">Activity Date</label>
+        <label for="activityDate" class="secondaryLabel">Activity Date</label>
         <input type="text" id="activityDate" name="date"
         required>
-        <button type="submit">Create</button>   
+        <button type="submit" class="button">Create</button>   
     </div>
  </form>  
 
 <form action="/admin/createVocab" method="POST">
-    <div>
-        <label for="activity">Select activity to edit</label>
+    <div class="container">
+        <label for="activity" class="primaryLabel">Select activity to edit</label>
         <select name="activity" id="activityName" required>
         <% for(let i=0; i < activities.length; i++) {%>   
             <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
@@ -25,7 +31,7 @@
         </select>
         <button type="button" id="selectActivity">Select</button>
         <h2>Add vocabulary word to Activity</h2>
-        <label for="vocabWord">Enter new vocab word description:</label>
+        <label for="vocabWord" class="secondaryLabel">Enter new vocab word description:</label>
         <input type="text" id="newVocabWord" name="description" required>
    
     <label for="category">Category</label>
@@ -41,26 +47,42 @@
         <option value="Mix">Mix</option>
         <option value="Other">Other</option>
     </select>
+     <button type="submit">Create</button>
     </div>
-    <button type="submit">Create</button>
+   
 </form>
     <div>
-        <label for="existingVocabWords">Existing Vocab Words</label>
+        <label for="existingVocabWords" class="secondaryLabel">Select vocab word to edit</label>
         <select name="existingVocabWords" id="existingVocabWords">
             <option value="">Vocab Words</option>
         </select>
     </div>    
-<form action="">  
-    <div>  
-        <label for="image">Description</label>
-        <input type="file" id="image" name="image">
-        <label for="audioQ">Question Audio</label>
-        <input type="file" id="audioQ" name="audioQ">
-        <label for="audioW">The Vocab Word Audio</label>
-        <input type="file" id="audioW" name="audioW">
-        <button type="submit">Upload</button>   
+  
+    <div>
+        <form action=""> 
+            <div> 
+                <label for="image">Description</label>
+                <input type="file" id="image" name="image">
+            </div>
+            <button type="submit">Upload</button>
+        </form>
+        <form action="">
+            <div>
+            <label for="audioQ">Question Audio</label>
+            <input type="file" id="audioQ" name="audioQ">
+            </div>
+            <button type="submit">Upload</button>
+        </form>
+        <form action="">
+            <div>
+            <label for="audioW">The Vocab Word Audio</label>
+            <input type="file" id="audioW" name="audioW">
+            </div>
+            <button type="submit">Upload</button>
+        </form>    
+           
     </div>
-</form>
+
 <div>
     <h2>Vocab Word Preview</h2>
 </div>
