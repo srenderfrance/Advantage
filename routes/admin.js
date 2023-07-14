@@ -14,7 +14,7 @@ router.post("/updateCohortAdmin", adminController.updateCohortAdmin);
 router.post("/removeCohortAdmin", adminController.removeCohortAdmin);
 
 router.post("/activity", adminController.postActivity);
-router.post("/activitySelection", adminController.getActivity);
+router.put("/getVocabList", adminController.getActivityVocab);
 router.post("/createVocab", adminController.postVocabWord);
 
 

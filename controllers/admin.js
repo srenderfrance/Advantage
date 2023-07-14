@@ -1,5 +1,5 @@
 const passport = require("passport");
-//const { default: mongoose } = require("mongoose");
+const { default: mongoose } = require("mongoose");
 const validator = require("validator");
 const Cohort = require('../models/cohort');
 const VocabWord = require('../models/vocabWord');
@@ -45,7 +45,7 @@ module.exports.postActivity = async (req, res, next) => {
 module.exports.postVocabWord = async (req, res, next) => {
    //const result = await cloudinary.uploader.upload(req.file.path); //need to figure out how to have 3
    console.log(req.body)
-   const activity = await Activity.where("description").equals(req.body.activity).where("cohort").equals(req.user.cohort);
+   let activity = await Activity.where("description").equals(req.body.activity).where("cohort").equals(req.user.cohort);
    console.log(activity[0]._id)
    const vocabWord = await VocabWord.create({
        cohort: req.user.cohort,
@@ -68,9 +68,17 @@ module.exports.postVocabWord = async (req, res, next) => {
        cloudinaryIdW: result.public_id,*/
 
        });
-   const activities = await Activity.find({cohort: req.user.cohort})    
+   activity = activity[0];
+   console.log(activity);
    console.log("A new vocab word has been created!");
-   console.log(vocabWord);
+   console.log(vocabWord._id);
+   //const id = vocabWord._id.toString();
+   console.log(id)
+   console.log(activity.vocabWords)
+   //activity.vocabwords.push(id); //this isn't working not sure why!
+  // await activity.save()
+   const activities = await Activity.find({cohort: req.user.cohort})    
+   
    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities})
   };
 
@@ -147,10 +155,21 @@ module.exports.postVocabWord = async (req, res, next) => {
        
  }; res.redirect(308, "/admin/schoolAdmin");
 };
-module.exports.postVocab = async (req, res, next) => {
+module.exports.getActivityVocab = async (req, res, next) => {
    console.log(req.body)
-}
+   const activityDescription = req.body.activity;
+   const activity = await Activity.where("description").equals(activityDescription);
+   console.log(activity[0]._id);
+   const vocabList = await VocabWord.where("activity").equals(activity[0]._id);
+   console.log(vocabList);
+   res.json({vocabList: vocabList});
+};
 module.exports.getActivity = async (req, res, next) => {
-   const activitySelection = await Activity.where("cohort").equals(cohort).where("description").equals(activity);
-   res.json(activitySelection);
+  
+const cohort = req.user.cohort 
+const activity = req.body.activity 
+const activitySelection = await Activity.where("cohort").equals(cohort).where("description").equals(activity);
+console.log(activitySelection);
+console.log(activity.vocabWords);
+  
 }
