@@ -10,6 +10,7 @@
 <h1 id="cohort"> <%=user.cohort %></h1>
 <h2>Class Admin Page</h2>
 <form action="/admin/activity" method="POST">  
+    <div class="container">
         <h2>Create New Activity</h2>
         <label for="activity" class="secondaryLabel">Activity Description</label>
         <input type="text" id="activity" name="description"
@@ -30,6 +31,8 @@
         <% } %>
         </select>
         <button type="button" id="selectActivity">Select</button>
+    </div>    
+    <div class="container">
         <h2>Add vocabulary word to Activity</h2>
         <label for="vocabWord" class="secondaryLabel">Enter new vocab word description:</label>
         <input type="text" id="newVocabWord" name="description" required>
@@ -51,34 +54,39 @@
     </div>
    
 </form>
-    <div>
+    <div class="container">
         <label for="existingVocabWords" class="secondaryLabel">Select vocab word to edit</label>
         <select name="existingVocabWords" id="existingVocabWords">
             <option value="">Vocab Words</option>
         </select>
     </div>    
   
-    <div>
-        <form action=""> 
-            <div> 
-                <label for="image">Description</label>
-                <input type="file" id="image" name="image">
+    <div class="container" id="uploadContainer">
+        <form action="/admin/uploadImage" enctype="multipart/form-data" method="POST"> 
+            <div class="uploadBlock"> 
+                <label for="vocabWordUF" class="hidden"></label>
+                <input type="text" class="vocabWordUF hidden"  name="vocabWord">
+                <label for="image">Vocab Word Image</label>
+                <input type="file" class="uploadInput" id="image" name="image"> 
+                <button type="submit" id="imageUpload">Upload</button>
             </div>
-            <button type="submit">Upload</button>
         </form>
-        <form action="">
-            <div>
-            <label for="audioQ">Question Audio</label>
-            <input type="file" id="audioQ" name="audioQ">
+        <form action="/admin/uploadAudios" enctype="multipart/form-data" method="POST"> 
+            <div class="uploadBlock">
+                <label for="vocabWordUF" class="hidden"></label>
+                <input type="text" class="vocabWordUF hidden" name="vocabWord">
+                <label for="audioT">Vocab Word Introduction Audio</label>
+                <input type="file" class="uploadInput" value="audioT" name="audioT">
             </div>
-            <button type="submit">Upload</button>
-        </form>
-        <form action="">
-            <div>
-            <label for="audioW">The Vocab Word Audio</label>
-            <input type="file" id="audioW" name="audioW">
+            <div class="uploadBlock">
+                <label for="audioQ">Question Audio</label>
+                <input type="file" class="uploadInput" value="audioQ" name="audioQ">
             </div>
-            <button type="submit">Upload</button>
+            <div class="uploadBlock">
+                <label for="audioN">The Correction Audio</label>
+                <input type="file" class="uploadInput" value="audioN" name="audioN">
+                <button type="submit">Upload</button>
+            </div>
         </form>    
            
     </div>

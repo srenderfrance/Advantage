@@ -2,7 +2,7 @@ const { default: mongoose } = require("mongoose");
 
 const VocabWordSchema = new mongoose.Schema({
     cohort: {
-        type:Array,
+        type: String,
         required: true,
     }, 
     activity: {
@@ -32,11 +32,11 @@ const VocabWordSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    audioW: {
+    audioN: {
         type: String,
         default: "",
     },
-    cloudinaryIdW: {
+    cloudinaryIdN: {
         type: String,
         default: "",
     },

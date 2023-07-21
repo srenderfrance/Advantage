@@ -3,14 +3,16 @@ body {
 }
 
 form {
-    margin: 15px;
+    
     padding-top: 20px;
 }
 
 div {
     margin: 15px;
 }
-
+button{
+    margin: 10px;
+}
 .problem {
     padding-bottom: 15px;
 }
@@ -25,4 +27,30 @@ div {
 
 h2 {
     font-size: 2.2rem;
+}
+
+.container {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: black;
+}
+
+.hidden {
+    display: none;
+}
+
+.uploadInput {
+    display: block;
+}
+
+.uploadBlock > input {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: large;
+}
+
+.uploadBlock > label {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: large;
 }

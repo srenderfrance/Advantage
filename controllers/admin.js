@@ -5,7 +5,8 @@ const Cohort = require('../models/cohort');
 const VocabWord = require('../models/vocabWord');
 const User = require("../models/user");
 const Activity = require("../models/activity");
-
+const cloudinary = require("../middleware/cloudinary");
+const ObjectId = require('mongodb').ObjectId;
 
 module.exports.postCohort = async (req, res, next) => {
    console.log(req.body)
@@ -26,61 +27,6 @@ module.exports.postCohort = async (req, res, next) => {
     res.redirect("/admin/schoolAdmin");
    };
 
-module.exports.postActivity = async (req, res, next) => {
-   const activity = await Activity.create({
-        cohort: req.user.cohort,
-        date: req.body.date,
-        description: req.body.description, //activity names need to be unique with a cohort
-        vocabWords: []
-
-   });
-   console.log("A new activity has been created!");
-   console.log(activity);
-   const cohort = await Cohort.findOne({cohortName:activity.cohort})
-   cohort.activities.push(activity._id);
-   await cohort.save(); //add try/catch for errors  
-   res.redirect("/admin");
-};
-
-module.exports.postVocabWord = async (req, res, next) => {
-   //const result = await cloudinary.uploader.upload(req.file.path); //need to figure out how to have 3
-   console.log(req.body)
-   let activity = await Activity.where("description").equals(req.body.activity).where("cohort").equals(req.user.cohort);
-   console.log(activity[0]._id)
-   const vocabWord = await VocabWord.create({
-       cohort: req.user.cohort,
-       description: req.body.description,
-       activity: activity[0]._id,
-       category: req.body.category,
-       imageUrl: undefined,
-       cloudinaryIdImage: undefined,
-       audioQ: undefined,
-       cloudinaryIdQ: undefined,
-       audioW: undefined,
-       cloudinaryIdW: undefined,
-
-       /* Need to figure out how to add these!
-        image: result.secure_url, 
-       cloudinaryIdImage: result.public_id,
-       audioQ: result.secure_url,  
-       cloudinaryIdQ: result.public_id,
-       audioW: result.secure_url,
-       cloudinaryIdW: result.public_id,*/
-
-       });
-   activity = activity[0];
-   console.log(activity);
-   console.log("A new vocab word has been created!");
-   console.log(vocabWord._id);
-   //const id = vocabWord._id.toString();
-   console.log(id)
-   console.log(activity.vocabWords)
-   //activity.vocabwords.push(id); //this isn't working not sure why!
-  // await activity.save()
-   const activities = await Activity.find({cohort: req.user.cohort})    
-   
-   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities})
-  };
 
   module.exports.getStudentList = async (req, res, next) => {
    console.log(req.body)
@@ -172,4 +118,109 @@ const activitySelection = await Activity.where("cohort").equals(cohort).where("d
 console.log(activitySelection);
 console.log(activity.vocabWords);
   
+};
+
+module.exports.postActivity = async (req, res, next) => {
+   const activity = await Activity.create({
+        cohort: req.user.cohort,
+        date: req.body.date,
+        description: req.body.description, //activity names need to be unique with a cohort
+        vocabWords: []
+
+   });
+   console.log("A new activity has been created!");
+   console.log(activity);
+   const cohort = await Cohort.findOne({cohortName:activity.cohort})
+   cohort.activities.push(activity._id);
+   await cohort.save(); //add try/catch for errors  
+   res.redirect("/admin");
+};
+
+module.exports.postVocabWord = async (req, res, next) => {
+   //const result = await cloudinary.uploader.upload(req.file.path); //need to figure out how to have 3
+   let activity = await Activity.where("description").equals(req.body.activity).where("cohort").equals(req.user.cohort);
+   //console.log(activity[0]._id)
+   const vocabWord = await VocabWord.create({
+       cohort: req.user.cohort,
+       description: req.body.description,
+       activity: activity[0]._id,
+       category: req.body.category,
+       imageUrl: undefined,
+       cloudinaryIdImage: undefined,
+       audioQ: undefined,
+       cloudinaryIdQ: undefined,
+       audioW: undefined,
+       cloudinaryIdW: undefined,
+       });
+
+   activity = activity[0];
+   console.log("A new vocab word has been created!");
+   console.log(vocabWord._id);
+   
+   console.log(activity.vocabWords)
+   //activity.vocabwords.push(id); //this isn't working not sure why!
+  // await activity.save()
+   const activities = await Activity.find({cohort: req.user.cohort})    
+   
+   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities})
+  };
+
+  module.exports.postVocabImage = async (req, res, next) => {
+ 
+   console.log("req.body.vocabWord is");
+   console.log(req.body.vocabWord);
+   try {
+      // Upload image to cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+      //console.log(result)
+      let vocabWord = await VocabWord.find({_id:new ObjectId(req.body.vocabWord)});
+      vocabWord = vocabWord[0];
+      console.log("next is vocabWord")
+      console.log(vocabWord);
+      vocabWord.cloudinaryIdImage = result.public_id;
+      vocabWord.imageUrl = result.secure_url;
+      vocabWord = await vocabWord.save();
+      //console.log(res)
+     
+      console.log("The image was uploaded!");
+      
+    } catch (err) {
+      console.log(err);
+    }
+    const activities = await Activity.find({cohort: req.user.cohort})    
+    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
+   };
+module.exports.postAudios = async (req, res, next) => {
+   console.log(req.body)
+   console.log("req.body.vocabWord is");
+   console.log(req.body.vocabWord);
+   console.log(req.files);
+   console.log("audioT0 path");
+   console.log(req.files.audioT[0].path)
+   try {
+   let vocabWord = await VocabWord.find({_id:new ObjectId(req.body.vocabWord)});
+   vocabWord = vocabWord[0];
+   console.log("next is vocabWord")
+   console.log(vocabWord);
+
+   const result = await cloudinary.uploader.upload(req.files.audioT[0].path, { resource_type: "auto"});
+   
+   vocabWord.cloudinaryIdTis = result.public_id;
+   vocabWord.audioTis = result.secure_url;
+   
+
+   const result2 = await cloudinary.uploader.upload(req.files.audioQ[0].path, { resource_type: "auto"});
+   vocabWord.cloudinaryIdQ = result2.public_id;
+   vocabWord.audioQ = result2.secure_url;
+
+   const result3 = await cloudinary.uploader.upload(req.files.audioN[0].path, { resource_type: "auto"});
+   vocabWord.cloudinaryIdN = result3.public_id;
+   vocabWord.audioN = result3.secure_url;
+
+   vocabWord = await vocabWord.save();
+} catch (err) {
+   console.log(err);
+ }
+   const activities = await Activity.find({cohort: req.user.cohort})    
+    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
 }

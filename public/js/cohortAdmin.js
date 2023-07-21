@@ -1,5 +1,6 @@
 document.querySelector("#selectActivity").addEventListener("click", getVocab);
-
+document.querySelector("#existingVocabWords").addEventListener("change", populateExtraInfo);
+let vocabList = []
 
 //const cohort = document.querySelector("#cohort").value;
 async function getVocab()  {
@@ -16,7 +17,7 @@ console.log(data);
 console.log(data.vocabList);
 
 console.log(data.vocabList[0]);
-const vocabList = data.vocabList;
+vocabList = data.vocabList;
 
 let toInsert = ""
     for (let i = 0; i < vocabList.length; i++){
@@ -27,4 +28,33 @@ let toInsert = ""
     dropDownDefaultElement.insertAdjacentHTML("beforeend", `${toInsert}`)
     };
    
-
+function populateExtraInfo() {
+   console.log("populte is running")
+   //const activity = document.querySelector("#activityName").value;
+   const vocabWord = document.querySelector("#existingVocabWords").value;
+   //console.log(activity);
+   console.log(vocabWord);
+   const activityInputs = document.querySelectorAll(".activityUF");
+   /*console.log(activityInputs)
+   activityInputs.forEach((input) => {
+      input.value = activity;
+      console.log("A forEach is running")
+   })*/
+   let vwId
+   console.log("vacabList is");
+   console.log(vocabList);
+   vocabList.forEach((vw) => {
+      if (vw.description === vocabWord){
+         vwId = vw._id
+         console.log("vwId")
+         console.log(vwId)
+      }
+   })
+   const vocabWordInputs = document.querySelectorAll(".vocabWordUF");
+   console.log(vocabWordInputs);
+   vocabWordInputs.forEach((input) => {
+      console.log("V forEach is running");
+      input.value = vwId;
+   });
+   
+}
