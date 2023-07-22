@@ -55,35 +55,57 @@
 </form> 
 <div class="maincontainer"> 
     <div class="container" id="uploadContainer">
-        <label for="existingVocabWords" class="secondaryLabel">Select vocab word to edit</label>
-        <select name="existingVocabWords" id="existingVocabWords">
-            <option value="">Vocab Words</option>
-        </select>
-        <form action="/admin/uploadImage" enctype="multipart/form-data" method="POST"> 
-            <div class="uploadBlock"> 
-                <label for="vocabWordUF" class="hidden"></label>
-                <input type="text" class="vocabWordUF hidden"  name="vocabWord">
-                <label for="image">Vocab Word Image</label>
-                <input type="file" class="uploadInput" id="image" name="image"> 
-                <button type="submit" id="imageUpload">Upload</button>
+        <div class="mainSelector">
+            <label for="existingVocabWords" class="secondaryLabel">Select vocab word to edit</label>
+            <select name="existingVocabWords" id="existingVocabWords">
+                <option value="">Vocab Words</option>
+            </select>
+        </div>
+        <div class="gridContainer">
+            <form action="/admin/uploadImage" enctype="multipart/form-data" method="POST"> 
+                    <div class="uploadBlock"> 
+                    <label for="vocabWordUF" class="hidden"></label>
+                    <input type="text" class="vocabWordUF hidden"  name="vocabWord">
+                    <label for="image">Vocab Word Image</label>
+                    <input type="file" class="uploadInput" id="image" name="image"> 
+                    <button type="submit" id="imageUpload">Upload</button>
+                </div>
+            </form>
+            <div>
+                <button type="button" id="deleteImage">Delete current photo</button>
             </div>
-        </form>
+        </div>
         <form action="/admin/uploadAudios" enctype="multipart/form-data" method="POST"> 
-            <div class="uploadBlock">
-                <label for="vocabWordUF" class="hidden"></label>
-                <input type="text" class="vocabWordUF hidden" name="vocabWord">
-                <label for="audioT">Vocab Word Introduction Audio</label>
-                <input type="file" class="uploadInput" value="audioT" name="audioT">
+            <div class="gridContainer">
+                <div class="uploadBlock">
+                    <label for="vocabWordUF" class="hidden"></label>
+                    <input type="text" class="vocabWordUF hidden" name="vocabWord">
+                    <label for="audioT">Vocab Word Introduction Audio</label>
+                    <input type="file" class="uploadInput" value="audioT" name="audioT">
+                </div>
+                <div>
+                    <button type="button" id="deleteAudionTis">Delete current intro audio</button>
+                </div>
             </div>
-            <div class="uploadBlock">
-                <label for="audioQ">Question Audio</label>
-                <input type="file" class="uploadInput" value="audioQ" name="audioQ">
+            <div class="gridContainer">
+                <div class="uploadBlock">
+                    <label for="audioQ">Question Audio</label>
+                    <input type="file" class="uploadInput" value="audioQ" name="audioQ">
+                </div>
+                <div>
+                    <button type="button" id="deleteAudioQ">Delete current question audio</button>
+                </div>
             </div>
-            <div class="uploadBlock">
-                <label for="audioN">The Correction Audio</label>
-                <input type="file" class="uploadInput" value="audioN" name="audioN">
-                <button type="submit">Upload</button>
-            </div>
+            <div class="gridContainer">    
+                <div class="uploadBlock">
+                    <label for="audioN">The Correction Audio</label>
+                    <input type="file" class="uploadInput" value="audioN" name="audioN">
+                    <button type="submit">Upload</button>
+                </div>
+                <div>
+                    <button type="button" id="deleteAudioN">Delete current correction audio</button>
+                </div>
+            </div>    
         </form>       
     </div>
     <div>
@@ -95,15 +117,15 @@
             <div class="audioPreviewContainer">
                 <div>
                     <h3>Play Introduction Audio</h3>
-                    <audio src="" controls></audio>
+                    <audio src="" controls id="audioTis"></audio>
                 </div>
                 <div>
                     <h3>Play Question Audio</h3>
-                    <audio src="" controls></audio>
+                    <audio src="" controls id="audioQ"></audio>
                 </div>
                 <div>
                     <h3>Play Correction Audio</h3>
-                    <audio src="" controls></audio>
+                    <audio src="" controls id="audioN"></audio>
                 </div>
             </div>
         </div>    

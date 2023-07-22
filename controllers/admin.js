@@ -224,3 +224,7 @@ module.exports.postAudios = async (req, res, next) => {
    const activities = await Activity.find({cohort: req.user.cohort})    
     res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
 }
+
+module.exports.deleteMedia = async (req, res, next) => {
+   console.log(req.body.toDelete)
+}

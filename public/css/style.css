@@ -58,13 +58,21 @@ h2 {
 .mainContainer {
     outline-style: solid;
     outline-width: 2px;
-    outline-color: red;
+    outline-color: black;
     display: grid;
     grid-template-columns: 3fr 2fr;
     gap: 1.5rem;
   
 }
+.gridContainer {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
 
+.mainSelector {
+    display: flex;
+    justify-content: center;
+}
 .imageContainer {
     height: 210px;
     width: 210px;
@@ -73,8 +81,8 @@ h2 {
    
 }
 
-image {
-    width: 100%;
+img {
+    width: 210px;
 }
 
 h2 {
