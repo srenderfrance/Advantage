@@ -54,3 +54,39 @@ h2 {
     margin-top: 10px;
     font-size: large;
 }
+
+.mainContainer {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: red;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 1.5rem;
+  
+}
+
+.imageContainer {
+    height: 210px;
+    width: 210px;
+    border: 3px solid black;
+    margin: 4px;
+   
+}
+
+image {
+    width: 100%;
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.previewcontainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    
+}

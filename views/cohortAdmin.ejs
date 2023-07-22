@@ -52,16 +52,13 @@
     </select>
      <button type="submit">Create</button>
     </div>
-   
-</form>
-    <div class="container">
+</form> 
+<div class="maincontainer"> 
+    <div class="container" id="uploadContainer">
         <label for="existingVocabWords" class="secondaryLabel">Select vocab word to edit</label>
         <select name="existingVocabWords" id="existingVocabWords">
             <option value="">Vocab Words</option>
         </select>
-    </div>    
-  
-    <div class="container" id="uploadContainer">
         <form action="/admin/uploadImage" enctype="multipart/form-data" method="POST"> 
             <div class="uploadBlock"> 
                 <label for="vocabWordUF" class="hidden"></label>
@@ -87,14 +84,31 @@
                 <input type="file" class="uploadInput" value="audioN" name="audioN">
                 <button type="submit">Upload</button>
             </div>
-        </form>    
-           
+        </form>       
     </div>
-
-<div>
-    <h2>Vocab Word Preview</h2>
+    <div>
+        <h2>Vocab Word Preview</h2>
+        <div class="previewContainer">
+            <div class="imagecontainer">
+                <img src="" alt="">
+            </div>
+            <div class="audioPreviewContainer">
+                <div>
+                    <h3>Play Introduction Audio</h3>
+                    <audio src="" controls></audio>
+                </div>
+                <div>
+                    <h3>Play Question Audio</h3>
+                    <audio src="" controls></audio>
+                </div>
+                <div>
+                    <h3>Play Correction Audio</h3>
+                    <audio src="" controls></audio>
+                </div>
+            </div>
+        </div>    
+    </div>
 </div>
-
 <a href="/student">Student Page</a>
 <a href="logout">Logout</a>
 
