@@ -20,7 +20,8 @@ router.put("/getVocabList", adminController.getActivityVocab); //why is this a p
 router.post("/createVocab", adminController.postVocabWord);
 router.post("/uploadImage", upload.single("image"), adminController.postVocabImage);
 router.post("/uploadAudios", upload.fields([{name:'audioQ', maxCount: 1 }, {name: 'audioT', maxCount: 1}, {name: 'audioN', maxCount: 1}]), adminController.postAudios);
-router.put("/Delete", adminController.deleteMedia);
+router.put("/deleteImage", adminController.deleteImage);
+router.put('/deleteAudio', adminController.deleteAudio);
 
 
 module.exports = router;
