@@ -4,17 +4,29 @@
     <h3>Vocabulary size</h3>
     <h3><%=user.hasReviewed.length %></h3>
 </div>
+<form action="/secondary/reviewActivity" method="POST">
 <div>
-    <ul>New Exercises to Review</ul>
+    <ul>New Exercises</ul>
     <li><a href=""></a>
     </li>
-</div>
-<div>
     <label for="previous-excercises"></label>
     <select name="previous-excercises" id="excersises">
         <option value="Excercise 1"></option>
     </select>
+    <button type="button" id="selectActivity">Select</button>
 </div>
+</form>
+<form action="/secondary/reviewActivity" method="POST">
+    <div class="container">
+        <label for="activity" class="primaryLabel">Select activity to edit</label>
+        <select name="activity" id="activityName" required>
+        <% for(let i=0; i < activities.length; i++) {%>   
+            <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+        <% } %>
+        </select>
+        <button type="button" id="selectActivity">Select</button>
+    </div>    
+
 <div>
     <% if (user.adminLevel = 1){ %>
        <a href="admin">Class Admin</a> 

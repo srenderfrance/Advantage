@@ -12,10 +12,7 @@ const CohortSchema = new mongoose.Schema({
     },
     startDate: {
         type: Date,
-    },
-    Activities: {
-        type: Array,
-        default: [],
+        
     },
     endDate: {
         type: Date,

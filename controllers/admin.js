@@ -150,7 +150,7 @@ module.exports.postVocabWord = async (req, res, next) => {
    
    const activities = await Activity.find({cohort: req.user.cohort})    
    
-   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities})
+   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}) // req.user.cohort is included in req.user!
   };
 
   module.exports.postVocabImage = async (req, res, next) => {
