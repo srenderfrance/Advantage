@@ -9,11 +9,9 @@ const ObjectId = require('mongodb').ObjectId;
 
 
 module.exports.getStudent = async (req, res) => {
-    console.log(req.user.cohort);
+
     let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-  
-    console.log('Activities')
-    console.log(activities);
+
     res.render("student",  { user: req.user, activities: activities});
  };
 
@@ -22,3 +20,21 @@ module.exports.getStudent = async (req, res) => {
 module.exports.getStudy = (req, res) => {
     res.render("study", { user: req.user });
  };
+
+ module.exports.reviewActivity = async (req, res, next) => {
+
+    console.log(req.body);
+    console.log(req.body.activity);
+
+    const activity = await Activity.where('description').equals(req.body.activity);
+
+    console.log(activity[0]._id)
+
+    const vocabList = await VocabWord.find({activity: activity[0]._id});
+
+    console.log(vocabList)
+    console.log(vocabList.length)
+    console.log(vocabList[0].audioN);
+
+    res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.activity});
+ }

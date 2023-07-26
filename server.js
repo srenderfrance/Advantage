@@ -61,9 +61,9 @@ const secondaryRoutes = require("./routes/secondary");
 const adminRoutes = require("./routes/admin");
 
 
-app.use("/", mainRoutes); 
-app.use("/student", secondaryRoutes);
-app.use("/admin", adminRoutes);
+app.use('/', mainRoutes); 
+app.use('/student', secondaryRoutes);
+app.use('/admin', adminRoutes);
 
 app.listen(
   PORT,

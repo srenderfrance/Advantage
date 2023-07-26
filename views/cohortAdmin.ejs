@@ -30,7 +30,7 @@
             <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
         <% } %>
         </select>
-        <button type="button" id="selectActivity">Select</button>
+        <button type="button" id="selectActivity">Select</button> //why is this type button?
     </div>    
     <div class="container">
         <h2>Add vocabulary word to Activity</h2>
@@ -131,8 +131,8 @@
         </div>    
     </div>
 </div>
-<a href="/student">Student Page</a>
-<a href="logout">Logout</a>
+<button onclick="window.location.href ='/student';">Student Page</button>
+<button onclick="window.location.href ='/logout';">Logout</button>
 
 <script type="text/javascript" src="/js/cohortAdmin.js"></script>
 </body>

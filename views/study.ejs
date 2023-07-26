@@ -1,18 +1,44 @@
-<h1>REVIEW PAGE</h1>
+<head>   
+    <!-- external CSS link -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/styleStudy.css" />
+	
+	
+</head>
+<Header>
+    <H1 id="title"><%= activity %> Review</H1>
+</Header>
+<body>
+
+<section class="container">
+    <% for(let i=0; i < vocabList.length; i++) {%> 
+        <div id="A<%= 1 + i %>" style="background-image: url('<%= vocabList[i].imageUrl %>')">
+            <audio src="<%= vocabList[i].audioQ %>" id="audioQ<%= 1 + i %>"></audio>
+            <audio src="<%= vocabList[i].audioN %>" id="audioN<%= 1 + i %>"></audio>
+            <audio src="<%= vocabList[i].audioTis %>" id="audioTis<%= 1 + i %>"></audio> 
+        </div>
+    <% } %>
+
+        <audio src="/audio/thats right.mp3" id="yes1"></audio>
+
+</section>
+
+<div class="controls">
+    <div class="Controls"> 
+        <button class="controls" id="review" type="button">Review</button>
+        <button class="controls" id="start" type="button">Learn</button>
+    </div>
+    <div class="controls">
+        <button class="controls" id="repeatThat" type="button">Repeat the Question</button>
+        <button class="controls" type="button">Select Vocab Word</button>
+    </div>
+</div>   
 
 
+<div class="navFoot">
+    <button onclick="window.location.href ='/student';">Student Page</button>
+    <button onclick="window.location.href ='/logout';">Logout</button>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-<a href="student">Student Page</a>
-<a href="logout">Logout</a>
+<script type="text/javascript" src="/js/study.js"></script>
+</body>
