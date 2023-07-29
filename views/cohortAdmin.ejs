@@ -12,11 +12,11 @@
 <form action="/admin/activity" method="POST">  
     <div class="container">
         <h2>Create New Activity</h2>
-        <label for="activity" class="secondaryLabel">Activity Description</label>
-        <input type="text" id="activity" name="description"
+        <label for="activity" class="primaryLabel">Activity Description</label>
+        <input type="text" id="activity" name="description" placeholder="Enter a brief description"
         required>
-        <label for="activityDate" class="secondaryLabel">Activity Date</label>
-        <input type="text" id="activityDate" name="date"
+        <label for="activityDate" class="primaryLabel">Activity Date</label>
+        <input type="text" id="activityDate" name="date" placeholder="month/date/year"
         required>
         <button type="submit" class="button">Create</button>   
     </div>
@@ -25,20 +25,20 @@
 <form action="/admin/createVocab" method="POST">
     <div class="container">
         <label for="activity" class="primaryLabel">Select activity to edit</label>
-        <select name="activity" id="activityName" required>
+        <select name="activity" id="activityName" class="selection" required>
         <% for(let i=0; i < activities.length; i++) {%>   
             <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
         <% } %>
         </select>
-        <button type="button" id="selectActivity">Select</button> //why is this type button?
-    </div>    
+        <button type="button" id="selectActivity">Select</button> 
+        </div>    
     <div class="container">
         <h2>Add vocabulary word to Activity</h2>
-        <label for="vocabWord" class="secondaryLabel">Enter new vocab word description:</label>
-        <input type="text" id="newVocabWord" name="description" required>
+        <label for="vocabWord" class="primaryLabel">Enter new vocab word description:</label>
+        <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or short phrase">
    
-    <label for="category">Category</label>
-    <select name="category" id="category" required>
+    <label for="category" class="primaryLabel">Category</label>
+    <select name="category" id="category" class="selection" required>
         <option value="Animal">Animal</option>
         <option value="Plant">Plant</option>
         <option value="Thing">Thing</option>
@@ -57,7 +57,7 @@
     <div class="container" id="uploadContainer">
         <div class="mainSelector">
             <label for="existingVocabWords" class="secondaryLabel">Select vocab word to edit</label>
-            <select name="existingVocabWords" id="existingVocabWords">
+            <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
                 <option value="">Vocab Words</option>
             </select>
         </div>

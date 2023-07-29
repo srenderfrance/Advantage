@@ -89,13 +89,11 @@ let engine = {}
         introduceNewWord()
         
         function introduceNewWord (){
-           
-            engine.newWord.visual.classList.toggle('selected')
-            engine.newWord.visual.style.display = 'block'
-            engine.newWord.introduction.play()
-            engine.newWord.introduction.addEventListener('ended', reset)
-           
-        }
+            engine.newWord.visual.classList.toggle('selected');
+            engine.newWord.visual.style.display = 'block';
+            engine.newWord.introduction.play();
+            engine.newWord.introduction.addEventListener('ended', reset);
+        };
 
             function reset(){
                 resetStart(conditional)

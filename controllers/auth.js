@@ -95,11 +95,12 @@ module.exports.postLogin = async (req, res, next) => {
   console.log(req.body.password)
   console.log(user.password)
   if (user.password === req.body.password) {
-    req.logIn(user, function (err) {
+    req.logIn(user, async function (err) {
       if (err) {
         return next(err);
       }
-      res.render("student", { user: req.user });
+      let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
+      res.render("student", { user: req.user, activities: activities});
     });
  (req, res, next);
     console.log("You should be logged in...")

@@ -1,18 +1,28 @@
+
+<head>   
+    <!-- external CSS link -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css" />
+	
+	
+</head>
 <h1><%=user.cohort %></h1>
+<body>
+    
+
 <h2><%=user.username %></h2>
 <div>
     <h3>Vocabulary size</h3>
     <h3><%=user.hasReviewed.length %></h3>
 </div>
 <form action="/student/reviewActivity" method="POST">
-<div>
-    <ul>New Exercises</ul>
-    <li><a href=""></a>
-    </li>
-    <label for="previous-excercises"></label>
-    <select name="previous-excercises" id="excersises">
-        <option value="Excercise 1"></option>
-    </select>
+<div class=container>
+    <label for="newActivity" class="primaryLabel">Select activity to review</label>
+        <select name="activity" id="activityName" required>
+        <% for(let i=0; i < activities.length; i++) {%>   
+            <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+        <% } %>
+        </select>
     <button type="submit" id="selectActivity">Select</button>
 </div>
 </form>
@@ -40,3 +50,5 @@
     
 
 </div>
+    
+</body>

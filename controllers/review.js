@@ -11,6 +11,7 @@ const ObjectId = require('mongodb').ObjectId;
 module.exports.getStudent = async (req, res) => {
 
     let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
+    console.log(activities);
 
     res.render("student",  { user: req.user, activities: activities});
  };

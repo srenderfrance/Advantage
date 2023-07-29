@@ -1,36 +1,59 @@
+
+<head>   
+    <!-- external CSS link -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css" />
+	
+	
+</head>
+<body>
+    
 <h1>To register fill out the information bellow.</h1>
 
 <form action="/register" method="POST">
-    <div>
-        <label for="username">User Name</label>
-        <input type="text" id="username" name="username"
-        required>
-        <label for="password">password</label>
-        <input type="text" id="password" name="password"
-        required>
-        <label for="password">Confirm Password</label>
-        <input type="text" id="password" name="confirmPassword"
-        required>
-        <label for="email">Email</label>
-        <input type="text" id="email" name="email"
-        required>
-        <label for="cohort">Select Class</label>    
+    <div class="registerForm">
+        <div>
+            <label for="username" class="primaryLabel">User Name</label>
+            <input type="text" id="username" name="username"
+            required>
+        </div>
+        <div>
+            <label for="password" class="primaryLabel">password</label>
+            <input type="text" id="password" name="password"
+            required>
+        </div>
+        <div>    
+            <label for="password" class="primaryLabel">Confirm Password</label>
+            <input type="text" id="password" name="confirmPassword"
+            required>
+        </div>    
+        <div>    
+            <label for="email" class="primaryLabel">Email</label>
+            <input type="text" id="email" name="email"
+            required>
+        </div>    
+        <div>
+            <label for="cohort" class="primaryLabel">Select Class</label>    
             <select name="cohort" id="cohortName" required>
                 <option value="">Select Class</option>
                 <% for(var i=0; i < cohorts.length; i++) {%>   
                 <option value="<%= cohorts[i].cohortName %>"><%= cohorts[i].cohortName %></option>
             <% } %>
-        </select>
-        <label for="firstName">First Name</label>
+            </select>
+        </div>
+        <label for="firstName" class="primaryLabel">First Name</label>
         <input type="text" id="firstName" name="firstName"
         required>
-        <label for="lastName">Last Name</label>
+        <label for="lastName" class="primaryLabel">Last Name</label>
         <input type="text" id="lastName" name="lastName"
         required>
-        <label for="nativeLanguage">Native Languages</label>
+        <label for="nativeLanguage" class="primaryLabel">Native Languages</label>
         <input type="text" id="nativeLanguage" name="nativeLanguage"
         required>
     </div>
     <button type="submit">Register</button>
 </form>
-<a href="/">Login</a>
+<button onclick="window.location.href ='/';" class="navButton>Login</button>
+
+
+</body>
