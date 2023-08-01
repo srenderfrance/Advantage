@@ -8,31 +8,16 @@
 </head>
 <body>
     
-<h1>To register fill out the information bellow.</h1>
+<h1>To register, please fill out the information bellow.</h1>
 
 <form action="/register" method="POST">
-    <div class="registerForm">
-        <div>
+    <div class="registrationForm">
+        <div class="registrationSubgrid">
             <label for="username" class="primaryLabel">User Name</label>
             <input type="text" id="username" name="username"
             required>
         </div>
-        <div>
-            <label for="password" class="primaryLabel">password</label>
-            <input type="text" id="password" name="password"
-            required>
-        </div>
-        <div>    
-            <label for="password" class="primaryLabel">Confirm Password</label>
-            <input type="text" id="password" name="confirmPassword"
-            required>
-        </div>    
-        <div>    
-            <label for="email" class="primaryLabel">Email</label>
-            <input type="text" id="email" name="email"
-            required>
-        </div>    
-        <div>
+        <div class="registrationSubgrid">
             <label for="cohort" class="primaryLabel">Select Class</label>    
             <select name="cohort" id="cohortName" required>
                 <option value="">Select Class</option>
@@ -41,19 +26,35 @@
             <% } %>
             </select>
         </div>
-        <label for="firstName" class="primaryLabel">First Name</label>
-        <input type="text" id="firstName" name="firstName"
-        required>
-        <label for="lastName" class="primaryLabel">Last Name</label>
-        <input type="text" id="lastName" name="lastName"
-        required>
-        <label for="nativeLanguage" class="primaryLabel">Native Languages</label>
-        <input type="text" id="nativeLanguage" name="nativeLanguage"
-        required>
+        <div class="registrationSubgrid">
+            <label for="password" class="primaryLabel">Password</label>
+            <input type="text" id="password" name="password" required>
+        </div>
+        <div class="registrationSubgrid">   
+            <label for="password" class="primaryLabel">Confirm Password</label>
+            <input type="text" id="password" name="confirmPassword" required>
+        </div>    
+        <div class="registrationSubgrid">    
+            <label for="email" class="primaryLabel">Email</label>
+            <input type="text" id="email" name="email" required>
+        </div>    
+        <div class="registrationSubgrid">
+            <label for="firstName" class="primaryLabel">First Name</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div> 
+        <div class="registrationSubgrid">
+            <label for="lastName" class="primaryLabel">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div class="registrationSubgrid">
+            <label for="nativeLanguage" class="primaryLabel">Native Languages</label>
+            <input type="text" id="nativeLanguage" name="nativeLanguage" required>
+        </div>
     </div>
     <button type="submit">Register</button>
 </form>
-<button onclick="window.location.href ='/';" class="navButton>Login</button>
-
+<div class="navButtons">
+    <button onclick="window.location.href ='/';" class="navButton">Login</button>
+</div>
 
 </body>

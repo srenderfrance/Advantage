@@ -56,7 +56,7 @@
 <div class="maincontainer"> 
     <div class="container" id="uploadContainer">
         <div class="mainSelector">
-            <label for="existingVocabWords" class="secondaryLabel">Select vocab word to edit</label>
+            <label for="existingVocabWords" class="primaryLabel">Select vocab word to edit</label>
             <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
                 <option value="">Vocab Words</option>
             </select>
@@ -71,9 +71,7 @@
                     <button type="submit" id="imageUpload">Upload</button>
                 </div>
             </form>
-            <div>
-                <button type="button" id="deleteImage">Delete current photo</button>
-            </div>
+           
         </div>
         <form action="/admin/uploadAudios" enctype="multipart/form-data" method="POST"> 
             <div class="gridContainer">
@@ -83,18 +81,14 @@
                     <label for="audioT">Vocab Word Introduction Audio</label>
                     <input type="file" class="uploadInput" value="audioT" name="audioT">
                 </div>
-                <div>
-                    <button type="button" id="deleteAudioTis">Delete current intro audio</button>
-                </div>
+               
             </div>
             <div class="gridContainer">
                 <div class="uploadBlock">
                     <label for="audioQ">Question Audio</label>
                     <input type="file" class="uploadInput" value="audioQ" name="audioQ">
                 </div>
-                <div>
-                    <button type="button" id="deleteAudioQ">Delete current question audio</button>
-                </div>
+                
             </div>
             <div class="gridContainer">    
                 <div class="uploadBlock">
@@ -102,37 +96,56 @@
                     <input type="file" class="uploadInput" value="audioN" name="audioN">
                     <button type="submit">Upload</button>
                 </div>
-                <div>
-                    <button type="button" id="deleteAudioN">Delete current correction audio</button>
-                </div>
+               
             </div>    
         </form>       
     </div>
     <div>
         <h2>Vocab Word Preview</h2>
-        <div class="previewContainer">
-            <div class="imagecontainer">
-                <img src="" alt="">
+        <div>
+            <div>
+                <div class="imagecontainer">
+                    <img src="" alt="">
+                </div>
+                <div>
+                    <button type="button" id="deleteImage" class="deleteButton">Delete Photo</button>
+                </div>
             </div>
-            <div class="audioPreviewContainer">
-                <div>
-                    <h3>Play Introduction Audio</h3>
-                    <audio src="" controls id="audioTis"></audio>
+                <div class="audioPreviewContainer">
+                <div class="flex">
+                    <div>
+                        <h3>Play Introduction Audio</h3>
+                        <audio src="" controls id="audioTis"></audio>
+                    </div>
+                    <div>
+                        <button type="button" id="deleteAudioTis" class="deleteButton">Delete Intro Audio</button>
+                    </div>
+                </div>   
+                <div class="flex">
+                    <div>
+                        <h3>Play Question Audio</h3>
+                        <audio src="" controls id="audioQ"></audio>
+                    </div>
+                    <div>
+                        <button type="button" id="deleteAudioQ" class="deleteButton">Delete Question Audio</button>
+                    </div>
                 </div>
-                <div>
-                    <h3>Play Question Audio</h3>
-                    <audio src="" controls id="audioQ"></audio>
-                </div>
-                <div>
-                    <h3>Play Correction Audio</h3>
-                    <audio src="" controls id="audioN"></audio>
+                <div class="flex">
+                    <div>
+                        <h3>Play Correction Audio</h3>
+                        <audio src="" controls id="audioN"></audio>
+                    </div>
+                        <div>
+                        <button type="button" id="deleteAudioN" class="deleteButton">Delete Correction Audio</button>
+                    </div>
                 </div>
             </div>
         </div>    
     </div>
 </div>
-<button onclick="window.location.href ='/student';">Student Page</button>
-<button onclick="window.location.href ='/logout';">Logout</button>
-
+<div class="navButtons">
+    <button onclick="window.location.href ='/student';" class="navButton">Student Page</button>
+    <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
+</div>
 <script type="text/javascript" src="/js/cohortAdmin.js"></script>
 </body>

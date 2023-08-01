@@ -6,7 +6,7 @@ body {
 /* Form and input styling*/
 form {
     
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 legend,
@@ -26,10 +26,14 @@ textarea {
   border: 2px solid #333;
   background-color: rgb(203, 203, 203);
   border-radius: 0.25rem;
-  border-color: hsl(213, 60%, 39%);
+ 
 }
 textarea {
-    width: 100%;
+    width: 25%;
+}
+
+input[type="text"] {
+    min-width: 50px
 }
 
 input[type="text"],
@@ -37,21 +41,21 @@ input[type="email"],
 select,
 textarea {
   font: 1.25rem / 1.5 sans-serif;
-  box-sizing: border-box;
-  
+  box-sizing: border-box;  
 }
-input[type="text"] {
-    width: 20%;
-}
+
 .primaryLabel {
     font: bold 1.5rem sans-serif;
     padding: .5rem 1rem;
 }
 .secondaryLabel  {
-    font-size: 2rem;
-    padding-right: .4em;
+    font: bold 1rem sans-serif;
+    padding-left: .5rem;
 }
-
+.secondaryLabel ~ select {
+    font: 1rem / 1.5 sans-serif; 
+    background-color: rgb(203, 203, 203);
+}
   input::placeholder,
   textarea::placeholder {
     opacity: 1; /* Firefox */
@@ -66,6 +70,26 @@ input[type="text"] {
     margin: 10px;
     background-color: hsl(213, 60%, 39%);
     color: white;
+}
+
+.navButton {
+    background-color: rgb(203, 203, 203);
+    color: black;
+    border-color: hsl(213, 60%, 39%);
+}
+
+.deleteButton {
+    font: 1rem sans-serif;
+    padding: .75rem;
+    
+    
+}
+.secondaryLabel ~ button {
+    font: 1rem sans-serif;
+    background-color:  hsl(213, 60%, 39%);
+    margin: 6px;
+    padding: .5rem .75rem;
+
 }
 select {
     padding: 0.5rem 4rem .5rem 1rem;
@@ -82,13 +106,10 @@ input[type=file] {
     cursor: pointer;
     padding: 0.75rem;
     margin: 10px;
-    width:min-content;
 }
+
 /*End form and imput styling*/
 
-div {
-    margin: 15px;
-}
 
 .problem {
     padding-bottom: 15px;
@@ -106,7 +127,7 @@ h2 {
     align-items: center;
     justify-content: center;
     font-size: 2.2rem;
-    padding-top: .7rem;
+    
 }
 
 .container {
@@ -124,14 +145,13 @@ h2 {
 }
 
 .uploadBlock > input {
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin: 0;
     font-size: large;
 }
 
-.uploadBlock > label {
+.uploadBlock label {
     margin-bottom: 10px;
-    margin-top: 10px;
+    padding-top: 10px;
     font-size: large;
 }
 
@@ -140,18 +160,29 @@ h2 {
     outline-width: 2px;
     outline-color: black;
     display: grid;
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
   
 }
 .gridContainer {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    margin-left: 1rem;
 }
 
+.registrationForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.registrationSubGrid {
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
 .mainSelector {
     display: flex;
     justify-content: center;
+    margin-top: 1rem ;
 }
 .imageContainer {
     height: 210px;
@@ -172,6 +203,44 @@ img {
     align-items: center;   
 }
 
-.registerForm {
-    display:flex
+.studentGrid {
+    display: grid;
+    grid-template-columns: 1.5fr 2.5fr;
+}
+
+.selectedImageContainer {
+    height: 420px;
+    width: 840px;
+    border: 3px solid black;
+    margin: 4px;
+    display: grid;
+}
+
+.customActivityContainer {
+    display: grid;
+    grid-template-rows: 5fr .5fr;
+}
+
+.smallForm {
+    display: flex;
+    align-items: center;
+}
+
+.flex1 {
+    flex-grow: 1;
+}
+
+.statscontainer {
+    padding: .5rem;
+}
+.navButtons {
+    display: flex;
+    justify-content: end;
+    
+}
+
+.flex {
+    display: flex;
+    align-items:end;
+    justify-content: space-around;
 }
