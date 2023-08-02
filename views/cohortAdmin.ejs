@@ -53,17 +53,17 @@
      <button type="submit">Create</button>
     </div>
 </form> 
-<div class="maincontainer"> 
-    <div class="container" id="uploadContainer">
-        <div class="mainSelector">
+  <div class="mainSelector">
             <label for="existingVocabWords" class="primaryLabel">Select vocab word to edit</label>
             <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
                 <option value="">Vocab Words</option>
             </select>
-        </div>
+        </div>   
+<div class="maincontainer"> 
+    <div class="container" id="uploadContainer">
         <div class="gridContainer">
             <form action="/admin/uploadImage" enctype="multipart/form-data" method="POST"> 
-                    <div class="uploadBlock"> 
+                <div class="uploadBlock"> 
                     <label for="vocabWordUF" class="hidden"></label>
                     <input type="text" class="vocabWordUF hidden"  name="vocabWord">
                     <label for="image">Vocab Word Image</label>
@@ -81,14 +81,12 @@
                     <label for="audioT">Vocab Word Introduction Audio</label>
                     <input type="file" class="uploadInput" value="audioT" name="audioT">
                 </div>
-               
             </div>
             <div class="gridContainer">
                 <div class="uploadBlock">
                     <label for="audioQ">Question Audio</label>
                     <input type="file" class="uploadInput" value="audioQ" name="audioQ">
                 </div>
-                
             </div>
             <div class="gridContainer">    
                 <div class="uploadBlock">
@@ -96,14 +94,13 @@
                     <input type="file" class="uploadInput" value="audioN" name="audioN">
                     <button type="submit">Upload</button>
                 </div>
-               
             </div>    
         </form>       
     </div>
-    <div>
+    <div class="container">
         <h2>Vocab Word Preview</h2>
         <div>
-            <div>
+            <div class="center">
                 <div class="imagecontainer">
                     <img src="" alt="">
                 </div>

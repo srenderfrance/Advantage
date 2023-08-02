@@ -145,7 +145,7 @@ h2 {
 }
 
 .uploadBlock > input {
-    margin: 0;
+    margin-bottom: 1rem;
     font-size: large;
 }
 
@@ -161,7 +161,7 @@ h2 {
     outline-color: black;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    
   
 }
 .gridContainer {
@@ -188,8 +188,10 @@ h2 {
     height: 210px;
     width: 210px;
     border: 3px solid black;
-    margin: 4px;
-   
+    
+    
+    display: flex;
+    justify-content: center;
 }
 
 img {
@@ -201,6 +203,10 @@ img {
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: center;   
+}
+
+.audioPreviewContainer {
+    padding-bottom: 1rem;
 }
 
 .studentGrid {

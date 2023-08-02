@@ -38,4 +38,14 @@ module.exports.getStudy = (req, res) => {
     console.log(vocabList[0].audioN);
 
     res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.activity});
- }
+};
+
+ module.exports.getVocabList = async (req, res) => {
+   console.log('this is getVocab')
+   console.log(req.body)
+   const activity = await Activity.where('description').equals(req.body.activity);   
+   const vocabList = await VocabWord.find({activity: activity[0]._id});
+   res.json({vocabList: vocabList});
+
+
+};

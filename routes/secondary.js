@@ -8,6 +8,6 @@ router.get('/', ensureAuth, reviewController.getStudent );
 
 router.get('/study', ensureAuth, reviewController.getStudy);
 router.post('/reviewActivity', reviewController.reviewActivity);
-
+router.put('/getVocabList', reviewController.getVocabList);
 
 module.exports = router;

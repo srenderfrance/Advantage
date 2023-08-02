@@ -77,15 +77,41 @@ let wTwelve = new MakeVocabWord(false,false,false,audioTis12,audioN12,audioQ12,d
 
 
 let engine = {}
-    engine.theDozen = [wOne, wTwo, wThree, wFour, wFive, wSix, wSeven, wEight, wNine, wTen, wEleven, wTwelve]
-    engine.toIntroduce = [wOne, wTwo, wThree, wFour, wFive, wSix, wSeven, wEight, wNine, wTen, wEleven, wTwelve]
-    engine.newWord = engine.toIntroduce[0] //The word being introcuded for the first time.
-    engine.introduced = [] //The array of vocabWords that has already been introduced.
-    engine.questionList = []
-    engine.currentQuestion = engine.questionList[0] //The vocabword that is the correct answer to the most recent question.
-    engine.lastTwo = [engine.introduced[0], engine.introduced[1]]
-    engine.introductions = function(){
-        
+    engine.theDozen = [wOne, wTwo, wThree, wFour, wFive, wSix, wSeven, wEight, wNine, wTen, wEleven, wTwelve];
+    engine.toIntroduce = [wOne, wTwo, wThree, wFour, wFive, wSix, wSeven, wEight, wNine, wTen, wEleven, wTwelve];
+    engine.newWord = engine.toIntroduce[0]; //The word being introcuded for the first time.
+    engine.introduced = []; //The array of vocabWords that has already been introduced.
+    engine.questionList = [];
+    engine.currentQuestion = engine.questionList[0]; //The vocabword that is the correct answer to the most recent question.
+    engine.lastTwo = [engine.introduced[0], engine.introduced[1]];
+    engine.userReviewResults = { //Results to be sent back to the server/DB.
+        'activity': '',
+        'mistakes': [],
+        'wordsSelected': [],
+        'numberOfWords': 0,
+        };
+    engine.vocabList = []    
+    engine.introductions = async function(){
+        try {
+            const activity = document.querySelector("#title").innerText;
+            console.log(activity);
+            
+            console.log(`User Results activity is: ${engine.userReviewResults.activity}`)
+            const response = await fetch("/student/getVocabList", {method: 'PUT',
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify({activity: activity}),/* JSON.stringify({cohort: cohort})*/
+            });
+            const data = await response.json();
+            console.log(data)
+            engine.vocabList = data.vocabList;
+            console.log(engine.vocabList);
+            engine.userReviewResults.numberOfWords = engine.vocabList.length;
+            engine.userReviewResults.activity =engine.vocabList[0].activity;
+            console.log(engine.userReviewResults.activity);
+            console.log(engine.userReviewResults.numberOfWords);
+        } catch (error) {
+            console.log(error)
+        }
         introduceNewWord()
         
         function introduceNewWord (){
@@ -242,7 +268,19 @@ let engine = {}
                     } else {
                         element.responseN.play()
                         element.responseN.addEventListener('ended', engine.repeatQuestion)
-                        engine.currentQuestion.gotWrong = true}}})
+                        engine.currentQuestion.gotWrong = true
+                        console.log(engine.currentQuestion);
+                        console.log(engine.theDozen)
+                        for (let i = 0; i < engine.theDozen.length; i++) {
+                            if (engine.theDozen[i].question === engine.currentQuestion.question) {
+                                let mistake = engine.vocabList[i]._id;
+                                console.log(`mistake is: ${mistake}`)
+                                engine.userReviewResults.mistakes.push(mistake);
+                                console.log(engine.userReviewResults.mistakes);
+                            }
+                            
+                        }
+                    }}});
      }
 
     engine.repeatQuestion = function(){engine.currentQuestion.question.play()}
