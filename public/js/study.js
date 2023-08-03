@@ -91,11 +91,10 @@ let engine = {}
         'numberOfWords': 0,
         };
     engine.vocabList = []    
-    engine.introductions = async function(){
+    engine.createActivity = async function(){
         try {
             const activity = document.querySelector("#title").innerText;
-            console.log(activity);
-            
+            console.log(activity); 
             console.log(`User Results activity is: ${engine.userReviewResults.activity}`)
             const response = await fetch("/student/getVocabList", {method: 'PUT',
             headers: {"Content-Type": "application/json",},
@@ -109,9 +108,26 @@ let engine = {}
             engine.userReviewResults.activity =engine.vocabList[0].activity;
             console.log(engine.userReviewResults.activity);
             console.log(engine.userReviewResults.numberOfWords);
+            const diff = engine.theDozen.length - engine.vocabList.length;
+            console.log(`diff = ${diff}`);
+            if(diff > 0) {
+                for (let index = 0; index < diff; index++) {
+                    engine.theDozen.pop();
+                    engine.toIntroduce.pop();
+                    
+                }
+            }    
+            console.log(engine.theDozen);
+            console.log(engine.toIntroduce.length - engine.vocabList.length);    
         } catch (error) {
             console.log(error)
         }
+    }
+    engine.introductions = function(){
+
+        if (engine.toIntroduce.length === 0) {
+            engine.end()
+        } else {
         introduceNewWord()
         
         function introduceNewWord (){
@@ -142,7 +158,7 @@ let engine = {}
                 engine.introduced.unshift(word)
                 engine.newWord = engine.toIntroduce[0]
                 callback()}
-                }}
+                }}}
    
     engine.makeQuestionList = function(){
         let tempArray = [] //This array is to be used create a copy of the array engine.introduced
@@ -284,6 +300,9 @@ let engine = {}
      }
 
     engine.repeatQuestion = function(){engine.currentQuestion.question.play()}
+    engine.end = function() {
+        console.log('Activity is fiished!')
+    }
    
                    
                         
@@ -292,7 +311,7 @@ let engine = {}
                
                 
             
-    
+engine.createActivity();    
     // turn on the "next" button
 document.querySelector('#review').addEventListener('click', engine.reviewAll);      
 document.querySelector('#repeatThat').addEventListener('click', engine.repeatQuestion);     
