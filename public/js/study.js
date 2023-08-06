@@ -59,20 +59,21 @@ function MakeVocabWord(done,correctAnswer,gotWrong,introduction,responseN,questi
     this.responseN = responseN
     this.question = question
     this.visual = visual
+    this._id = {}
 };
 
-let wOne = new MakeVocabWord(false,false,false,audioTis1,audioN1,audioQ1,document.querySelector('#A1'));
-let wTwo = new MakeVocabWord(false,false,false,audioTis2,audioN2,audioQ2,document.querySelector('#A2'));
-let wThree = new MakeVocabWord(false,false,false,audioTis3,audioN3,audioQ3,document.querySelector('#A3'));
-let wFour = new MakeVocabWord(false,false,false, audioTis4,audioN4,audioQ4,document.querySelector('#A4'));
-let wFive = new MakeVocabWord(false,false,false,audioTis5,audioN5,audioQ5,document.querySelector('#A5'));
-let wSix = new MakeVocabWord(false,false,false,audioTis6,audioN6,audioQ6,document.querySelector('#A6'));
-let wSeven = new MakeVocabWord(false,false,false,audioTis7,audioN7,audioQ7,document.querySelector('#A7'));
-let wEight = new MakeVocabWord(false,false,false,audioTis8,audioN8,audioQ8,document.querySelector('#A8'));
-let wNine = new MakeVocabWord(false,false,false,audioTis9,audioN9,audioQ9,document.querySelector('#A9'));
-let wTen = new MakeVocabWord(false,false,false,audioTis10,audioN10,audioQ10,document.querySelector('#A10'));
-let wEleven = new MakeVocabWord(false,false,false,audioTis11,audioN11,audioQ11,document.querySelector('#A11'));
-let wTwelve = new MakeVocabWord(false,false,false,audioTis12,audioN12,audioQ12,document.querySelector('#A12'));
+let wOne = new MakeVocabWord(false,false,false,audioTis1,audioN1,audioQ1,document.querySelector('#A1'),{});
+let wTwo = new MakeVocabWord(false,false,false,audioTis2,audioN2,audioQ2,document.querySelector('#A2'),{});
+let wThree = new MakeVocabWord(false,false,false,audioTis3,audioN3,audioQ3,document.querySelector('#A3'),{});
+let wFour = new MakeVocabWord(false,false,false, audioTis4,audioN4,audioQ4,document.querySelector('#A4'),{});
+let wFive = new MakeVocabWord(false,false,false,audioTis5,audioN5,audioQ5,document.querySelector('#A5'),{});
+let wSix = new MakeVocabWord(false,false,false,audioTis6,audioN6,audioQ6,document.querySelector('#A6'),{});
+let wSeven = new MakeVocabWord(false,false,false,audioTis7,audioN7,audioQ7,document.querySelector('#A7'),{});
+let wEight = new MakeVocabWord(false,false,false,audioTis8,audioN8,audioQ8,document.querySelector('#A8'),{});
+let wNine = new MakeVocabWord(false,false,false,audioTis9,audioN9,audioQ9,document.querySelector('#A9'),{});
+let wTen = new MakeVocabWord(false,false,false,audioTis10,audioN10,audioQ10,document.querySelector('#A10'),{});
+let wEleven = new MakeVocabWord(false,false,false,audioTis11,audioN11,audioQ11,document.querySelector('#A11'),{});
+let wTwelve = new MakeVocabWord(false,false,false,audioTis12,audioN12,audioQ12,document.querySelector('#A12'),{});
 
 
 
@@ -98,17 +99,15 @@ let engine = {}
             console.log(`User Results activity is: ${engine.userReviewResults.activity}`)
             const response = await fetch("/student/getVocabList", {method: 'PUT',
             headers: {"Content-Type": "application/json",},
-            body: JSON.stringify({activity: activity}),/* JSON.stringify({cohort: cohort})*/
-            });
+            body: JSON.stringify({activity: activity}),
+                    });
             const data = await response.json();
             console.log(data)
-            engine.vocabList = data.vocabList;
-            console.log(engine.vocabList);
-            engine.userReviewResults.numberOfWords = engine.vocabList.length;
-            engine.userReviewResults.activity =engine.vocabList[0].activity;
-            console.log(engine.userReviewResults.activity);
-            console.log(engine.userReviewResults.numberOfWords);
-            const diff = engine.theDozen.length - engine.vocabList.length;
+            let vocabList = data.vocabList;
+            console.log(vocabList);
+            engine.userReviewResults.numberOfWords = vocabList.length;
+            engine.userReviewResults.activity = vocabList[0].activity;
+            const diff = engine.theDozen.length - vocabList.length;
             console.log(`diff = ${diff}`);
             if(diff > 0) {
                 for (let index = 0; index < diff; index++) {
@@ -118,7 +117,20 @@ let engine = {}
                 }
             }    
             console.log(engine.theDozen);
-            console.log(engine.toIntroduce.length - engine.vocabList.length);    
+            console.log(engine.toIntroduce.length - engine.vocabList.length); 
+            console.log(vocabList[0].audioQ)
+            console.log(engine.theDozen[0].question) 
+           for (let i = 0; i < engine.theDozen.length; i++) {
+                engine.theDozen[i]._id = vocabList[i]._id; 
+                }
+            document.getElementById('review').disabled = false;  
+            document.getElementById('start').disabled = false;
+            document.getElementById('undo').disabled = false;
+            document.getElementById('repeatThat').disabled = false;
+            document.getElementById('select').disabled = false; 
+            document.getElementById('addSelection').disabled = false;
+            console.log('Done')
+        
         } catch (error) {
             console.log(error)
         }
@@ -239,6 +251,7 @@ let engine = {}
             }
     //engine.rmvAndRtnRandElement = function(arr)
     engine.reviewAll = function(){
+        engine.toIntroduce = []
         let tempArray = []
         engine.theDozen.forEach(element =>{tempArray.push(element)})
         for (i = tempArray.length; i>0; i--) {
@@ -276,44 +289,100 @@ let engine = {}
         engine.theDozen.forEach(element =>{
                 if (element.visual == Event.currentTarget) {
                     if (element.correctAnswer === true) {
-                        yes1.play()  
+                        element.visual.classList.add('thatsRight')  
+                        console.log('should have transfomed')
                         engine.currentQuestion.done = true
                         engine.currentQuestion.correctAnswer = false
-                        engine.questionList.shift()
-                        yes1.addEventListener('ended', engine.askQuestion)
+                        engine.questionList.shift();
+                        setTimeout(() => {
+                            element.visual.classList.remove('thatsRight')
+                            engine.askQuestion()
+                        }, 1000);
+                        console.log("settimeout over")
                     } else {
                         element.responseN.play()
                         element.responseN.addEventListener('ended', engine.repeatQuestion)
                         engine.currentQuestion.gotWrong = true
                         console.log(engine.currentQuestion);
                         console.log(engine.theDozen)
-                        for (let i = 0; i < engine.theDozen.length; i++) {
-                            if (engine.theDozen[i].question === engine.currentQuestion.question) {
-                                let mistake = engine.vocabList[i]._id;
-                                console.log(`mistake is: ${mistake}`)
-                                engine.userReviewResults.mistakes.push(mistake);
-                                console.log(engine.userReviewResults.mistakes);
-                            }
-                            
-                        }
-                    }}});
-     }
+                        let mistake = engine.currentQuestion._id;
+                        console.log(`mistake is:`);
+                        console.log(mistake)
+                        engine.userReviewResults.mistakes.push(mistake);
+                        console.log(engine.userReviewResults.mistakes);
+                    }}
+        })}
 
     engine.repeatQuestion = function(){engine.currentQuestion.question.play()}
     engine.end = function() {
-        console.log('Activity is fiished!')
-    }
-   
-                   
-                        
-                  
+         introduce = function(Event) {   
+            console.log('the dozen');
+            console.log(engine.theDozen);
+            engine.theDozen.forEach(element =>{
+                console.log(Event.currentTarget)
+            if (element.visual == Event.currentTarget) {
+                console.log("introduce element")
+                console.log(element)
+                element.introduction.play()}})};
+        
+        document.getElementById('end').classList.add('end');
+        console.log('Activity is finished!')
+        let visualArrray = engine.theDozen.map(element => element.visual)
+        console.log(visualArrray)
+        visualArrray.forEach(element => {element.removeEventListener('click', engine.evaluateResponse)});
+        console.log(visualArrray);
+           
+                visualArrray.forEach(element => {
+                element.addEventListener('click', introduce)
+                console.log(element);
+            })
+           
+         
+        };            
+     engine.makeSelections = function(){
+        makeVisibleAll()
+        function makeVisibleAll(){
+            engine.theDozen.forEach(element => {
+                element.visual.style.display = 'block' 
+            });
+        let visualArray = engine.theDozen.map(element => element.visual);
+        let previousSelections = engine.userReviewResults.wordsSelected;
+        engine.userReviewResults.wordsSelected.forEach(element1 => {
+            engine.theDozen.forEach(element2 => {
+                if (element1 == element2._id){
+                    element2.visual.classList.add('selected');
+                }
+            });
+        });
+        visualArray.forEach(element => {element.addEventListener('click', selectWord)})
+        function selectWord(Event){
+            engine.theDozen.forEach(element => {
+                if (element.visual == Event.currentTarget) 
+                   element.visual.classList.toggle('selected');
+     })}                   
+    }};
                     
-               
+    engine.filalizeSelection = async function() {
+         
+        console.log('filalize Selestion')
+        console.log(engine.theDozen)
+        engine.theDozen.forEach(element => {
+            console.log(element.visual.classList.contains('selected'))
+            if (element.visual.classList.contains('selected')){
+                engine.userReviewResults.wordsSelected.push(element._id)
+                element.visual.classList.remove('selected');
+            }
+
+        console.log('userRewiew')
+        console.log(engine.userReviewResults.wordsSelected)})
+    }           
                 
             
 engine.createActivity();    
-    // turn on the "next" button
+ 
+document.querySelector('#addSelection').addEventListener('click', engine.filalizeSelection)
 document.querySelector('#review').addEventListener('click', engine.reviewAll);      
 document.querySelector('#repeatThat').addEventListener('click', engine.repeatQuestion);     
 document.querySelector('#start').addEventListener('click', engine.introductions);
-//document.querySelector('#start').addEventListener('click', engine.makeQuestionList);
+document.querySelector('#select').addEventListener('click', engine.makeSelections)
+

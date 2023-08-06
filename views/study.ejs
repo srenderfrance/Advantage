@@ -10,7 +10,7 @@
 </Header>
 <body>
 
-<section class="container">
+<section class="vocabContainer" id="end">
     <% for(let i=0; i < vocabList.length; i++) {%> 
         <div id="A<%= 1 + i %>" style="background-image: url('<%= vocabList[i].imageUrl %>')">
             <audio src="<%= vocabList[i].audioQ %>" id="audioQ<%= 1 + i %>"></audio>
@@ -23,21 +23,25 @@
 
 </section>
 
-<div class="controls">
+<div class="controls controlContainer">
     <div class="Controls"> 
-        <button class="controls" id="review" type="button">Review</button>
-        <button class="controls" id="start" type="button">Learn</button>
+        <button class="control" id="review" type="button" disabled>Review</button>
+        <button class="control" id="start" type="button" disabled>Learn</button>
     </div>
     <div class="controls">
-        <button class="controls" id="repeatThat" type="button">Repeat the Question</button>
-        <button class="controls" type="button">Select Vocab Word</button>
+        <button class="control" id="repeatThat" type="button" disabled>Repeat the Question</button>
+        <button class="control" id="undo" type="button" disabled>Remove Last Error</button>
+    </div>
+    <div class="controls">
+        <button class="control" id="select" type="button" disabled>Select Vocab Word</button>
+        <button class="control" id="addSelection" type="button" disabled>Add Selected Words</button>
     </div>
 </div>   
 
 
 <div class="navFoot">
-    <button onclick="window.location.href ='/student';">Finish/ Back to Student Page</button><!--This needs to triger a fetch and send the exercise results to the server-->
-    <button onclick="window.location.href ='/logout';">Logout</button>
+    <button onclick="window.location.href ='/student';" class="navButton">Finish/ Back to Student Page</button><!--This needs to triger a fetch and send the exercise results to the server-->
+    <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
 </div>
 
 <script type="text/javascript" src="/js/study.js"></script>

@@ -1,73 +1,112 @@
 * {
-    box-sizing: border-box;
-  }
-
-
+  box-sizing: border-box;
+}
 
 body {
     background-color: rgb(81, 76, 76);
-  }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 5px;
+}
+
+.vocabContainer {
+  padding-top: 10px;
+  height: 520px;
+  width: 1500px
+}
+
+.vocabContainer > div {
+  background-size: contain;
+}
+
+.selected {
+  height: 240px;
+  width: 240px;
+  border: 6px solid black;
+  margin: 4px;
+}
+
+section > div {
+  height: 210px;
+  width: 210px;
+  border: 3px solid black;
+  margin: 4px;
+  display: none
+}
+
+.image {
+  height: 210px;
+}
+header {
+  display: flex;
+  justify-content: center;
+}
+#title {
   
-  header {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 5px;
-  }
-  
-  .container {
-    height: 470px;
-    width: 1500px
-  }
-  .container > div {
-    background-size: contain;
-  }
-  .selected {
-    height: 240px;
-    width: 240px;
-    border: 6px solid black;
-    margin: 4px;
-  }
-  
-  section > div {
-    height: 210px;
-    width: 210px;
-    border: 3px solid black;
-    margin: 4px;
-    display: none
-  }
-  
-  .image {
-    height: 210px;
-  }
-  header {
-    display: flex;
-    justify-content: center;
-  }
-  #title {
-    
-    font-size: 1.5rem;
-   
-  }
-  .container,
-  .controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  button {
-    margin: 10px;
-  }
-  
-  h2 {
-    margin: 0;
-    padding: 0;
-  }
-  .navFoot {
-    display: flex;
-    justify-content: end;
-    padding-right: 20px;
-  }
-  .navFoot > a {
-    margin-right: 10px;
-  }
+  font-size: 2.5rem;
+ 
+}
+.vocabContainer,
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.controlContainer{
+  padding: 1rem;
+}
+.controlContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.navFoot {
+  display: flex;
+  justify-content: end;
+  padding-top: 15px;
+  padding-right: 20px;
+}
+.navFoot > a {
+  margin-right: 10px;
+
+}
+
+button {
+  font: 1.25rem sans-serif;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  padding: 0.75rem 1.25rem;
+  margin: 5px 10px 5px 10px;
+  background-color: hsl(213, 60%, 39%);
+  color: white;
+
+}
+
+ 
+.navButton {
+    background-color: rgb(203, 203, 203);
+    color: black;
+    border-color: hsl(213, 60%, 39%);
+}
+
+.end {
+  border: 3px solid hsl(213, 60%, 39%);
+  background-color: rgb(203 203 203);
+}
+
+.thatsRight {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-name: spinAndBounce;
+}
+
+@keyframes spinAndBounce {
+  0% {transform: rotate(0deg);}
+ /* 50% {transform: translate(0, -50%) rotate(180deg)}
+  99% {transform: translate(0, 0%,) rotate(350deg);}*/
+  100% {transform: rotate(360deg);}
+}
