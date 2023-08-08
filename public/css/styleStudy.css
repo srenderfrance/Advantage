@@ -93,6 +93,11 @@ button {
     border-color: hsl(213, 60%, 39%);
 }
 
+button[disabled] {
+color: black;
+filter: blur(1.5px);
+}
+
 .end {
   border: 3px solid hsl(213, 60%, 39%);
   background-color: rgb(203 203 203);

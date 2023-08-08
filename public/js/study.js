@@ -1,5 +1,6 @@
 
 
+
 const yes1 = document.querySelector('#yes1')
 
 
@@ -92,6 +93,7 @@ let engine = {}
         'numberOfWords': 0,
         };
     engine.vocabList = []    
+    
     engine.createActivity = async function(){
         try {
             const activity = document.querySelector("#title").innerText;
@@ -125,52 +127,88 @@ let engine = {}
                 }
             document.getElementById('review').disabled = false;  
             document.getElementById('start').disabled = false;
-            document.getElementById('undo').disabled = false;
+            document.getElementById('undo').disabled = true;
             document.getElementById('repeatThat').disabled = false;
-            document.getElementById('select').disabled = false; 
-            document.getElementById('addSelection').disabled = false;
+            document.getElementById('select').disabled = false;
+            document.getElementById('showAll').disabled = false; 
+            
             console.log('Done')
         
         } catch (error) {
             console.log(error)
         }
-    }
-    engine.introductions = function(){
+    };
+   
+    
+    engine.stopClicks = function(duration){
+        let visualArray = engine.theDozen.map(element => element.visual);
+        console.log(`Delay is: ${duration}`)
+        let delay = 1000 * duration
+        console.log('stop clicks is running');
+        console.log(`Now Delay is: ${delay}`);
+        
+        visualArray.forEach(element => {
+            element.style.pointerEvents = 'none';
+        });
 
+        setTimeout(() => {
+            visualArray.forEach(element => {
+                element.style.pointerEvents = 'auto';})
+                console.log('The wait is over!');
+                console.log(delay);
+            }, delay);
+        
+    };
+    
+    engine.introductions = function(){
+        document.getElementById('review').disabled = true;
+        document.getElementById('start').disabled = true;
+        document.getElementById('select').disabled = true;  
+        document.getElementById('addSelection').disabled = true; 
+        document.getElementById('undo'),disabled = true;
+        document.getElementById('showAll').disabled = true;
+
+        let visualArray = engine.theDozen.map(element => element.visual);
+        visualArray.forEach(element => {
+            element.style.display = 'none';
+            element.removeEventListener('click', engine.simpleIntro);});
+        engine.introduceNewWord();
+    };
+    engine.introduceNewWord = function() {
         if (engine.toIntroduce.length === 0) {
             engine.end()
         } else {
-        introduceNewWord()
-        
-        function introduceNewWord (){
             engine.newWord.visual.classList.toggle('selected');
             engine.newWord.visual.style.display = 'block';
             engine.newWord.introduction.play();
+            let duration = engine.newWord.introduction.duration;
+            console.log('intro duration');
+            console.log(duration);
+            engine.stopClicks(duration);
             engine.newWord.introduction.addEventListener('ended', reset);
         };
 
-            function reset(){
-                resetStart(conditional)
+        function reset(){
+            resetStart(conditional)
             
-                function conditional(){
-                if (engine.introduced.length === 1 ) { 
-                    introduceNewWord()
-                }else{
-                    let visualArrray = engine.introduced.map(element => element.visual)
-                    visualArrray.forEach(element => {element.addEventListener('click', engine.evaluateResponse)})
-                    engine.makeQuestionList()
-                    //(engine.questionList.length)
-                    engine.askQuestion()    
-                }}
+            function conditional(){
+            if (engine.introduced.length === 1 ) { 
+                engine.introduceNewWord()
+            }else{
+                let visualArray = engine.introduced.map(element => element.visual)
+                visualArray.forEach(element => {element.addEventListener('click', engine.evaluateResponse)})
+                engine.makeQuestionList()
+                engine.askQuestion() 
+            }};
 
-                function resetStart(callback){
-                engine.newWord.visual.classList.toggle('selected')
-                engine.newWord.introduction.removeEventListener('ended', reset)
-                let word = engine.toIntroduce.shift()
-                engine.introduced.unshift(word)
-                engine.newWord = engine.toIntroduce[0]
-                callback()}
-                }}}
+            function resetStart(callback){
+            engine.newWord.visual.classList.toggle('selected')
+            engine.newWord.introduction.removeEventListener('ended', reset)
+            let word = engine.toIntroduce.shift()
+            engine.introduced.unshift(word)
+            engine.newWord = engine.toIntroduce[0]
+            callback()}
+    }};
    
     engine.makeQuestionList = function(){
         let tempArray = [] //This array is to be used create a copy of the array engine.introduced
@@ -241,34 +279,48 @@ let engine = {}
            
             }}
 
-    engine.makeRandomIndex = function(arr){
+    engine.makeRandomIndex = function(arr) {
             return Math.floor(Math.random() * arr.length)
             }
 
-    engine.makeRandomElement = function(arr){ //randomly removes an element from an array then returns that element
+    engine.makeRandomElement = function(arr) { //randomly removes an element from an array then returns that element
             let newArray = arr.splice(engine.makeRandomIndex(arr), 1);
             return newArray[0]
             }
     //engine.rmvAndRtnRandElement = function(arr)
-    engine.reviewAll = function(){
-        engine.toIntroduce = []
-        let tempArray = []
-        engine.theDozen.forEach(element =>{tempArray.push(element)})
+
+    engine.makeVisibleAll = function() {
+        let visualArray = engine.theDozen.map(element => element.visual);
+        visualArray.forEach(element => {element.style.display = 'block'});
+
+    };
+
+    engine.reviewAll = function() {
+        document.getElementById('end').classList.remove('end');
+        document.querySelector('#repeatThat').disabled = false;
+        document.getElementById('review').disabled = true;
+        document.getElementById('start').disabled = true;
+        document.getElementById('select').disabled = true;
+        document.getElementById('undo'),disabled = true;
+        document.getElementById('showAll').disabled = true;
+
+        let visualArray = engine.theDozen.map(element => element.visual);
+        visualArray.forEach(element => {
+            element.removeEventListener('click', engine.simpleIntro);
+        })
+        
+        engine.toIntroduce = [];
+        let tempArray = [];
+        engine.theDozen.forEach(element =>{tempArray.push(element)});
         for (i = tempArray.length; i>0; i--) {
-            let randomElement = engine.makeRandomElement(tempArray)
-            engine.questionList.push(randomElement)}
-        engine.theDozen.forEach(element =>{tempArray.push(element)})
-        tempArray.forEach(element =>{engine.questionList.splice(engine.makeRandomIndex(engine.questionList), 0, element)})
-        makeVisibleAll()
-        engine.askQuestion()
-        function makeVisibleAll(){
-            engine.theDozen.forEach(element => {
-                element.visual.style.display = 'block'
-               // element.visual.addEventListener('click', engine.evaluateResponse)
-            });
-            let visualArrray = engine.theDozen.map(element => element.visual)
-            visualArrray.forEach(element => {element.addEventListener('click', engine.evaluateResponse)})}
-        }
+            let randomElement = engine.makeRandomElement(tempArray);
+            engine.questionList.push(randomElement)};
+        engine.theDozen.forEach(element =>{tempArray.push(element)});
+        tempArray.forEach(element =>{engine.questionList.splice(engine.makeRandomIndex(engine.questionList), 0, element)});
+        engine.makeVisibleAll();
+        engine.askQuestion();
+        visualArray.forEach(element => {element.addEventListener('click', engine.evaluateResponse)});
+        };
     
     
     engine.askQuestion = function(){
@@ -277,112 +329,138 @@ let engine = {}
             engine.currentQuestion = engine.questionList[0]
             console.log(engine.currentQuestion)
             engine.currentQuestion.question.play();
+            let duration = engine.currentQuestion.question.duration;
+            engine.stopClicks(duration);
             engine.currentQuestion.correctAnswer = true
         } else {
-            let visualArrray = engine.questionList.map(element => element.visual)
-            visualArrray.forEach(element => {element.removeEventListener('click', engine.evaluateResponse)})
-            engine.introductions()
+            let visualArray = engine.questionList.map(element => element.visual)
+            visualArray.forEach(element => {element.removeEventListener('click', engine.evaluateResponse)})
+            engine.introduceNewWord()
 }}
           
     engine.evaluateResponse = function(Event){
-        console.log('evaluating')
+        console.log('evaluating');
         engine.theDozen.forEach(element =>{
                 if (element.visual == Event.currentTarget) {
                     if (element.correctAnswer === true) {
-                        element.visual.classList.add('thatsRight')  
-                        console.log('should have transfomed')
-                        engine.currentQuestion.done = true
-                        engine.currentQuestion.correctAnswer = false
+                        element.visual.classList.add('thatsRight'); 
+                        engine.stopClicks(1);
+                        console.log('should have transfomed');
+                        engine.currentQuestion.done = true;
+                        engine.currentQuestion.correctAnswer = false;
                         engine.questionList.shift();
+                        document.getElementById('undo').disabled = true;
                         setTimeout(() => {
                             element.visual.classList.remove('thatsRight')
                             engine.askQuestion()
                         }, 1000);
                         console.log("settimeout over")
                     } else {
-                        element.responseN.play()
-                        element.responseN.addEventListener('ended', engine.repeatQuestion)
-                        engine.currentQuestion.gotWrong = true
+                        element.responseN.play();
+                        let duration = element.responseN.duration;
+                        engine.stopClicks(duration);
+                        element.responseN.addEventListener('ended', engine.repeatQuestion);
+                        engine.currentQuestion.gotWrong = true;
                         console.log(engine.currentQuestion);
-                        console.log(engine.theDozen)
+                        console.log(engine.theDozen);
                         let mistake = engine.currentQuestion._id;
                         console.log(`mistake is:`);
                         console.log(mistake)
                         engine.userReviewResults.mistakes.push(mistake);
                         console.log(engine.userReviewResults.mistakes);
+                        document.getElementById('undo').disabled = false;
                     }}
         })}
-
-    engine.repeatQuestion = function(){engine.currentQuestion.question.play()}
-    engine.end = function() {
-         introduce = function(Event) {   
-            console.log('the dozen');
-            console.log(engine.theDozen);
-            engine.theDozen.forEach(element =>{
-                console.log(Event.currentTarget)
-            if (element.visual == Event.currentTarget) {
-                console.log("introduce element")
-                console.log(element)
-                element.introduction.play()}})};
-        
+    engine.removeMistake = function() {
+        engine.userReviewResults.mistakes.pop();
+        document.getElementById('undo').disabled = true;
+    }
+    engine.repeatQuestion = function(){
+        engine.currentQuestion.question.play();
+        let duration = engine.currentQuestion.question.duration
+        engine.stopClicks(duration);
+    }
+    engine.simpleIntro = function(Event) {   
+        let duration = 0   
+        engine.theDozen.forEach(element =>{
+        if (element.visual == Event.currentTarget) {
+            element.introduction.play()
+            duration = element.introduction.duration;
+        }});
+        engine.stopClicks(duration); 
+    };
+    engine.end = function() {  
         document.getElementById('end').classList.add('end');
+        
         console.log('Activity is finished!')
-        let visualArrray = engine.theDozen.map(element => element.visual)
-        console.log(visualArrray)
-        visualArrray.forEach(element => {element.removeEventListener('click', engine.evaluateResponse)});
-        console.log(visualArrray);
-           
-                visualArrray.forEach(element => {
-                element.addEventListener('click', introduce)
-                console.log(element);
-            })
-           
-         
-        };            
-     engine.makeSelections = function(){
-        makeVisibleAll()
-        function makeVisibleAll(){
-            engine.theDozen.forEach(element => {
-                element.visual.style.display = 'block' 
-            });
+        
+        let visualArray = engine.theDozen.map(element => element.visual)
+        console.log(visualArray)
+        visualArray.forEach(element => {
+            element.removeEventListener('click', engine.evaluateResponse);
+            element.addEventListener('click', engine.simpleIntro);
+        });
+        document.querySelector('#repeatThat').disabled = true;
+        document.getElementById('review').disabled = false;
+        document.getElementById('select').disabled = false;  
+        document.getElementById('addSelection').disabled = true; 
+        };     
+    engine.selectWord = function(Event){
+        engine.makeVisibleAll();
+        engine.theDozen.forEach(element => {
+                if (element.visual == Event.currentTarget) {
+                    element.visual.classList.toggle('selected');
+                    console.log(element)
+                    element.introduction.play()};
+    })};
+    engine.makeSelections = function(){
+        document.getElementById('end').classList.remove('end');
+       
+        document.getElementById('addSelection').disabled = false;
         let visualArray = engine.theDozen.map(element => element.visual);
-        let previousSelections = engine.userReviewResults.wordsSelected;
         engine.userReviewResults.wordsSelected.forEach(element1 => {
             engine.theDozen.forEach(element2 => {
                 if (element1 == element2._id){
                     element2.visual.classList.add('selected');
-                }
-            });
+            }})});
+        visualArray.forEach(element => {
+            element.removeEventListener('click', engine.evaluateResponse);
+            element.addEventListener('click', engine.selectWord);
+            element.removeEventListener('click', engine.simpleIntro);
         });
-        visualArray.forEach(element => {element.addEventListener('click', selectWord)})
-        function selectWord(Event){
-            engine.theDozen.forEach(element => {
-                if (element.visual == Event.currentTarget) 
-                   element.visual.classList.toggle('selected');
-     })}                   
-    }};
+        engine.makeVisibleAll()                      
+    };
                     
     engine.filalizeSelection = async function() {
          
         console.log('filalize Selestion')
         console.log(engine.theDozen)
+
+        let selection = [];
         engine.theDozen.forEach(element => {
             console.log(element.visual.classList.contains('selected'))
             if (element.visual.classList.contains('selected')){
-                engine.userReviewResults.wordsSelected.push(element._id)
-                element.visual.classList.remove('selected');
-            }
-
-        console.log('userRewiew')
-        console.log(engine.userReviewResults.wordsSelected)})
-    }           
+                selection.push(element._id)
+                element.visual.classList.remove('selected')};
+        })
+    engine.userReviewResults.wordsSelected = selection;              
+    console.log(`Words Selected: ${engine.userReviewResults.wordsSelected.length}`);
+    console.log(engine.userReviewResults.wordsSelected);
+    document.getElementById('addSelection').disabled = true; 
+    let visualArray = engine.theDozen.map(element => element.visual);
+    visualArray.forEach(element => {
+        element.removeEventListener('click', engine.selectWord);
+        element.addEventListener('click', engine.simpleIntro)});
+};         
                 
             
 engine.createActivity();    
- 
-document.querySelector('#addSelection').addEventListener('click', engine.filalizeSelection)
+engine.visualArray = engine.theDozen.map(element => element.visual);
+
+document.querySelector('#showAll').addEventListener('click', engine.makeVisibleAll);
+document.querySelector('#addSelection').addEventListener('click', engine.filalizeSelection);
 document.querySelector('#review').addEventListener('click', engine.reviewAll);      
 document.querySelector('#repeatThat').addEventListener('click', engine.repeatQuestion);     
 document.querySelector('#start').addEventListener('click', engine.introductions);
 document.querySelector('#select').addEventListener('click', engine.makeSelections)
-
+document.querySelector('#undo').addEventListener('click', engine.removeMistake);
