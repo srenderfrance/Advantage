@@ -10,4 +10,6 @@ router.get('/study', ensureAuth, reviewController.getStudy);
 router.post('/reviewActivity', reviewController.reviewActivity);
 router.put('/getVocabList', reviewController.getVocabList);
 
+router.post('/reviewResults', reviewController.userReviewResults);
+
 module.exports = router;

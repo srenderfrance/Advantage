@@ -65,11 +65,16 @@ module.exports.postRegister = async (req, res, next) => {
       reviewHistory: undefined,
 
    });
-    req.logIn(user, function (err) {
+    req.logIn(user, async function (err) {
+       let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
+      console.log(activities);
+
+
       if (err) {
         return next(err);
       } else
-      res.render("student", { user: req.user });
+      
+      res.render("student", { user: req.user, activities: activities });
     });
  (req, res, next);
     console.log("You should be logged in...")

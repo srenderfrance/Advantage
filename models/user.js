@@ -34,6 +34,11 @@ const UserSchema = new mongoose.Schema({
         type: Array,
         default: [],
     },
+    wordsSelected: {
+        type: Array,
+        default: [],
+    },
+
     individualExercises: {
         type: Array,
         default: [],
@@ -46,10 +51,14 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    reviewHistory: {
-        type: Array,
-        default: []
+    totalReviews: {
+        type: Number,
+        default: 0
     },
+    totalWords: {
+        type: Number,
+        default: 0
+    }
 })
 
 const User = mongoose.model('User', UserSchema);

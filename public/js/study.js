@@ -91,6 +91,7 @@ let engine = {}
         'mistakes': [],
         'wordsSelected': [],
         'numberOfWords': 0,
+        'numberOfReviews': 0
         };
     engine.vocabList = []    
     
@@ -128,7 +129,7 @@ let engine = {}
             document.getElementById('review').disabled = false;  
             document.getElementById('start').disabled = false;
             document.getElementById('undo').disabled = true;
-            document.getElementById('repeatThat').disabled = false;
+            document.getElementById('repeatThat').disabled = true;
             document.getElementById('select').disabled = false;
             document.getElementById('showAll').disabled = false; 
             
@@ -393,7 +394,7 @@ let engine = {}
         document.getElementById('end').classList.add('end');
         
         console.log('Activity is finished!')
-        
+        engine.userReviewResults.numberOfReviews++;
         let visualArray = engine.theDozen.map(element => element.visual)
         console.log(visualArray)
         visualArray.forEach(element => {
@@ -451,11 +452,18 @@ let engine = {}
     visualArray.forEach(element => {
         element.removeEventListener('click', engine.selectWord);
         element.addEventListener('click', engine.simpleIntro)});
-};         
-                
+    };         
+    
+    engine.sendResults = async function() {
+        console.log(engine.userReviewResults);
+        infoToSend = engine.userReviewResults;
+        const response = await fetch("/student/reviewResults", {method: 'POST',
+        headers: {"Content-Type": "application/json",},    
+            body: JSON.stringify({infoToSend: infoToSend}),
+    })}
             
 engine.createActivity();    
-engine.visualArray = engine.theDozen.map(element => element.visual);
+
 
 document.querySelector('#showAll').addEventListener('click', engine.makeVisibleAll);
 document.querySelector('#addSelection').addEventListener('click', engine.filalizeSelection);
@@ -464,3 +472,4 @@ document.querySelector('#repeatThat').addEventListener('click', engine.repeatQue
 document.querySelector('#start').addEventListener('click', engine.introductions);
 document.querySelector('#select').addEventListener('click', engine.makeSelections)
 document.querySelector('#undo').addEventListener('click', engine.removeMistake);
+document.querySelector('#sendResults').addEventListener('click', engine.sendResults);
