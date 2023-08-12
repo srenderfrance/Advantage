@@ -1,3 +1,4 @@
+const passport = require("passport");
 const { default: mongoose } = require("mongoose");
 const validator = require("validator");
 const Cohort = require('../models/cohort');
@@ -13,7 +14,7 @@ module.exports.getStudent = async (req, res) => {
     let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
     console.log(activities);
 
-    res.render("student",  { user: req.user, activities: activities});
+    res.render("student",  {student: req.user, activities: activities});
  };
 
  
@@ -50,24 +51,26 @@ module.exports.getStudy = (req, res) => {
 };
 
 module.exports.userReviewResults = async (req, res, next) => {
-   let reviewResults = req.body.infoToSend;
+   try {   
+      let reviewResults = req.body.infoToSend;
    console.log('reviewResults');
    console.log(reviewResults);
    
    let student = await User.findById(req.user._id);
    console.log(student);
- //adds activity to has reviewed
-   if (student.hasReviewed.includes(reviewResults.activity) === false) {
-      student.hasReviewed.push(reviewResults.activity);
-   };
-   console.log(student);
+
 //adds statst to reviewStats
    console.log(`total words: ${student.totalWords}`);
-   student.totalWords = student.totalWords + reviewResults.numberOfWords;
+   console.log(`total reviews: ${student.totalReviews}`);
+ 
+   if (student.hasReviewed.includes(reviewResults.activity) === false) {
+      student.totalWords = student.totalWords + reviewResults.numberOfWords;
+      };
+   student.totalReviews = student.totalReviews + reviewResults.numberOfReviews;
+   
    console.log(`total words: ${student.totalWords}`);
- console.log(`total reviews: ${student.totalReviews}`);
-   student.totalReviews = student.totalReviews + reviewResults.numberOfReviews; 
-  console.log(`total reviews: ${student.totalReviews}`);     
+   console.log(`total reviews: ${student.totalReviews}`);     
+ 
    //adds selectedWords to user
    console.log(student)
    console.log(student.wordsSelected.includes(reviewResults.wordsSelected[0]))
@@ -84,11 +87,21 @@ module.exports.userReviewResults = async (req, res, next) => {
       student.problemWords.push(element);
    })
    console.log(student)
+       //adds activity to has reviewed
+   if (student.hasReviewed.includes(reviewResults.activity) === false) {
+      student.hasReviewed.push(reviewResults.activity);
+   };
+   
+   console.log(student);
+   //need an if else for when there is nothing to save
+
    await student.save();
-
-   let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-
-    res.render("student", { user: req.user, activities: activities});
+   } catch (err) {
+      console.log(err);
+   }
+    //  let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
+   
+   // res.render("study", {student: req.user, activities: activities});
 
 };
 

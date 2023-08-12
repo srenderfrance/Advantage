@@ -93,13 +93,11 @@ let engine = {}
         'numberOfWords': 0,
         'numberOfReviews': 0
         };
-    engine.vocabList = []    
+    engine.activityId = {},    
     
     engine.createActivity = async function(){
         try {
             const activity = document.querySelector("#title").innerText;
-            console.log(activity); 
-            console.log(`User Results activity is: ${engine.userReviewResults.activity}`)
             const response = await fetch("/student/getVocabList", {method: 'PUT',
             headers: {"Content-Type": "application/json",},
             body: JSON.stringify({activity: activity}),
@@ -107,22 +105,18 @@ let engine = {}
             const data = await response.json();
             console.log(data)
             let vocabList = data.vocabList;
-            console.log(vocabList);
-            engine.userReviewResults.numberOfWords = vocabList.length;
-            engine.userReviewResults.activity = vocabList[0].activity;
+            console.log('activity id')
+            console.log(vocabList[0]._id)
+            engine.activityId = vocabList[0].activity;
+            console.log(vocabList); 
             const diff = engine.theDozen.length - vocabList.length;
             console.log(`diff = ${diff}`);
             if(diff > 0) {
                 for (let index = 0; index < diff; index++) {
                     engine.theDozen.pop();
-                    engine.toIntroduce.pop();
-                    
+                    engine.toIntroduce.pop();    
                 }
             }    
-            console.log(engine.theDozen);
-            console.log(engine.toIntroduce.length - engine.vocabList.length); 
-            console.log(vocabList[0].audioQ)
-            console.log(engine.theDozen[0].question) 
            for (let i = 0; i < engine.theDozen.length; i++) {
                 engine.theDozen[i]._id = vocabList[i]._id; 
                 }
@@ -364,9 +358,7 @@ let engine = {}
                         engine.currentQuestion.gotWrong = true;
                         console.log(engine.currentQuestion);
                         console.log(engine.theDozen);
-                        let mistake = engine.currentQuestion._id;
-                        console.log(`mistake is:`);
-                        console.log(mistake)
+                        let mistake = engine.currentQuestion._id; 
                         engine.userReviewResults.mistakes.push(mistake);
                         console.log(engine.userReviewResults.mistakes);
                         document.getElementById('undo').disabled = false;
@@ -395,6 +387,8 @@ let engine = {}
         
         console.log('Activity is finished!')
         engine.userReviewResults.numberOfReviews++;
+        engine.userReviewResults.numberOfWords = engine.theDozen.length;
+        engine.userReviewResults.activity = engine.activityId;
         let visualArray = engine.theDozen.map(element => element.visual)
         console.log(visualArray)
         visualArray.forEach(element => {
@@ -454,13 +448,19 @@ let engine = {}
         element.addEventListener('click', engine.simpleIntro)});
     };         
     
+    engine.saveAndRedirect = async function(){
+        engine.sendResults();
+        const response = await fetch("/student", {method: 'GET'});
+    }
     engine.sendResults = async function() {
         console.log(engine.userReviewResults);
         infoToSend = engine.userReviewResults;
         const response = await fetch("/student/reviewResults", {method: 'POST',
         headers: {"Content-Type": "application/json",},    
             body: JSON.stringify({infoToSend: infoToSend}),
-    })}
+    })
+    console.log(response)
+}
             
 engine.createActivity();    
 

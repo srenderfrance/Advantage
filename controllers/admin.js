@@ -176,7 +176,7 @@ module.exports.postVocabWord = async (req, res, next) => {
       console.log(err);
     }
     const activities = await Activity.find({cohort: req.user.cohort})    
-    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
+    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); //cohort is included in req.user! 
    };
 module.exports.postAudios = async (req, res, next) => {
    console.log(req.body)

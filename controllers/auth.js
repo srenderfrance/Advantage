@@ -74,7 +74,7 @@ module.exports.postRegister = async (req, res, next) => {
         return next(err);
       } else
       
-      res.render("student", { user: req.user, activities: activities });
+      res.render("student", { student: req.user, activities: activities });
     });
  (req, res, next);
     console.log("You should be logged in...")
@@ -105,7 +105,7 @@ module.exports.postLogin = async (req, res, next) => {
         return next(err);
       }
       let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-      res.render("student", { user: req.user, activities: activities});
+      res.render("student", { student: req.user, activities: activities});
     });
  (req, res, next);
     console.log("You should be logged in...")

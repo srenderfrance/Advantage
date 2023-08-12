@@ -8,24 +8,25 @@
 </head>
 
 <body>
-<h1>Welcome to <%=user.cohort %>. You are logged in as:</h1>
-<h1> <%=user.username %> </h1>
+<h1>Welcome to <%=student.cohort %>. You are logged in as:</h1>
+<h1> <%=student.username %> </h1>
 
 <div class="studentGrid">
     <div>
         <div class="statsContainer container">
         <h3>Your Stats</h3>
-        <h3>Total vocabulary:</h3>
-        <h3>Total number of Activities: <%=user.hasReviewed.length %></h3>
-        <h3>Extra Activity Review Sessions:</h3>
+        <h3>Total vocabulary: <%=student.totalWords %> </h3>
+        <h3>Total number of Activities: <%=student.hasReviewed.length %></h3>
+        <h3>Total of activity review sessions: <%=student.totalReviews %> </h3>
     </div>
-        <form action="/student/reviewNewActivity" method="POST">
+        <form action="/student/reviewActivity" method="POST">
             <div class="container smallForm">
                 <label for="newActivity" class="secondaryLabel flex1">New Activities</label>
                 <select name="activity" id="activityName" required>
-                <% for(let i=0; i < activities.length; i++) {%>   
+                <% for(let i=0; i < activities.length; i++) {
+                    if (!student.hasReviewed.includes(activities[i]._id)){%>   
                 <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                <% } %>
+                <% }} %>
                 </select>
                 <button type="submit" id="selectActivity">Select</button>
             </div>
@@ -66,11 +67,20 @@
         </form>
         <form action="/student/reviewProblemWords" method="POST">
             <div class="container smallForm">
-                <label for="revewAll" class="secondaryLabel flex1">Review All</label>
-                <select name="revewAll" id="activityName" required>
-                  <% for(let i=0; i < activities.length; i++) {%>   
-                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                <% } %> 
+                <label for="revewAll" class="secondaryLabel flex1">Topic Review</label>
+                <select name="revewAll" id="subjectToReview" required>
+                    <option value =all>All</option>
+                    <option value="animal">Animal</option>
+                     <option value="plant">Plant</option>
+                     <option value="bodyPart">Body Part</option>
+                     <option value="thing">Thing</option>
+                     <option value="place">Place</option>
+                     <option value="emotion/Feeling">Emotion/Feeling</option>
+                     <option value="verb">Verb</option>
+                     <option value="pronoun">Pronoun</option>
+                     <option value="adjective/Adverb">Adjective/Adverb</option>
+                     <option value="lexicarry">Lexicarry</option>
+                     <option value="Other">Other</option>
                 </select>
                 <button type="submit" id="selectActivity">Select</button>
             </div>
@@ -83,13 +93,8 @@
                 <img src="" alt="">
             </div> 
             <div>
-                <label for="selectedImages" class="secondaryLabel">Selected Vocab Words</label>
-                <select name="selectedVocabWords" id="selectedVocabWords" required>
-                     <% for(let i=0; i < activities.length; i++) {%>   
-                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                <% } %> 
-                  
-                </select>
+               <button type= "button" id="showSelectedWords">Review Selected Words</button>
+                <button typed="button" id="addSelection"> Add Seleccted Words to Activity</button>
             </div>
         </div>    
 
@@ -97,10 +102,10 @@
     </div>    
 </div>
 <div class="navButtons">
-    <% if (user.adminLevel = 1){ %>
+    <% if (student.adminLevel = 1){ %>
         <button onclick="window.location.href ='admin';" class="navButton">Class Admin</button> 
    <% }
-    if (user.adminLevel = 2){ %>
+    if (student.adminLevel = 2){ %>
          <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>  
     <% } %>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button> 
