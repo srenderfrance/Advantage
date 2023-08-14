@@ -6,6 +6,7 @@ const VocabWord = require('../models/vocabWord');
 const User = require("../models/user");
 const Activity = require("../models/activity");
 const cloudinary = require("../middleware/cloudinary");
+const PreReg = require("../models/preReg");
 const ObjectId = require('mongodb').ObjectId;
 
 module.exports.postCohort = async (req, res, next) => {
@@ -27,8 +28,17 @@ module.exports.postCohort = async (req, res, next) => {
     res.redirect("/admin/schoolAdmin");
    };
 
+module.exports.createReg = async (req, res, next) => {
+   console.log(req.body);
 
-  module.exports.getStudentList = async (req, res, next) => {
+   const newPreReg = await PreReg.create({
+      email: req.body.email.toLowerCase(),
+      password: req.body.password,
+   });
+res.redirect("/admin/schoolAdmin");
+}
+
+module.exports.getStudentList = async (req, res, next) => {
    console.log(req.body)
    const cohort = await Cohort.find({cohortName: req.body.cohortSelection});
    res.json(cohort);
@@ -156,10 +166,13 @@ module.exports.postVocabWord = async (req, res, next) => {
   module.exports.postVocabImage = async (req, res, next) => {
    try {
       // Upload image to cloudinary
-   
+      console.log(req.file)
       const result = await cloudinary.uploader.upload(req.file.path);
+      console.log(result.body)
       //console.log(result)
+      console.log(`req.body.vocabWord: ${req.body.vocabWord}`)
       const vocabWordId = new ObjectId(req.body.vocabWord);
+      console.log('vocabWordId')
       console.log(vocabWordId);
       let vocabWord = await VocabWord.find({_id: vocabWordId});
       vocabWord = vocabWord[0];
@@ -173,6 +186,7 @@ module.exports.postVocabWord = async (req, res, next) => {
       console.log("The image was uploaded!");
       
     } catch (err) {
+      console.log('image did not upload')
       console.log(err);
     }
     const activities = await Activity.find({cohort: req.user.cohort})    

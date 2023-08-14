@@ -3,8 +3,9 @@ const validator = require("validator");
 const User = require("../models/user");
 const Cohort = require("../models/cohort");
 const Activity = require("../models/activity");
+const PreReg = require("../models/preReg");
 
-let adminCohortExport = {}
+//let adminCohortExport = {}
 module.exports.getLogin = (req, res) => {
 
 
@@ -12,6 +13,28 @@ module.exports.getLogin = (req, res) => {
      title: "Login",
    });  
 };
+
+module.exports.postPreRegister = async (req, res, next) => {
+  try {
+    const credentials = await PreReg.find({password: req.body.password});
+    console.log(credentials);
+
+    if(req.body.email.toLowerCase() === credentials[0].email){
+
+    const cohorts = await Cohort.find()
+    res.render("register.ejs", {cohorts: cohorts});  
+
+     } else  {
+      console.log('The else ran')
+      res.render("login.ejs", {title: "Login",})
+    }
+  } catch (error) {
+    console.log("It didn't work")
+     res.render("login.ejs", {
+     title: "Login",
+   });
+  
+}};
 
 module.exports.getRegister = async (req, res) => {
   const cohorts = await Cohort.find()
@@ -35,7 +58,7 @@ module.exports.getSchoolAdmin = async (req, res) => {
   console.log(adminCohortExport)
 };
 
-module.exports.adminCohortExport = adminCohortExport;
+//module.exports.adminCohortExport = adminCohortExport;
 
 module.exports.getCohortAdmin = async (req, res) => {
   const cohorts = await Cohort.find()

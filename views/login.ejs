@@ -18,7 +18,14 @@
     </div>
     <button type="submit">Login</button>
 </form>
-<div>
-    <button onclick="window.location.href ='/register';">Register</button>    
-</div>
+<h2>If you haven't registered enter your emain and provided password bellow.</h2>
+<form action="/preRegister" method="POST">
+    <div>
+        <label for="email" class="primaryLabel">Enter your email address here</label>
+        <input type="email" name="email" required>
+        <label for="password" class="primaryLabel">Enter provided temporary password</label>
+        <input type="text" id="password" name="password" required>
+    </div>
+    <button type="submit">Begin Registration</button>
+</form>
 </body>
