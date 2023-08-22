@@ -10,17 +10,11 @@ const ObjectId = require('mongodb').ObjectId;
 
 
 module.exports.getStudent = async (req, res) => {
-
+   console.log('get Student is running')
     let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
     console.log(activities);
 
     res.render("student",  {student: req.user, activities: activities});
- };
-
- 
-
-module.exports.getStudy = (req, res) => {
-    res.render("study", { user: req.user });
  };
 
  module.exports.reviewActivity = async (req, res, next) => {
@@ -104,4 +98,3 @@ module.exports.userReviewResults = async (req, res, next) => {
    // res.render("study", {student: req.user, activities: activities});
 
 };
-

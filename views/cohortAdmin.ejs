@@ -20,129 +20,155 @@
         required>
         <button type="submit" class="button">Create</button>   
     </div>
- </form>  
+</form>  
 
-<form action="/admin/createVocab" method="POST">
+<form action="/admin/createVocab" enctype="multipart/form-data" method="POST">
     <div class="container">
-        <label for="activity" class="primaryLabel">Select activity to edit</label>
-        <select name="activity" id="activityName" class="selection" required>
-        <% for(let i=0; i < activities.length; i++) {%>   
-            <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-        <% } %>
-        </select>
-        <button type="button" id="selectActivity">Select</button> 
-        </div>    
+        <div class="headingSelect">
+            <h2>Edit an Existing Activity:</h2>
+            <div class="container outlineNone">
+                <select name="activity" id="activityName" class="selection">
+                    <option value="" disabled selected hidden>Choose an Activity</option>
+                <% for(let i=0; i < activities.length; i++) {%>   
+                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                <% } %>
+                </select> 
+                <button type="button" id="selectActivity">Select</button> 
+            </div>
+        </div>
+        <h3>Add vocabulary word to Activity</h3>    
+        <div class="container gridContainer" id="uploadContainer">
+            <div class="container flexColumn">
+                <div class="gridContainer" >
+                    <label for="vocabWord" class="primaryLabel">Description:</label>
+                    <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or phrase">
+                </div>
+                <div class="gridContainer">
+                    <label for="category" class="primaryLabel">Category</label>
+                    <select name="category" id="category" class="selection" required>
+                        <option value="animal">Animal</option>
+                        <option value="food">Food</option>
+                        <option value="bodyPart">Body Part</option>
+                        <option value="thing">Thing</option>
+                        <option value="place">Place</option>
+                        <option value="emotion/Feeling">Emotion/Feeling</option>
+                        <option value="verb">Verb</option>
+                        <option value="pronoun">Pronoun</option>
+                        <option value="adjective/Adverb">Adjective/Adverb</option>
+                        <option value="lexicarry">Lexicarry</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="gridContainer">
+                    <div class="uploadBlock">  
+                        <label for="image">Vocab Word Image</label>
+                        <input type="file" class="uploadInput" id="image" value="image" name="image"> 
+                    </div>         
+                </div>
+            </div>
+            <div class="container flexColumn">
+                <div class="gridContainer">
+                    <div class="uploadBlock">
+                        <label for="vocabWordUF" class="hidden"></label>
+                        <input type="text" class="vocabWordUF hidden" name="vocabWord">
+                        <label for="audioT">Vocab Word Introduction Audio</label>
+                        <input type="file" class="uploadInput" value="audioTis" name="audioTis">
+                    </div>
+                </div>
+                <div class="gridContainer">
+                    <div class="uploadBlock">
+                        <label for="audioQ">Question Audio</label>
+                        <input type="file" class="uploadInput" value="audioQ" name="audioQ">
+                    </div>
+                </div>
+                <div class="gridContainer">    
+                    <div class="uploadBlock">
+                        <label for="audioN">The Correction Audio</label>
+                        <input type="file" class="uploadInput" value="audioN" name="audioN">  
+                    </div>
+                </div>  
+            </div>
+        <button type="submit">Upload New Vocab Word</button>
+        </div>  
+    </div>        
+</form>       
     <div class="container">
-        <h2>Add vocabulary word to Activity</h2>
-        <label for="vocabWord" class="primaryLabel">Enter new vocab word description:</label>
-        <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or phrase">
-   
-    <label for="category" class="primaryLabel">Category</label>
-    <select name="category" id="category" class="selection" required>
-        <option value="animal">Animal</option>
-        <option value="plant">Plant</option>
-        <option value="bodyPart">Body Part</option>
-        <option value="thing">Thing</option>
-        <option value="place">Place</option>
-        <option value="emotion/Feeling">Emotion/Feeling</option>
-        <option value="verb">Verb</option>
-        <option value="pronoun">Pronoun</option>
-        <option value="adjective/Adverb">Adjective/Adverb</option>
-        <option value="lexicarry">Lexicarry</option>
-        <option value="Other">Other</option>
-    </select>
-     <button type="submit">Create</button>
-    </div>
-</form> 
-  <div class="mainSelector">
+        <h2>Vocab Word Preview</h2>
+        <div class="mainSelector">
             <label for="existingVocabWords" class="primaryLabel">Select vocab word to edit</label>
             <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
                 <option value="">Vocab Words</option>
             </select>
-        </div>   
-<div class="maincontainer"> 
-    <div class="container" id="uploadContainer">
-        <div class="gridContainer">
-            <form action="/admin/uploadImage" enctype="multipart/form-data" method="POST"> 
-                <div class="uploadBlock"> 
-                    <label for="vocabWordUF" class="hidden"></label>
-                    <input type="text" class="vocabWordUF hidden"  name="vocabWord">
-                    <label for="image">Vocab Word Image</label>
-                    <input type="file" class="uploadInput" id="image" name="image"> 
-                    <button type="submit" id="imageUpload">Upload</button>
-                </div>
-            </form>
-           
         </div>
-        <form action="/admin/uploadAudios" enctype="multipart/form-data" method="POST"> 
-            <div class="gridContainer">
-                <div class="uploadBlock">
-                    <label for="vocabWordUF" class="hidden"></label>
-                    <input type="text" class="vocabWordUF hidden" name="vocabWord">
-                    <label for="audioT">Vocab Word Introduction Audio</label>
-                    <input type="file" class="uploadInput" value="audioT" name="audioT">
-                </div>
-            </div>
-            <div class="gridContainer">
-                <div class="uploadBlock">
-                    <label for="audioQ">Question Audio</label>
-                    <input type="file" class="uploadInput" value="audioQ" name="audioQ">
-                </div>
-            </div>
-            <div class="gridContainer">    
-                <div class="uploadBlock">
-                    <label for="audioN">The Correction Audio</label>
-                    <input type="file" class="uploadInput" value="audioN" name="audioN">
-                    <button type="submit">Upload</button>
-                </div>
-            </div>    
-        </form>       
-    </div>
-    <div class="container">
-        <h2>Vocab Word Preview</h2>
         <div>
-            <div class="center">
+            <div class="previewContainer">
+                <div>
+                    <h3 id="description">Description: No vocab word has been selected.</h3>
+                    <h3 id="kind">Category: No vocab word has been selected.</h3>
+                </div>
                 <div class="imagecontainer">
                     <img src="" alt="">
-                </div>
-                <div>
-                    <button type="button" id="deleteImage" class="deleteButton">Delete Photo</button>
-                </div>
+                </div> 
             </div>
-                <div class="audioPreviewContainer">
+            <div class="audioPreviewContainer">
                 <div class="flex">
                     <div>
                         <h3>Play Introduction Audio</h3>
                         <audio src="" controls id="audioTis"></audio>
-                    </div>
-                    <div>
-                        <button type="button" id="deleteAudioTis" class="deleteButton">Delete Intro Audio</button>
-                    </div>
+                    </div> 
                 </div>   
                 <div class="flex">
                     <div>
                         <h3>Play Question Audio</h3>
                         <audio src="" controls id="audioQ"></audio>
                     </div>
-                    <div>
-                        <button type="button" id="deleteAudioQ" class="deleteButton">Delete Question Audio</button>
-                    </div>
                 </div>
                 <div class="flex">
                     <div>
                         <h3>Play Correction Audio</h3>
                         <audio src="" controls id="audioN"></audio>
-                    </div>
-                        <div>
-                        <button type="button" id="deleteAudioN" class="deleteButton">Delete Correction Audio</button>
-                    </div>
+                    </div> 
                 </div>
             </div>
+                <div class="flex">
+                    <div>
+                        <label for="vocabWord" class="primaryLabel">Description:</label>
+                        <input type="text" id="newVWDescription" name="description" placeholder="Enter New Description">
+                        <button type="button" class="deleteButton" id="changeVWDescription">Change Descritption</button>
+                    </div>
+                    <div>
+                        <label for="category" class="primaryLabel">Category</label>
+                        <select name="category" id="newVWCategory" class="selection" required> 
+                            <option value="animal">Animal</option>
+                            <option value="food">Food</option>
+                            <option value="bodyPart">Body Part</option>
+                            <option value="thing">Thing</option>
+                            <option value="place">Place</option>
+                            <option value="emotion/Feeling">Emotion/Feeling</option>
+                            <option value="verb">Verb</option>
+                            <option value="pronoun">Pronoun</option>
+                            <option value="adjective/Adverb">Adjective/Adverb</option>
+                            <option value="lexicarry">Lexicarry</option>
+                            <option value="Other">Other</option>
+                        </select> 
+                        <button type="button" id="changeVWCategory" class="deleteButton">Change Category</button>
+                    </div>
+                </div>
+                <div class="deleteContainer">
+                    <div>
+                        <button type="button" id="deleteImage" class="deleteButton">Delete Photo</button>
+                        <button type="button" id="deleteAudioTis" class="deleteButton">Delete Intro Audio</button>
+                        <button type="button" id="deleteAudioQ" class="deleteButton">Delete Question Audio</button>        
+                        <button type="button" id="deleteAudioN" class="deleteButton">Delete Correction Audio</button>
+                    </div>
+                    <div>
+                        <button type="button" id="deleteVW" class="deleteButton">DELETE/REMOVE ENTIRE WORD</button>
+                    </div>
+                </div>
         </div>    
     </div>
-</div>
 <div class="navButtons">
-    <button onclick="window.location.href ='/student';" class="navButton">Student Page</button>
+    <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
 </div>
 <script type="text/javascript" src="/js/cohortAdmin.js"></script>

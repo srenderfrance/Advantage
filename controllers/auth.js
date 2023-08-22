@@ -45,6 +45,7 @@ module.exports.logout = (req, res, next) => {
   console.log("Starting to logout")
     req.logout(function(err) {
       if (err) { return next(err); }
+      console.log('redirecting after Logout')
       res.redirect("/")
   });
  };
@@ -61,13 +62,11 @@ module.exports.getSchoolAdmin = async (req, res) => {
 //module.exports.adminCohortExport = adminCohortExport;
 
 module.exports.getCohortAdmin = async (req, res) => {
-  const cohorts = await Cohort.find()
+  console.log('Get Cohort Admin Running')
   const activities = await Activity.find({cohort: req.user.cohort})
   console.log(activities);
-  console.log (cohorts);
-  console.log(cohorts.length)
   console.log(req.user)
-  res.render("cohortAdmin",{cohorts: cohorts, user: req.user, activities: activities });
+  res.render("cohortAdmin",{ user: req.user, activities: activities });
 };
 
 module.exports.postRegister = async (req, res, next) => {

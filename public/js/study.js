@@ -162,6 +162,8 @@ let engine = {}
         document.getElementById('addSelection').disabled = true; 
         document.getElementById('undo'),disabled = true;
         document.getElementById('showAll').disabled = true;
+        document.querySelector('#repeatThat').disabled = false;
+
 
         let visualArray = engine.theDozen.map(element => element.visual);
         visualArray.forEach(element => {

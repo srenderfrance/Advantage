@@ -36,7 +36,7 @@ module.exports.createReg = async (req, res, next) => {
       password: req.body.password,
    });
 res.redirect("/admin/schoolAdmin");
-}
+};
 
 module.exports.getStudentList = async (req, res, next) => {
    console.log(req.body)
@@ -107,15 +107,19 @@ module.exports.getStudentList = async (req, res, next) => {
  }; res.redirect(308, "/admin/schoolAdmin");
 };
 module.exports.getActivityVocab = async (req, res, next) => {
+   console.log('getActivityVocab is running')
    console.log(req.body)
    const activityDescription = req.body.activity;
-   const activity = await Activity.where("description").equals(activityDescription);
+   const cohort = req.user.cohort 
+   const activity = await  Activity.where("cohort").equals(cohort).where("description").equals(activityDescription);
+   console.log("first Activity ID")
    console.log(activity[0]._id);
+   console.log(activity)
    const vocabList = await VocabWord.where("activity").equals(activity[0]._id);
    console.log(vocabList);
    res.json({vocabList: vocabList});
 };
-module.exports.getActivity = async (req, res, next) => {
+module.exports.getActivity = async (req, res, next) => { //I don't think this is used.
   
 const cohort = req.user.cohort 
 const activity = req.body.activity 
@@ -124,6 +128,7 @@ const activitySelection = await Activity.where("cohort").equals(cohort).where("d
 };
 
 module.exports.postActivity = async (req, res, next) => {
+   console.log("Post Activity is running")
    const activity = await Activity.create({
         cohort: req.user.cohort,
         date: req.body.date,
@@ -140,30 +145,78 @@ module.exports.postActivity = async (req, res, next) => {
 };
 
 module.exports.postVocabWord = async (req, res, next) => {
+   console.log("Post VocabWord is running")
+   console.log(req.body)
+   
+   console.log(req.files)
    let activity = await Activity.where("description").equals(req.body.activity).where("cohort").equals(req.user.cohort);
-   const vocabWord = await VocabWord.create({
-       cohort: req.user.cohort,
-       description: req.body.description,
-       activity: activity[0]._id,
-       category: req.body.category,
-       imageUrl: undefined,
-       cloudinaryIdImage: undefined,
-       audioQ: undefined,
-       cloudinaryIdQ: undefined,
-       audioW: undefined,
-       cloudinaryIdW: undefined,
-       });
+   console.log('activity returned');
+   console.log(activity)
+   console.log("TRIED TO SAVE NEW VOCABWORD TO DATABASE")
+   let vocabWord = await VocabWord.create({
+     cohort: req.user.cohort,
+     description: req.body.description,
+     activity: activity[0]._id,
+     category: req.body.category,
+     imageUrl: '',
+     cloudinaryIdImage: '',
+     audioiTis: '',
+     cloudinaryIdTis: '',
+     audioQ: '',
+     cloudinaryIdQ: '',
+     audioN: '',
+     cloudinaryIdN: '',
+       
+   });
 
+      try {
+      if (typeof req.files.image !== 'undifined') {
+         const resultI = await cloudinary.uploader.upload(req.files.image[0].path, {recourse_type: "auto"});
+         vocabWord.imageUrl = resultI.secure_url;
+         vocabWord.cloudinaryIdImage = resultI.public_id
+      };
+
+      if (typeof req.files.audioTis !== 'undefined') {
+         const result = await cloudinary.uploader.upload(req.files.audioTis[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdTis = result.public_id;
+         vocabWord.audioTis = result.secure_url;
+      };
+
+      if (typeof req.files.audioQ !== 'undefined'){
+         const result2 = await cloudinary.uploader.upload(req.files.audioQ[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdQ = result2.public_id;
+         vocabWord.audioQ = result2.secure_url;
+      };
+
+      if ( typeof req.files.audioN !== 'undefined') {
+         const result3 = await cloudinary.uploader.upload(req.files.audioN[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdN = result3.public_id;
+         vocabWord.audioN = result3.secure_url;
+      };
+      console.log("vocabWord before save");
+   
+   vocabWord = await vocabWord.save();
+   
+   console.log('vocabWord after')
+   console.log(vocabWord)
+   
    activity = activity[0];
    console.log("A new vocab word has been created!");
    //console.log(vocabWord._id);
    
-   const activities = await Activity.find({cohort: req.user.cohort})    
-   
-   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}) // req.user.cohort is included in req.user!
-  };
+      
+   } catch (error) {
+   console.log('catch')
+   console.log(error)   
+   }
 
-  module.exports.postVocabImage = async (req, res, next) => {
+   const activities = await Activity.find({cohort: req.user.cohort})    
+   console.log('ready to redirect')
+   res.redirect(308, "/admin") // req.user.cohort is included in req.user!
+
+};
+
+module.exports.postVocabImage = async (req, res, next) => {
    try {
       // Upload image to cloudinary
       console.log(req.file)
@@ -192,6 +245,7 @@ module.exports.postVocabWord = async (req, res, next) => {
     const activities = await Activity.find({cohort: req.user.cohort})    
     res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); //cohort is included in req.user! 
    };
+
 module.exports.postAudios = async (req, res, next) => {
    console.log(req.body)
    console.log("req.body.vocabWord is");
@@ -201,12 +255,12 @@ module.exports.postAudios = async (req, res, next) => {
    try {
       let vocabWord = await VocabWord.find({_id:new ObjectId(req.body.vocabWord)});
       vocabWord = vocabWord[0];
-  /* console.log("next is vocabWord")
-   console.log(vocabWord);
-   console.log("typeof");
-   console.log(typeof req.files.audioT);
-   console.log(typeof req.files.audtioQ);
-   console.log(typeof req.files.audioN);*/
+  // console.log("next is vocabWord")
+  // console.log(vocabWord);
+  // console.log("typeof");
+  // console.log(typeof req.files.audioT);
+  //console.log(typeof req.files.audtioQ);
+  //console.log(typeof req.files.audioN);
 
       if (typeof req.files.audioT !== 'undefined') {
          const result = await cloudinary.uploader.upload(req.files.audioT[0].path, { resource_type: "auto"});
@@ -235,6 +289,48 @@ module.exports.postAudios = async (req, res, next) => {
    const activities = await Activity.find({cohort: req.user.cohort})    
    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
 }
+
+
+
+module.exports.updateVocabWord = async (req, res) => {
+   console.log('UpdateVocabWord is running')
+   console.log(req.body);
+   console.log('that was the body')
+   console.log(req.body.vocabWordId)
+   
+   try {
+
+     const vocabWordId = new ObjectId(req.body.vocabWordId);
+
+      // console.log(vocabWordId);
+      let vocabWord = await VocabWord.findById(vocabWordId);
+      console.log(vocabWord)
+      console.log(vocabWord[0]);
+ 
+ 
+   
+      console.log(typeof req.body.newVWDescription);
+      console.log(typeof req.body.newVWCategory);
+
+      if  (typeof req.body.newVWDescription !== 'undefined') {
+      vocabWord.description = req.body.newVWDescription;
+      console.log('description updated')
+      };   
+      
+      if (typeof req.body.newVWCategory !== 'undefined') {
+         vocabWord.category = req.body.newVWCategory;
+         console.log(vocabWord.category)
+         console.log(req.body.newVWCategory)
+         console.log('category updated')
+      };
+      vocabWord = await vocabWord.save();
+      console.log("VocabWord after save");
+      console.log(vocabWord);
+  } catch (error) {
+     console.log('nope') 
+     console.log(error)
+   }
+};
 
 module.exports.deleteImage = async (req, res, next) => {
    
@@ -307,4 +403,31 @@ module.exports.deleteAudio = async (req, res, next) => {
 
    const activities = await Activity.find({cohort: req.user.cohort})    
    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
-}
+};
+
+module.exports.deleteVWord = async (req, res) => {
+   console.log(req.body.vocabWordId);
+   try {
+        let vocabWord = await VocabWord.findById(new ObjectId(req.body.vocabWordId));
+
+      if (vocabWord.cloudinaryIdTis !== "") {
+          const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdTis, {resource_type: 'video'});
+      };
+      if (vocabWord.cloudinaryIdQ !== ""){
+         const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdQ, {resource_type: 'video'});
+      };
+      if (vocabWord.cloudinaryIdN === req.body.toDelete){
+         const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdN, {resource_type: 'video'});
+      };
+      if (vocabWord.cloudinaryIdImage !== ""){
+         const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdImag);
+      };
+      const res = await VocabWord.deleteOne({ _id: vocabWord._id });
+      console.log(res)
+
+   } catch (error) {
+      console.log(error)
+};
+
+
+};
