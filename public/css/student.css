@@ -1,0 +1,64 @@
+
+/*.customActivityContainer {
+    display: grid;
+    grid-template-rows: 5fr .5fr;
+}*/
+
+
+.selectedImageContainer {
+    height: 420px;
+    width: 840px;
+    border: 3px solid black;
+    margin: 4px;
+    display: grid;
+}
+
+
+.selected {
+  height: 240px;
+  width: 240px;
+  border: 6px solid black;
+  margin: 4px;
+}
+
+.selectedImageContainer > div {
+  height: 210px;
+  width: 210px;
+  border: 3px solid black;
+  margin: 4px;
+  /*display: none*/
+}
+
+.vocabContainer {
+  padding-top: 10px;
+  height: 520px;
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: auto;
+}
+
+.vocabContainer > div {
+  background-size: contain;
+}
+
+.statscontainer {
+    padding: .5rem;
+    margin-right: .8rem;
+    margin-left: 1.2rem;
+}
+
+.reviewContainer {
+    margin-left: .8rem;
+    margin-right: 2.2rem;
+}
+.studentGrid {
+    display: grid;
+    grid-template-columns: 1.5fr 2.5fr;
+}
+
+.section1 {
+    display: flex;
+    justify-content: space-around;
+}

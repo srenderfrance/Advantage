@@ -127,8 +127,8 @@ module.exports.postLogin = async (req, res, next) => {
         return next(err);
       }
       let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-      res.render("student", { student: req.user, activities: activities});
-    });
+      res.redirect("/student") /*, { student: req.user, activities: activities});//need to make this a redirect it may cause resubmission of form
+    */ });
  (req, res, next);
     console.log("You should be logged in...")
     console.log(user)

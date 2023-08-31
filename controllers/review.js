@@ -13,8 +13,11 @@ module.exports.getStudent = async (req, res) => {
    console.log('get Student is running')
     let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
     console.log(activities);
+    const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
+    console.log("selectedVocab");
+    console.log(selectedVocab)
 
-    res.render("student",  {student: req.user, activities: activities});
+    res.render("student",  {student: req.user, activities: activities, selectedVocab: selectedVocab});
  };
 
  module.exports.reviewActivity = async (req, res, next) => {

@@ -210,9 +210,9 @@ module.exports.postVocabWord = async (req, res, next) => {
    console.log(error)   
    }
 
-   const activities = await Activity.find({cohort: req.user.cohort})    
+   //const activities = await Activity.find({cohort: req.user.cohort})    
    console.log('ready to redirect')
-   res.redirect(308, "/admin") // req.user.cohort is included in req.user!
+   res.redirect("/admin") // req.user.cohort is included in req.user!
 
 };
 
@@ -243,7 +243,7 @@ module.exports.postVocabImage = async (req, res, next) => {
       console.log(err);
     }
     const activities = await Activity.find({cohort: req.user.cohort})    
-    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); //cohort is included in req.user! 
+    res.render("cohortAdmin", {user: req.user, activities: activities}); //cohort is included in req.user! 
    };
 
 module.exports.postAudios = async (req, res, next) => {
@@ -287,7 +287,7 @@ module.exports.postAudios = async (req, res, next) => {
    };
 
    const activities = await Activity.find({cohort: req.user.cohort})    
-   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
+   res.render("cohortAdmin", {user: req.user, activities: activities}); 
 }
 
 
@@ -406,6 +406,7 @@ module.exports.deleteAudio = async (req, res, next) => {
 };
 
 module.exports.deleteVWord = async (req, res) => {
+   console.log('delete word is running')
    console.log(req.body.vocabWordId);
    try {
         let vocabWord = await VocabWord.findById(new ObjectId(req.body.vocabWordId));
@@ -420,11 +421,11 @@ module.exports.deleteVWord = async (req, res) => {
          const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdN, {resource_type: 'video'});
       };
       if (vocabWord.cloudinaryIdImage !== ""){
-         const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdImag);
+         const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdImage);
       };
       const res = await VocabWord.deleteOne({ _id: vocabWord._id });
       console.log(res)
-
+      res.redirect("/admin")
    } catch (error) {
       console.log(error)
 };

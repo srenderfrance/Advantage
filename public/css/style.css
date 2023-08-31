@@ -51,6 +51,7 @@ textarea {
 .secondaryLabel  {
     font: bold 1rem sans-serif;
     padding-left: .5rem;
+    padding-right: .5rem;
 }
 .secondaryLabel ~ select {
     font: 1rem / 1.5 sans-serif; 
@@ -226,26 +227,11 @@ img {
     justify-content: space-around;
 }
 
-.studentGrid {
-    display: grid;
-    grid-template-columns: 1.5fr 2.5fr;
-}
+
 .deleteContainer{
     display: flex;
     justify-content: space-between;
     padding: 1rem;
-}
-.selectedImageContainer {
-    height: 420px;
-    width: 840px;
-    border: 3px solid black;
-    margin: 4px;
-    display: grid;
-}
-
-.customActivityContainer {
-    display: grid;
-    grid-template-rows: 5fr .5fr;
 }
 
 .smallForm {
@@ -257,9 +243,6 @@ img {
     flex-grow: 1;
 }
 
-.statscontainer {
-    padding: .5rem;
-}
 .navButtons {
     display: flex;
     justify-content: end;   
