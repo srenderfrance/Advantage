@@ -11,15 +11,27 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports.getStudent = async (req, res) => {
    console.log('get Student is running')
-    let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-    console.log(activities);
-    const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
-    console.log("selectedVocab");
-    console.log(selectedVocab)
-
-    res.render("student",  {student: req.user, activities: activities, selectedVocab: selectedVocab});
+   let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
+   //console.log(activities);
+   const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
+   console.log("selectedvocab");
+   console.log(selectedVocab)
+   res.render("student",  {student: req.user, activities: activities, selectedVocab: selectedVocab});
  };
 
+ module.exports.getSelectedVocab = async (req, res) => {
+   try {  
+      console.log("Get Selected Vocab is running") 
+      const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
+      res.json({selectedVocab: selectedVocab});
+      //console.log("")
+      //console.log(selectedVocab);
+
+   } catch (error) {
+     console.log(error) 
+   }
+
+ }
  module.exports.reviewActivity = async (req, res, next) => {
 
     console.log(req.body);
@@ -93,11 +105,53 @@ module.exports.userReviewResults = async (req, res, next) => {
    //need an if else for when there is nothing to save
 
    await student.save();
+
+   res.redirect("/student");
    } catch (err) {
       console.log(err);
    }
     //  let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
    
-   // res.render("study", {student: req.user, activities: activities});
 
+};
+
+module.exports.createCustomActivity = async (req, res) => {
+   try {
+      console.log('CreateCustom Activity is running')
+      console.log(req.body.activityName);
+      console.log(req.body.activityVocab)
+      console.log('user wordsSelected');
+      console.log(req.user.wordsSelected)
+
+      let student = await User.findById(req.user._id);
+
+      for (let i = 0; i < req.body.activityVocab.length; i++) {
+         if (student.wordsSelected.includes(req.body.activityVocab[i])) {
+            index = student.wordsSelected.indexOf(req.body.activityVocab[i])
+            student.wordsSelected.splice(index, 1);
+            console.log("there was match")
+      }}
+      await student.save();
+      //const vocabWordId = new ObjectId(req.body.vocabWord);
+
+
+      /*let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
+      console.log(activities);
+      const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
+      console.log("selectedvocab");
+      console.log(selectedVocab)*/
+ 
+   } catch (error) {
+      console.log(error)
+   }
+
+   res.redirect("/student");
+}
+
+module.exports.reviewCustomActivity = async (req, res) => {
+   console.log("revewCustomActivity is running")
+};
+
+module.exports.reviewreviewByTopic = async (req, res) => {
+   console.log("reviewByTopic is running")
 };

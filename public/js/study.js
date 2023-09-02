@@ -451,18 +451,21 @@ let engine = {}
     };         
     
     engine.saveAndRedirect = async function(){
-        engine.sendResults();
-        const response = await fetch("/student", {method: 'GET'});
-    }
-    engine.sendResults = async function() {
-        console.log(engine.userReviewResults);
-        infoToSend = engine.userReviewResults;
-        const response = await fetch("/student/reviewResults", {method: 'POST',
-        headers: {"Content-Type": "application/json",},    
-            body: JSON.stringify({infoToSend: infoToSend}),
-    })
-    console.log(response)
-}
+        try {
+            console.log(engine.userReviewResults);
+            infoToSend = engine.userReviewResults;
+            const response = await fetch("/student/reviewResults", {method: 'POST',
+                headers: {"Content-Type": "application/json",},    
+                body: JSON.stringify({infoToSend: infoToSend}),
+            })
+            console.log('this is save and redirect response')
+            console.log(response)   
+            window.location = response.url;
+    } catch (error) {
+            console.log(error)
+        }
+    };
+    
             
 engine.createActivity();    
 
@@ -474,4 +477,4 @@ document.querySelector('#repeatThat').addEventListener('click', engine.repeatQue
 document.querySelector('#start').addEventListener('click', engine.introductions);
 document.querySelector('#select').addEventListener('click', engine.makeSelections)
 document.querySelector('#undo').addEventListener('click', engine.removeMistake);
-document.querySelector('#sendResults').addEventListener('click', engine.sendResults);
+document.querySelector('#sendResults').addEventListener('click', engine.saveAndRedirect);

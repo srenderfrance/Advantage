@@ -216,7 +216,7 @@ module.exports.postVocabWord = async (req, res, next) => {
 
 };
 
-module.exports.postVocabImage = async (req, res, next) => {
+module.exports.postVocabImage = async (req, res, next) => { //not being used
    try {
       // Upload image to cloudinary
       console.log(req.file)
@@ -246,7 +246,7 @@ module.exports.postVocabImage = async (req, res, next) => {
     res.render("cohortAdmin", {user: req.user, activities: activities}); //cohort is included in req.user! 
    };
 
-module.exports.postAudios = async (req, res, next) => {
+module.exports.postAudios = async (req, res, next) => {//not being used?
    console.log(req.body)
    console.log("req.body.vocabWord is");
    console.log(req.body.vocabWord);

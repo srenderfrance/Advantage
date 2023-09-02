@@ -9,7 +9,10 @@ router.get('/', ensureAuth, reviewController.getStudent);
 
 router.post('/reviewActivity', reviewController.reviewActivity);
 router.put('/getVocabList', reviewController.getVocabList);
+router.get('/getSelectedVocab', reviewController.getSelectedVocab);
+router.post('/createCustomActivity', reviewController.createCustomActivity);
 
 router.post('/reviewResults', reviewController.userReviewResults);
-
-module.exports = router;
+router.post('/reviewCustomActivty', reviewController.reviewCustomActivity);
+router.post('/reviewByTopic', reviewController.reviewreviewByTopic);
+module.exports = router

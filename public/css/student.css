@@ -13,20 +13,18 @@
     display: grid;
 }
 
+.vocabImage {
+  height: 210px;
+  width: 210px;
+  border: 3px solid black;
+  margin: 4px;
+}
 
 .selected {
   height: 240px;
   width: 240px;
   border: 6px solid black;
   margin: 4px;
-}
-
-.selectedImageContainer > div {
-  height: 210px;
-  width: 210px;
-  border: 3px solid black;
-  margin: 4px;
-  /*display: none*/
 }
 
 .vocabContainer {
@@ -61,4 +59,4 @@
 .section1 {
     display: flex;
     justify-content: space-around;
-}
+};
