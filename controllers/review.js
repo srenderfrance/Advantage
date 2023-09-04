@@ -16,7 +16,7 @@ module.exports.getStudent = async (req, res) => {
    const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
    console.log("selectedvocab");
    console.log(selectedVocab)
-   res.render("student",  {student: req.user, activities: activities, selectedVocab: selectedVocab});
+   res.render("student",  {student: req.user, activities: activities, selectedVocab: selectedVocab}); //selectedVocab is included in "student" ie req.user.wordsSelected. I need to rewrite the ejs to user that instead.
  };
 
  module.exports.getSelectedVocab = async (req, res) => {
@@ -40,7 +40,6 @@ module.exports.getStudent = async (req, res) => {
     const activity = await Activity.where('description').equals(req.body.activity);
 
     console.log(activity[0]._id)
-
     const vocabList = await VocabWord.find({activity: activity[0]._id});
 
     console.log(vocabList)
@@ -51,12 +50,33 @@ module.exports.getStudent = async (req, res) => {
 };
 
  module.exports.getVocabList = async (req, res) => {
-   console.log('this is getVocab')
-   console.log(req.body)
-   const activity = await Activity.where('description').equals(req.body.activity);   
-   const vocabList = await VocabWord.find({activity: activity[0]._id});
-   res.json({vocabList: vocabList});
-
+   try {
+      
+      console.log('this is getVocab')
+      console.log(req.body)
+     let vocabList; 
+     console.log(vocabList)
+      for (let i = 0; i < req.user.individualExercises.length; i++) {
+            if(req.body.activity === req.user.individualExercises[i].description) {
+               const vocabWords = req.user.individualExercises[i].vocabWords;
+               vocabList = await VocabWord.find({'_id': {$in: vocabWords}});
+            }   
+      }
+      console.log(vocabList);
+      console.log(typeof(vocabList))
+      if (typeof(vocabList) == 'object'){
+         console.log('this is vocabList')
+         console.log(vocabList);
+         res.json({vocabList: vocabList});
+      } else {
+         console.log("this the else")
+         const activity = await Activity.where('description').equals(req.body.activity);//need to add  .equals(req.user.cohort)   
+         vocabList = await VocabWord.find({activity: activity[0]._id});
+         res.json({vocabList: vocabList});
+      }
+   } catch (error) {
+      console.log(error)
+   }
 };
 
 module.exports.userReviewResults = async (req, res, next) => {
@@ -97,10 +117,18 @@ module.exports.userReviewResults = async (req, res, next) => {
    })
    console.log(student)
        //adds activity to has reviewed
-   if (student.hasReviewed.includes(reviewResults.activity) === false) {
-      student.hasReviewed.push(reviewResults.activity);
-   };
-   
+      let isCustomActivity = false
+      for (let i = 0; i < req.user.individualExercises.length; i++) {
+            if(reviewResults.activity === req.user.individualExercises[i].description) {
+               isCustomActivity = true
+      }}
+   if (isCustomActivity === false){   
+      await Activity.where()
+      if (student.hasReviewed.includes(reviewResults.activity) === false) {
+         student.hasReviewed.push(reviewResults.activity);
+      } else {console.log("I don't know what happened")}
+   } else {console.log(`Custom Activity Name is ${reviewResults.activity}`)};
+
    console.log(student);
    //need an if else for when there is nothing to save
 
@@ -130,7 +158,13 @@ module.exports.createCustomActivity = async (req, res) => {
             index = student.wordsSelected.indexOf(req.body.activityVocab[i])
             student.wordsSelected.splice(index, 1);
             console.log("there was match")
-      }}
+      }};
+
+      const newActivity = {description: req.body.activityName, vocabWords: req.body.activityVocab};
+
+      student.individualExercises.push(newActivity);
+      console.log(student.individualExercises)
+
       await student.save();
       //const vocabWordId = new ObjectId(req.body.vocabWord);
 
@@ -149,7 +183,23 @@ module.exports.createCustomActivity = async (req, res) => {
 }
 
 module.exports.reviewCustomActivity = async (req, res) => {
-   console.log("revewCustomActivity is running")
+   console.log("revewCustomActivity is running");
+   console.log(req.body);
+   console.log(req.body.activity);
+   const customActivity = req.body.activity;
+   let vocabArray
+   for (let i = 0; i < req.user.individualExercises.length; i++) {
+      if (customActivity === req.user.individualExercises[i].description)
+      vocabArray = req.user.individualExercises[i].vocabWords;   
+   }
+   console.log("this is vocabArray");
+   console.log(vocabArray);
+   const vocabList = await VocabWord.find({'_id': {$in: vocabArray}});
+   console.log(vocabList);
+
+    res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.activity});
+
+
 };
 
 module.exports.reviewreviewByTopic = async (req, res) => {

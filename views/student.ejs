@@ -47,11 +47,11 @@
                 </form>
             <form action="/student/reviewCustomActivity" method="POST">
                 <div class="container smallForm">
-                    <label for="custonAvtivities" class="secondaryLabel flex1">Custom Activities</label>
-                    <select name="custonAvtivities" id="activityName" required>
+                    <label for="customAvtivities" class="secondaryLabel flex1">Custom Activities</label>
+                    <select name="activity" id="activityName" required>
                         <option value="challengingWords">Challenging Words</option>
-                      <% for(let i=0; i < activities.length; i++) {%>   
-                        <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                      <% for(let i=0; i < student.individualExercises.length; i++) {%>   
+                        <option value="<%=student.individualExercises[i].description %>"><%= student.individualExercises[i].description %></option>
                     <% } %> 
                     </select>
                     <button type="submit" id="selectActivity">Select</button>

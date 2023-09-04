@@ -13,6 +13,6 @@ router.get('/getSelectedVocab', reviewController.getSelectedVocab);
 router.post('/createCustomActivity', reviewController.createCustomActivity);
 
 router.post('/reviewResults', reviewController.userReviewResults);
-router.post('/reviewCustomActivty', reviewController.reviewCustomActivity);
+router.post('/reviewCustomActivity', reviewController.reviewCustomActivity);
 router.post('/reviewByTopic', reviewController.reviewreviewByTopic);
 module.exports = router

@@ -93,7 +93,7 @@ let engine = {}
         'numberOfWords': 0,
         'numberOfReviews': 0
         };
-    engine.activityId = {},    
+    engine.activity = '',    
     
     engine.createActivity = async function(){
         try {
@@ -105,10 +105,14 @@ let engine = {}
             const data = await response.json();
             console.log(data)
             let vocabList = data.vocabList;
-            console.log('activity id')
-            console.log(vocabList[0]._id)
-            engine.activityId = vocabList[0].activity;
+            //console.log('activity id')
+            //console.log(vocabList[0]._id)
+            
+            engine.activity = activity;
+           
+            console.log(`activity is ${this.activity}`)
             console.log(vocabList); 
+            console.log(engine.theDozen.length)
             const diff = engine.theDozen.length - vocabList.length;
             console.log(`diff = ${diff}`);
             if(diff > 0) {
@@ -390,7 +394,7 @@ let engine = {}
         console.log('Activity is finished!')
         engine.userReviewResults.numberOfReviews++;
         engine.userReviewResults.numberOfWords = engine.theDozen.length;
-        engine.userReviewResults.activity = engine.activityId;
+        engine.userReviewResults.activity = engine.activity;
         let visualArray = engine.theDozen.map(element => element.visual)
         console.log(visualArray)
         visualArray.forEach(element => {
