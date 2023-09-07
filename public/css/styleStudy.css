@@ -45,9 +45,9 @@ header {
   justify-content: center;
 }
 #title {
-  
-  font-size: 2.5rem;
- 
+  margin-top: 1rem;
+  margin-bottom: .5rem;
+  font-size: 2.5rem; 
 }
 .vocabContainer,
 .controls {
@@ -56,13 +56,11 @@ header {
   justify-content: center;
 }
 
-.controlContainer{
-  padding: 1rem;
-}
 .controlContainer {
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2rem;
+  margin-bottom: .5rem;
 }
 .navFoot {
   display: flex;

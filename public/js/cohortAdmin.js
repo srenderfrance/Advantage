@@ -171,6 +171,7 @@ async function deleteVW () {
       headers: {"Content-Type": "application/json",},
       body: JSON.stringify({vocabWordId: selectedVWord._id}),
    });
+window.location = response.url;
 
 };
 

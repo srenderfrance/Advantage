@@ -14,5 +14,6 @@ router.post('/createCustomActivity', reviewController.createCustomActivity);
 
 router.post('/reviewResults', reviewController.userReviewResults);
 router.post('/reviewCustomActivity', reviewController.reviewCustomActivity);
-router.post('/reviewByTopic', reviewController.reviewreviewByTopic);
+router.post('/reviewByCategory', reviewController.reviewByCategory);
+router.post('/deleteCustomActivity', reviewController.deleteCustomActivity);
 module.exports = router

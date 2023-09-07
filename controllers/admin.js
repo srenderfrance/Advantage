@@ -423,12 +423,12 @@ module.exports.deleteVWord = async (req, res) => {
       if (vocabWord.cloudinaryIdImage !== ""){
          const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdImage);
       };
-      const res = await VocabWord.deleteOne({ _id: vocabWord._id });
-      console.log(res)
-      res.redirect("/admin")
+      const response = await VocabWord.deleteOne({ _id: vocabWord._id });
+      console.log(response)
+      
    } catch (error) {
       console.log(error)
 };
-
+   res.redirect("/admin");
 
 };

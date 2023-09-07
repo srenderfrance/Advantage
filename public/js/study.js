@@ -86,14 +86,17 @@ let engine = {}
     engine.questionList = [];
     engine.currentQuestion = engine.questionList[0]; //The vocabword that is the correct answer to the most recent question.
     engine.lastTwo = [engine.introduced[0], engine.introduced[1]];
+    engine.vocabList =[];
     engine.userReviewResults = { //Results to be sent back to the server/DB.
         'activity': '',
         'mistakes': [],
         'wordsSelected': [],
         'numberOfWords': 0,
-        'numberOfReviews': 0
-        };
-    engine.activity = '',    
+        'numberOfReviews': 0,
+        'vocabList': [],
+    };
+    engine.activity = '',
+    engine.wasReview = false,
     
     engine.createActivity = async function(){
         try {
@@ -104,16 +107,16 @@ let engine = {}
                     });
             const data = await response.json();
             console.log(data)
-            let vocabList = data.vocabList;
+            engine.vocabList = data.vocabList;
             //console.log('activity id')
             //console.log(vocabList[0]._id)
             
             engine.activity = activity;
            
             console.log(`activity is ${this.activity}`)
-            console.log(vocabList); 
+            console.log(engine.vocabList); 
             console.log(engine.theDozen.length)
-            const diff = engine.theDozen.length - vocabList.length;
+            const diff = engine.theDozen.length - engine.vocabList.length;
             console.log(`diff = ${diff}`);
             if(diff > 0) {
                 for (let index = 0; index < diff; index++) {
@@ -122,7 +125,7 @@ let engine = {}
                 }
             }    
            for (let i = 0; i < engine.theDozen.length; i++) {
-                engine.theDozen[i]._id = vocabList[i]._id; 
+                engine.theDozen[i]._id = engine.vocabList[i]._id; 
                 }
             document.getElementById('review').disabled = false;  
             document.getElementById('start').disabled = false;
@@ -167,7 +170,7 @@ let engine = {}
         document.getElementById('undo'),disabled = true;
         document.getElementById('showAll').disabled = true;
         document.querySelector('#repeatThat').disabled = false;
-
+        engine.wasReview = false;
 
         let visualArray = engine.theDozen.map(element => element.visual);
         visualArray.forEach(element => {
@@ -304,7 +307,7 @@ let engine = {}
         document.getElementById('select').disabled = true;
         document.getElementById('undo'),disabled = true;
         document.getElementById('showAll').disabled = true;
-
+        engine.wasReview = true;
         let visualArray = engine.theDozen.map(element => element.visual);
         visualArray.forEach(element => {
             element.removeEventListener('click', engine.simpleIntro);
@@ -392,20 +395,28 @@ let engine = {}
         document.getElementById('end').classList.add('end');
         
         console.log('Activity is finished!')
-        engine.userReviewResults.numberOfReviews++;
-        engine.userReviewResults.numberOfWords = engine.theDozen.length;
-        engine.userReviewResults.activity = engine.activity;
-        let visualArray = engine.theDozen.map(element => element.visual)
-        console.log(visualArray)
-        visualArray.forEach(element => {
-            element.removeEventListener('click', engine.evaluateResponse);
-            element.addEventListener('click', engine.simpleIntro);
-        });
-        document.querySelector('#repeatThat').disabled = true;
-        document.getElementById('review').disabled = false;
-        document.getElementById('select').disabled = false;  
-        document.getElementById('addSelection').disabled = true; 
-        };     
+        if (engine.wasReview === true){
+            let vocabArray = engine.userReviewResults.mistakes;
+            console.log("vocabArray");
+            console.log(vocabArray);
+            engine.userReviewResults.mistakes = [...new Set(vocabArray)];
+            console.log("new set array")
+            console.log(engine.userReviewResults.mistakes);
+            engine.userReviewResults.numberOfReviews++};
+            engine.userReviewResults.numberOfWords = engine.theDozen.length;
+            engine.userReviewResults.activity = engine.activity;
+            engine.userReviewResults.vocabList = engine.vocabList;
+            let visualArray = engine.theDozen.map(element => element.visual)
+            console.log(visualArray)
+            visualArray.forEach(element => {
+                element.removeEventListener('click', engine.evaluateResponse);
+                element.addEventListener('click', engine.simpleIntro);
+            });
+            document.querySelector('#repeatThat').disabled = true;
+            document.getElementById('review').disabled = false;
+            document.getElementById('select').disabled = false;  
+            document.getElementById('addSelection').disabled = true; 
+            };     
     engine.selectWord = function(Event){
         engine.makeVisibleAll();
         engine.theDozen.forEach(element => {

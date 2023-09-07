@@ -57,21 +57,49 @@ function selectWord (Event) {
 };
 
 async function createCustomActivity () {
-try {
-    const activityName = document.querySelector('#activity').value
-    console.log(activityName)
-    const response = await fetch("/student/createCustomActivity", {method: 'POST',
-        headers: {"Content-Type": "application/json",},    
+    try {
+        const activityName = document.querySelector('#activity').value;
+        //console.log(activityName)
+        const response = await fetch("/student/createCustomActivity", {method: 'POST',
+            headers: {"Content-Type": "application/json",},    
             body: JSON.stringify({activityName: activityName, activityVocab: newActivity}),
-    })
-    console.log(response)
-    window.location = response.url;
+        })
+        //console.log(response);
+        window.location = response.url;
+    } catch (error) {
+        console.log(error);
+}};
+
+async function reviewByTopic () {
+    try {
+        const topic = document.querySelector('#subjectToReview').value;
+        console.log(topic);
+
+        const response = await fetch('student/reviewByTopic', {method: 'POST',
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify({topic: topic}),
+    });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+async function deleteCustomAtivity () {
+    try {
     
-} catch (error) {
-    console.log(error)
-}
-}
+    const activityToDelete = document.querySelector('#activityToDelete').value;
+    const response = await fetch('student/deleteCustomActivity', {method: 'POST',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({activityToDelete: activityToDelete}),
+    });
+    window.location = response.url;
+    } catch (error) {
+        console.log(error)
+    }
+   }
 
 getSelectedVocab();
 
-document.querySelector('#newActivity').addEventListener('click', createCustomActivity)
+document.querySelector('#newActivity').addEventListener('click', createCustomActivity);
+document.querySelector('#selectByTopic').addEventListener('click', reviewByTopic);
+document.querySelector('#deleteCustomActivity').addEventListener('click', deleteCustomAtivity);

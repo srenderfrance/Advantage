@@ -46,6 +46,10 @@ const UserSchema = new mongoose.Schema({
         type:Array,
         default:[],
     },
+    wordsReviewed: {
+        type:Array,
+        default:[],
+    },
     adminLevel: {
         type: Number,
         default: 0,

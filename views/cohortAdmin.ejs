@@ -40,7 +40,7 @@
         <div class="container gridContainer" id="uploadContainer">
             <div class="container flexColumn">
                 <div class="gridContainer" >
-                    <label for="vocabWord" class="primaryLabel">Description:</label>
+                    <label for="newVocabWord" class="primaryLabel">Description:</label>
                     <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or phrase">
                 </div>
                 <div class="gridContainer">
@@ -70,21 +70,21 @@
                 <div class="gridContainer">
                     <div class="uploadBlock">
                         <label for="vocabWordUF" class="hidden"></label>
-                        <input type="text" class="vocabWordUF hidden" name="vocabWord">
+                        <input type="text" id="vocabWordUF" class="vocabWordUF hidden" name="vocabWord">
                         <label for="audioT">Vocab Word Introduction Audio</label>
-                        <input type="file" class="uploadInput" value="audioTis" name="audioTis">
+                        <input type="file" id="audioT" class="uploadInput" value="audioTis" name="audioTis">
                     </div>
                 </div>
                 <div class="gridContainer">
                     <div class="uploadBlock">
                         <label for="audioQ">Question Audio</label>
-                        <input type="file" class="uploadInput" value="audioQ" name="audioQ">
+                        <input type="file" id="audioQ" class="uploadInput" value="audioQ" name="audioQ">
                     </div>
                 </div>
                 <div class="gridContainer">    
                     <div class="uploadBlock">
                         <label for="audioN">The Correction Audio</label>
-                        <input type="file" class="uploadInput" value="audioN" name="audioN">  
+                        <input type="file" id="audioN" class="uploadInput" value="audioN" name="audioN">  
                     </div>
                 </div>  
             </div>
@@ -132,12 +132,12 @@
             </div>
                 <div class="flex">
                     <div>
-                        <label for="vocabWord" class="primaryLabel">Description:</label>
+                        <label for="newVWDescription" class="primaryLabel">Description:</label>
                         <input type="text" id="newVWDescription" name="description" placeholder="Enter New Description">
                         <button type="button" class="deleteButton" id="changeVWDescription">Change Descritption</button>
                     </div>
                     <div>
-                        <label for="category" class="primaryLabel">Category</label>
+                        <label for="newVWCategory" class="primaryLabel">Category</label>
                         <select name="category" id="newVWCategory" class="selection" required> 
                             <option value="animal">Animal</option>
                             <option value="food">Food</option>
