@@ -1,9 +1,10 @@
-const passport = require("passport");
-const validator = require("validator");
-const User = require("../models/user");
-const Cohort = require("../models/cohort");
-const Activity = require("../models/activity");
-const PreReg = require("../models/preReg");
+const passport = require('passport');
+const validator = require('validator');
+const User = require('../models/user');
+const Cohort = require('../models/cohort');
+const Activity = require('../models/activity');
+const PreReg = require('../models/preReg');
+const Category = require('../models/category')
 
 //let adminCohortExport = {}
 module.exports.getLogin = (req, res) => {
@@ -65,8 +66,9 @@ module.exports.getCohortAdmin = async (req, res) => {
   console.log('Get Cohort Admin Running')
   const activities = await Activity.find({cohort: req.user.cohort})
   console.log(activities);
-  console.log(req.user)
-  res.render("cohortAdmin",{ user: req.user, activities: activities });
+  console.log(req.user);
+  const categories = await Category.find({});
+  res.render("cohortAdmin",{ user: req.user, activities: activities, categories: categories});
 };
 
 module.exports.postRegister = async (req, res, next) => {

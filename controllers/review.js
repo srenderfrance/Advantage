@@ -1,25 +1,32 @@
-const passport = require("passport");
-const { default: mongoose } = require("mongoose");
-const validator = require("validator");
+const passport = require('passport');
+const { default: mongoose } = require('mongoose');
+const validator = require('validator');
 const Cohort = require('../models/cohort');
 const VocabWord = require('../models/vocabWord');
-const User = require("../models/user");
-const Activity = require("../models/activity");
-const cloudinary = require("../middleware/cloudinary");
+const User = require('../models/user');
+const Activity = require('../models/activity');
+const Category = require('../models/category');
+const cloudinary = require('../middleware/cloudinary');
 const ObjectId = require('mongodb').ObjectId;
 
 
 module.exports.getStudent = async (req, res) => {
-   console.log('get Student is running')
-   let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-   //console.log(activities);
-   const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
-   console.log("selectedvocab");
-   console.log(selectedVocab)
-   res.render("student",  {student: req.user, activities: activities, selectedVocab: selectedVocab}); //selectedVocab is included in "student" ie req.user.wordsSelected. I need to rewrite the ejs to user that instead.
- };
+   try {
+      console.log('get Student is running')
+      let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
+      //console.log(activities);
+      const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
+      console.log("selectedvocab");
+      console.log(selectedVocab)
+      const categories = await Category.find({});
+      res.render("student",  {student: req.user, activities: activities, selectedVocab: selectedVocab, categories: categories}); //selectedVocab is included in "student" ie req.user.wordsSelected. I need to rewrite the ejs to user that instead.
+   } catch (error) {
+      console.log(error);
 
- module.exports.getSelectedVocab = async (req, res) => {
+   }
+};
+
+module.exports.getSelectedVocab = async (req, res) => {
    try {  
       console.log("Get Selected Vocab is running") 
       const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
@@ -28,34 +35,41 @@ module.exports.getStudent = async (req, res) => {
       //console.log(selectedVocab);
 
    } catch (error) {
-     console.log(error) 
-   }
+     console.log(error); 
+   };
+};
 
- }
  module.exports.reviewActivity = async (req, res, next) => {
-
-    console.log(req.body);
-    console.log(req.body.activity);
-
-    const activity = await Activity.where('description').equals(req.body.activity).where('cohort').equals(req.user.cohort);
-
-    console.log(activity[0]._id)
-    const vocabList = await VocabWord.find({activity: activity[0]._id});
-
-    console.log(vocabList)
-    console.log(vocabList.length)
-    console.log(vocabList[0].audioN);
-
-    res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.activity});
+   try {
+      //console.log(req.body);
+      console.log(req.body.activity);
+      const activity = await Activity.where('description').equals(req.body.activity).where('cohort').equals(req.user.cohort);
+      console.log(activity[0]._id)
+      const vocabList = await VocabWord.find({activity: activity[0]._id});
+      console.log(vocabList)
+      console.log(vocabList.length)
+      //console.log(vocabList[0].audioN);
+      const student = await User.findById(req.user._id);
+      console.log(student.currentVocabList)
+      student.currentVocabList = vocabList;
+      await student.save();
+      res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.activity});
+   } catch (error) {
+      console.log(error);
+   };
 };
 
  module.exports.getVocabList = async (req, res) => {
    try {
-      
-      console.log('this is getVocab')
-      console.log(req.body)
-     let vocabList; 
-     console.log(vocabList)
+      console.log('this is getVocab');
+      console.log(req.user.currentVocabList);
+      const vocabList = req.user.currentVocabList;
+      console.log(vocabList);
+      res.json({vocabList: vocabList});
+ 
+      /*console.log(req.body)
+      let vocabList; 
+      console.log(vocabList)
       for (let i = 0; i < req.user.individualExercises.length; i++) {
             if(req.body.activity === req.user.individualExercises[i].description) {
                const vocabWords = req.user.individualExercises[i].vocabWords;
@@ -89,49 +103,71 @@ module.exports.getStudent = async (req, res) => {
          console.log(activity)
          vocabList = await VocabWord.find({activity: activity[0]._id});
          res.json({vocabList: vocabList});
-      }
+      }*/
    } catch (error) {
-      console.log(error)
-   }
+      console.log(error);
+   };
 };
 
 module.exports.userReviewResults = async (req, res, next) => {
    try {   
       console.log("Processing userReviewResults!!!")
+      let student = await User.findById(req.user._id);
+      //console.log(student);
+
+      let activity;
       let reviewResults = req.body.infoToSend;
       let isCustomActivity = false
       for (let i = 0; i < req.user.individualExercises.length; i++) {
          if(reviewResults.activity === req.user.individualExercises[i].description) {
             isCustomActivity = true;
       }};
-      const activity = await Activity.where('description').equals(reviewResults.activity).where('cohort').equals(req.user.cohort);
-      console.log("Returned activity is:");
-      console.log(activity);
-         //console.log('reviewResults');
-         //console.log(reviewResults);
-         //console.log('vocabList from excercise');
-         //console.log(reviewResults.vocabList);
-   
-      let student = await User.findById(req.user._id);
-      //console.log(student);
+      let categories = await Category.find({});
+      let isReviewByCategory = false;
+      console.log("NEW Categories!!");
+      console.log(categories);
+      console.log("Review Results Activity")
+      console.log(reviewResults.activity)
+      for (let i = 0; i < categories.length; i++) {
+         if(reviewResults.activity === categories[i].category){
+            console.log(categories[i].category)
+            isReviewByCategory = true;
+         }}
+         if (reviewResults.activity === 'All'){
+            isReviewByCategory = true;
+         };
 
-//adds stats to reviewStats
+         console.log("Review By Category")
+         console.log(isReviewByCategory)
       //console.log(`total words: ${student.totalWords}`);
       //console.log(`total reviews: ${student.totalReviews}`);
-     console.log("reviewResults.Activity");
-     console.log(reviewResults.activity)
-     console.log("Not Challenging Words?");
-     console.log(reviewResults.activity !== "Challenging Words");
-     console.log("Not ReviewByCategory?");
-     console.log(reviewResults.acitvity !== "reviewByCategory");
+      console.log("reviewResults.Activity");
+      console.log(reviewResults.activity)
+      console.log("Not Challenging Words?");
+      console.log(reviewResults.activity !== "Challenging Words");
+     
+      if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false){   
+         console.log('Has Reviewed included?');
 
-      if (student.hasReviewed.includes(activity[0]._id) === false && reviewResults.activity !== "Challenging Words" && reviewResults.acitvity !== "reviewByCategory") {
+         activity = await Activity.where('description').equals(reviewResults.activity).where('cohort').equals(req.user.cohort);
+         console.log("Returned activity is:");
+         console.log(activity);
+      //adds stats to reviewStats
+     
+      if (student.hasReviewed.includes(activity[0]._id) === false) {
          student.totalWords = student.totalWords + reviewResults.numberOfWords;
-      };
+      }};
       student.totalReviews = student.totalReviews + reviewResults.numberOfReviews;
       
       console.log(`total words: ${student.totalWords}`);
-      console.log(`total reviews: ${student.totalReviews}`);     
+      console.log(`total reviews: ${student.totalReviews}`);
+      //console.log('reviewResults');
+      //console.log(reviewResults);
+      //console.log('vocabList from excercise');
+      //console.log(reviewResults.vocabList);
+         
+      
+     
 
 //updates wordsReviewed
       //console.log('wordsReviewed');
@@ -152,14 +188,16 @@ module.exports.userReviewResults = async (req, res, next) => {
       };
       student.markModified('wordsReviewed');
 
-      if (student.hasReviewed.includes(activity[0]._id) === false && reviewResults.activity !== "Challenging Words" && reviewResults.acitvity !== "reviewByCategory") {
+      if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false) {
+         if (student.hasReviewed.includes(activity[0]._id) === false ){
          for (let i = 0; i < reviewResults.vocabList.length; i++){
             let wordObject = {
                "_id": reviewResults.vocabList[i]._id,
                "category": reviewResults.vocabList[i].category,
                "totalReviews": reviewResults.numberOfReviews,
             };
-            student.wordsReviewed.push(wordObject)   
+            student.wordsReviewed.push(wordObject)
+         }  
       }};
 
       //console.log('wordsReviewed');
@@ -221,7 +259,7 @@ module.exports.userReviewResults = async (req, res, next) => {
    console.log(student)
        //adds activity to has reviewed
   
-   if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && reviewResults.activity !== "reviewByCategory"){   
+   if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false){   
       console.log("ActivityToAdd")
       console.log(activity)
       console.log(student.hasReviewed.includes(activity[0]._id))
@@ -243,9 +281,6 @@ module.exports.userReviewResults = async (req, res, next) => {
    } catch (error) {
       console.log(error);
    };
-    //  let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-   
-
 };
 
 module.exports.createCustomActivity = async (req, res) => {
@@ -281,11 +316,10 @@ module.exports.createCustomActivity = async (req, res) => {
       console.log(selectedVocab)*/
  
    } catch (error) {
-      console.log(error)
-   }
-
+      console.log(error);
+   };
    res.redirect("/student");
-}
+};
 
 module.exports.reviewCustomActivity = async (req, res) => {
    try {
@@ -321,55 +355,105 @@ module.exports.reviewCustomActivity = async (req, res) => {
    console.log(vocabArray);
    const vocabList = await VocabWord.find({'_id': {$in: vocabArray}});
    console.log(vocabList);
+   const student = await User.findById(req.user._id);
+   student.currentVocabList = vocabList;
+   await student.save();
    res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.activity});
    } catch (error) {
       console.log(error);
-   }
-
+   };
 };
 
 module.exports.reviewByCategory = async (req, res) => {
-   console.log("reviewByTopic is running")
-   console.log(req.body);
-   console.log(req.body.categoryToReview);
-   const category = req.body.categoryToReview;
-   
-   let vocab = req.user.wordsReviewed;
-   let vocabArray = [];
+   try {
+      console.log("reviewByTopic is running")
+      console.log(req.body);
+      console.log(req.body.categoryToReview);
+      const category = req.body.categoryToReview;
+      
+      let vocab = req.user.wordsReviewed;
+      let vocabArray = [];
+      makeRandomIndex = function(arr) {
+         return Math.floor(Math.random() * arr.length)
+      };
 
-if (category !== 'all') {
-      for (let i = 0; i < vocab.length; i++) {
-         if (vocab[i].category === category){
-            vocabArray.push(vocab[i])
-      }};
-   } else if (category === 'all') {
-      vocabArray = vocab;
-   } else {
-      console.log('Selected Category was not found. Something is wrong!') //This should turn into an alert or something....
+      makeRandomElement = function(arr) { //randomly removes an element from an array then returns that element
+         let newArray = arr.splice(makeRandomIndex(arr), 1);
+         return newArray[0]
+      };
+      shuffleArray = function(arr, length) { //l = will be the length of new array.
+         let newArray = [];
+         for (let i = 0; i < length; i++){
+             let randomElement = makeRandomElement(arr);
+             newArray.push(randomElement)
+         };
+         return newArray;
+      };
+
+      if (category !== 'All') {
+         for (let i = 0; i < vocab.length; i++) {
+            if (vocab[i].category === category){
+               vocabArray.push(vocab[i])
+         }};
+      } else if (category === 'All') {
+         vocabArray = vocab;
+      } else {
+         console.log('Selected Category was not found. Something is wrong!') //This should turn into an alert or something....
+      };
+      console.log("Array before sort");
+      console.log(vocabArray);
+      if (vocabArray === undefined ||vocabArray.length < 5){
+         console.log("Less than 5 vocab words were found.");
+         res.redirect("/student");
+      } else {
+         vocabArray.sort((a, b) => {
+            return a.totalReviews - b.totalReviews;
+         });
+
+         console.log("Array after sort");
+         console.log(vocabArray);
+//sellect the lest reviewed group of vwords that includes at least 12 words
+         let workingArray = [];
+         console.log(workingArray.length);
+         console.log(workingArray.length < 12);
+         let x = 1;
+         if (vocabArray.length > 12) {
+            console.log('step 1')
+            while (workingArray.length < 12) {
+               console.log("Your WHILE loop is running!")
+               vocabArray.forEach(e => {
+                  if (e.totalReviews === x){
+                     console.log(e.totalReviews);
+                     workingArray.push(e);
+               }});
+            x++;
+            console.log(`x is ${x}`)
+            };
+
+         
+         vocabArray = shuffleArray(workingArray, 12);
+         console.log('vocabArray after shuffle')
+         console.log(vocabArray.length);
+         console.log(vocabArray);
+         };
+
+         let vocabArray2 = vocabArray.map((x) => x = x._id);
+         console.log("maped array");
+         console.log(vocabArray2);
+
+         vocabArray = await VocabWord.find({'_id': {$in: vocabArray2}});
+
+         const vocabList = shuffleArray(vocabArray, 12);
+         const student = await User.findById(req.user._id);
+         student.currentVocabList = vocabList; 
+         await student.save();
+         
+      res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.categoryToReview});
+      };
+
+   } catch (error) {
+     console.log(error); 
    };
-   console.log("Array before sort");
-   console.log(vocabArray);
-
-   vocabArray.sort((a, b) => {
-      return a.totalReviews - b.totalReviews;
-   });
-
-   console.log("Array after sort");
-   console.log(vocabArray);
-
-   let toRemove = vocabArray.length - 12;
-   console.log(toRemove);
-   vocabArray.splice(11, toRemove);
-   console.log(`New length: ${vocabArray.length}`);
-
-   let vocabArray2 = vocabArray.map((x) => x = x._id);
-   console.log("maped array");
-   console.log(vocabArray2);
-   
-   const vocabList = await VocabWord.find({'_id': {$in: vocabArray2}});
-   
-
-
 };
 
 module.exports.deleteCustomActivity = async (req, res) => {
@@ -390,4 +474,4 @@ module.exports.deleteCustomActivity = async (req, res) => {
    console.log(error);      
    }
 res.redirect("/student");
-}
+};

@@ -8,6 +8,8 @@ const Activity = require("../models/activity");
 const cloudinary = require("../middleware/cloudinary");
 const PreReg = require("../models/preReg");
 const ObjectId = require('mongodb').ObjectId;
+const Category = require('../models/category');
+
 
 module.exports.postCohort = async (req, res, next) => {
    console.log(req.body)

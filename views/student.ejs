@@ -58,22 +58,14 @@
                     <button type="submit" id="selectActivity">Select</button>
                 </div>
             </form>
-            <form action="/student/reviewByTopic" method="POST">
+            <form action="/student/reviewByCategory" method="POST">
                 <div class="container smallForm">
-                    <label for="categoryToReview" class="secondaryLabel flex1">Topic Review</label>
+                    <label for="categoryToReview" class="secondaryLabel flex1">Category Review</label>
                     <select name="categoryToReview" id="categoryToReview" required>
-                        <option value =all>All</option>
-                        <option value="animal">Animal</option>
-                         <option value="plant">Plant</option>
-                         <option value="bodyPart">Body Part</option>
-                         <option value="thing">Thing</option>
-                         <option value="place">Place</option>
-                         <option value="emotion/Feeling">Emotion/Feeling</option>
-                         <option value="verb">Verb</option>
-                         <option value="pronoun">Pronoun</option>
-                         <option value="adjective/Adverb">Adjective/Adverb</option>
-                         <option value="lexicarry">Lexicarry</option>
-                         <option value="Other">Other</option>
+                        <option value="All">Review All</option>
+                    <% for(let i=0; i < categories.length; i++) {%>
+                        <option value="<%=categories[i].category %>"><%= categories[i].category %></option>  
+                    <% } %>
                     </select>
                     <button type="submit" id="selectByTopic">Select</button>
                 </div>

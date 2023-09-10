@@ -61,7 +61,11 @@ const UserSchema = new mongoose.Schema({
     totalWords: {
         type: Number,
         default: 0
-    }
+    },
+    currentVocabList: {
+        type: Array,
+        default: []
+    },
 })
 
 const User = mongoose.model('User', UserSchema);

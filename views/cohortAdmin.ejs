@@ -46,17 +46,9 @@
                 <div class="gridContainer">
                     <label for="category" class="primaryLabel">Category</label>
                     <select name="category" id="category" class="selection" required>
-                        <option value="animal">Animal</option>
-                        <option value="food">Food</option>
-                        <option value="bodyPart">Body Part</option>
-                        <option value="thing">Thing</option>
-                        <option value="place">Place</option>
-                        <option value="emotion/Feeling">Emotion/Feeling</option>
-                        <option value="verb">Verb</option>
-                        <option value="pronoun">Pronoun</option>
-                        <option value="adjective/Adverb">Adjective/Adverb</option>
-                        <option value="lexicarry">Lexicarry</option>
-                        <option value="Other">Other</option>
+                    <% for(let i=0; i < categories.length; i++) {%>
+                        <option value="<%=categories[i].category %>"><%= categories[i].category %></option>  
+                    <% } %>
                     </select>
                 </div>
                 <div class="gridContainer">
@@ -138,19 +130,11 @@
                     </div>
                     <div>
                         <label for="newVWCategory" class="primaryLabel">Category</label>
-                        <select name="category" id="newVWCategory" class="selection" required> 
-                            <option value="animal">Animal</option>
-                            <option value="food">Food</option>
-                            <option value="bodyPart">Body Part</option>
-                            <option value="thing">Thing</option>
-                            <option value="place">Place</option>
-                            <option value="emotion/Feeling">Emotion/Feeling</option>
-                            <option value="verb">Verb</option>
-                            <option value="pronoun">Pronoun</option>
-                            <option value="adjective/Adverb">Adjective/Adverb</option>
-                            <option value="lexicarry">Lexicarry</option>
-                            <option value="Other">Other</option>
-                        </select> 
+                        <select name="category" id="newVWCategory" class="selection" required>
+                            <% for(let i=0; i < categories.length; i++) {%>
+                                <option value="<%=categories[i].category %>"><%= categories[i].category %></option>  
+                            <% } %>
+                       </select> 
                         <button type="button" id="changeVWCategory" class="deleteButton">Change Category</button>
                     </div>
                 </div>
