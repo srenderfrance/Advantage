@@ -73,6 +73,10 @@ module.exports.getCohortAdmin = async (req, res) => {
 
 module.exports.postRegister = async (req, res, next) => {
   console.log(req.body)
+
+  try {
+  
+  
   const user = await User.create({
 
       username: req.body.username,
@@ -98,7 +102,8 @@ module.exports.postRegister = async (req, res, next) => {
         return next(err);
       } else
       
-      res.render("student", { student: req.user, activities: activities });
+      res.redirect("/student");
+
     });
  (req, res, next);
     console.log("You should be logged in...")
@@ -115,6 +120,11 @@ module.exports.postRegister = async (req, res, next) => {
   console.log(studentObject);
     cohort.students.push(studentObject);
     await cohort.save(); //add try/catch for errors  
+} catch (error) {
+  console.log ('There was an error')
+  console.log(error)
+  res.redirect('/register')   
+  }
 };
 
 module.exports.postLogin = async (req, res, next) => {
@@ -128,7 +138,7 @@ module.exports.postLogin = async (req, res, next) => {
       if (err) {
         return next(err);
       }
-      let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
+      //let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
       res.redirect("/student") /*, { student: req.user, activities: activities});//need to make this a redirect it may cause resubmission of form
     */ });
  (req, res, next);
@@ -137,3 +147,17 @@ module.exports.postLogin = async (req, res, next) => {
  } else{console.log("did't work")};
  };
 
+module.exports.checkUsername = async (req, res) => {
+  try {
+    let isUsed;
+    const username = req.body.username;
+    const result = await User.exists({username: username});
+    if (result !== null){
+      isUsed = true;
+    } else {isUsed = false};
+    console.log(isUsed);
+    res.json({isUsed: isUsed});
+  } catch (error) {
+    console.log(error);
+  };
+}

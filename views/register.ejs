@@ -3,6 +3,7 @@
     <!-- external CSS link -->
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/styleRegister.css">
 	
 	
 </head>
@@ -31,8 +32,8 @@
             <input type="text" id="password" name="password" required>
         </div>
         <div class="registrationSubgrid">   
-            <label for="password" class="primaryLabel">Confirm Password</label>
-            <input type="text" id="password" name="confirmPassword" required>
+            <label for="confirmPassword" class="primaryLabel">Confirm Password</label>
+            <input type="text" id="confirmPassword" name="confirmPassword" required>
         </div>       
         <div class="registrationSubgrid">
             <label for="firstName" class="primaryLabel">First Name</label>
@@ -44,17 +45,24 @@
         </div>
        <div class="registrationSubgrid">    
             <label for="email" class="primaryLabel">Email</label>
-            <input type="text" id="email" name="email" required>
+            <input type="email" id="email" name="email" required>
         </div> 
         <div class="registrationSubgrid">
             <label for="nativeLanguage" class="primaryLabel">Native Languages</label>
             <input type="text" id="nativeLanguage" name="nativeLanguage" required>
         </div>
     </div>
-    <button type="submit">Register</button>
+    <div class="submitContainer">
+        <button id="submitReg" type="submit">Register</button>
+    </div>
 </form>
-<div class="navButtons">
+
+<div class="navButtons" id="registrationNav">
+    <h4>Or return to Login Page</h4>
     <button onclick="window.location.href ='/';" class="navButton">Login</button>
 </div>
+
+<script type="text/javascript" src="/js/register.js"></script>
+
 
 </body>

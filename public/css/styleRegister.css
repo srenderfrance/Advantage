@@ -1,0 +1,35 @@
+
+
+.submitContainer {
+    display: flex;
+    justify-content: end;
+    padding-right: 2rem;
+}
+
+#registrationNav {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    padding-right: 2rem;
+}
+
+h4 {
+    margin: 0;
+    padding-top: 2rem;
+}
+
+.registrationSubGrid {
+    padding-top: 1rem;
+}
+
+.registrationForm {
+    padding-right: 2rem;
+}
+
+#submitReg {
+    margin-right: 0;
+}
+
+.navButton {
+    margin-right: 0;
+}

@@ -10,6 +10,7 @@ router.post("/", authController.postLogin);
 router.post("/preRegister", authController.postPreRegister);
 router.get("/register", authController.getRegister);
 router.post("/register", authController.postRegister);
+router.post("/checkUsername", authController.checkUsername);
 
 router.get("/logout", authController.logout);
 

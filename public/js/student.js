@@ -7,12 +7,12 @@ async function getSelectedVocab () {
     try {
         console.log('Get Sected Vocab is running')
         const response = await fetch("/student/getSelectedVocab", {method: 'GET',
-            headers: {"Accetp": "application/json",},
-                    });
-            const data = await response.json();
-            selectedVocab = data.selectedVocab;
-            //console.log(selectedVocab);
-            //console.log(selectedVocab.length)
+            headers: {"Accept": "application/json",},
+        });
+        const data = await response.json();
+        selectedVocab = data.selectedVocab;
+        //console.log(selectedVocab);
+        //console.log(selectedVocab.length)
     for (let i = 0; i < selectedVocab.length; i++) {
         let id = `#A${1+i}`
         //console.log(id);
