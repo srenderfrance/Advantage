@@ -94,6 +94,7 @@ let engine = {}
         'numberOfWords': 0,
         'numberOfReviews': 0,
         'vocabList': [],
+        'wasReview': true
     };
     engine.activity = '',
     engine.wasReview = false,
@@ -406,6 +407,7 @@ let engine = {}
             engine.userReviewResults.numberOfWords = engine.theDozen.length;
             engine.userReviewResults.activity = engine.activity;
             engine.userReviewResults.vocabList = engine.vocabList;
+            engine.userReviewResults.wasReview = engine.wasReview;
             let visualArray = engine.theDozen.map(element => element.visual)
             console.log(visualArray)
             visualArray.forEach(element => {

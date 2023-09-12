@@ -154,11 +154,12 @@ module.exports.userReviewResults = async (req, res, next) => {
          console.log(activity);
       //adds stats to reviewStats
      
-      if (student.hasReviewed.includes(activity[0]._id) === false) {
+      if (student.hasReviewed.includes(activity[0]._id) === false && reviewResults.wasReview === true) {
          student.totalWords = student.totalWords + reviewResults.numberOfWords;
       }};
+      if(reviewResults.wasReview === true){
       student.totalReviews = student.totalReviews + reviewResults.numberOfReviews;
-      
+      };
       console.log(`total words: ${student.totalWords}`);
       console.log(`total reviews: ${student.totalReviews}`);
       //console.log('reviewResults');
@@ -175,7 +176,7 @@ module.exports.userReviewResults = async (req, res, next) => {
       
       for (let i = 0; i < student.wordsReviewed.length; i++) {
          for (let i2 = 0; i2 < reviewResults.vocabList.length; i2++){
-         if (student.wordsReviewed[i]._id === reviewResults.vocabList[i2]._id){ //this is not working
+         if (student.wordsReviewed[i]._id === reviewResults.vocabList[i2]._id && reviewResults.wasReview === true){ //this is not working
             console.log("wordsRevies[i].total reviews")
             console.log(student.wordsReviewed[i].totalReviews);
             console.log(reviewResults.numberOfReviews);
@@ -259,7 +260,7 @@ module.exports.userReviewResults = async (req, res, next) => {
    console.log(student)
        //adds activity to has reviewed
   
-   if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false){   
+   if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false && reviewResults.wasReview === true){   
       console.log("ActivityToAdd")
       console.log(activity)
       console.log(student.hasReviewed.includes(activity[0]._id))

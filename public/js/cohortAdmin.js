@@ -72,15 +72,24 @@ function loadPreview() {
    vocabList.forEach((vw) => {
       if (vw.description === vocabWord){
          image.src = vw.imageUrl;
+         console.log('audioTis')
+         console.log(vw.audioTis)
          audioTis.src = vw.audioTis;
-         audioQ.src = vw.audioQ;
-         audioN.src = vw.audioN;
+         console.log('audioQ')
+         console.log(vw.audioQ)
+         audioQPreview.src = vw.audioQ;
+         console.log(audioQPreview.src)
          description.innerText = `Description: ${vw.description}`;
          category.innerText = `Category: ${vw.category}`;
          selectedVWord = vw;
          console.log(category);
          console.log('selecgtedVWord');
-         console.log(selectedVWord);  
+         console.log(selectedVWord); 
+         //console.log('audioN.src') 
+         //console.log(audioN.src)
+
+         audioNPreview.src = vw.audioN;
+
    }});
 };
 
