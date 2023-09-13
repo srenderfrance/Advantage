@@ -14,8 +14,9 @@ header {
 
 .vocabContainer {
   padding-top: 10px;
-  height: 520px;
-  width: 1500px
+  height: 65%;
+  width: 99%;
+  margin: 0;
 }
 
 .vocabContainer > div {
@@ -23,15 +24,15 @@ header {
 }
 
 .selected {
-  height: 240px;
-  width: 240px;
+  height: 15.5vw;
+  width: 15.5vw;
   border: 6px solid black;
   margin: 4px;
 }
 
 section > div {
-  height: 210px;
-  width: 210px;
+  height: 14vw;
+  width: 14vw;
   border: 3px solid black;
   margin: 4px;
   display: none
