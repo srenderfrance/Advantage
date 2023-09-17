@@ -85,16 +85,17 @@
     </div>        
 </form>       
     <div class="container">
-        <h2>Vocab Word Preview</h2>
-        <div class="mainSelector">
-            <label for="existingVocabWords" class="primaryLabel">Select vocab word to edit</label>
-            <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
-                <option value="">Vocab Words</option>
-            </select>
-        </div>
+        <h2>Vocab Word Preview/Edit</h2>
+       
         <div>
             <div class="previewContainer">
                 <div>
+                    <div class="mainSelector">
+                        <label for="existingVocabWords" class="primaryLabel">Select vocab word to edit</label>
+                        <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
+                            <option value="">Vocab Words</option>
+                        </select>
+                    </div>
                     <h3 id="description">Description: No vocab word has been selected.</h3>
                     <h3 id="kind">Category: No vocab word has been selected.</h3>
                 </div>
@@ -105,19 +106,19 @@
             <div class="audioPreviewContainer">
                 <div class="flex">
                     <div>
-                        <h3>Play Introduction Audio</h3>
+                        <h3 class="preview">Play Introduction Audio</h3>
                         <audio src="" controls id="audioTis"></audio>
                     </div> 
                 </div>   
                 <div class="flex">
                     <div>
-                        <h3>Play Question Audio</h3>
-                        <audio src="dkdk" controls id="audioQPreview"></audio>
+                        <h3 class="preview">Play Question Audio</h3>
+                        <audio src="" controls id="audioQPreview"></audio>
                     </div>
                 </div>
                 <div class="flex">
                     <div>
-                        <h3>Play Correction Audio</h3>
+                        <h3 class="preview">Play Correction Audio</h3>
                         <audio src="" controls id="audioNPreview"></audio>
                     </div> 
                 </div>
@@ -139,15 +140,37 @@
                     </div>
                 </div>
                 <div class="deleteContainer">
-                    <div>
-                        <button type="button" id="deleteImage" class="deleteButton">Delete Photo</button>
-                        <button type="button" id="deleteAudioTis" class="deleteButton">Delete Intro Audio</button>
-                        <button type="button" id="deleteAudioQ" class="deleteButton">Delete Question Audio</button>        
-                        <button type="button" id="deleteAudioN" class="deleteButton">Delete Correction Audio</button>
-                    </div>
-                    <div>
-                        <button type="button" id="deleteVW" class="deleteButton">DELETE/REMOVE ENTIRE WORD</button>
-                    </div>
+                        <form method="put" enctype="multipart/form-data" id="newImageForm">
+                            <div class="uploadBlock">  
+                                <label for="image">Change Image</label>
+                                <input type="file" class="uploadInput replaceInput" id="newImage" value="newImage" name="newImage"> 
+                                <button type="button" id="replaceImage" class="deleteButton">Replace Photo</button>
+                            </div>
+                        </form>
+                        <form method="put" id="newAudioTis" enctype="multipart/form-data">
+                            <div class="uploadBlock">
+                                <label for="audioT">Introduction Audio</label>
+                                <input type="file" id="newAudioT" class="uploadInput replaceInput" value="newAudioTis" name="newAudioTis">
+                                <button type="button" id="replaceAudioTis" class="deleteButton">Replace Intro Audio</button>
+                            </div>
+                        </form>
+                        <form method="put" id="newAudioQ" enctype="multipart/form-data">
+                            <div class="uploadBlock">
+                                <label for="audioQ">Question Audio</label>
+                                <input type="file" id="newAudioQ" class="uploadInput replaceInput" value="newAudioQ" name="newAudioQ">
+                                <button type="button" id="replaceAudioQ" class="deleteButton">Replace Question Audio</button>        
+                            </div> 
+                        </form>
+                        <form methos="put" id="newAudioN" enctype="multipart/form-data">
+                            <div class="uploadBlock">
+                                <label for="audioN">The Correction Audio</label>
+                                <input type="file" id="newAudioN" class="uploadInput replaceInput" value="newAudioN" name="newAudioN">  
+                                <button type="button" id="replaceAudioN" class="deleteButton">Replace Correction Audio</button>
+                            </div>    
+                        </form>
+                </div>
+                <div>
+                    <button type="button" id="deleteVW" class="deleteButton">DELETE/REMOVE ENTIRE WORD</button>
                 </div>
         </div>    
     </div>

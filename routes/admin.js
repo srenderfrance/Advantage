@@ -21,9 +21,11 @@ router.put("/getVocabList", adminController.getActivityVocab); //why is this a p
 router.post("/createVocab", upload.fields([{name: 'image', maxCount: 1}, {name:'audioQ', maxCount: 1}, {name: 'audioTis', maxCount: 1}, {name: 'audioN', maxCount: 1}]), adminController.postVocabWord);
 //router.post("/uploadImage", upload.single("image"), adminController.postVocabImage);
 //router.post("/uploadVocabWord", upload.fields([{name: 'image', maxCount: 1}, {name:'audioQ', maxCount: 1}, {name: 'audioT', maxCount: 1}, {name: 'audioN', maxCount: 1}]), adminController.postAudios);
-router.put("/deleteImage", adminController.deleteImage);
-router.put("/deleteAudio", adminController.deleteAudio);
-router.put("/updateVWord", adminController.updateVocabWord);
+router.put("/replaceImage", upload.single('newImage'), adminController.replaceImage);
+router.put("/replaceAudioTis", upload.single('newAudioTis'), adminController.replaceAudioTis);
+router.put("/replaceAudioQ", upload.single('newAudioQ'), adminController.replaceAudioQ);
+router.put("/replaceAudioN", upload.single('newAudioN'), adminController.replaceAudioN);
+//router.put("/updateVWord", adminController.updateVocabWord);
 router.put("/deleteVWord", adminController.deleteVWord);
 
 module.exports = router;

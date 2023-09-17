@@ -334,35 +334,128 @@ module.exports.updateVocabWord = async (req, res) => {
    }
 };
 
-module.exports.deleteImage = async (req, res, next) => {
+module.exports.replaceImage = async (req, res, next) => {
    
    console.log('Delete Image is running');
-   console.log(req.body.toDelete);
+   console.log('req.file is');
+   console.log(req.file);
+   console.log('req.body is')
+   console.log (req.body);
+   try {
+      
    
    const result = await cloudinary.uploader.destroy(req.body.toDelete);
-   
    console.log('Image should be destoyed')
    console.log(result);
-   
+ 
+   const resultNewImage = await cloudinary.uploader.upload(req.file.path, {recourse_type: "auto"});
+         imageUrl = resultNewImage.secure_url;
+         cloudinaryIdImage = resultNewImage.public_id;
+
+     
    let vocabWord = await VocabWord.where('cloudinaryIdImage').equals(req.body.toDelete);
    vocabWord = vocabWord[0];
    
    console.log("this is vocabWord");
    console.log(vocabWord);
     
-   vocabWord.cloudinaryIdImage = "";
-   vocabWord.imageUrl = "";
+   vocabWord.cloudinaryIdImage = cloudinaryIdImage;
+   vocabWord.imageUrl = imageUrl;
    
    console.log("this is vocabWord after");
    console.log(vocabWord);
    
    vocabWord = await vocabWord.save();
 
-   const activities = await Activity.find({cohort: req.user.cohort})    
-   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
+} catch (error) {
+     console.log(error);
+   }
+       
+   res.redirect("/admin"); 
 }
- 
-module.exports.deleteAudio = async (req, res, next) => {
+
+module.exports.replaceAudioTis = async (req, res) => {
+   try {
+   console.log(req.file);
+   console.log(req.body.toDelete)
+   console.log(req.body);
+   let vocabWord = await VocabWord.where('cloudinaryIdTis').equals(req.body.toDelete);
+   vocabWord = vocabWord[0];
+   console.log('vocabWord');
+   console.log(vocabWord);
+   console.log("are they =");
+   console.log(req.body.toDelete === vocabWord.cloudinaryIdTis);
+   const resultD = await cloudinary.uploader.destroy(req.body.toDelete, {resource_type: 'video'});
+   console.log(resultD);
+   if (resultD.result === 'not found' && vocabWord.cloudinaryIdTis !== ""){
+      console.log(`There is a problem with the cloudinaryIdTis on ${vocabWord}`);
+      //res. send error....
+   } else {
+
+
+   console.log(`vW cIdTis is: ${vocabWord.cloudinaryIdTis}`);
+   console.log(`vW adioTis is: ${vocabWord.audioTis}`)
+   const resultU = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
+   vocabWord.cloudinaryIdTis = resultU.public_id;
+   vocabWord.audioTis = resultU.secure_url;
+   console.log(`vW cIdTis is: ${vocabWord.cloudinaryIdTis}`);
+   console.log(`vW adioTis is: ${vocabWord.audioTis}`);
+      
+   vocabWord = await vocabWord.save();
+   } 
+   res.redirect("/admin"); 
+   } catch (error) {
+      console.log(error);     
+   };
+
+};
+
+module.exports.replaceAudioQ = async (req, res) => {
+   try {
+   console.log(req.file);
+   console.log(req.body.toDelete)
+   console.log(req.body);
+   let vocabWord = await VocabWord.where('cloudinaryIdQ').equals(req.body.toDelete);
+   vocabWord = vocabWord[0];
+   console.log(vocabWord);
+   const resultD = await cloudinary.uploader.destroy(req.body.toDelete, {recourse_type: 'video'});
+   console.log("resultD")
+   console.log(resultD);
+   const resultU = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
+   vocabWord.cloudinaryIdQ = resultU.public_id;
+   vocabWord.audioQ = resultU.secure_url;
+   vocabWord = await vocabWord.save();
+
+   res.redirect("/admin"); 
+   } catch (error) {
+      console.log(error);     
+   };
+
+
+}
+
+module.exports.replaceAudioN = async (req, res) => {
+   try {
+   console.log(req.file);
+   console.log(req.body.toDelete)
+   console.log(req.body);
+   let vocabWord = await VocabWord.where('cloudinaryIdN').equals(req.body.toDelete);
+   vocabWord = vocabWord[0];
+   console.log(vocabWord);
+   const resultD = await cloudinary.uploader.destroy(req.body.toDelete, {recourse_type: 'video'});
+   console.log('resultD');
+   console.log(resultD);
+   const resultU = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
+   vocabWord.cloudinaryIdN = resultU.public_id;
+   vocabWord.audioN = resultU.secure_url;
+   vocabWord = await vocabWord.save();
+
+   res.redirect("/admin"); 
+   } catch (error) {
+      console.log(error);     
+   };
+}
+module.exports.replaceAudio = async (req, res, next) => {
    console.log('Delete Audio is running');
    console.log(req.body)
    console.log(req.body.toDelete);
@@ -380,12 +473,35 @@ module.exports.deleteAudio = async (req, res, next) => {
       {cloudinaryIdQ: req.body.toDelete}, 
       {cloudinaryIdN: req.body.toDelete}
    ]});
+   if (typeof req.files.audioT !== 'undefined') {
+         const result = await cloudinary.uploader.upload(req.files.audioT[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdTis = result.public_id;
+         vocabWord.audioTis = result.secure_url;
+      };
+
+   if (typeof req.files.audioQ !== 'undefined'){
+         const result2 = await cloudinary.uploader.upload(req.files.audioQ[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdQ = result2.public_id;
+         vocabWord.audioQ = result2.secure_url;
+      };
+
+   if ( typeof req.files.audioN !== 'undefined') {
+         const result3 = await cloudinary.uploader.upload(req.files.audioN[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdN = result3.public_id;
+         vocabWord.audioN = result3.secure_url;
+   };
+
+      console.log("vocabWord before save")
+      console.log(vocabWord)
+      vocabWord = await vocabWord.save();
+   
+   
    console.log(vocabWord)
    vocabWord = vocabWord[0]; 
    
    console.log("this is vocabWord")
    console.log(vocabWord)
-
+/*
    if (vocabWord.cloudinaryIdTis === req.body.toDelete) {
       vocabWord.cloudinaryIdTis = "";
       vocabWord.audioTis = ""; 
@@ -405,6 +521,7 @@ module.exports.deleteAudio = async (req, res, next) => {
 
    const activities = await Activity.find({cohort: req.user.cohort})    
    res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
+*/
 };
 
 module.exports.deleteVWord = async (req, res) => {

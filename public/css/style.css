@@ -112,7 +112,10 @@ input[type=file] {
     margin: 10px;
 }
 
-/*End form and imput styling*/
+.replaceInput {
+    width: 20vw;
+}
+/*End form and input styling*/
 
 
 .problem {
@@ -179,7 +182,7 @@ h3 {
 .gridContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin: 1rem;
+    margin: 0rem 1rem .5rem 1rem;
 }
 form {
     margin: 0;
@@ -193,11 +196,12 @@ form {
     display: grid;
     grid-template-columns: 40% 60%;
 }
+
 .mainSelector {
     display: flex;
     justify-content: center;
-    margin-top: 1rem ;
 }
+
 .imageContainer {
     height: 210px;
     width: 210px;
@@ -216,12 +220,14 @@ img {
     display: flex;
     justify-content: space-around;
     align-items: center;   
-    margin-top: 1rem;
-    padding: 1rem;
+    padding: 0rem 1rem 0rem 1rem;
 }
 
+.preview {
+    margin-top: .5rem;
+    margin-bottom: 1rem;
+}
 .audioPreviewContainer {
-    padding-bottom: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -232,6 +238,7 @@ img {
     display: flex;
     justify-content: space-between;
     padding: 1rem;
+    padding-top: 0;
 }
 
 .smallForm {

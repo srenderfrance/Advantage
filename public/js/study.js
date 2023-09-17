@@ -483,6 +483,15 @@ let engine = {}
         }
     };
     
+    engine.backToStudentPage = async function(){
+        try {
+            const response = await fetch("/student", {method: 'GET',
+        })
+        window.location = response.url;
+        } catch (error) {
+          console.log(error);  
+        };
+    }
             
 engine.createActivity();    
 
@@ -495,3 +504,4 @@ document.querySelector('#start').addEventListener('click', engine.introductions)
 document.querySelector('#select').addEventListener('click', engine.makeSelections)
 document.querySelector('#undo').addEventListener('click', engine.removeMistake);
 document.querySelector('#sendResults').addEventListener('click', engine.saveAndRedirect);
+document.querySelector('#backToStudent').addEventListener('click', engine.backToStudentPage);

@@ -1,10 +1,10 @@
 document.querySelector("#selectActivity").addEventListener("click", getVocab);
 //document.querySelector("#existingVocabWords").addEventListener("change", populateExtraInfo);
 document.querySelector("#existingVocabWords").addEventListener("change", loadPreview);
-document.querySelector("#deleteImage").addEventListener("click", deleteImage);
-document.querySelector("#deleteaudioTis").addEventListener("click", deleteAudioTis);
-document.querySelector("#deleteAudioQ").addEventListener("click", deleteAudioQ);
-document.querySelector("#deleteAudioN").addEventListener("click", deleteAudioN);
+document.querySelector("#replaceImage").addEventListener("click", replaceImage);
+document.querySelector("#replaceaudioTis").addEventListener("click", replaceAudioTis);
+document.querySelector("#replaceAudioQ").addEventListener("click", replaceAudioQ);
+document.querySelector("#replaceAudioN").addEventListener("click", replaceAudioN);
 document.querySelector("#changeVWDescription").addEventListener("click", updateVWDescription);
 document.querySelector("#changeVWCategory").addEventListener("click", updateVWCategory);
 document.querySelector("#deleteVW").addEventListener("click", deleteVW)
@@ -93,36 +93,51 @@ function loadPreview() {
    }});
 };
 
-async function deleteImage () {
+async function replaceImage () {
    let toDelete
    const vocabWord = document.querySelector("#existingVocabWords").value;
    vocabList.forEach((vw) => {
       if (vw.description === vocabWord){
          toDelete = vw.cloudinaryIdImage;
-      };
-   })
-   const response = await fetch('/admin/deleteImage', {method: 'PUT',
-   headers: {"Content-Type": "application/json",},
-   body: JSON.stringify({toDelete: toDelete}),
-});
+   }});
+   try {
+      
+   
+   const newImage = document.querySelector('#newImageForm');
+   console.log(newImage);
+   let form = new FormData(newImage);
+   form.append('toDelete', toDelete);
+   const response = await fetch('/admin/replaceImage', {method: 'PUT',
+      body: form,
+   });
 console.log("delete image sent");
+window.location = response.url;
+} catch (error) {
+      console.log(error);
+   }
+};
 
-}
-async function deleteAudioTis () {
-   console.log("delete Audio Tis is running")
+async function replaceAudioTis () {
+   console.log("delete Audio Tis is running");
+  
    let toDelete
    const vocabWord = document.querySelector("#existingVocabWords").value;
    vocabList.forEach((vw) => {
       if (vw.description === vocabWord){
          toDelete = vw.cloudinaryIdTis;
    }});
-   const response = await fetch('/admin/deleteAudio', {method: 'PUT',
-   headers: {"Content-Type": "application/json",},
-   body: JSON.stringify({toDelete: toDelete}, /*{'id': 'cloudinaryIdTis'}, {'url': 'audioTis'}*/),
-   });
+   console.log(toDelete);
+   const newAudioTis = document.querySelector('#newAudioTis');
+   console.log(newAudioTis);
+   let form = new FormData(newAudioTis);
+   form.append('toDelete', toDelete);
+
+   const response = await fetch('/admin/replaceAudioTis', {method: 'PUT',
+   body: form,});
+   window.location = response.url;
 };
 
-async function deleteAudioQ () {
+async function replaceAudioQ () {
    console.log("delete AudioQ is running")
    let toDelete
    const vocabWord = document.querySelector("#existingVocabWords").value;
@@ -133,14 +148,19 @@ async function deleteAudioQ () {
    }});
    console.log('To delete is');
    console.log(toDelete);
-   const response = await fetch('/admin/deleteAudio', {method: 'PUT',
-   headers: {"Content-Type": "application/json",},
-   body: JSON.stringify({toDelete: toDelete, /*'id': 'cloudinaryIdTQ', 'url': 'audioQ'*/}),
-   });
+
+   const newAudioQ = document.querySelector('#newAudioQ');
+   console.log(newAudioQ);
+   let form = new FormData(newAudioQ);
+   form.append('toDelete', toDelete);
+
+   const response = await fetch('/admin/replaceAudioQ', {method: 'PUT',
+   body: form,});
+   window.location = response.url;
 };
 
 
-async function deleteAudioN () {
+async function replaceAudioN () {
    console.log("delete AudioN is running")
    let toDelete
    const vocabWord = document.querySelector("#existingVocabWords").value;
@@ -148,7 +168,7 @@ async function deleteAudioN () {
       if (vw.description === vocabWord){
          toDelete = vw.cloudinaryIdN;
    }});
-   const response = await fetch('/admin/deleteAudio', {method: 'PUT',
+   const response = await fetch('/admin/deleteAudioN', {method: 'PUT',
    headers: {"Content-Type": "application/json",},
    body: JSON.stringify({toDelete: toDelete}, /*{'id': 'cloudinaryIdN'}, {'url': 'audioN'}*/),
    });
