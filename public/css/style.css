@@ -164,6 +164,7 @@ h3 {
     font-size: large;
 }
 
+
 .uploadBlock label {
     margin-bottom: 10px;
     padding-top: 10px;
@@ -183,6 +184,10 @@ h3 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin: 0rem 1rem .5rem 1rem;
+}
+.moveRight{
+    display: flex;
+    justify-content: end;
 }
 form {
     margin: 0;
@@ -206,8 +211,6 @@ form {
     height: 210px;
     width: 210px;
     border: 3px solid black;
-    
-    
     display: flex;
     justify-content: center;
 }
@@ -262,10 +265,12 @@ img {
     align-items: center;
 }
 .flexColumn {
+    flex-wrap: wrap;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-content: end;
 }
 .flex {
     display: flex;
@@ -274,6 +279,9 @@ img {
     padding: 1rem;
 }
 
+.spaceBetween {
+    justify-content: space-between;
+}
 .outlineNone{
     outline: none;
 }

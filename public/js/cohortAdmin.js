@@ -16,28 +16,31 @@ let selectedVWord = {};
 async function getVocab()  {
    console.log("getVocab is")
    const activity = document.querySelector("#activityName").value;
-   //const activitySelection = await Activity.where("cohort").equals(cohort).where("description").equals(activity);
-   //console.log(activity);
+   console.log('activity');
+   console.log(activity);
+   console.log(typeof(activity))
+   if (activity !== ''){
+      const response = await fetch("/admin/getVocabList", {method: 'PUT',
+      headers: {"Content-Type": "application/json",},
+      body: JSON.stringify({activity: activity}),
+      });
+      const data = await response.json();
 
-   const response = await fetch("/admin/getVocabList", {method: 'PUT',
-   headers: {"Content-Type": "application/json",},
-   body: JSON.stringify({activity: activity}),/* JSON.stringify({cohort: cohort})*/
-});
-const data = await response.json();
+      console.log(data.vocabList);
 
-console.log(data.vocabList);
+      vocabList = data.vocabList;
+      console.log(vocabList);
+      let toInsert = ""
+          for (let i = 0; i < vocabList.length; i++){
+             toInsert += `<option value="${vocabList[i].description}">${vocabList[i].description}</option> `
+          }
+          //console.log(toInsert)
+          dropDownDefaultElement = document.querySelector("#existingVocabWords");
+          dropDownDefaultElement.insertAdjacentHTML("beforeend", `${toInsert}`)
+      document.querySelector('#activityToEdit').innerText = `Add vocabulary word to: ${activity}`
+   } else {alert("No Activity was selected.")}
 
-vocabList = data.vocabList;
-console.log(vocabList);
-let toInsert = ""
-    for (let i = 0; i < vocabList.length; i++){
-       toInsert += `<option value="${vocabList[i].description}">${vocabList[i].description}</option> `
-    }
-    //console.log(toInsert)
-    dropDownDefaultElement = document.querySelector("#existingVocabWords");
-    dropDownDefaultElement.insertAdjacentHTML("beforeend", `${toInsert}`)
-    };
-   
+};
 /*function populateExtraInfo() { //this needs to be redone? Is it neccesary now?
    console.log("populte is running")
 
@@ -168,10 +171,15 @@ async function replaceAudioN () {
       if (vw.description === vocabWord){
          toDelete = vw.cloudinaryIdN;
    }});
-   const response = await fetch('/admin/deleteAudioN', {method: 'PUT',
-   headers: {"Content-Type": "application/json",},
-   body: JSON.stringify({toDelete: toDelete}, /*{'id': 'cloudinaryIdN'}, {'url': 'audioN'}*/),
+   const newAudioN = document.querySelector('#newAudioN');
+   console.log(newAudioN);
+   let form = new FormData(newAudioN);
+   form.append('toDelete', toDelete);
+
+   const response = await fetch('/admin/replaceAudioN', {method: 'PUT',
+   body: form,
    });
+   window.location = response.url;
 };
 
 async function updateVWDescription () {

@@ -65,8 +65,8 @@ module.exports.getSchoolAdmin = async (req, res) => {
 module.exports.getCohortAdmin = async (req, res) => {
   console.log('Get Cohort Admin Running')
   const activities = await Activity.find({cohort: req.user.cohort})
-  console.log(activities);
-  console.log(req.user);
+  //console.log(activities);
+  //console.log(req.user);
   const categories = await Category.find({});
   res.render("cohortAdmin",{ user: req.user, activities: activities, categories: categories});
 };

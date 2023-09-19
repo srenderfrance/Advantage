@@ -25,7 +25,7 @@
 <form action="/admin/createVocab" enctype="multipart/form-data" method="POST">
     <div class="container">
         <div class="headingSelect">
-            <h2>Edit an Existing Activity:</h2>
+            <h2>Select an Activity To Edit</h2>
             <div class="container outlineNone">
                 <select name="activity" id="activityName" class="selection">
                     <option value="" disabled selected hidden>Choose an Activity</option>
@@ -36,22 +36,23 @@
                 <button type="button" id="selectActivity">Select</button> 
             </div>
         </div>
-        <h3>Add vocabulary word to Activity</h3>    
+        <h3 id = "activityToEdit">Add vocabulary word to: No Activity Selected</h3>    
         <div class="container gridContainer" id="uploadContainer">
             <div class="container flexColumn">
                 <div class="gridContainer" >
                     <label for="newVocabWord" class="primaryLabel">Description:</label>
-                    <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or phrase">
+                    <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or phrase" required>
                 </div>
                 <div class="gridContainer">
                     <label for="category" class="primaryLabel">Category</label>
                     <select name="category" id="category" class="selection" required>
+                        <option value="" disabled selected hidden>Choose a Category</option>
                     <% for(let i=0; i < categories.length; i++) {%>
                         <option value="<%=categories[i].category %>"><%= categories[i].category %></option>  
                     <% } %>
                     </select>
                 </div>
-                <div class="gridContainer">
+                <div class="gridContainer moveRight" >
                     <div class="uploadBlock">  
                         <label for="image">Vocab Word Image</label>
                         <input type="file" class="uploadInput" id="image" value="image" name="image"> 
@@ -61,8 +62,8 @@
             <div class="container flexColumn">
                 <div class="gridContainer">
                     <div class="uploadBlock">
-                        <label for="vocabWordUF" class="hidden"></label>
-                        <input type="text" id="vocabWordUF" class="vocabWordUF hidden" name="vocabWord">
+                   <!-- <label for="vocabWordUF" class="hidden"></label>
+                        <input type="text" id="vocabWordUF" class="vocabWordUF hidden" name="vocabWord"> -->
                         <label for="audioT">Vocab Word Introduction Audio</label>
                         <input type="file" id="audioT" class="uploadInput" value="audioTis" name="audioTis">
                     </div>
@@ -169,8 +170,15 @@
                             </div>    
                         </form>
                 </div>
-                <div>
-                    <button type="button" id="deleteVW" class="deleteButton">DELETE/REMOVE ENTIRE WORD</button>
+                <div class="flex spaceBetween">
+                    <div>
+                        <h4>Delete and Remove the entire vocab word from the activity</h4>
+                        <button type="button" id="deleteVW" class="deleteButton">DELETE</button>
+                    </div>
+                    <div>
+                        <div>DELETE ACTIVITY AND RELATED VOCAB WORDS</div>
+                        <button type="button" id="deleteActivity" class="deleteButton">DELETE</button>
+                    </div>
                 </div>
         </div>    
     </div>
