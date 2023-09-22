@@ -285,3 +285,34 @@ img {
 .outlineNone{
     outline: none;
 }
+
+.border { /* cohortAdmin*/
+    border: 3px solid black;
+    padding: 0 1rem 0 1rem;
+}
+
+.deleteHeading {/* cohortAdmin*/
+font-size: 1.5rem;
+margin: 0;
+}
+
+.deleteButtonContainer {/* cohortAdmin*/
+display: flex;
+flex-direction: column;
+max-width: 250px;
+padding: 1rem 1rem 0 1rem;
+margin: .5rem;
+}
+
+.description {/* cohortAdmin*/
+    display: flex;
+    /*align-items: center;
+    justify-content: center;*/
+    font-size: 1.2rem;
+}
+
+.deleteButtonContainer > .deleteButton { /*cohortAdmin*/
+    display: flex;
+    /*align-items: center;*/
+    margin-left: auto;
+}

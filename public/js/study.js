@@ -94,7 +94,7 @@ let engine = {}
         'numberOfWords': 0,
         'numberOfReviews': 0,
         'vocabList': [],
-        'wasReview': true
+        'wasReview': false,
     };
     engine.activity = '',
     engine.wasReview = false,

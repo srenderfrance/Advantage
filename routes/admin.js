@@ -27,5 +27,6 @@ router.put("/replaceAudioQ", upload.single('newAudioQ'), adminController.replace
 router.put("/replaceAudioN", upload.single('newAudioN'), adminController.replaceAudioN);
 //router.put("/updateVWord", adminController.updateVocabWord);
 router.put("/deleteVWord", adminController.deleteVWord);
+router.put("/deleteActivity", adminController.deleteActivity);
 
 module.exports = router;

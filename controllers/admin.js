@@ -461,6 +461,20 @@ module.exports.replaceAudioN = async (req, res) => {
       console.log(error);     
    };
 };
+
+module.exports.deleteActivity = async (req, res) => {
+   console.log("Delete Activity is running")
+   console.log(req.body.activity);
+   try {
+      let activity = await Activity.where("description").equals(req.body.activity).where("cohort").equals(req.user.cohort);
+      const vwToDelete = activity.vocabWords;
+   
+      
+   res.redirect("/admin"); 
+   } catch (error) {
+      console.log(error)
+   }
+}
 /*
 module.exports.replaceAudio = async (req, res, next) => {
    console.log('Delete Audio is running');
@@ -531,11 +545,30 @@ module.exports.replaceAudio = async (req, res, next) => {
 
 };
 */
-module.exports.deleteVWord = async (req, res) => {
+module.exports.deleteVWord = async (req, res) => { 
+   /*need to clean VW out of all users (user.wordsSelected, user.individual excersises, and user.problemWords), as well as cohort.vocabwords?    */
    console.log('delete word is running')
    console.log(req.body.vocabWordId);
+   console.log(req.body.activity);
    try {
-        let vocabWord = await VocabWord.findById(new ObjectId(req.body.vocabWordId));
+      let vocabWord = await VocabWord.findById(new ObjectId(req.body.vocabWordId));
+      //removes the VW from it's activity.vocabWords array
+      
+      const result1 = await Activity.updateOne( {_id: vocabWord.activity}, { $pull: {vocabWords: vocabWord._id }});
+      console.log('Result1');
+      console.log(result1);
+      
+      const result2 = await User.updateMany({"cohort": vocabWord.cohort},
+      { $pull: { problemWords: vocabWord._id, wordsSelected: vocabWord._id } } );
+
+      console.log("Result2");
+      console.log(result2);
+      
+      const result3 = await User.updateMany({"cohort": vocabWord.cohort},
+      { $pull: {individualExercises: { vocabWords: vocabWord._id }}});
+      
+      console.log("Result3")
+      console.log(result3);
 
       if (vocabWord.cloudinaryIdTis !== "") {
           const result = await cloudinary.uploader.destroy(vocabWord.cloudinaryIdTis, {resource_type: 'video'});

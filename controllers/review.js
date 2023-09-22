@@ -153,10 +153,10 @@ module.exports.userReviewResults = async (req, res, next) => {
          console.log("Returned activity is:");
          console.log(activity);
       //adds stats to reviewStats
-     
+      if (activity.length > 0){//maybe it should be ===1?
       if (student.hasReviewed.includes(activity[0]._id) === false && reviewResults.wasReview === true) {
          student.totalWords = student.totalWords + reviewResults.numberOfWords;
-      }};
+      }}};
       if(reviewResults.wasReview === true){
       student.totalReviews = student.totalReviews + reviewResults.numberOfReviews;
       };
@@ -189,11 +189,11 @@ module.exports.userReviewResults = async (req, res, next) => {
       };
       student.markModified('wordsReviewed');
 
-      if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false) {
+      if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false && activity.length > 0 /* ===1?*/) {
          if (student.hasReviewed.includes(activity[0]._id) === false ){
          for (let i = 0; i < reviewResults.vocabList.length; i++){
             let wordObject = {
-               "_id": reviewResults.vocabList[i]._id,
+               "_id": new ObjectId(reviewResults.vocabList[i]._id),
                "category": reviewResults.vocabList[i].category,
                "totalReviews": reviewResults.numberOfReviews,
             };

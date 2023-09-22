@@ -204,11 +204,31 @@ async function updateVWCategory () {
 
 async function deleteVW () {
    console.log(selectedVWord);
+
+   const activity = document.querySelector("#activityName").value;
    const response = await fetch('admin/deleteVWord', {method: 'PUT',
       headers: {"Content-Type": "application/json",},
-      body: JSON.stringify({vocabWordId: selectedVWord._id}),
+      body: JSON.stringify({vocabWordId: selectedVWord._id, activity: activity}),
    });
 window.location = response.url;
 
 };
+
+async function deleteActivity () {//no eventlistener yet
+   console.log("Delete Activity is Running");
+   try {
+      const confirmDelete = confirm("Are you sure want to delete this Activity and all of its vocab words?");
+      if(confirmDelete === true){
+
+         const activity = document.querySelector("#activityName").value;
+         const response = await fetch('admin/deleteActivity', {method: 'PUT',
+         headers: {"Content-Type": "application/json",},
+         body: JSON.stringify({activity: activity}),
+      });
+         window.location = response.url;
+      }
+   } catch (error) {
+      console.log(error)
+   }
+}
 
