@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<h1>Welcome to <%=student.cohort %>. You are logged in as:</h1>
+<h1>Welcome to <%=student.cohort.cohortName %>. You are logged in as:</h1>
 <h1> <%=student.username %> </h1>
 
 <div>
@@ -16,7 +16,14 @@
         <div class="statsContainer container">
             <h2>Your Stats</h3>
             <h3>Total vocabulary: <%=student.totalWords %> </h3>
-            <h3>Total number of Activities: <%=student.hasReviewed.length %></h3>
+            <%  const total = activities.filter(e => {
+                const checkReviews = (element) => element._id.toString() === student._id.toString();
+                if (e.reviewedBy.some(checkReviews)){
+                    return true;
+            
+                }
+            }).length; %>
+            <h3>Total number of Activities: <%=total %> </h3>
             <h3>Total of activity review sessions: <%=student.totalReviews %> </h3>
             <h3>Total total Challenging Words to review: <%=student.problemWords.length %> </h3>
         </div>
@@ -26,10 +33,14 @@
                 <div class="container smallForm">
                     <label for="newActivity" class="secondaryLabel flex1">New Activities</label>
                     <select name="activity" id="activityName" required>
-                    <% for(let i=0; i < activities.length; i++) {
-                        if (!student.hasReviewed.includes(activities[i]._id)){%>   
-                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                    <% }} %>
+                    <%  const checkReviews = (element) => element._id.toString() === student._id.toString();
+                        const notReviewed = activities.filter(e => {         
+                            if(e.reviewedBy.some(checkReviews) === false){
+                                return true;
+                            }});
+                        for (let i = 0; i < notReviewed.length; i++) {%>   
+                    <option value="<%=notReviewed[i].description %>"><%= notReviewed[i].description %></option>
+                    <% } %>
                     </select>
                     <button type="submit" id="selectActivity">Select</button>
                 </div>
@@ -38,10 +49,13 @@
                 <div class="container smallForm">
                     <label for="activity" class="secondaryLabel flex1">Previous activities</label>
                     <select name="activity" id="activityName" required>
-                    <% for(let i=0; i < activities.length; i++) {   
-                        if (student.hasReviewed.includes(activities[i]._id)){%>   
-                        <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                    <% }} %>
+                    <%  const reviewed = activities.filter(e => {         
+                        if(e.reviewedBy.some(checkReviews)){
+                            return true;
+                        }});
+                        for (let i = 0; i < reviewed.length; i++) {%>   
+                        <option value="<%=reviewed[i].description %>"><%= reviewed[i].description %></option>
+                    <% } %>
                     </select>
                     <button type="submit" id="selectActivity">Select</button>
                 </div>    
@@ -64,7 +78,7 @@
                     <select name="categoryToReview" id="categoryToReview" required>
                         <option value="All">Review All</option>
                     <% for(let i=0; i < categories.length; i++) {%>
-                        <option value="<%=categories[i].category %>"><%= categories[i].category %></option>  
+                        <option value="<%=categories[i] %>"><%= categories[i] %></option>  
                     <% } %>
                     </select>
                     <button type="submit" id="selectByTopic">Select</button>
@@ -77,9 +91,10 @@
     <h2>Create/Edit Custom Activities</h2>
     <div class="customAcrivityContainer">
         <div class="selectedImagecontainer vocabContainer">
-            <% for(let i=0; i < selectedVocab.length; i++) {%> 
-            <div class="vocabImage" id="A<%= 1 + i %>" style="background-image: url('<%= selectedVocab[i].imageUrl %>')">
-                <audio src="<%= selectedVocab[i].audioTis %>" id="audioTis<%= 1 + i %>"></audio>  
+            <% for(let i=0; i < wordsSelected.length; i++) {
+                console.log(wordsSelected[i].imageUrl)%> 
+            <div class="vocabImage" id="A<%= 1 + i %>" style="background-image: url('<%= wordsSelected[i].imageUrl %>')">
+                <audio src="<%= wordsSelected[i].audioTis %>" id="audioTis<%= 1 + i %>"></audio>  
             </div>  
             <% } %>
         </div>    
@@ -105,11 +120,11 @@
 </div>    
 </div>
 <div class="navButtons">
-    <% if (student.adminLevel = 1){ %>
-        <button onclick="window.location.href ='admin';" class="navButton">Class Admin</button> 
-   <% }
-    if (student.adminLevel = 2){ %>
-         <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>  
+    <% if (student.adminLevel > 0){ %>
+        <button onclick="window.location.href ='admin';" class="navButton">Class Admin</button>
+   <% } %>
+  <% if (student.adminLevel > 1){ %>
+         <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
     <% } %>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button> 
        

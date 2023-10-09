@@ -1,7 +1,7 @@
 const passport = require('passport');
 const validator = require('validator');
 const User = require('../models/user');
-const Cohort = require('../models/cohort');
+const CohortTwo = require('../models/cohort');
 const Activity = require('../models/activity');
 const PreReg = require('../models/preReg');
 const Category = require('../models/category')
@@ -19,10 +19,11 @@ module.exports.postPreRegister = async (req, res, next) => {
   try {
     const credentials = await PreReg.find({password: req.body.password});
     console.log(credentials);
+    console.log(req.body.email);
 
     if(req.body.email.toLowerCase() === credentials[0].email){
 
-    const cohorts = await Cohort.find()
+    const cohorts = await CohortTwo.find()
     res.render("register.ejs", {cohorts: cohorts});  
 
      } else  {
@@ -38,7 +39,7 @@ module.exports.postPreRegister = async (req, res, next) => {
 }};
 
 module.exports.getRegister = async (req, res) => {
-  const cohorts = await Cohort.find()
+  const cohorts = await CohortTwo.find()
   res.render("register.ejs", {cohorts: cohorts});
 };
 
@@ -52,7 +53,7 @@ module.exports.logout = (req, res, next) => {
  };
 
 module.exports.getSchoolAdmin = async (req, res) => {
-  const cohorts = await Cohort.find()
+  const cohorts = await CohortTwo.find()
   console.log (cohorts);
   console.log(cohorts.length)
   adminCohortExport = cohorts
@@ -64,10 +65,9 @@ module.exports.getSchoolAdmin = async (req, res) => {
 
 module.exports.getCohortAdmin = async (req, res) => {
   console.log('Get Cohort Admin Running')
-  const activities = await Activity.find({cohort: req.user.cohort})
-  //console.log(activities);
-  //console.log(req.user);
-  const categories = await Category.find({});
+  const cohort = await CohortTwo.findById(req.user.cohort._id);
+  const activities = cohort.activities;
+  const categories = cohort.categories;
   res.render("cohortAdmin",{ user: req.user, activities: activities, categories: categories});
 };
 
@@ -75,18 +75,18 @@ module.exports.postRegister = async (req, res, next) => {
   console.log(req.body)
 
   try {
-  
+   const theCohort = await CohortTwo.findOne({cohortName: req.body.cohort});
+   console.log(theCohort);
   
   const user = await User.create({
 
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
-      cohort: req.body.cohort,
+      cohort: {cohortName: theCohort.cohortName, _id: theCohort._id},
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      nativeLanguage: req.body.nativeLanguage,
-      hasReviewed: undefined,
+      nativeLanguage: req.body.nativeLanguage, 
       individualExercises: undefined,
       problemWords: undefined,
       corhortAdmin: undefined,
@@ -111,15 +111,15 @@ module.exports.postRegister = async (req, res, next) => {
 
   console.log("You have been registered!");
   console.log(user)
-  const cohort = await Cohort.findOne({cohortName:user.cohort})
-  console.log(cohort)  
+  //const cohort = await CohortTwo.findOne({cohortName: user.cohort.cohortName})
+  //console.log(cohort)  
   const studentObject = {
         name: `${req.body.firstName} ${req.body.lastName}`,
         id: user._id,
         adminLevel: 0,};
   console.log(studentObject);
-    cohort.students.push(studentObject);
-    await cohort.save(); //add try/catch for errors  
+    theCohort.students.push(studentObject);
+    await theCohort.save();  
 } catch (error) {
   console.log ('There was an error')
   console.log(error)

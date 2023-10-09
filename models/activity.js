@@ -1,10 +1,7 @@
 const { default: mongoose } = require("mongoose");
 
 const ActivitySchema = new mongoose.Schema({
-    cohort: {
-        type: String, 
-        required: true
-    },
+    
     date: {
         type: Date,
         required: true
@@ -17,7 +14,21 @@ const ActivitySchema = new mongoose.Schema({
         type: Array,
         default: [],
     },
+    reviewedBy: {
+        type: Array,
+        default: [],
+    }
     
-})
+});
 const Activity = mongoose.model('Activity', ActivitySchema);
-module.exports = Activity
+
+const ActivitySubdocSchema = new mongoose.Schema ({
+    activity: {
+        type: ActivitySchema,
+        default: () => ({})
+    }
+});
+const ActivitySubdoc = mongoose.model('ActivitySubdoc', ActivitySubdocSchema);
+
+
+module.exports = ActivitySubdoc;

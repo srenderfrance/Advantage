@@ -11,7 +11,7 @@ document.querySelector("#removeFromStudent").addEventListener("click", removeFro
         });
     const data = await response.json();
     console.log(data);
-    studentList =data[0].students;
+    studentList =data[0];
     /*console.log(studentList);
     console.log(studentList.length)*/
     

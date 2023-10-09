@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     cohort: {
-        type: String,
+        type: Object,
         required: true
     },
     firstName: {
@@ -30,10 +30,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         reuired: true
     },
-    hasReviewed: {
-        type: Array,
-        default: [],
-    },
     wordsSelected: {
         type: Array,
         default: [],
@@ -43,10 +39,6 @@ const UserSchema = new mongoose.Schema({
         default: [],
     },
     problemWords: {
-        type:Array,
-        default:[],
-    },
-    wordsReviewed: {
         type:Array,
         default:[],
     },

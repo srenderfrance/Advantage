@@ -11,11 +11,11 @@ async function getSelectedVocab () {
         });
         const data = await response.json();
         selectedVocab = data.selectedVocab;
-        //console.log(selectedVocab);
+        console.log(selectedVocab);
         //console.log(selectedVocab.length)
     for (let i = 0; i < selectedVocab.length; i++) {
         let id = `#A${1+i}`
-        //console.log(id);
+        console.log(id);
         document.querySelector(id).addEventListener('click', selectWord);
         id = `A${1+i}`
         visualArray.push(id);

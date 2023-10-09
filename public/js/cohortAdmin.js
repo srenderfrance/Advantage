@@ -7,18 +7,19 @@ document.querySelector("#replaceAudioQ").addEventListener("click", replaceAudioQ
 document.querySelector("#replaceAudioN").addEventListener("click", replaceAudioN);
 document.querySelector("#changeVWDescription").addEventListener("click", updateVWDescription);
 document.querySelector("#changeVWCategory").addEventListener("click", updateVWCategory);
-document.querySelector("#deleteVW").addEventListener("click", deleteVW)
+document.querySelector("#deleteVW").addEventListener("click", deleteVW);
+document.querySelector("#deleteActivity").addEventListener("click", deleteActivity);
 
 let vocabList = [];
 let selectedVWord = {};
 
 //const cohort = document.querySelector("#cohort").value;
 async function getVocab()  {
-   console.log("getVocab is")
+   console.log("getVocab is running")
    const activity = document.querySelector("#activityName").value;
-   console.log('activity');
-   console.log(activity);
-   console.log(typeof(activity))
+   //console.log('activity');
+   //console.log(activity);
+   //console.log(typeof(activity))
    if (activity !== ''){
       const response = await fetch("/admin/getVocabList", {method: 'PUT',
       headers: {"Content-Type": "application/json",},
@@ -41,25 +42,7 @@ async function getVocab()  {
    } else {alert("No Activity was selected.")}
 
 };
-/*function populateExtraInfo() { //this needs to be redone? Is it neccesary now?
-   console.log("populte is running")
 
-   const vocabWord = document.querySelector("#existingVocabWords").value;   /*
-   console.log(vocabWord);
-   const activityInputs = document.querySelectorAll(".activityUF");
-   let vwId
-   vocabList.forEach((vw) => {
-      if (vw.description === vocabWord){
-         vwId = vw._id;
-
-      }
-   })
-   const vocabWordInputs = document.querySelectorAll(".vocabWordUF");
-   vocabWordInputs.forEach((input) => {
-      input.value = vwId;
-   })
-   
-}*/
 function loadPreview() {
    console.log("vacabList is");
    console.log(vocabList);
@@ -99,13 +82,15 @@ function loadPreview() {
 async function replaceImage () {
    let toDelete
    const vocabWord = document.querySelector("#existingVocabWords").value;
+   const fileElement = document.querySelector("#newImage").value;
+   if(fileElement === ""){
+      alert("No file is attatched.")
+   } else {
    vocabList.forEach((vw) => {
       if (vw.description === vocabWord){
          toDelete = vw.cloudinaryIdImage;
    }});
-   try {
-      
-   
+   try { 
    const newImage = document.querySelector('#newImageForm');
    console.log(newImage);
    let form = new FormData(newImage);
@@ -117,12 +102,15 @@ console.log("delete image sent");
 window.location = response.url;
 } catch (error) {
       console.log(error);
-   }
-};
+}}};
 
-async function replaceAudioTis () {
+async function replaceAudioTis () { //Updated
    console.log("delete Audio Tis is running");
-  
+   const fileElement = document.querySelector("#newAudioTis").value;
+   if(fileElement === ""){
+      alert("No file is attatched.")
+   } else {
+
    let toDelete
    const vocabWord = document.querySelector("#existingVocabWords").value;
    vocabList.forEach((vw) => {
@@ -130,7 +118,7 @@ async function replaceAudioTis () {
          toDelete = vw.cloudinaryIdTis;
    }});
    console.log(toDelete);
-   const newAudioTis = document.querySelector('#newAudioTis');
+   const newAudioTis = document.querySelector('#newAudioTisForm');
    console.log(newAudioTis);
    let form = new FormData(newAudioTis);
    form.append('toDelete', toDelete);
@@ -138,10 +126,15 @@ async function replaceAudioTis () {
    const response = await fetch('/admin/replaceAudioTis', {method: 'PUT',
    body: form,});
    window.location = response.url;
-};
+}};
 
-async function replaceAudioQ () {
+async function replaceAudioQ () { //Updated
    console.log("delete AudioQ is running")
+   const fileElement = document.querySelector("#newAudioQ").value;
+   if(fileElement === ""){
+      alert("No file is attatched.")
+   } else {
+
    let toDelete
    const vocabWord = document.querySelector("#existingVocabWords").value;
    console.log(vocabWord);
@@ -152,7 +145,7 @@ async function replaceAudioQ () {
    console.log('To delete is');
    console.log(toDelete);
 
-   const newAudioQ = document.querySelector('#newAudioQ');
+   const newAudioQ = document.querySelector('#newAudioQForm');
    console.log(newAudioQ);
    let form = new FormData(newAudioQ);
    form.append('toDelete', toDelete);
@@ -160,18 +153,23 @@ async function replaceAudioQ () {
    const response = await fetch('/admin/replaceAudioQ', {method: 'PUT',
    body: form,});
    window.location = response.url;
-};
+}};
 
 
-async function replaceAudioN () {
+async function replaceAudioN () { //Updated
    console.log("delete AudioN is running")
+   const fileElement = document.querySelector("#newAudioN").value;
+   if(fileElement === ""){
+      alert("No file is attatched.")
+   } else {
+  
    let toDelete
    const vocabWord = document.querySelector("#existingVocabWords").value;
    vocabList.forEach((vw) => {
       if (vw.description === vocabWord){
          toDelete = vw.cloudinaryIdN;
    }});
-   const newAudioN = document.querySelector('#newAudioN');
+   const newAudioN = document.querySelector('#newAudioNForm');
    console.log(newAudioN);
    let form = new FormData(newAudioN);
    form.append('toDelete', toDelete);
@@ -180,27 +178,41 @@ async function replaceAudioN () {
    body: form,
    });
    window.location = response.url;
-};
+}};
 
-async function updateVWDescription () {
-   console.log(selectedVWord._id);
+async function updateVWDescription () {//updated
+   console.log(selectedVWord);
    const newVWDescription = document.querySelector("#newVWDescription").value;
+   console.log('newWVDescription')
+   if(newVWDescription === ""){
+      alert("No Despcription Provided");
+   } else {
+   
+   
    const response = await fetch('admin/updateVWord', {method: 'PUT',
       headers: {"Content-Type": "application/json",},
-      body: JSON.stringify({newVWDescription: newVWDescription, vocabWordId: selectedVWord._id}),
+      body: JSON.stringify({newVWDescription: newVWDescription, vocabWordId: selectedVWord.ident}),
    });
 
+   window.location = response.url;
 
-};
-async function updateVWCategory () {
-   console.log(selectedVWord._id);
+}};
+
+async function updateVWCategory () { //updated
+   console.log(selectedVWord);
    const selectedElement =  document.querySelector("#newVWCategory");
+   console.log("selectElement")
+   if(selectedElement.value === ""){
+      alert("No Category has been Selected.")
+   
+   }else {
    const newVWCategory = selectedElement.options[selectedElement.selectedIndex].value;
    const response = await fetch('admin/updateVWord', {method: 'PUT',
       headers: {"Content-Type": "application/json",},
-      body: JSON.stringify({newVWCategory: newVWCategory, vocabWordId: selectedVWord._id}),
+      body: JSON.stringify({newVWCategory: newVWCategory, vocabWordId: selectedVWord.ident}),
    });
-};
+   window.location = response.url;
+}};
 
 async function deleteVW () {
    console.log(selectedVWord);
@@ -208,13 +220,13 @@ async function deleteVW () {
    const activity = document.querySelector("#activityName").value;
    const response = await fetch('admin/deleteVWord', {method: 'PUT',
       headers: {"Content-Type": "application/json",},
-      body: JSON.stringify({vocabWordId: selectedVWord._id, activity: activity}),
+      body: JSON.stringify({vocabWordId: selectedVWord.ident, activity: activity}),
    });
 window.location = response.url;
 
 };
 
-async function deleteActivity () {//no eventlistener yet
+async function deleteActivity () {
    console.log("Delete Activity is Running");
    try {
       const confirmDelete = confirm("Are you sure want to delete this Activity and all of its vocab words?");

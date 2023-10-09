@@ -7,7 +7,7 @@
 </head>
 <body>
     
-<h1 id="cohort"> <%=user.cohort %></h1>
+<h1 id="cohort"> <%=user.cohort.cohortName %></h1>
 <h2>Class Admin Page</h2>
 <form action="/admin/activity" method="POST">  
     <div class="container">
@@ -48,7 +48,7 @@
                     <select name="category" id="category" class="selection" required>
                         <option value="" disabled selected hidden>Choose a Category</option>
                     <% for(let i=0; i < categories.length; i++) {%>
-                        <option value="<%=categories[i].category %>"><%= categories[i].category %></option>  
+                        <option value="<%=categories[i] %>"><%= categories[i] %></option>  
                     <% } %>
                     </select>
                 </div>
@@ -61,9 +61,7 @@
             </div>
             <div class="container flexColumn">
                 <div class="gridContainer">
-                    <div class="uploadBlock">
-                   <!-- <label for="vocabWordUF" class="hidden"></label>
-                        <input type="text" id="vocabWordUF" class="vocabWordUF hidden" name="vocabWord"> -->
+                    <div class="uploadBlock"> 
                         <label for="audioT">Vocab Word Introduction Audio</label>
                         <input type="file" id="audioT" class="uploadInput" value="audioTis" name="audioTis">
                     </div>
@@ -133,8 +131,9 @@
                     <div>
                         <label for="newVWCategory" class="primaryLabel">Category</label>
                         <select name="category" id="newVWCategory" class="selection" required>
+                        <option value="" disabled selected hidden>Choose a Category</option>
                             <% for(let i=0; i < categories.length; i++) {%>
-                                <option value="<%=categories[i].category %>"><%= categories[i].category %></option>  
+                                <option value="<%=categories[i] %>"><%= categories[i] %></option>  
                             <% } %>
                        </select> 
                         <button type="button" id="changeVWCategory" class="deleteButton">Change Category</button>
@@ -148,21 +147,21 @@
                                 <button type="button" id="replaceImage" class="deleteButton">Replace Photo</button>
                             </div>
                         </form>
-                        <form method="put" id="newAudioTis" enctype="multipart/form-data">
+                        <form method="put" id="newAudioTisForm" enctype="multipart/form-data">
                             <div class="uploadBlock">
                                 <label for="audioT">Introduction Audio</label>
-                                <input type="file" id="newAudioT" class="uploadInput replaceInput" value="newAudioTis" name="newAudioTis">
+                                <input type="file" id="newAudioTis" class="uploadInput replaceInput" value="newAudioTis" name="newAudioTis">
                                 <button type="button" id="replaceAudioTis" class="deleteButton">Replace Intro Audio</button>
                             </div>
                         </form>
-                        <form method="put" id="newAudioQ" enctype="multipart/form-data">
+                        <form method="put" id="newAudioQForm" enctype="multipart/form-data">
                             <div class="uploadBlock">
                                 <label for="audioQ">Question Audio</label>
                                 <input type="file" id="newAudioQ" class="uploadInput replaceInput" value="newAudioQ" name="newAudioQ">
                                 <button type="button" id="replaceAudioQ" class="deleteButton">Replace Question Audio</button>        
                             </div> 
                         </form>
-                        <form methos="put" id="newAudioN" enctype="multipart/form-data">
+                        <form methos="put" id="newAudioNForm" enctype="multipart/form-data">
                             <div class="uploadBlock">
                                 <label for="audioN">The Correction Audio</label>
                                 <input type="file" id="newAudioN" class="uploadInput replaceInput" value="newAudioN" name="newAudioN">  
@@ -186,6 +185,9 @@
     </div>
 <div class="navButtons">
     <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
+  <% if (user.adminLevel > 1){ %>
+         <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
+    <% } %>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
 </div>
 <script type="text/javascript" src="/js/cohortAdmin.js"></script>

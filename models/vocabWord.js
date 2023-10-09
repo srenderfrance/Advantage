@@ -1,18 +1,7 @@
 const { default: mongoose } = require("mongoose");
 
 const VocabWordSchema = new mongoose.Schema({
-    cohort: {
-        type: String,
-        required: true,
-    }, 
-    activity: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-    },
-    category: {
-        type: String,
-        required: true,
-    },
+
     description: {
         type: String,
     },  
@@ -48,7 +37,23 @@ const VocabWordSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    reviewedBy: {
+        type: Array,
+        default: [],
+    },
+    ident: {
+        type: Number,
+        default: 0,
+    },
  
-})
+});
 const VocabWord = mongoose.model('VocabWord', VocabWordSchema);
-module.exports = VocabWord
+
+const VocabWordSubdocSchema = new mongoose.Schema({
+    vocabWord: {
+        type: VocabWordSchema,
+        default: () => ({})
+    }
+});
+const VocabWordSubdoc = mongoose.model('VocabWordSubdoc', VocabWordSubdocSchema);
+module.exports = VocabWordSubdoc

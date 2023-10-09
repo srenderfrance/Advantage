@@ -60,7 +60,7 @@ function MakeVocabWord(done,correctAnswer,gotWrong,introduction,responseN,questi
     this.responseN = responseN
     this.question = question
     this.visual = visual
-    this._id = {}
+    this.ident = Number
 };
 
 let wOne = new MakeVocabWord(false,false,false,audioTis1,audioN1,audioQ1,document.querySelector('#A1'),{});
@@ -109,10 +109,10 @@ let engine = {}
             const data = await response.json();
             console.log(data)
             engine.vocabList = data.vocabList;
-            //console.log('activity id')
-            //console.log(vocabList[0]._id)
             
-            engine.activity = activity;
+            
+            engine.activity = activity; //this info might be redundant now
+            engine.userReviewResults.activity = activity;
            
             console.log(`activity is ${this.activity}`)
             console.log(engine.vocabList); 
@@ -126,7 +126,7 @@ let engine = {}
                 }
             }    
            for (let i = 0; i < engine.theDozen.length; i++) {
-                engine.theDozen[i]._id = engine.vocabList[i]._id; 
+                engine.theDozen[i].ident = engine.vocabList[i].ident; 
                 }
             document.getElementById('review').disabled = false;  
             document.getElementById('start').disabled = false;
@@ -368,7 +368,7 @@ let engine = {}
                         engine.currentQuestion.gotWrong = true;
                         console.log(engine.currentQuestion);
                         console.log(engine.theDozen);
-                        let mistake = engine.currentQuestion._id; 
+                        let mistake = engine.currentQuestion.ident; 
                         engine.userReviewResults.mistakes.push(mistake);
                         console.log(engine.userReviewResults.mistakes);
                         document.getElementById('undo').disabled = false;
@@ -434,7 +434,7 @@ let engine = {}
         let visualArray = engine.theDozen.map(element => element.visual);
         engine.userReviewResults.wordsSelected.forEach(element1 => {
             engine.theDozen.forEach(element2 => {
-                if (element1 == element2._id){
+                if (element1 == element2.ident){
                     element2.visual.classList.add('selected');
             }})});
         visualArray.forEach(element => {
@@ -454,7 +454,7 @@ let engine = {}
         engine.theDozen.forEach(element => {
             console.log(element.visual.classList.contains('selected'))
             if (element.visual.classList.contains('selected')){
-                selection.push(element._id)
+                selection.push(element.ident)
                 element.visual.classList.remove('selected')};
         })
     engine.userReviewResults.wordsSelected = selection;              

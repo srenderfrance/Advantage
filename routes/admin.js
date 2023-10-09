@@ -25,7 +25,7 @@ router.put("/replaceImage", upload.single('newImage'), adminController.replaceIm
 router.put("/replaceAudioTis", upload.single('newAudioTis'), adminController.replaceAudioTis);
 router.put("/replaceAudioQ", upload.single('newAudioQ'), adminController.replaceAudioQ);
 router.put("/replaceAudioN", upload.single('newAudioN'), adminController.replaceAudioN);
-//router.put("/updateVWord", adminController.updateVocabWord);
+router.put("/updateVWord", adminController.updateVocabWord);
 router.put("/deleteVWord", adminController.deleteVWord);
 router.put("/deleteActivity", adminController.deleteActivity);
 
