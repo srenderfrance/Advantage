@@ -41,6 +41,10 @@ const VocabWordSchema = new mongoose.Schema({
         type: Array,
         default: [],
     },
+    link: {
+        type: Object,
+        default: {},
+    },
     ident: {
         type: Number,
         default: 0,

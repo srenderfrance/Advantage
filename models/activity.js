@@ -17,7 +17,11 @@ const ActivitySchema = new mongoose.Schema({
     reviewedBy: {
         type: Array,
         default: [],
-    }
+    },
+    type: {
+        type: String,
+        default: ""
+    },
     
 });
 const Activity = mongoose.model('Activity', ActivitySchema);
