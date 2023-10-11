@@ -41,7 +41,7 @@ function selectWord (Event) {
     //console.log("A Word was clicked")
     Event.currentTarget.classList.toggle('selected');
     //console.log(Event.currentTarget.id)
-    for (let i = 0; i < keyArray.length; i++) {
+   /* for (let i = 0; i < keyArray.length; i++) {
         //console.log(keyArray[i].id)
         //console.log(keyArray[1].vocabWord._id)
         if (keyArray[i].id === Event.currentTarget.id){
@@ -53,16 +53,28 @@ function selectWord (Event) {
                 newActivity.push(keyArray[i].vocabWord._id)
 
 }}}
-    console.log(newActivity)
+    console.log(newActivity)*/
 };
 
 async function createCustomActivity () {
     try {
         const activityName = document.querySelector('#activity').value;
         //console.log(activityName)
+        let selection = [];
+        keyArray.forEach(element => {
+            console.log(element)
+            //console.log(element.id.classList.contains('selected'))
+            let selectedELement = document.getElementById(element.id);
+            console.log("selectedElement")
+            console.log(selectedELement)
+            if (selectedELement.classList.contains('selected')){
+                selection.push(element.vocabWord.ident)
+                //selectedELement.classList.toggle('selected')
+            }});
+        console.log(selection)
         const response = await fetch("/student/createCustomActivity", {method: 'POST',
             headers: {"Content-Type": "application/json",},    
-            body: JSON.stringify({activityName: activityName, activityVocab: newActivity}),
+            body: JSON.stringify({activityName: activityName, activityVocab: selection}),
         })
         //console.log(response);
         window.location = response.url;
@@ -86,17 +98,17 @@ async function reviewByTopic () {
 
 async function deleteCustomAtivity () {
     try {
-    
-    const activityToDelete = document.querySelector('#activityToDelete').value;
-    const response = await fetch('student/deleteCustomActivity', {method: 'POST',
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({activityToDelete: activityToDelete}),
+        const confirmDelete = confirm("Are you sure want to delete this Activity?");
+        if(confirmDelete === true){
+            const activityToDelete = document.querySelector('#activityToDelete').value;
+            const response = await fetch('student/deleteCustomActivity', {method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({activityToDelete: activityToDelete}),
     });
     window.location = response.url;
-    } catch (error) {
+    }} catch (error) {
         console.log(error)
-    }
-   }
+    }};
 
 getSelectedVocab();
 

@@ -14,14 +14,14 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports.getStudent = async (req, res) => {
    try {
-      console.log('get Student is running')
-      console.log(`cohor ID is: ${req.user.cohort}`)
+      console.log('get Student is running CONTROLLER')
+      //console.log(`cohor ID is: ${req.user.cohort}`)
       let cohort = await CohortTwo.findById(req.user.cohort);
       console.log(cohort.cohortName);
       //cohort = cohort[0];
       let activities = cohort.activities;
-      console.log("Activities");
-      console.log(activities);
+      //console.log("Activities");
+      //console.log(activities);
       const categories = cohort.categories;
       let wordsSelected = [];
       for (let i = 0; i < req.user.wordsSelected.length; i++) {
@@ -32,8 +32,8 @@ module.exports.getStudent = async (req, res) => {
                wordsSelected.push(vocabWord);
       }}};
       
-      console.log("wordsSelected");
-      console.log(wordsSelected);
+      //console.log("wordsSelected");
+      //console.log(wordsSelected);
      // console.log("adminLevel")
       //console.log(req.user.adminLevel);
       res.render("student",  {student: req.user, activities: activities, categories: categories, wordsSelected: wordsSelected});
@@ -375,19 +375,18 @@ module.exports.createCustomActivity = async (req, res) => {
       console.log(req.user.wordsSelected)
 
       let student = await User.findById(req.user._id);
-
-      for (let i = 0; i < req.body.activityVocab.length; i++) {
-         if (student.wordsSelected.includes(req.body.activityVocab[i])) {
-            index = student.wordsSelected.indexOf(req.body.activityVocab[i])
-            student.wordsSelected.splice(index, 1);
-            console.log("there was match")
-      }};
-
       const newActivity = {description: req.body.activityName, vocabWords: req.body.activityVocab};
-
       student.individualExercises.push(newActivity);
       console.log(student.individualExercises)
-
+      
+      for (let i = student.wordsSelected.length -1; i > -1; i--) {
+         const element = student.wordsSelected[i];
+         for (let index = 0; index < req.body.activityVocab.length; index++) {
+            const toRemove = req.body.activityVocab[index];
+            if (element === toRemove){
+               student.wordsSelected.splice(i, 1)
+      }}};
+      console.log(student.wordsSelected)
       await student.save();
       //const vocabWordId = new ObjectId(req.body.vocabWord);
 
@@ -430,14 +429,28 @@ module.exports.reviewCustomActivity = async (req, res) => {
             console.log(vocabArray);
             }
       } else {
+         console.log("else: NOT Challange Words")
          for (let i = 0; i < req.user.individualExercises.length; i++) {
             if (customActivity === req.user.individualExercises[i].description)
             vocabArray = req.user.individualExercises[i].vocabWords;   
+            console.log('vocabArray req.use.individualExcersises')
       }};
    console.log("this is vocabArray");
    console.log(vocabArray);
-   const vocabList = await VocabWord.find({'_id': {$in: vocabArray}});
-   console.log(vocabList);
+   const theCohort = await CohortTwo.findById(req.user.cohort);
+  
+   let activityVocab = [];
+   let vocabList = [];
+      for (let i = 0; i < vocabArray.length; i++){
+         const vWordId = vocabArray[i];
+         for (let index = 0; index < theCohort.vocabWords.length; index++) {
+            const vocabWord = theCohort.vocabWords[index];
+            if(vWordId === vocabWord.ident){
+               vocabList.push(vocabWord);
+            }}}
+            console.log('vocabList after');
+            console.log(vocabList)
+
    const student = await User.findById(req.user._id);
    student.currentVocabList = vocabList;
    await student.save();
@@ -530,7 +543,7 @@ module.exports.reviewByCategory = async (req, res) => {
                vocabArray.forEach(e => {
                   if (e.reviewedBy[0].totalReviews === x){
                      console.log(e.reviewedBy[0].totalReviews);
-                     
+
                      workingArray.push(e);
                }});
             x++;
