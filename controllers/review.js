@@ -7,7 +7,6 @@ const User = require('../models/user');
 const Activity = require('../models/activity');
 const Category = require('../models/category');
 const cloudinary = require('../middleware/cloudinary');
-const CohortTwo = require('../models/cohort');
 const { format } = require('morgan');
 const ObjectId = require('mongodb').ObjectId;
 
@@ -16,7 +15,7 @@ module.exports.getStudent = async (req, res) => {
    try {
       console.log('get Student is running CONTROLLER')
       //console.log(`cohor ID is: ${req.user.cohort}`)
-      let cohort = await CohortTwo.findById(req.user.cohort);
+      let cohort = await Cohort.findById(req.user.cohort);
       console.log(cohort.cohortName);
       //cohort = cohort[0];
       let activities = cohort.activities;
@@ -47,7 +46,7 @@ module.exports.getSelectedVocab = async (req, res) => {//needs to be tested
    try {  
       console.log("Get Selected Vocab is running"); 
       let selectedVocab = [];
-      const theCohort = await CohortTwo.findById(req.user.cohort);
+      const theCohort = await Cohort.findById(req.user.cohort);
       for (let i = 0; i < req.user.wordsSelected.length; i++) {
          const selection = req.user.wordsSelected[i];
          for (let index = 0; index < theCohort.vocabWords.length; index++) {
@@ -72,7 +71,7 @@ module.exports.getSelectedVocab = async (req, res) => {//needs to be tested
    try {
       //console.log(req.body);
       console.log(req.body.activity);
-      const theCohort = await CohortTwo.findById(req.user.cohort);
+      const theCohort = await Cohort.findById(req.user.cohort);
       let activityVocab = [];
       let vocabList = [];
       for (let i = 0; i < theCohort.activities.length; i++){
@@ -152,7 +151,7 @@ module.exports.userReviewResults = async (req, res, next) => {
    try {   
       console.log("Processing userReviewResults!!!")
       let student = await User.findById(req.user._id);
-      let theCohort = await CohortTwo.findById(req.user.cohort);
+      let theCohort = await Cohort.findById(req.user.cohort);
       //console.log(student);
 
       let activity;
@@ -437,7 +436,7 @@ module.exports.reviewCustomActivity = async (req, res) => {
       }};
    console.log("this is vocabArray");
    console.log(vocabArray);
-   const theCohort = await CohortTwo.findById(req.user.cohort);
+   const theCohort = await Cohort.findById(req.user.cohort);
   
    let activityVocab = [];
    let vocabList = [];
@@ -466,7 +465,7 @@ module.exports.reviewByCategory = async (req, res) => {
       console.log(req.body);
       console.log(req.body.categoryToReview);
       const category = req.body.categoryToReview;
-      const theCohort = await CohortTwo.findById(req.user.cohort._id);
+      const theCohort = await Cohort.findById(req.user.cohort._id);
       let vocab = [];
       let vocabArray = [];
       for (let i = 0; i < theCohort.vocabWords.length; i++) {

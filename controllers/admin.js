@@ -1,7 +1,7 @@
 const passport = require("passport");
 const { default: mongoose } = require("mongoose");
 const validator = require("validator");
-const CohortTwo = require('../models/cohort');
+const Cohort = require('../models/cohort');
 const VocabWordSubdoc = require('../models/vocabWord');
 const User = require("../models/user");
 const ActivitySubdoc = require("../models/activity");
@@ -16,7 +16,7 @@ const ObjectId = require('mongodb').ObjectId;
 module.exports.postCohort = async (req, res, next) => {
    console.log(req.body)
     
-   const cohort = await CohortTwo.create({
+   const cohort = await Cohort.create({
       cohortName: req.body.cohortName,
       language: req.body.language,
       startDate: req.body.startDate,
@@ -42,10 +42,11 @@ res.redirect("/admin/schoolAdmin");
 
 module.exports.getStudentList = async (req, res, next) => {
    console.log(req.body)
-   const cohort = await CohortTwo.find({cohortName: req.body.cohortSelection});
-   res.json(cohort.students);
+   const cohort = await User.find({"cohort.cohortName": req.body.cohortSelection});
+   console.log(cohort)
+   res.json(cohort);
  };
- 
+
  module.exports.updateCohortAdmin = async (req, res, next) => {
    console.log(req.body.infoToSend)
    let studentId = req.body.infoToSend[0];
@@ -113,7 +114,7 @@ module.exports.getActivityVocab = async (req, res, next) => {
    console.log(req.body)
    const activityDescription = req.body.activity;
    const cohortId = req.user.cohort._id; 
-   const cohort = await CohortTwo.findById(cohortId);
+   const cohort = await Cohort.findById(cohortId);
    console.log(typeof(cohort));
    console.log(cohort.activities[0].description);
    let activityVocab
@@ -158,7 +159,7 @@ module.exports.postActivity = async (req, res, next) => {
    try {
       
       console.log("Post Activity is running")
-      const theCohort = await CohortTwo.findById(req.user.cohort._id);
+      const theCohort = await Cohort.findById(req.user.cohort._id);
       const activity = {
            date: req.body.date,
            description: req.body.description, //need to have a function double check and make sure the descriptiobn has not already been used
@@ -187,7 +188,7 @@ module.exports.postVocabWord = async (req, res) => {
       
    
    
-   let theCohort = await CohortTwo.findById(req.user.cohort._id);
+   let theCohort = await Cohort.findById(req.user.cohort._id);
 
    console.log('theCohort.vocabWords.length');
    console.log(theCohort.vocabWords.length)
@@ -370,7 +371,7 @@ module.exports.updateVocabWord = async (req, res) => {
 
       //const vocabWordId = new ObjectId(req.body.vocabWordId);
       
-      let theCohort = await CohortTwo.findById(req.user.cohort._id);
+      let theCohort = await Cohort.findById(req.user.cohort._id);
       // console.log(vocabWordId);
  
  
@@ -427,7 +428,7 @@ module.exports.replaceImage = async (req, res, next) => {
          cloudinaryIdImage = resultNewImage.public_id;
 
      
-   let theCohort= await CohortTwo.findById(req.user.cohort);
+   let theCohort= await Cohort.findById(req.user.cohort);
    //let toMark  
    for (let i = 0; i < theCohort.vocabWords.length; i++) {
       const element = theCohort.vocabWords[i];
@@ -461,7 +462,7 @@ module.exports.replaceAudioTis = async (req, res) => {
    } else {
 */
    const resultU = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
-   let theCohort= await CohortTwo.findById(req.user.cohort);
+   let theCohort= await Cohort.findById(req.user.cohort);
 
   for (let i = 0; i < theCohort.vocabWords.length; i++) {
       const element = theCohort.vocabWords[i];
@@ -489,7 +490,7 @@ module.exports.replaceAudioQ = async (req, res) => {
    console.log(req.body);
  
     
-   let theCohort= await CohortTwo.findById(req.user.cohort);
+   let theCohort= await Cohort.findById(req.user.cohort);
    const resultD = await cloudinary.uploader.destroy(req.body.toDelete, {resource_type: 'video'});
    console.log("resultD")
    console.log(resultD);
@@ -521,7 +522,7 @@ module.exports.replaceAudioN = async (req, res) => {
    console.log(req.body.toDelete)
    console.log(req.body); 
    
-   let theCohort= await CohortTwo.findById(req.user.cohort);
+   let theCohort= await Cohort.findById(req.user.cohort);
    const resultD = await cloudinary.uploader.destroy(req.body.toDelete, {resource_type: 'video'});
    console.log('resultD');
    console.log(resultD);
@@ -548,7 +549,7 @@ module.exports.deleteActivity = async (req, res) => {
    console.log("Delete Activity is running")
    console.log(req.body.activity);
    try {
-      let theCohort = await CohortTwo.findById(req.user.cohort);
+      let theCohort = await Cohort.findById(req.user.cohort);
       for (let i = 0; i < theCohort.activities.length; i++) {
          if(theCohort.activities[i].description === req.body.activity){
          const activityToDelete = theCohort.activities[i];
@@ -704,7 +705,7 @@ module.exports.deleteVWord = async (req, res) => {
    try {
       
       let vocabWord;
-      let theCohort = await CohortTwo.findById(req.user.cohort._id);
+      let theCohort = await Cohort.findById(req.user.cohort._id);
       
 
       for (let i = 0; i < theCohort.activities.length; i++) {

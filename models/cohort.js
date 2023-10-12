@@ -39,5 +39,5 @@ const CohortSchema = new mongoose.Schema({
 
 });
 
-const CohortTwo = mongoose.model('CohortTwo', CohortSchema);
-module.exports = CohortTwo
+const Cohort = mongoose.model('Cohort', CohortSchema);
+module.exports = Cohort
