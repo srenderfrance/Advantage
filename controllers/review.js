@@ -199,10 +199,22 @@ module.exports.userReviewResults = async (req, res, next) => {
       if (activity !== null){
          console.log(typeof(activity.reviewedBy[0]));
          console.log(typeof(req.user._id));
+         console.log('checking for "phrases"');
+         let totalPhrases = 0;
+         for (let i = 0; i < reviewResults.vocabList.length; i++) {
+            const element = reviewResults.vocabList[i];
+            console.log(element.category)
+            if (element.category.includes("Phrases")){
+               totalPhrases = totalPhrases + 1;
+               
+            }
+            
+         }       
+         console.log(`totalPhrases: ${totalPhrases}`);
          const checkReviews = (element) => element._id.toString() === req.user._id.toString();
          if (activity.reviewedBy.some(checkReviews) === false && reviewResults.wasReview === true) {
             console.log("I hope activity isn't null")
-            student.totalWords = student.totalWords + reviewResults.numberOfWords;
+            student.totalWords = student.totalWords + reviewResults.numberOfWords - totalPhrases;
       }}};
       console.log(activity);
 
@@ -231,12 +243,12 @@ module.exports.userReviewResults = async (req, res, next) => {
             //console.log('reviewedWord ident');
             //console.log(reviewedWord.ident);
          for (let index = 0; index < theCohort.vocabWords.length; index++){
-            console.log('second loop running');
+            //console.log('second loop running');
             let vocabWord = theCohort.vocabWords[index];
             //console.log("vocabWord ident");
             //console.log(vocabWord.ident)
             if (reviewedWord.ident === vocabWord.ident) {
-               console.log("they were equal")
+               //console.log("they were equal")
                const checkReviews = (element) => element._id.toString() === userId.toString();
                console.log(vocabWord.reviewedBy.some(checkReviews)); 
                if(vocabWord.reviewedBy.some(checkReviews) === false){

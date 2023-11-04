@@ -5,6 +5,9 @@ const VocabWordSchema = new mongoose.Schema({
     description: {
         type: String,
     },  
+    category: {
+        type: String,
+    },
     imageUrl: {
         type: String,
         default: "",

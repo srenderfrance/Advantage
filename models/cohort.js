@@ -34,7 +34,7 @@ const CohortSchema = new mongoose.Schema({
     },
     categories: {
         type: [String],
-        default: ["Not Categorized", "Adjectives/Descriptive Words", "Animals", "Body Parts", "Common Objects", "Countries & Nationalities", "Days/Months/Time", "Descriptions of People (Phrases)", "Emotions & Feelings", "Food & Drinks", "Geography/Countryside", "Household Items", "Inside Locations/Parts of Buildings", "Lexicarry", "Numbers", "Office/School Items", "Places in the City", "Sounds/Letters", "Verbs", "Verb Conjugations"],
+        default: ["Not Categorized", "Adjectives/Descriptive Words", "Animals", "Body Parts", "Common Objects", "Countries & Nationalities", "Days/Months/Time", "Descriptions of People (Phrases)", "Emotions & Feelings", "Food & Drinks", "Geography/Countryside", "Household Items", "Inside Locations/Parts of Buildings", "Lexicarry", "None", "Numbers", "Office/School Items", "Places in the City", "Sounds/Letters", "Verbs", "Verb Conjugations"],
     }
 
 });
