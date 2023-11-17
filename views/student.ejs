@@ -19,8 +19,7 @@
             <%  const total = activities.filter(e => {
                 const checkReviews = (element) => element._id.toString() === student._id.toString();
                 if (e.reviewedBy.some(checkReviews)){
-                    return true;
-            
+                    return true; 
                 }
             }).length; %>
             <h3>Total number of Activities: <%=total %> </h3>

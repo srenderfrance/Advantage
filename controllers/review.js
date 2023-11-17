@@ -35,6 +35,40 @@ module.exports.getStudent = async (req, res) => {
       //console.log(wordsSelected);
      // console.log("adminLevel")
       //console.log(req.user.adminLevel);
+      const vocabArray = cohort.vocabWords
+      console.log('array length')
+      console.log(vocabArray.length)
+      console.log("test");
+      console.log(vocabArray[0].reviewedBy[0]._id.toString());
+   const totalVocab = function () {
+      let total = 0
+      const userId = req.user._id.toString();
+      for (let i = 0; i < vocabArray.length; i++) {
+         const usedByArray = vocabArray[i].reviewedBy;
+         for (let i = 0; i < usedByArray.length; i++) {
+            const element = usedByArray[i];
+            if (element._id.toString().includes(userId) && vocabArray[i].category.includes("Phrases") === false) {
+            total++;
+            }  
+      }}  
+      return total;
+   };
+   console.log("TotalVocab");
+   console.log(totalVocab())
+    if (req.user.totalWords !== totalVocab())  {
+    
+         console.log("Updating user.totalWords");
+
+      const student = await User.findById(req.user._id);
+      student.totalWords = totalVocab();
+      console.log(student.totalWords)
+      await student.save();  
+      }
+    
+ 
+   console.log("New total created equals")
+
+   console.log(totalVocab());
       res.render("student",  {student: req.user, activities: activities, categories: categories, wordsSelected: wordsSelected});
    } catch (error) {
       console.log(error);
@@ -195,7 +229,7 @@ module.exports.userReviewResults = async (req, res, next) => {
          console.log(activity);
 
       //adds stats to reviewStats
-      console.log('updating review stats')
+     /* console.log('updating review stats')
       if (activity !== null){
          console.log(typeof(activity.reviewedBy[0]));
          console.log(typeof(req.user._id));
@@ -211,11 +245,13 @@ module.exports.userReviewResults = async (req, res, next) => {
             
          }       
          console.log(`totalPhrases: ${totalPhrases}`);
-         const checkReviews = (element) => element._id.toString() === req.user._id.toString();
+         //const checkReviews = (element) => element._id.toString() === req.user._id.toString();
          if (activity.reviewedBy.some(checkReviews) === false && reviewResults.wasReview === true) {
             console.log("I hope activity isn't null")
             student.totalWords = student.totalWords + reviewResults.numberOfWords - totalPhrases;
-      }}};
+      }
+   }*/
+};
       console.log(activity);
 
       if(reviewResults.wasReview === true){
@@ -362,6 +398,39 @@ module.exports.userReviewResults = async (req, res, next) => {
       console.log("Else if Challenging Words");
    } else {console.log(`Custom Activity Name is ${reviewResults.activity}`)};
 */
+
+
+
+  const vocabArray = theCohort.vocabWords
+      console.log('array length')
+      console.log(vocabArray.length)
+      console.log("test");
+      console.log(vocabArray[0].reviewedBy[0]._id.toString());
+   const totalVocab = function () {
+      let total = 0
+      const userId = req.user._id.toString();
+      for (let i = 0; i < vocabArray.length; i++) {
+         const usedByArray = vocabArray[i].reviewedBy;
+         for (let i = 0; i < usedByArray.length; i++) {
+            const element = usedByArray[i];
+            if (element._id.toString().includes(userId) && vocabArray[i].category.includes("Phrases") === false) {
+            total++;
+            }  
+      }}  
+      return total;
+   };
+   console.log("TotalVocab");
+   console.log(totalVocab())
+    if (req.user.totalWords !== totalVocab())  {
+    
+         console.log("Updating user.totalWords");
+
+      student.totalWords = totalVocab();
+      console.log(student.totalWords)
+ 
+    }
+
+
    //console.log(student);
    //need an if else for when there is nothing to save
    
