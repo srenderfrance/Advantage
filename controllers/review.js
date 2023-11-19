@@ -39,36 +39,40 @@ module.exports.getStudent = async (req, res) => {
       console.log('array length')
       console.log(vocabArray.length)
       console.log("test");
-      console.log(vocabArray[0].reviewedBy[0]._id.toString());
+      console.log(vocabArray[0].category.includes("Phrases"));
+      console.log(vocabArray[162].category.includes("Phrases"));
+
    const totalVocab = function () {
       let total = 0
       const userId = req.user._id.toString();
       for (let i = 0; i < vocabArray.length; i++) {
          const usedByArray = vocabArray[i].reviewedBy;
-         for (let i = 0; i < usedByArray.length; i++) {
-            const element = usedByArray[i];
-            if (element._id.toString().includes(userId) && vocabArray[i].category.includes("Phrases") === false) {
+         for (let index = 0; index < usedByArray.length; index++) {
+            const element = usedByArray[index];
+            if (element._id.toString().includes(userId) && !vocabArray[i].category.includes("Phrases")) {
             total++;
-            }  
+            console.log(`${total} ${i}`)
+            }  else {console.log(vocabArray[i].description)}
       }}  
       return total;
    };
-   console.log("TotalVocab");
-   console.log(totalVocab())
+   //console.log("TotalVocab");
+   //console.log(totalVocab())
     if (req.user.totalWords !== totalVocab())  {
     
-         console.log("Updating user.totalWords");
-
+      console.log("Updating user.totalWords");
+      console.log("New total created equals")
       const student = await User.findById(req.user._id);
       student.totalWords = totalVocab();
+      console.log("new Total")
       console.log(student.totalWords)
       await student.save();  
       }
     
  
-   console.log("New total created equals")
+  
 
-   console.log(totalVocab());
+   //console.log(totalVocab());
       res.render("student",  {student: req.user, activities: activities, categories: categories, wordsSelected: wordsSelected});
    } catch (error) {
       console.log(error);
@@ -341,18 +345,19 @@ module.exports.userReviewResults = async (req, res, next) => {
 //add problemwords to user
       console.log("dealing with problemWords");
       console.log(student.problemWords);
+      let challengingArray = []
       if (reviewResults.activity === "Challenging Words") {
          if (req.user.problemWords.length < 13) { 
-               vocabArray = req.user.problemWords;
+              challengingArray = req.user.problemWords;
             } else {
                console.log("about to slice")
                let toRemove = req.user.problemWords.length - 12;
                toRemove = `-${toRemove}`;
                console.log(toRemove)
-               vocabArray = req.user.problemWords.slice(0, toRemove);
-               console.log(vocabArray);
+               let challengingArray = req.user.problemWords.slice(0, toRemove);
+               console.log(challengingArray);
             } 
-         vocabArray.forEach(element => {
+         challengingArray.forEach(element => {
          student.problemWords.shift();  
       })};
 
