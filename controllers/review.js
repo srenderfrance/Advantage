@@ -51,8 +51,8 @@ module.exports.getStudent = async (req, res) => {
             const element = usedByArray[index];
             if (element._id.toString().includes(userId) && !vocabArray[i].category.includes("Phrases")) {
             total++;
-            console.log(`${total} ${i}`)
-            }  else {console.log(vocabArray[i].description)}
+            //console.log(`${total} ${i}`)
+            }  //else {console.log(vocabArray[i].description)}
       }}  
       return total;
    };
@@ -203,7 +203,7 @@ module.exports.userReviewResults = async (req, res, next) => {
       let isReviewByCategory = false;
       //console.log(reviewResults.activity)
       for (let i = 0; i < categories.length; i++) {
-         console.log('categories i');
+         //console.log('categories i');
          //console.log(categories[i])
          if(reviewResults.activity === categories[i]){
             console.log(categories[i].category)
@@ -342,24 +342,24 @@ module.exports.userReviewResults = async (req, res, next) => {
          console.log("updated words selected")
          console.log(student.wordsSelected);
       });
-//add problemwords to user
+//upated problemwords array for req.user
       console.log("dealing with problemWords");
       console.log(student.problemWords);
       let challengingArray = []
       if (reviewResults.activity === "Challenging Words") {
+         console.log("Updating ProblemWords after Challenging Activity")
          if (req.user.problemWords.length < 13) { 
-              challengingArray = req.user.problemWords;
+              req.user.problemWords = [];
             } else {
-               console.log("about to slice")
-               let toRemove = req.user.problemWords.length - 12;
-               toRemove = `-${toRemove}`;
+               console.log("about to splice!")
+               let toRemove = req.user.currentVocabList.length;
+               console.log("TO REMOVE")
                console.log(toRemove)
-               let challengingArray = req.user.problemWords.slice(0, toRemove);
+               let challengingArray = req.user.problemWords.splice(toRemove);
+               console.log("Else challenging Array")
                console.log(challengingArray);
-            } 
-         challengingArray.forEach(element => {
-         student.problemWords.shift();  
-      })};
+               student.problemWords = challengingArray;
+      }};
 
       console.log("after first if");
       console.log(student.problemWords);
@@ -510,7 +510,7 @@ module.exports.reviewCustomActivity = async (req, res) => {
             //toRemove = `-${toRemove}`;
             console.log(toRemove)
             vocabArray = req.user.problemWords
-            vocabArray.splice(11, toRemove);
+            vocabArray.splice(12, toRemove);
             console.log(vocabArray);
             }
       } else {
