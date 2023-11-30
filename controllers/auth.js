@@ -54,11 +54,11 @@ module.exports.logout = (req, res, next) => {
 
 module.exports.getSchoolAdmin = async (req, res) => {
   const cohorts = await Cohort.find()
-  console.log (cohorts);
-  console.log(cohorts.length)
-  adminCohortExport = cohorts
+  //console.log (cohorts);
+  //console.log(cohorts.length)
+  //adminCohortExport = cohorts
   res.render("schoolAdmin", {cohorts: cohorts} );
-  console.log(adminCohortExport)
+  //console.log(adminCohortExport)
 };
 
 
@@ -71,12 +71,67 @@ module.exports.getCohortAdmin = async (req, res) => {
   res.render("cohortAdmin",{ user: req.user, activities: activities, categories: categories});
 };
 
+module.exports.getActivityWaLAdmin = async (req, res) => {
+  console.log("GET Admin Upload Activity WaL running");
+
+  try {
+    const cohort = await Cohort.findById(req.user.cohort._id);
+    const activities = cohort.activities;
+    const categories = cohort.categories;
+    res.render("activityWaLAdmin",{ user: req.user, activities: activities, categories: categories});
+
+  
+  
+  } catch (error) {
+  console.log ('There was an error')
+  console.log(error)
+  res.redirect('/register')   
+  }
+}
+
+module.exports.getActivityDDAdmin = async (req, res) => {
+  console.log("GET Admin Upload Activity DD running");
+
+  try {
+    const cohort = await Cohort.findById(req.user.cohort._id);
+    const activities = cohort.activities;
+    const categories = cohort.categories;
+    res.render("activityDDAdmin",{ user: req.user, activities: activities, categories: categories});
+
+  
+  
+  } catch (error) {
+  console.log ('There was an error')
+  console.log(error)
+  res.redirect('/register')   
+  }
+}
+
+module.exports.getActivityPAdmin = async (req, res) => {
+  console.log("GET Admin Upload Activity Phrases running");
+
+  try {
+    const cohort = await Cohort.findById(req.user.cohort._id);
+    const activities = cohort.activities;
+    const categories = cohort.categories;
+    res.render("activityPAdmin",{ user: req.user, activities: activities, categories: categories});
+
+  
+  
+  } catch (error) {
+  console.log ('There was an error')
+  console.log(error)
+  res.redirect('/register')   
+  }
+}
+
+
 module.exports.postRegister = async (req, res, next) => {
   console.log(req.body)
 
   try {
    const theCohort = await Cohort.findOne({cohortName: req.body.cohort});
-   console.log(theCohort);
+   //console.log(theCohort);
   
   const user = await User.create({
 

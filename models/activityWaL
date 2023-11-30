@@ -1,0 +1,58 @@
+const { default: mongoose } = require("mongoose");
+
+const ActivityWaLSchema = new mongoose.Schema({
+    
+    date: {
+        type: Date,
+        required: true
+    },
+    description: {
+        type: St,ring,
+        required: true
+    },
+    imageULR: {
+        type: String,
+        default: "",
+    },
+    imageCloudinaryID: {
+        type: String,
+        default: ""
+    },
+    audioURL: {
+        type: String,
+        default: "",
+    },
+    audioCloudinaryID: {
+        type: String,
+        default: ""
+    },
+    videoURL: {
+        type: String,
+        default: ""
+    },
+    videoCloudinaryID: {
+        type: String,
+        default: "",
+    },
+    reviewedBy: {
+        atype: Array,
+        default: [],
+    },
+    type: {
+        type: String,
+        default: ""
+    },
+    
+});
+const ActivityWaL = mongoose.model('ActivityWaL', ActivityWaLSchema);
+
+const ActivityWaLSubdocSchema = new mongoose.Schema ({
+    activity: {
+        type: ActivityWaLSchema,
+        default: () => ({})
+    }
+});
+const ActivityWaLSubdoc = mongoose.model('ActivityWaLSubdoc', ActivityWaLSubdocSchema);
+
+
+module.exports = ActivityWaLSubdoc;

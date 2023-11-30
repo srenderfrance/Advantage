@@ -1,3 +1,4 @@
+
 <head>   
     <!-- external CSS link -->
     <link rel="stylesheet" href="/css/normalize.css">
@@ -5,29 +6,13 @@
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 	
 </head>
+
+
+
 <body>
-    
-<h1 id="cohort"> <%=user.cohort.cohortName %></h1>
-<h2>Class Admin Page</h2>
-<form action="/admin/activity" method="POST">  
-    <div class="container">
-        <h2>Create New Activity</h2>
-        <label for="activity" class="primaryLabel">Activity Description</label>
-        <input type="text" id="activity" name="description" placeholder="Enter a brief description"
-        required>
-        <label for="activityDate" class="primaryLabel">Activity Date</label>
-        <input type="text" id="activityDate" name="date" placeholder="month/date/year"
-        required>
-        <label for="activityType" class="primaryLabel">Acitvity Type</label>
-        <select name="activityType" id="type" class="selection">
-            <option value="DD">Dirty Dozen</option>
-            <option value="BS">Basic Sentance</option>
-            <option value="CS">Complex Sentance</option>
-            <option value="Watch and Listen">Watch and Listen</option>
-        </select>
-        <button type="submit" class="button">Create</button>   
-    </div>
-</form>  
+    <h1 id="cohort"> <%=user.cohort.cohortName %></h1>
+    <h2>Class Admin Dirty Dozen Activity Upload</h2>
+
 
 <form action="/admin/createVocab" enctype="multipart/form-data" method="POST">
     <div class="container">
@@ -191,9 +176,8 @@
         </div>    
     </div>
 <div class="navButtons">
-    <button onclick="window.location.href ='admin/activityWaL';" class="navButton">WaL Activity Admin</button>
-    <button onclick="window.location.href ='admin/activityDD';" class="navButton">Activitiy Admin DD</button>
-    <button onclick="window.location.href = 'admin/activityP';" class="navButton">Phrases Activity Admin</button>
+    
+    <button onclick="window.location.href ='/admin';" class="navButton">Class Admin</button>
     <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
   <% if (user.adminLevel > 1){ %>
          <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
@@ -201,4 +185,7 @@
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
 </div>
 <script type="text/javascript" src="/js/cohortAdmin.js"></script>
+<
+
 </body>
+

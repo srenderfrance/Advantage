@@ -8,6 +8,9 @@ const { ensureAuth } = require("../middleware/auth");
 
 router.get("/", ensureAuth, authController.getCohortAdmin);
 router.get("/schoolAdmin", ensureAuth, authController.getSchoolAdmin)
+router.get("/activityWaL", ensureAuth, authController.getActivityWaLAdmin);
+router.get("/activityDD", ensureAuth, authController.getActivityDDAdmin);
+router.get("/activityP", ensureAuth, authController.getActivityPAdmin);
 
 router.post("/preReg", adminController.createReg);
 router.post("/newCohort", adminController.postCohort);
