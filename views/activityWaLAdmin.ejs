@@ -9,17 +9,84 @@
 <body>
     <h1 id="cohort"> <%=user.cohort.cohortName %></h1>
     <h2>Class Admin: Watch and Listen Activity Upload</h2>
+
+<form action="/admin/createVocab" enctype="multipart/form-data" method="POST">
+    <div class="container">
+        <div class="headingSelect">
+            <h2>Select an Activity To Edit</h2>
+            <div class="container outlineNone">
+                <select name="activity" id="activityName" class="selection">
+                    <option value="" disabled selected hidden>Choose an Activity</option>
+                <% for(let i=0; i < activities.length; i++) {
+                    if(activities[i].type === "WaL"){%>   
+                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                <% }} %>
+                </select> 
+                <button type="button" id="selectActivity">Select</button> 
+            </div>
+        </div>
+        <h3 id ="activityToEdit">Upload Activity Media: No Activity Selected</h3>    
+        <div class="container gridContainer" id="uploadContainer">
+            <div class="container flexColumn">
+                <div class="gridContainer" >
+                    <div class="uploadBlock">    
+                        <label for="walVideo">Video</label>
+                        <input type="file" id="walVideo" name="video" value="'video" clsass="uploadInput">
+                    </div>    
+                </div>
+                <div class="gridContainer">
+                    <div class="uploadBlock">
+                        <label for="imageD">Dictionary Image</label>
+                        <input type="file" name="imageD" id="imageD" value="imageD" class="uploadInput">
+                    </div>
+                </div>
+                <div class="gridContainer" >
+                    <div class="uploadBlock">  
+                        <label for="imageR">Review Image</label>
+                        <input type="file" class="uploadInput" id="imageR" value="imageR" name="imageR"> 
+                    </div>         
+                </div>
+            </div>
+            <div class="container flexColumn">
+                <div class="gridContainer">
+                    <div class="uploadBlock"> 
+                        <label for="audioT">Dictionary Audio</label>
+                        <input type="file" id="audioD" class="uploadInput" value="audioD" name="audioD">
+                    </div>
+                </div>
+                <div class="gridContainer">
+                    <div class="uploadBlock">
+                        <label for="audioR">Review Audio</label>
+                        <input type="file" id="audioR" class="uploadInput" value="audioR" name="audioR">
+                    </div>
+                </div>
+                <div class="gridContainer">    
+                    <div class="uploadBlock">
+                        <label for="audioN">Examples Audio</label>
+                        <input type="file" id="audioE" class="uploadInput" value="audioE" name="audioE">  
+                    </div>
+                </div>  
+            </div>
+        <button type="submit">Upload Media for WaL Activity</button>
+        </div>  
+    </div>        
+</form>       
  
+
  <div class="previewContainer">
                 <div>
                     <div class="mainSelector">
-                        <label for="existingVocabWords" class="primaryLabel">Select vocab word to edit</label>
-                        <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
-                            <option value="">Vocab Words</option>
+                        <label for="existingVocabWords" class="primaryLabel">Select Acivity to Preview</label>
+                        <select name="existingVocabWords" id="existingVocabWords" class="selection" >
+                             <option value="" disabled selected hidden>Choose an Activity</option> 
+                            <% for(let i=0; i < activities.length; i++) {
+                            if(activities[i].type === "WaL"){%>   
+                        <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                            <% }} %>
                         </select>
                     </div>
-                    <h3 id="description">Description: No vocab word has been selected.</h3>
-                    <h3 id="kind">Category: No vocab word has been selected.</h3>
+                    <h3 id="description">Description: No activity has been selected.</h3>
+                    
                 </div>
                 <div class="imagecontainer">
                     <img src="" alt="">

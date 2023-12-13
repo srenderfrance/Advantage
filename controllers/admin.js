@@ -111,18 +111,18 @@ module.exports.getStudentList = async (req, res, next) => {
 };
 module.exports.getActivityVocab = async (req, res, next) => {
    console.log('getActivityVocab is running')
-   console.log(req.body)
+   //console.log(req.body)
    const activityDescription = req.body.activity;
    const cohortId = req.user.cohort._id; 
    const cohort = await Cohort.findById(cohortId);
-   console.log(typeof(cohort));
+   //console.log(typeof(cohort));
    console.log(cohort.activities[0].description);
    let activityVocab
    let vocabList = [];
       for (let i = 0; i < cohort.activities.length; i++) {
          const element = cohort.activities[i];
-         console.log(element.description);
-         console.log(element)
+         //console.log(element.description);
+         //console.log(element)
          if (element.description === activityDescription){
             activityVocab = element.vocabWords;
          }};
@@ -163,8 +163,9 @@ module.exports.postActivity = async (req, res, next) => {
       const activity = {
            date: req.body.date,
            description: req.body.description, //need to have a function double check and make sure the descriptiobn has not already been used
-           vocabWords: [],
            reviewedBy: [],
+           type: req.body.activityType,
+           additionalInfo: [],
 
       };
       theCohort.activities.push(activity);
@@ -172,7 +173,13 @@ module.exports.postActivity = async (req, res, next) => {
       console.log(theCohort.activities);
 
       console.log("A new activity has been created!");
-      res.redirect("/admin");
+      if (req.body.activityType === "DD"){
+         res.redirect("/admin/actvityDD");
+      } else if(req.body.activityType === "WaL"){
+      res.redirect("/admin/activityWaL");
+      } else if (req.body.activityType === "BS" && "CS"){
+         req.res("/admin/activityP")
+      }
    } catch (error) {
      console.log(error) 
    }

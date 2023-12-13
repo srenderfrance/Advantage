@@ -342,20 +342,20 @@ module.exports.userReviewResults = async (req, res, next) => {
          console.log("updated words selected")
          console.log(student.wordsSelected);
       });
-//upated problemwords array for req.user
+//upated problemwords array 
       console.log("dealing with problemWords");
       console.log(student.problemWords);
       let challengingArray = []
       if (reviewResults.activity === "Challenging Words") {
          console.log("Updating ProblemWords after Challenging Activity")
-         if (req.user.problemWords.length < 13) { 
-              req.user.problemWords = [];
+         if (student.problemWords.length < 13) { 
+              student.problemWords = [];
             } else {
                console.log("about to splice!")
-               let toRemove = req.user.currentVocabList.length;
+               let toRemove = student.currentVocabList.length;
                console.log("TO REMOVE")
                console.log(toRemove)
-               let challengingArray = req.user.problemWords.splice(toRemove);
+               let challengingArray = student.problemWords.splice(toRemove);
                console.log("Else challenging Array")
                console.log(challengingArray);
                student.problemWords = challengingArray;

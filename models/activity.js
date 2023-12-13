@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const ActivityWaLSchema = require('../models/activityWaL');
 
 const ActivitySchema = new mongoose.Schema({
     
@@ -21,6 +22,10 @@ const ActivitySchema = new mongoose.Schema({
     type: {
         type: String,
         default: ""
+    },
+    aditionalInfo: {
+        type: Array,
+        default: [ActivityWaLSchema],
     },
     
 });

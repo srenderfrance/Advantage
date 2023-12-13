@@ -198,7 +198,11 @@ module.exports.postLogin = async (req, res, next) => {
  (req, res, next);
     console.log("You should be logged in...")
     console.log(user)
- } else{console.log("did't work")};
+ } else{console.log("did't work");
+  // Add some kind of client side notification.
+  res.redirect('/');
+};
+
  };
 
 module.exports.checkUsername = async (req, res) => {

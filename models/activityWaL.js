@@ -7,7 +7,7 @@ const ActivityWaLSchema = new mongoose.Schema({
         required: true
     },
     description: {
-        type: St,ring,
+        type: String,
         required: true
     },
     imageULR: {

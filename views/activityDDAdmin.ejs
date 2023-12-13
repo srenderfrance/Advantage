@@ -19,7 +19,7 @@
         <div class="headingSelect">
             <h2>Select an Activity To Edit</h2>
             <div class="container outlineNone">
-                <select name="activity" id="activityName" class="selection">
+                <select name="activity" id="activityName" class="selection" required>
                     <option value="" disabled selected hidden>Choose an Activity</option>
                 <% for(let i=0; i < activities.length; i++) {%>   
                     <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
@@ -184,8 +184,8 @@
     <% } %>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
 </div>
-<script type="text/javascript" src="/js/cohortAdmin.js"></script>
-<
+<script type="text/javascript" src="/js/adminDD.js"></script>
+
 
 </body>
 
