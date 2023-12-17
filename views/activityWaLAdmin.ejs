@@ -10,17 +10,16 @@
     <h1 id="cohort"> <%=user.cohort.cohortName %></h1>
     <h2>Class Admin: Watch and Listen Activity Upload</h2>
 
-<form action="/admin/createVocab" enctype="multipart/form-data" method="POST">
+<form action="/admin/createWaL" enctype="multipart/form-data" method="POST">
     <div class="container">
         <div class="headingSelect">
             <h2>Select an Activity To Edit</h2>
             <div class="container outlineNone">
                 <select name="activity" id="activityName" class="selection">
                     <option value="" disabled selected hidden>Choose an Activity</option>
-                <% for(let i=0; i < activities.length; i++) {
-                    if(activities[i].type === "WaL"){%>   
+                <% for(let i=0; i < activities.length; i++) {%>   
                     <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                <% }} %>
+                <% } %>
                 </select> 
                 <button type="button" id="selectActivity">Select</button> 
             </div>
@@ -76,8 +75,8 @@
  <div class="previewContainer">
                 <div>
                     <div class="mainSelector">
-                        <label for="existingVocabWords" class="primaryLabel">Select Acivity to Preview</label>
-                        <select name="existingVocabWords" id="existingVocabWords" class="selection" >
+                        <label for="waLActivities" class="primaryLabel">Select Acivity to Preview</label>
+                        <select name="waLActivities" id="waLActivities" class="selection" >
                              <option value="" disabled selected hidden>Choose an Activity</option> 
                             <% for(let i=0; i < activities.length; i++) {
                             if(activities[i].type === "WaL"){%>   
@@ -98,11 +97,11 @@
 <div class="navButtons">
     
     <button onclick="window.location.href ='/admin';" class="navButton">Class Admin</button>
-    <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
+    <button onclick="window.location.href ='/student';" class="navButton">Student Page</button>
   <% if (user.adminLevel > 1){ %>
          <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
     <% } %>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
 </div>
-
+<script type="text/javascript src= /js/adminWaL"></script>
 </body>

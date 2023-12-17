@@ -109,44 +109,46 @@ module.exports.getStudentList = async (req, res, next) => {
        
  }; res.redirect(308, "/admin/schoolAdmin");
 };
+
 module.exports.getActivityVocab = async (req, res, next) => {
    console.log('getActivityVocab is running')
-   //console.log(req.body)
-   const activityDescription = req.body.activity;
-   const cohortId = req.user.cohort._id; 
-   const cohort = await Cohort.findById(cohortId);
-   //console.log(typeof(cohort));
-   console.log(cohort.activities[0].description);
-   let activityVocab
-   let vocabList = [];
-      for (let i = 0; i < cohort.activities.length; i++) {
-         const element = cohort.activities[i];
-         //console.log(element.description);
-         //console.log(element)
-         if (element.description === activityDescription){
-            activityVocab = element.vocabWords;
-         }};
-   console.log("activityVocab")
-   console.log(activityVocab);
-   for (let i = 0; i < activityVocab.length; i++) {
-      const element1 = activityVocab[i];
-
-      //console.log("element 1");
-     // console.log(element1);
+   try {
+      const activityDescription = req.body.activity;
+      const cohortId = req.user.cohort._id; 
+      const cohort = await Cohort.findById(cohortId);
       
-      for (let i = 0; i < cohort.vocabWords.length; i++) {
-         const element2 = cohort.vocabWords[i];
+      let activityVocab
+      let vocabList = [];
+         for (let i = 0; i < cohort.activities.length; i++) {
+            const element = cohort.activities[i];
+            if (element.description === activityDescription){
+               activityVocab = element.vocabWords;
+            }};
+      console.log("activityVocab")
+      console.log(activityVocab);
+      if (activityVocab !== undefined){
+      for (let i = 0; i < activityVocab.length; i++) {
+         const element1 = activityVocab[i];
 
-        // console.log("element2");
-        // console.log(element2);
+         //console.log("element 1");
+        // console.log(element1);
 
-         if(element1 === element2.ident) {
-            vocabList.push(element2);
-   }}};
+         for (let i = 0; i < cohort.vocabWords.length; i++) {
+            const element2 = cohort.vocabWords[i];
 
-  console.log(vocabList);
-  res.json({vocabList: vocabList});
-};
+           // console.log("element2");
+           // console.log(element2);
+
+            if(element1 === element2.ident) {
+               vocabList.push(element2);
+      }}}};
+
+   console.log(vocabList);
+   res.json({vocabList: vocabList});
+
+} catch (error) {
+   console.log(error);
+}};
 module.exports.getActivity = async (req, res, next) => { //I don't think this is used.
   
 const cohort = req.user.cohort 
@@ -163,6 +165,7 @@ module.exports.postActivity = async (req, res, next) => {
       const activity = {
            date: req.body.date,
            description: req.body.description, //need to have a function double check and make sure the descriptiobn has not already been used
+           vocabWords: [],
            reviewedBy: [],
            type: req.body.activityType,
            additionalInfo: [],
@@ -174,7 +177,7 @@ module.exports.postActivity = async (req, res, next) => {
 
       console.log("A new activity has been created!");
       if (req.body.activityType === "DD"){
-         res.redirect("/admin/actvityDD");
+         res.redirect("/admin/activityDD");
       } else if(req.body.activityType === "WaL"){
       res.redirect("/admin/activityWaL");
       } else if (req.body.activityType === "BS" && "CS"){
@@ -185,47 +188,126 @@ module.exports.postActivity = async (req, res, next) => {
    }
 
 };
+module.exports.postWaL = async (req, res) => {
+   console.log("PostWaL is running!");
+   console.log(req.body);
+   console.log(req.files)
+   let activities
+   try {
+      
+   
+      const theCohort = await Cohort.findById(req.user.cohort._id);
+      activities = theCohort.activities;
+      const WalData= {
+         videoURL: '',
+         videoCloudinaryID: '',
+         imageDURL: '',
+         imageDCloudinaryID: '',
+         imageRURL: '',
+         imageRCloudinaryID: '',
+         audioDURL: '',
+         audioDCloudinaryID: '',
+         audioRURL: '',
+         audioRCloudinaryID: '',
+         audioEURL: '',
+         audioECloudinaryID: '',
+         };
 
+      if (typeof req.files.video !== 'undefined') {
+         const resultV = await cloudinary.uploader.upload(req.files.video[0].path, {resource_type: "video"});
+         console.log(resultV)
+         WalData.videoURL = resultV.secure_url;
+         WalData.videoCloudinaryID = resultV.public_id;
+         console.log("uploaded video")
+      };
+      if (typeof req.files.imageD !== 'undefined') {
+         const resultID = await cloudinary.uploader.upload(req.files.imageD[0].path, {resource_type: "auto"});
+         WalData.imageDURL = resultID.secure_url;
+         WalData.imageDCloudinaryID = resultID.public_id
+      };
+      if (typeof req.files.imageR !== 'undefined') {
+         const resultIR = await cloudinary.uploader.upload(req.files.imageR[0].path, {resource_type: "auto"});
+         WalData.imageRURL = resultIR.secure_url;
+         WalData.imageRCloudinaryID = resultIR.public_id
+      };
+      if (typeof req.files.audioD !== 'undefined') {
+         const resultAD = await cloudinary.uploader.upload(req.files.audioD[0].path, {resource_type: "auto"});
+         WalData.audioDURL = resultAD.secure_url;
+         WalData.audioDCloudinaryID = resultAD.public_id
+      };
+      if (typeof req.files.audioR !== 'undefined') {
+         const resultAR = await cloudinary.uploader.upload(req.files.audioR[0].path, {resource_type: "auto"});
+         WalData.audioRURL = resultAR.secure_url;
+         WalData.audioRCloudinaryID = resultAR.public_id
+      };
+      if (typeof req.files.audioE !== 'undefined') {
+         const resultAE = await cloudinary.uploader.upload(req.files.audioE[0].path, {resource_type: "auto"});
+         WalData.audioEURL = resultAE.secure_url;
+         WalData.audioECloudinaryID = resultAE.public_id
+      };
+      console.log("uploads done")
+
+      for (let i = 0; i < activities.length; i++) {
+         const element = activities[i];
+         if(element.description === req.body.activity){
+            element.additionalInfo[0] = WalData
+         };
+         
+      }
+         
+      theCohort.markModified('activities');
+      await theCohort.save(); 
+      for(let i= activities.length - 1; i > -1; i--){ //loop fixed for splice
+         if(activities[i].type !== "WaL"){
+         activities.splice(i, 1);
+      }};
+      console.log(activities)
+      res.render("activityWaLAdmin",{ user: req.user, activities: activities});
+   } catch (error) {
+      console.log(error)
+      res.render("activityWaLAdmin",{ user: req.user, activities: activities});
+   }
+   console.log("WAL Done");
+   //res.render("activityWaLAdmin",{ user: req.user, activities: activities});
+}
 module.exports.postVocabWord = async (req, res) => {
    
    console.log("Post VocabWord is running");
    console.log(req.body)
    //console.log(typeof(req.files.image))
    try {
+      let theCohort = await Cohort.findById(req.user.cohort._id);
+
+      console.log('theCohort.vocabWords.length');
+      console.log(theCohort.vocabWords.length)
       
-   
-   
-   let theCohort = await Cohort.findById(req.user.cohort._id);
+      let newIdent
+      if(theCohort.vocabWords.length === 0){
+         newIdent = 1;
+      } else { for (let i = 1; i <= theCohort.vocabWords.length + 1; i++) {
+         //console.log(i);
+        //console.log(theCohort.vocabWords.some(vw => vw.ident === i))
+         if(theCohort.vocabWords.some(vw => vw.ident === i) === false){
+            newIdent = i;
+            //console.log(`NewIdent: ${newIdent}`);
+            break;
+         }}};
 
-   console.log('theCohort.vocabWords.length');
-   console.log(theCohort.vocabWords.length)
-   let newIdent
-   if(theCohort.vocabWords.length === 0){
-      newIdent = 1;
-   } else { for (let i = 1; i <= theCohort.vocabWords.length + 1; i++) {
-      console.log(i);
-      console.log(theCohort.vocabWords.some(vw => vw.ident === i))
-      if(theCohort.vocabWords.some(vw => vw.ident === i) === false){
-         newIdent = i;
-         console.log(`NewIdent: ${newIdent}`);
-         break;
-   }}};
-
-   let vocabWord = {
-     description: req.body.description,
-     category: req.body.category,
-     imageUrl: '',
-     cloudinaryIdImage: '',
-     audioTis: '',
-     cloudinaryIdTis: '',
-     audioQ: '',
-     cloudinaryIdQ: '',
-     audioN: '',
-     cloudinaryIdN: '',
-     reviewedBy: [],
-     ident: newIdent,
-       
-   };
+      let vocabWord = {
+        description: req.body.description,
+        category: req.body.category,
+        imageUrl: '',
+        cloudinaryIdImage: '',
+        audioTis: '',
+        cloudinaryIdTis: '',
+        audioQ: '',
+        cloudinaryIdQ: '',
+        audioN: '',
+        cloudinaryIdN: '',
+        reviewedBy: [],
+        ident: newIdent,
+          
+      };
 
    const activityDescription = req.body.activity;
       for (let i = 0; i < theCohort.activities.length; i++) {
@@ -241,7 +323,7 @@ module.exports.postVocabWord = async (req, res) => {
    //console.log(vocabWord.ident);
    
       if (typeof req.files.image !== 'undefined') {
-         const resultI = await cloudinary.uploader.upload(req.files.image[0].path, {recourse_type: "auto"});
+         const resultI = await cloudinary.uploader.upload(req.files.image[0].path, {resource_type: "auto"});
          vocabWord.imageUrl = resultI.secure_url;
          vocabWord.cloudinaryIdImage = resultI.public_id
       };
@@ -288,7 +370,7 @@ module.exports.postVocabWord = async (req, res) => {
 
 
    console.log('ready to redirect');
-   res.redirect("/admin");
+   res.redirect("/admin/activityDD");
 
 };
 
@@ -319,7 +401,7 @@ module.exports.postVocabImage = async (req, res, next) => { //not being used
       console.log(err);
     }
     const activities = await Activity.find({cohort: req.user.cohort})    
-    res.render("cohortAdmin", {user: req.user, activities: activities}); //cohort is included in req.user! 
+    res.render("/admin/activityDD", {user: req.user, activities: activities}); //cohort is included in req.user! 
    };
 
 module.exports.postAudios = async (req, res, next) => {//not being used?
@@ -407,7 +489,7 @@ module.exports.updateVocabWord = async (req, res) => {
       console.log("theCohort after save");
       console.log(theCohort.vocabWords);
 
-   res.redirect("/admin"); 
+   res.redirect("/admin/activityDD"); 
 
   } catch (error) {
      console.log('nope') 
@@ -430,7 +512,7 @@ module.exports.replaceImage = async (req, res, next) => {
    console.log('Image should be destoyed')
    console.log(result);
    };
-   const resultNewImage = await cloudinary.uploader.upload(req.file.path, {recourse_type: "auto"});
+   const resultNewImage = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
          imageUrl = resultNewImage.secure_url;
          cloudinaryIdImage = resultNewImage.public_id;
 
@@ -452,7 +534,7 @@ module.exports.replaceImage = async (req, res, next) => {
      console.log(error);
    }
        
-   res.redirect("/admin"); 
+   res.redirect("/admin/activityDD"); 
 }
 
 module.exports.replaceAudioTis = async (req, res) => {
@@ -483,7 +565,7 @@ module.exports.replaceAudioTis = async (req, res) => {
    theCohort = theCohort.save();
 
 /*  } */
-   res.redirect("/admin"); 
+   res.redirect("/admin/activityDD"); 
    } catch (error) {
       console.log(error);     
    };
@@ -515,7 +597,7 @@ module.exports.replaceAudioQ = async (req, res) => {
        
    theCohort = theCohort.save();  
 
-   res.redirect("/admin"); 
+   res.redirect("/admin/activityDD"); 
    } catch (error) {
       console.log(error);     
    };
@@ -546,7 +628,7 @@ module.exports.replaceAudioN = async (req, res) => {
        
    theCohort = theCohort.save();  
    
-   res.redirect("/admin"); 
+   res.redirect("/admin/activityDD"); 
    } catch (error) {
       console.log(error);     
    };
@@ -564,63 +646,60 @@ module.exports.deleteActivity = async (req, res) => {
    
          console.log("toDelete");
          console.log(vwToDelete);
-         console.log("VW Array");
-         console.log(theCohort.vocabWords);
+         if(vwToDelete !== undefined){
+            for (let i = 0; i < vwToDelete.length; i++) {
+               const element = vwToDelete[i];
+               for (let index = theCohort.vocabWords.length - 1; index > -1; index--) {//loop has been fixed for "splice" use.
+                  const element2 = theCohort.vocabWords[index];
+                  if(element === element2.ident){
+                     console.log(`elements ${index}`);
+                     console.log(element);
+                     console.log(element2.ident);
+                     console.log(element2);
 
-         for (let i = 0; i < vwToDelete.length; i++) {
-            const element = vwToDelete[i];
-            for (let index = theCohort.vocabWords.length - 1; index > -1; index--) {//loop has been fixed for "splice" use.
-               const element2 = theCohort.vocabWords[index];
-               if(element === element2.ident){
-                  console.log(`elements ${index}`);
-                  console.log(element);
-                  console.log(element2.ident);
-                  console.log(element2);
+                     const result2 = await User.updateMany({"cohort": element2.cohort},
+                        { $pull: { problemWords: element2.ident, wordsSelected: element2.ident} } );
 
-                  const result2 = await User.updateMany({"cohort": element2.cohort},
-                     { $pull: { problemWords: element2.ident, wordsSelected: element2.ident} } );
-
-                     console.log("Result2");
-                     console.log(result2);
-
-                     const result3 = await User.updateMany({"cohort": element2.cohort},
-                     { $pull: {individualExercises: { vocabWords: element2.ident }}});
-
-                     console.log("Result3")
-                     console.log(result3);
-
-                     if (element2.cloudinaryIdTis !== "") {
-                        const result1 = await cloudinary.uploader.destroy(element2.cloudinaryIdTis, {resource_type: 'video'});
-                        console.log("result1");
-                        console.log(result1);
-                        };
-                     if (element2.cloudinaryIdQ !== ""){
-                        console.log("vocabWord.cloudinaryIdQ");
-                        const result2 = await cloudinary.uploader.destroy(element2.cloudinaryIdQ, {resource_type: 'video'});
-                        console.log("result2");
+                        console.log("Result2");
                         console.log(result2);
-                     };
-                     if (element2.cloudinaryIdN !== ""){
-                        const result5 = await cloudinary.uploader.destroy(element2.cloudinaryIdN, {resource_type: 'video'});
-                        console.log("result5");
-                        console.log(result5);
-                     };
-                     if (element2.cloudinaryIdImage !== ""){
-                        const result = await cloudinary.uploader.destroy(element2.cloudinaryIdImage);
-                     };
 
-                  theCohort.vocabWords.splice(index, 1);
-                  }};
-         };
+                        const result3 = await User.updateMany({"cohort": element2.cohort},
+                        { $pull: {individualExercises: { vocabWords: element2.ident }}});
 
-         console.log("VW Array after");
-         console.log(theCohort.vocabWords);
+                        console.log("Result3")
+                        console.log(result3);
+
+                        if (element2.cloudinaryIdTis !== "") {
+                           const result1 = await cloudinary.uploader.destroy(element2.cloudinaryIdTis, {resource_type: 'video'});
+                           console.log("result1");
+                           console.log(result1);
+                           };
+                        if (element2.cloudinaryIdQ !== ""){
+                           console.log("vocabWord.cloudinaryIdQ");
+                           const result2 = await cloudinary.uploader.destroy(element2.cloudinaryIdQ, {resource_type: 'video'});
+                           console.log("result2");
+                           console.log(result2);
+                        };
+                        if (element2.cloudinaryIdN !== ""){
+                           const result5 = await cloudinary.uploader.destroy(element2.cloudinaryIdN, {resource_type: 'video'});
+                           console.log("result5");
+                           console.log(result5);
+                        };
+                        if (element2.cloudinaryIdImage !== ""){
+                           const result = await cloudinary.uploader.destroy(element2.cloudinaryIdImage);
+                     }};
+                     theCohort.vocabWords.splice(index, 1);
+         }}};
+           
+
+            //console.log("VW Array after");
+            //console.log(theCohort.vocabWords);
 
          theCohort.activities.splice(i, 1);
 
-     }};
-     console.log("Activities after");
-     console.log(theCohort.activities);
+      }};
+     //console.log("Activities after");
+     //console.log(theCohort.activities);
    
    //theCohort.markModified('activities'); //is this needed?
   

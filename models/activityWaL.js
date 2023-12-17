@@ -2,27 +2,40 @@ const { default: mongoose } = require("mongoose");
 
 const ActivityWaLSchema = new mongoose.Schema({
     
-    date: {
-        type: Date,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    imageULR: {
+  
+    imageDULR: {
         type: String,
         default: "",
     },
-    imageCloudinaryID: {
+    imageDCloudinaryID: {
         type: String,
         default: ""
     },
-    audioURL: {
+    imageRURL: {
+        type: String,
+        default: ""
+    },
+    imageRCloudinaryID: {
+        type: String,
+        default: ""
+    },
+    audioDURL: {
+        type: String,
+        default: "" 
+    },
+    audioDCloudinaryID: {
+        type: String,
+        default: ""
+    },
+    audioRURL: {
         type: String,
         default: "",
     },
-    audioCloudinaryID: {
+    audioRCloudinaryID: {
+        type: String,
+        default: ""
+    },
+    audioEURL: {
         type: String,
         default: ""
     },
@@ -33,14 +46,6 @@ const ActivityWaLSchema = new mongoose.Schema({
     videoCloudinaryID: {
         type: String,
         default: "",
-    },
-    reviewedBy: {
-        atype: Array,
-        default: [],
-    },
-    type: {
-        type: String,
-        default: ""
     },
     
 });

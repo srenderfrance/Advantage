@@ -76,9 +76,14 @@ module.exports.getActivityWaLAdmin = async (req, res) => {
 
   try {
     const cohort = await Cohort.findById(req.user.cohort._id);
-    const activities = cohort.activities;
-    const categories = cohort.categories;
-    res.render("activityWaLAdmin",{ user: req.user, activities: activities, categories: categories});
+    let activities = cohort.activities;
+    //const categories = cohort.categories;
+
+    for(let i= activities.length - 1; i > -1; i--){ //loop fixed for splice
+       if(activities[i].type !== "WaL"){
+       activities.splice(i, 1);
+    }};    
+    res.render("activityWaLAdmin",{ user: req.user, activities: activities});
 
   
   

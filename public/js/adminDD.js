@@ -233,7 +233,7 @@ async function deleteActivity () {
       if(confirmDelete === true){
 
          const activity = document.querySelector("#activityName").value;
-         const response = await fetch('admin/deleteActivity', {method: 'PUT',
+         const response = await fetch('/admin/deleteActivity', {method: 'PUT',
          headers: {"Content-Type": "application/json",},
          body: JSON.stringify({activity: activity}),
       });
