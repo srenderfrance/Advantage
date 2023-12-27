@@ -858,6 +858,31 @@ module.exports.deleteVWord = async (req, res) => {
    } catch (error) {
       console.log(error)
 };
-   res.redirect("/admin");
+   res.redirect("/adminDD");
 
 };
+
+module.exports.getAdditionalInfo = async (req, res) => {
+   console.log('getAdditionalInfo is running')
+   try {
+      const activityDescription = req.body.activity;
+      const cohortId = req.user.cohort._id; 
+      const cohort = await Cohort.findById(cohortId);
+      
+      let additionalInfo
+      
+         for (let i = 0; i < cohort.activities.length; i++) {
+            const element = cohort.activities[i];
+            if (element.description === activityDescription){
+               additionalInfo = element.additionalInfo;
+            }};
+      console.log("additionalInfo")
+      console.log(additionalInfo);
+      
+   res.json({additionalInfo: additionalInfo});
+
+} catch (error) {
+   console.log("getAdditionalInfo Error")
+   console.log(error);
+}};
+

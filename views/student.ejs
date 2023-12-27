@@ -16,13 +16,7 @@
         <div class="statsContainer container">
             <h2>Your Stats</h3>
             <h3>Total vocabulary: <%=student.totalWords %> </h3>
-            <%  const total = activities.filter(e => {
-                const checkReviews = (element) => element._id.toString() === student._id.toString();
-                if (e.reviewedBy.some(checkReviews)){
-                    return true; 
-                }
-            }).length; %>
-            <h3>Total number of Activities: <%=total %> </h3>
+            <h3>Total number of Activities: <%=totalActivities%> </h3>
             <h3>Total of activity review sessions: <%=student.totalReviews %> </h3>
             <h3>Total total Challenging Words to review: <%=student.problemWords.length %> </h3>
         </div>
@@ -32,12 +26,7 @@
                 <div class="container smallForm">
                     <label for="newActivity" class="secondaryLabel flex1">New Activities</label>
                     <select name="activity" id="activityName" required>
-                    <%  const checkReviews = (element) => element._id.toString() === student._id.toString();
-                        const notReviewed = activities.filter(e => {         
-                            if(e.reviewedBy.some(checkReviews) === false){
-                                return true;
-                            }});
-                        for (let i = 0; i < notReviewed.length; i++) {%>   
+                    <% for (let i = 0; i < notReviewed.length; i++) {%>   
                     <option value="<%=notReviewed[i].description %>"><%= notReviewed[i].description %></option>
                     <% } %>
                     </select>
@@ -46,19 +35,37 @@
             </form>
             <form action="/student/reviewActivity" method="POST">
                 <div class="container smallForm">
-                    <label for="activity" class="secondaryLabel flex1">Previous activities</label>
-                    <select name="activity" id="activityName" required>
-                    <%  const reviewed = activities.filter(e => {         
-                        if(e.reviewedBy.some(checkReviews)){
-                            return true;
-                        }});
-                        for (let i = 0; i < reviewed.length; i++) {%>   
-                        <option value="<%=reviewed[i].description %>"><%= reviewed[i].description %></option>
+                    <label for="activity" class="secondaryLabel flex1">Dirty Dozen Activities</label>
+                    <select name="activity" id="activityDDName" required>
+                    <%  for (let i = 0; i < activitiesDD.length; i++) {%>   
+                        <option value="<%=activitiesDD[i].description %>"><%= activitiesDD[i].description %></option>
                     <% } %>
                     </select>
                     <button type="submit" id="selectActivity">Select</button>
                 </div>    
-                </form>
+            </form>
+            <form action="/student/reviewActivity" method="POST">
+                <div class="container smallForm">
+                    <label for="activity" class="secondaryLabel flex1">Watch and Learn Activities</label>
+                    <select name="activity" id="activityWaLName" required>
+                    <%  for (let i = 0; i < activitiesWaL.length; i++) {%>   
+                        <option value="<%=activitiesWaL[i].description %>"><%= activitiesWaL[i].description %></option>
+                    <% } %>
+                    </select>
+                    <button type="submit" id="selectActivity">Select</button>
+                </div>    
+            </form>
+            <form action="/student/reviewActivity" method="POST">
+                <div class="container smallForm">
+                    <label for="activity" class="secondaryLabel flex1">Sentence Building Activities</label>
+                    <select name="activity" id="activitySName" required>
+                    <%  for (let i = 0; i < activitiesS.length; i++) {%>   
+                        <option value="<%=activitiesS[i].description %>"><%= activitiesS[i].description %></option>
+                    <% } %>
+                    </select>
+                    <button type="submit" id="selectActivity">Select</button>
+                </div>    
+            </form>
             <form action="/student/reviewCustomActivity" method="POST">
                 <div class="container smallForm">
                     <label for="customAvtivities" class="secondaryLabel flex1">Custom Activities</label>
@@ -90,10 +97,9 @@
     <h2>Create/Edit Custom Activities</h2>
     <div class="customActivityContainer">
         <div class="selectedImagecontainer vocabContainer">
-            <% for(let i=0; i < wordsSelected.length; i++) {
-                console.log(wordsSelected[i].imageUrl)%> 
+            <% for(let i=0; i < wordsSelected.length; i++) {%> 
             <div class="vocabImage" id="A<%= 1 + i %>" style="background-image: url('<%= wordsSelected[i].imageUrl %>')">
-                <audio src="<%= wordsSelected[i].audioTis %>" id="audioTis<%= 1 + i %>"></audio>  
+                <audio src="<%= wordsSelected[i].audioTis %>" id="audioTis<%= 1 + i %>" controls class='audioControls' style='width: 100%'></audio>  
             </div>  
             <% } %>
         </div>

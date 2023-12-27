@@ -1,0 +1,52 @@
+.dictionaryContainer {
+    display: flex;
+    padding: 5px;
+    justify-content: space-around;
+    
+}
+.videoWAdioContainer {
+    width: 45vh;
+    height: 85vh;
+    border: 5px solid black;
+
+
+}
+.imageContainerWAL {
+    max-height: 90%;
+    min-height: 33%;
+    min-width: 50%;
+    max-width: 90%;
+}
+#imageRP, #imageDP {
+    border: 5px solid gold;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    
+}
+.videoContainer {
+    height: 85vh;
+    width: 45vw;
+    border: 5px solid black;
+    ;
+}
+.imageWAudioContainer {
+    width: 45vw;
+    border: 5px solid yellow;
+}
+.reviewContainer {
+    width: 90vw;
+    height: 75vh;
+    border: 5px solid red;
+}
+#reviewImage {
+    width: 100%;
+    height: 90%;
+    border: 5px solid blue;
+}
+.videoElement {
+    max-height: 90%;
+    min-height: 33%;
+    min-width: 33%;
+    max-width: 90%;
+}

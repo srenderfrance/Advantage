@@ -1,7 +1,8 @@
 <head>   
     <!-- external CSS link -->
     <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/style.css" />	
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styleWal.css">	
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 	
 </head>
@@ -72,25 +73,44 @@
 </form>       
  
 
- <div class="previewContainer">
-                <div>
-                    <div class="mainSelector">
-                        <label for="waLActivities" class="primaryLabel">Select Acivity to Preview</label>
-                        <select name="waLActivities" id="waLActivities" class="selection" >
-                             <option value="" disabled selected hidden>Choose an Activity</option> 
-                            <% for(let i=0; i < activities.length; i++) {
-                            if(activities[i].type === "WaL"){%>   
-                        <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                            <% }} %>
-                        </select>
-                    </div>
-                    <h3 id="description">Description: No activity has been selected.</h3>
-                    
-                </div>
-                <div class="imagecontainer">
-                    <img src="" alt="">
-                </div> 
+ <div class="">
+    <div class="previeHeader">
+        <div class="mainSelector">
+            <label for="waLActivities" class="primaryLabel">Select Acivity to Preview</label>
+            <select name="waLActivities" id="waLActivities" class="selection" >
+                 <option value="" disabled selected hidden>Choose an Activity</option> 
+                <% for(let i=0; i < activities.length; i++) {
+                if(activities[i].type === "WaL"){%>   
+            <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                <% }} %>
+            </select>
+        </div>
+<!--        <h3 id="description">Description: No activity has been selected.</h3>  -->  
+    </div>
+    <div class="dictionaryContainer">
+        <div class="videoContainer">
+            <video src="" alt="" controls class="videoElement" id="video"></video>
+        </div>
+        <div class="imageWAudioContainer">
+            <div class="imageContainerWAL">
+                <img src="" alt="" id="imageDP">
+            </div> 
+            <div class="audioPreviewContainer">
+                <audio src="" id="audioDP" controls></audio>
             </div>
+        </div>
+    </div>
+    <div class="reviewContainer">
+        <div class="imageWAudioContainer" id="reviewImage">
+            <div class="imageContainerWAL">
+                <img src="" alt="" id="imageRP">
+            </div>  
+        </div>
+        <div class="audioPreviewContainer">
+                <audio src="" id="audioRP" controls></audio>
+        </div>
+    </div>
+</div>
 
 
 
@@ -99,9 +119,9 @@
     <button onclick="window.location.href ='/admin';" class="navButton">Class Admin</button>
     <button onclick="window.location.href ='/student';" class="navButton">Student Page</button>
   <% if (user.adminLevel > 1){ %>
-         <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
+         <button onclick="window.location.href ='/admin/schoolAdmin';" class="navButton">School Admin</button>
     <% } %>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
 </div>
-<script type="text/javascript src= /js/adminWaL"></script>
+<script type="text/javascript" src="/js/adminWaL.js"></script>
 </body>

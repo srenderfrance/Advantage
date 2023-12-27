@@ -14,13 +14,8 @@ const ObjectId = require('mongodb').ObjectId;
 module.exports.getStudent = async (req, res) => {
    try {
       console.log('get Student is running CONTROLLER')
-      //console.log(`cohor ID is: ${req.user.cohort}`)
       let cohort = await Cohort.findById(req.user.cohort);
-      console.log(cohort.cohortName);
-      //cohort = cohort[0];
       let activities = cohort.activities;
-      //console.log("Activities");
-      //console.log(activities);
       const categories = cohort.categories;
       let wordsSelected = [];
       for (let i = 0; i < req.user.wordsSelected.length; i++) {
@@ -30,18 +25,7 @@ module.exports.getStudent = async (req, res) => {
             if (selectedIdenx === vocabWord.ident){
                wordsSelected.push(vocabWord);
       }}};
-      
-      //console.log("wordsSelected");
-      //console.log(wordsSelected);
-     // console.log("adminLevel")
-      //console.log(req.user.adminLevel);
-      const vocabArray = cohort.vocabWords
-      console.log('array length')
-      console.log(vocabArray.length)
-      console.log("test");
-      console.log(vocabArray[0].category.includes("Phrases"));
-      console.log(vocabArray[162].category.includes("Phrases"));
-
+   const vocabArray = cohort.vocabWords
    const totalVocab = function () {
       let total = 0
       const userId = req.user._id.toString();
@@ -51,15 +35,11 @@ module.exports.getStudent = async (req, res) => {
             const element = usedByArray[index];
             if (element._id.toString().includes(userId) && !vocabArray[i].category.includes("Phrases")) {
             total++;
-            //console.log(`${total} ${i}`)
             }  //else {console.log(vocabArray[i].description)}
-      }}  
-      return total;
+      }};  
+   return total;
    };
-   //console.log("TotalVocab");
-   //console.log(totalVocab())
-    if (req.user.totalWords !== totalVocab())  {
-    
+   if (req.user.totalWords !== totalVocab())  {
       console.log("Updating user.totalWords");
       console.log("New total created equals")
       const student = await User.findById(req.user._id);
@@ -67,13 +47,45 @@ module.exports.getStudent = async (req, res) => {
       console.log("new Total")
       console.log(student.totalWords)
       await student.save();  
+   };
+   const checkReviews = (element) => element._id.toString() === req.user._id.toString();
+   const notReviewed = activities.filter(e => {         
+      if(e.reviewedBy.some(checkReviews) === false){
+          return true;
+   }});
+      let activitiesDD = [];
+      let activitiesS = [];
+      let activitiesWaL = [];
+      let activityToSort;
+      console.log(activities.length);
+      let reviewed = activities.filter(e => {         
+         if(e.reviewedBy.some(checkReviews)){
+            return true;
+      }});
+      console.log("Reviewed");
+      console.log(reviewed.length);
+      const totalActivities = reviewed.length;
+      for (let i = 0; i < reviewed.length; i++){
+            const element = reviewed[i];
+         if(element.hasOwnProperty('type')){
+            console.log("IT HAS A TYPE")
+            if (element.type === "DD") {
+               activitiesDD.unshift(element);
+               console.log(`Activities DD length: ${activitiesDD.length}`)
+            } else if(element.type === 'WaL'){
+               console.log('WAL');
+               console.log(element.reviewedBy);
+               activitiesWaL.unshift(element);
+               console.log(`Activities WALL: ${activitiesWaL.length}`)
+            } else if (element.type === 'CS' && 'BS'){
+               activitiesS.unshift(element);
+            };
+         } else { 
+         activitiesDD.unshift(element);
+         } //console.log(activitiesDD[i]);
       }
-    
- 
-  
 
-   //console.log(totalVocab());
-      res.render("student",  {student: req.user, activities: activities, categories: categories, wordsSelected: wordsSelected});
+      res.render("student",  {student: req.user, totalActivities: totalActivities, activitiesDD: activitiesDD, activitiesS: activitiesS, activitiesWaL: activitiesWaL, categories: categories, wordsSelected: wordsSelected, notReviewed: notReviewed});
    } catch (error) {
       console.log(error);
 
@@ -92,13 +104,8 @@ module.exports.getSelectedVocab = async (req, res) => {//needs to be tested
             if(selection === vocabWord.ident){
                selectedVocab.push(vocabWord);
       }}};
-      console.log("selectdVocab");
-      console.log(selectedVocab);
-
-      //const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
+     
       res.json({selectedVocab: selectedVocab});
-      //console.log("")
-      //console.log(selectedVocab);
 
    } catch (error) {
      console.log(error); 
@@ -106,35 +113,61 @@ module.exports.getSelectedVocab = async (req, res) => {//needs to be tested
 };
 
  module.exports.reviewActivity = async (req, res, next) => {
+   let activityVocab = [];
+   let vocabList = [];
+   let activity
    try {
-      //console.log(req.body);
-      console.log(req.body.activity);
-      const theCohort = await Cohort.findById(req.user.cohort);
-      let activityVocab = [];
-      let vocabList = [];
-      for (let i = 0; i < theCohort.activities.length; i++){
-         if(theCohort.activities[i].description === req.body.activity){
-            activityVocab = theCohort.activities[i].vocabWords;
+      const theCohort = await Cohort.findById(req.user.cohort);      
+       for (let i = 0; i < theCohort.activities.length; i++){
+            if(theCohort.activities[i].description === req.body.activity){
+               activity = theCohort.activities[i];
+         }};
+      const reviewDD = async function (){
+         try {
+            activityVocab = activity.vocabWords;
+            for (let i = 0; i < activityVocab.length; i++) {
+               const activityWord = activityVocab[i];
+               for (let index = 0; index < theCohort.vocabWords.length; index++) {
+                  const vocabWord = theCohort.vocabWords[index];
+                  if(activityWord === vocabWord.ident){
+                     vocabList.push(vocabWord);
+            }}}; 
+
+            //console.log(vocabList[0].audioN);
+            const student = await User.findById(req.user._id);
+            console.log(student.currentVocabList)
+            student.currentVocabList = vocabList;
+            await student.save();
+            res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.activity});
+
+      } catch (error) {
+      console.log(error);
       }};
-      for (let i = 0; i < activityVocab.length; i++) {
-         const activityWord = activityVocab[i];
-         for (let index = 0; index < theCohort.vocabWords.length; index++) {
-            const vocabWord = theCohort.vocabWords[index];
-            if(activityWord === vocabWord.ident){
-               vocabList.push(vocabWord);
-      }}}; 
+      const reviewWaL = function() {
+         console.log(req.body.activity);
+         res.render('studyWaL', {student: req.user, activity: activity});
+      };
+
+        
+         if (activity.hasOwnProperty('type')){
+            console.log(activity.type)
+            if (activity.type === "WaL"){
+               console.log("running WaL");
+               reviewWaL();
+            } else if (activity.type === "DD"){
+               console.log("Running DD");
+               reviewDD();
+            } else {
+               console.log('This Activity type has not ben set up yet.')
+            };
+
+         } else {reviewDD()};
       
-      //console.log(vocabList[0].audioN);
-      const student = await User.findById(req.user._id);
-      console.log(student.currentVocabList)
-      student.currentVocabList = vocabList;
-      await student.save();
-      res.render('study', {user: req.user, vocabList: vocabList, activity: req.body.activity});
    } catch (error) {
       console.log(error);
    };
-};
-
+ };
+  
  module.exports.getVocabList = async (req, res) => {
    try {
       console.log('this is getVocab');
@@ -143,43 +176,7 @@ module.exports.getSelectedVocab = async (req, res) => {//needs to be tested
       console.log(vocabList);
       res.json({vocabList: vocabList});
  
-      /*console.log(req.body)
-      let vocabList; 
-      console.log(vocabList)
-      for (let i = 0; i < req.user.individualExercises.length; i++) {
-            if(req.body.activity === req.user.individualExercises[i].description) {
-               const vocabWords = req.user.individualExercises[i].vocabWords;
-               vocabList = await VocabWord.find({'_id': {$in: vocabWords}});
-            }   
-      }
-      console.log(vocabList);
-      console.log(typeof(vocabList))
-      if (typeof(vocabList) == 'object'){
-         console.log('this is vocabList')
-         console.log(vocabList);
-         res.json({vocabList: vocabList});
-      } else if (req.body.activity === "Challenging Words"){
-          if (req.user.problemWords.length < 13) { 
-            vocabArray = req.user.problemWords;
-         } else {
-            console.log("about to slice")
-            let toRemove = req.user.problemWords.length - 12;
-            //toRemove = `-${toRemove}`;
-            console.log(toRemove)
-            vocabArray = req.user.problemWords;
-            vocabArray.splice(11, toRemove);
-            console.log(vocabArray);
-         }
-      const vocabList = await VocabWord.find({'_id': {$in: vocabArray}});
-      res.json({vocabList: vocabList});
-      } else {
-         console.log("this the else")
-         const activity = await Activity.where('description').equals(req.body.activity).where('cohort').equals(req.user.cohort);   
-         console.log("Activity")
-         console.log(activity)
-         vocabList = await VocabWord.find({activity: activity[0]._id});
-         res.json({vocabList: vocabList});
-      }*/
+     
    } catch (error) {
       console.log(error);
    };
@@ -232,29 +229,7 @@ module.exports.userReviewResults = async (req, res, next) => {
          console.log("Activity is:");
          console.log(activity);
 
-      //adds stats to reviewStats
-     /* console.log('updating review stats')
-      if (activity !== null){
-         console.log(typeof(activity.reviewedBy[0]));
-         console.log(typeof(req.user._id));
-         console.log('checking for "phrases"');
-         let totalPhrases = 0;
-         for (let i = 0; i < reviewResults.vocabList.length; i++) {
-            const element = reviewResults.vocabList[i];
-            console.log(element.category)
-            if (element.category.includes("Phrases")){
-               totalPhrases = totalPhrases + 1;
-               
-            }
-            
-         }       
-         console.log(`totalPhrases: ${totalPhrases}`);
-         //const checkReviews = (element) => element._id.toString() === req.user._id.toString();
-         if (activity.reviewedBy.some(checkReviews) === false && reviewResults.wasReview === true) {
-            console.log("I hope activity isn't null")
-            student.totalWords = student.totalWords + reviewResults.numberOfWords - totalPhrases;
-      }
-   }*/
+    
 };
       console.log(activity);
 
@@ -263,12 +238,6 @@ module.exports.userReviewResults = async (req, res, next) => {
       };
       console.log(`total words: ${student.totalWords}`);
       console.log(`total reviews: ${student.totalReviews}`);
-      //console.log('reviewResults');
-      //console.log(reviewResults);
-      //console.log('vocabList from excercise');
-      //console.log(reviewResults.vocabList);
-         
-      
      
 
 //updates vocabWords.reviewedBy
@@ -315,7 +284,7 @@ module.exports.userReviewResults = async (req, res, next) => {
 //adds userId to activity.hasReviewed
 
       if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false && reviewResults.wasReview === true) {
-         console.log('activity.reivewedBy');
+         console.log('activity.reviewedBy');
          console.log(typeof(userId));
          console.log(typeof(activity.reviewedBy[0]));
          console.log(activity.reviewedBy.includes(userId));
