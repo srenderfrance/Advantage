@@ -1,6 +1,8 @@
 <head>   
     <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/styleWal.css">
+
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 	
 </head>
@@ -8,11 +10,45 @@
     <H1 id="title"><%= activity.description %></H1>
 </Header>
 <body>
-<%= if(activity.additionalInfo[0].videoURL !== ""){
-    <div>    
-        <video src="activity.additionalInfo[0].videoURL"></video>
-    </div> 
-
+<% let additionalInfo = activity.additionalInfo[0];
+if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additionalInfo.imageDURL !== ""){
+    console.log("This is not set up yet");
+} else if (additionalInfo.videoURL === ""){
+    console.log("This isn't set up either!");
+} else if(additionalInfo.videoURL !== ""){%>
+    <div class="dictionaryContainer">  
+        <div class="videoContainer flexCenter">    
+            <video class="videoElement" id="reviewVideo" controls src="<%=additionalInfo.videoURL%>"></video>
+        </div> 
+    <% if (additionalInfo.imageRURL !== "" || additionalInfo.imageDURL !== ""){%>
+        <div class="willBeReviewContainer">
+        <% if (additionalInfo.imageDURL !== ""){%>
+            <div>
+                <div class="imageContainerWAL">
+                    <img src="<%=additionalInfo.imageDURL%>">
+                </div>
+            <% if (additionalInfo.audioDURL !== ""){%>
+                <div>
+                    <audio src="<%=additionalInfo.audioDURL%>" controls class="audioControls"></audio>
+                </div> 
+            <% } %>
+            </div>
+       <%} if (additionalInfo.imageRURL !== ""){%>
+            <div>    
+                <div class="imageContainerWAL">
+                    <img id="imageRP" src="<%= additionalInfo.imageRURL %>">
+                </div>
+            <% if (additionalInfo.audioRURL !== ""){%>
+                <div>
+                    <audio src="<%=additionalInfo.audioRURL%>" controls style="width: 90%;"></style>></audio>
+                </div> 
+            <% } %>
+            </div>
+        <% } %> 
+        </div>
+    <% } %>
+    </div>
+<% } %>
 <div class="navFoot">
     <button type="button" class='navButton' id='sendResults'>SAVE & Back to Student Page</button>
     <button type="button" class="navButton" id="backToStudent">Back to Student Page</button>

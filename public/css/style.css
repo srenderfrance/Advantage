@@ -316,3 +316,8 @@ margin: .5rem;
     /*align-items: center;*/
     margin-left: auto;
 }
+
+.audioControls {
+    width: 100%;
+    display: block;
+}
