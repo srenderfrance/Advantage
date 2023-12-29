@@ -8,7 +8,10 @@
     <H1 id="title"><%= activity.description %></H1>
 </Header>
 <body>
-
+<%= if(activity.additionalInfo[0].videoURL !== ""){
+    <div>    
+        <video src="activity.additionalInfo[0].videoURL"></video>
+    </div> 
 
 <div class="navFoot">
     <button type="button" class='navButton' id='sendResults'>SAVE & Back to Student Page</button>
