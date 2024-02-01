@@ -11,21 +11,61 @@
 </Header>
 <body>
 <% let additionalInfo = activity.additionalInfo[0];
-if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additionalInfo.imageDURL !== ""){
-    console.log("This is not set up yet");
-} else if (additionalInfo.videoURL === ""){
-    console.log("This isn't set up either!");
-} else if(additionalInfo.videoURL !== ""){%>
+if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additionalInfo.imageDURL !== ""){%>
+    <div class="primaryContainer">  
+        <div class="dictionaryContainer">
+            <div class="videoContainer flexCenter">    
+                <video <% if (additionalInfo.videoO === 'v') {%> class="videoElementV" <%
+                    } else if (additionalInfo.videoO === 'h'){%> class= "videoElementH" <%
+                    } else {%> class ="videoElementS <%}%> 
+                id="reviewVideo" controls src="<%=additionalInfo.videoURL%>"></video>
+            </div>
+            
+        </div>
+    <% if (additionalInfo.imageDURL !== ""){%>
+        <div <% if (additionalInfo.imageDO === 'v') {%> class="imageContainerV" <%
+            } else if (additionalInfo.imageDO === 'h') { %> class="imageContainerH" <%
+            }else {%> class="imageContainerS" <%}%> >
+            <img class="imageWaL" src="<%=additionalInfo.imageDURL%>">
+        <% if (additionalInfo.audioDURL !== ""){%>
+                <audio src="<%=additionalInfo.audioDURL%>" controls style="width: 90px;"></audio><% } %>
+        </div>
+    <%}%>
+        <div class="reviewContainer">
+            <% if (additionalInfo.imageRURL !== ""){%>
+            <div <% if (additionalInfo.imageRO === 'v') {%> class="imageContainerV" <%
+                    } else if (additionalInfo.imageRO === 'h') { %> class="imageContainerH" <%
+                    }else {%> class="imageContainerS" <%}%> >
+                   <img class="imageWaL" src="<%= additionalInfo.imageRURL %>">
+                
+                <% if (additionalInfo.audioRURL !== ""){%>
+                    
+                        <audio src="<%=additionalInfo.audioRURL%>" controls style="width: 90px;"></style>></audio>
+                
+                <% } %>
+            </div>
+        <% } %>
+        </div>
+       
+    </div>
+    <% } else if (additionalInfo.videoURL === ""){
+        console.log("This isn't set up either!");
+    } else if(additionalInfo.videoURL !== ""){%>
     <div class="dictionaryContainer">  
         <div class="videoContainer flexCenter">    
-            <video class="videoElement" id="reviewVideo" controls src="<%=additionalInfo.videoURL%>"></video>
+            <video <% if (additionalInfo.videoO === 'v') {%> class="videoElementV" <%
+                } else if (additionalInfo.videoO === 'h') {%> class= "videoElementH" <%
+                } else {%> class ="videoElementS <%}%> 
+            id="reviewVideo" controls src="<%=additionalInfo.videoURL%>"></video>
         </div> 
     <% if (additionalInfo.imageRURL !== "" || additionalInfo.imageDURL !== ""){%>
         <div class="willBeReviewContainer">
         <% if (additionalInfo.imageDURL !== ""){%>
             <div>
-                <div class="imageContainerWAL">
-                    <img src="<%=additionalInfo.imageDURL%>">
+                <div <% if (additionalInfo.imageDO === 'v') {%> class="imageContainerV" <%
+                    } else if (additionalInfo.imageDO === 'h') { %> class="imageContainerH" <%
+                    }else {%> class="imageContainerS" <%}%>
+                    <img class="imageWaL" src="<%=additionalInfo.imageDURL%>">
                 </div>
             <% if (additionalInfo.audioDURL !== ""){%>
                 <div>
@@ -35,8 +75,10 @@ if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additio
             </div>
        <%} if (additionalInfo.imageRURL !== ""){%>
             <div>    
-                <div class="imageContainerWAL">
-                    <img id="imageRP" src="<%= additionalInfo.imageRURL %>">
+                <div <% if (additionalInfo.imageRO === 'v') {%> class="imageContainerV" <%
+                    } else if (additionalInfo.imageRO === 'h') { %> class="imageContainerH" <%
+                    }else {%> class="imageContainerS" <%}%>
+                   <img  class="imageWaL" src="<%= additionalInfo.imageRURL %>">
                 </div>
             <% if (additionalInfo.audioRURL !== ""){%>
                 <div>
@@ -50,8 +92,8 @@ if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additio
     </div>
 <% } %>
 <div class="navFoot">
-    <button type="button" class='navButton' id='sendResults'>SAVE & Back to Student Page</button>
-    <button type="button" class="navButton" id="backToStudent">Back to Student Page</button>
+    <button onclick="window.location.href ='/student'; "class='navButton' id='sendResults'>SAVE & Back to Student Page NOT FUNCTIONAL</button>
+    <button onclick="window.location.href ='/student'; "class="navButton" id="backToStudent">Back to Student Page</button>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button><!--This needs to triger a fetch and send the exercise results to the server-->
     
 </div>

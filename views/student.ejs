@@ -93,35 +93,9 @@
         </div>    
     </section>  
 </div>
-<div>
-    <h2>Create/Edit Custom Activities</h2>
-    <div class="customActivityContainer">
-        <div class="selectedImagecontainer vocabContainer">
-            <% for(let i=0; i < wordsSelected.length; i++) {%> 
-            <div class="vocabImage" id="A<%= 1 + i %>" style="background-image: url('<%= wordsSelected[i].imageUrl %>')">
-                <audio src="<%= wordsSelected[i].audioTis %>" id="audioTis<%= 1 + i %>" controls class='audioControls' style='width: 100%'></audio>  
-            </div>  
-            <% } %>
-        </div>
-            <h2>To Create a Custom activity, select your vocab words above then give the activity a name.</h2>
-        <div class="moveRight">
-            <input type="text" id="activity" name="description" placeholder="Name Your Activity"
-            required>        
-            <button type="button" id="newActivity"> Create New Activity</button>
-        </div>
-        <div>
-            <label for="customActivities" class="primaryLabel flex1"> Select Custom Activitiy to Delete</label>
-            <select name="customActivities" id="activityToDelete" required>
-                <option value="No Activity Selected">No Activity Selected</option>
-                <% for(let i=0; i < student.individualExercises.length; i++) {%>   
-                    <option value="<%=student.individualExercises[i].description %>"><%= student.individualExercises[i].description %></option>
-                <% } %> 
-            </select>
-            <button type="button" id="deleteCustomActivity">Delete Selected Activity</button>
-        </div>
-    </div>        
-</div>
+
 <div class="navButtons">
+    <button onclick="window.location.href = '/student/customAandD' ;" class="navButton">Review Dictionary or Create Custom Activity</button>
     <% if (student.adminLevel > 0){ %>
         <button onclick="window.location.href ='admin';" class="navButton">Class Admin</button>
    <% } %>

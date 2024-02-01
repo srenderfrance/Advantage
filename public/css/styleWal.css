@@ -1,36 +1,38 @@
-.dictionaryContainer {
+.primaryContainer {
     display: flex;
     padding: 5px;
     justify-content: space-around;
-    
+    flex-flow: row wrap;   
 }
-.videoWAdioContainer {
-    width: 45vh;
-    height: 85vh;
-    border: 5px solid black;
-
-
+ .secondaryContainer {
+    display: flex;
+    padding: 5px;
+    justify-content: space-around;
+    flex-flow: column wrap;
+    max-height: 80vh;
+ }
+.imageContainerV {
+    max-height: 90vh;
+    width: auto;
 }
-.imageContainerWAL {
-    max-height: 90%;
-    min-height: 33%;
-    min-width: 50%;
-    max-width: 90%;
+.imageContainerH {
+    max-height: 35vh;
+    max-width: 45vw;
 }
-#imageRP, #imageDP {
-    width: 100%;
-    height: 100%;
+.imageWaL {
     object-fit: contain;
+    width: 100%;
+    padding: 3px;
     
 }
 .videoContainer {
-    height: 85vh;
-    width: 45vw;
+    height: 70vh;
+    width: auto;
     border: 5px solid black;
     ;
 }
 .imageWAudioContainer {
-    width: 45vw;
+    min-width: 40%;
     border: 5px solid yellow;
 }
 .reviewContainer {
@@ -43,11 +45,18 @@
     height: 90%;
     border: 5px solid blue;
 }
-.videoElement {
-    max-height: 90%;
-    min-height: 33%;
-    min-width: 33%;
-    max-width: 90%;
+.videoElementV {
+    height: 90vh;
+    width: auto;
+}
+
+.videoElementH {
+    height: auto;
+    max-width: 33%;
+}
+.videoElementS {
+    height: auto;
+    max-width: 33%;
 }
 
 #reviewVideo {
@@ -61,4 +70,6 @@
 }
 .willBeReviewContainer {
     width: 50%;
+    height: 90%;
+    display: flex;
 }

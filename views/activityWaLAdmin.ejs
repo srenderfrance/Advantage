@@ -14,7 +14,7 @@
 <form action="/admin/createWaL" enctype="multipart/form-data" method="POST">
     <div class="container">
         <div class="headingSelect">
-            <h2>Select an Activity To Edit</h2>
+            <h2 id="activityHeading">Select an Activity To Edit</h2>
             <div class="container outlineNone">
                 <select name="activity" id="activityName" class="selection">
                     <option value="" disabled selected hidden>Choose an Activity</option>
@@ -22,10 +22,9 @@
                     <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
                 <% } %>
                 </select> 
-                <button type="button" id="selectActivity">Select</button> 
             </div>
         </div>
-        <h3 id ="activityToEdit">Upload Activity Media: No Activity Selected</h3>    
+        <h3 id ="activityToEdit">Upload Media to Selected Activity</h3>    
         <div class="container gridContainer" id="uploadContainer">
             <div class="container flexColumn">
                 <div class="gridContainer" >
