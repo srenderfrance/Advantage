@@ -6,7 +6,7 @@ const { ensureAuth } = require('../middleware/auth');
 
 router.get('/', ensureAuth, reviewController.getStudent);
 router.get('/customAandD', ensureAuth, reviewController.getDictionary);
-
+router.put('/getAllVocab', reviewController.getAllVocab);
 router.post('/reviewActivity', reviewController.reviewActivity)
 //router.post('/reviewActivityDD', reviewController.reviewActivityDD);
 //router.post('/reviewActivityWaL', reviewController.reviewActivityWaL)

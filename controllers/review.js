@@ -107,13 +107,25 @@ module.exports.getDictionary = async (req, res) => {
       const dictionary = [];
       for (let i = 0; i < cohort.vocabWords.length; i++) {
          const vocabWord = cohort.vocabWords[i];
+         let filteredVocabWord;
             for (let i2 = 0; i2 < vocabWord.reviewedBy.length; i2++) {
                element = vocabWord.reviewedBy[i2];
                const checkReviews = (element) => element._id.toString() === req.user._id.toString();
                console.log(vocabWord.reviewedBy.some(checkReviews)); 
                if(vocabWord.reviewedBy.some(checkReviews) === true){
                   console.log("TRUE");
-                  dictionary.push(vocabWord);
+                  if(vocabWord.audioN === 'https://res.cloudinary.com/phase1advantage/video/upload/v1703944384/iwdj6jnmrrhaeevcloxx.mp3') {
+                     console.log('THIS IS THE IDENT');
+                     console.log(vocabWord.ident);
+                  }
+                  filteredVocabWord = {
+                     description: vocabWord.description,
+                     category: vocabWord.category,
+                     imageUrl: vocabWord.imageUrl,
+                     audioN: vocabWord.audioN,
+                     ident: vocabWord.ident,
+                  };
+                  dictionary.push(filteredVocabWord);
                   break;
                }}
          
@@ -124,6 +136,36 @@ module.exports.getDictionary = async (req, res) => {
    
    }
 };
+module.exports.getAllVocab = async (req, res) => {
+   try {
+      console.log("getAllVocab is Running")
+      const cohort = await Cohort.findById(req.user.cohort);
+      const dictionary = [];
+      for (let i = 0; i < cohort.vocabWords.length; i++) {
+         const vocabWord = cohort.vocabWords[i];
+         let filteredVocabWord;
+            for (let i2 = 0; i2 < vocabWord.reviewedBy.length; i2++) {
+               element = vocabWord.reviewedBy[i2];
+               const checkReviews = (element) => element._id.toString() === req.user._id.toString();
+               console.log(vocabWord.reviewedBy.some(checkReviews)); 
+               if(vocabWord.reviewedBy.some(checkReviews) === true){
+                 
+                  
+                  filteredVocabWord = {
+                     description: vocabWord.description,
+                     category: vocabWord.category,
+                     imageUrl: vocabWord.imageUrl,
+                     audioN: vocabWord.audioN,
+                     ident: vocabWord.ident,
+                  };
+                  dictionary.push(filteredVocabWord);
+                  break;
+      }}};
+      res.json({dictionary: dictionary});
+   } catch (error) {
+      console.log(error);
+   }
+}
 module.exports.getSelectedVocab = async (req, res) => {//needs to be tested
    try {  
       console.log("Get Selected Vocab is running"); 
