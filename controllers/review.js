@@ -113,11 +113,6 @@ module.exports.getDictionary = async (req, res) => {
                const checkReviews = (element) => element._id.toString() === req.user._id.toString();
                console.log(vocabWord.reviewedBy.some(checkReviews)); 
                if(vocabWord.reviewedBy.some(checkReviews) === true){
-                  console.log("TRUE");
-                  if(vocabWord.audioN === 'https://res.cloudinary.com/phase1advantage/video/upload/v1703944384/iwdj6jnmrrhaeevcloxx.mp3') {
-                     console.log('THIS IS THE IDENT');
-                     console.log(vocabWord.ident);
-                  }
                   filteredVocabWord = {
                      description: vocabWord.description,
                      category: vocabWord.category,
@@ -147,7 +142,7 @@ module.exports.getAllVocab = async (req, res) => {
             for (let i2 = 0; i2 < vocabWord.reviewedBy.length; i2++) {
                element = vocabWord.reviewedBy[i2];
                const checkReviews = (element) => element._id.toString() === req.user._id.toString();
-               console.log(vocabWord.reviewedBy.some(checkReviews)); 
+               //console.log(vocabWord.reviewedBy.some(checkReviews)); 
                if(vocabWord.reviewedBy.some(checkReviews) === true){
                  
                   

@@ -14,12 +14,12 @@
         <div class="container smallForm">
                         <label for="categoryToReview" class="secondaryLabel flex1">Sort by Category</label>
                         <select name="categoryToReview" id="categoryToReview" required>
-                            <option value="All">Choose a Category</option>
+                            <option value="All">All</option>
                         <% for(let i=0; i < categories.length; i++) {%>
                             <option value="<%=categories[i] %>"><%= categories[i] %></option>  
                         <% } %>
                         </select>
-                        <button type="submit" id="selectByTopic">Select</button>
+                        <button type="submit" id="selectByCategory">Select</button>
         </div>
     </div> 
     <div class="dictionaryContainer">
