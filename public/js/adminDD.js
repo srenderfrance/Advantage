@@ -27,10 +27,10 @@ async function getVocab()  {
       });
       const data = await response.json();
 
-      console.log(data.vocabList);
+      //console.log(data.vocabList);
 
       vocabList = data.vocabList;
-      console.log(vocabList);
+      //console.log(vocabList);
       let toInsert = ""
           for (let i = 0; i < vocabList.length; i++){
              toInsert += `<option value="${vocabList[i].description}">${vocabList[i].description}</option> `
@@ -44,8 +44,7 @@ async function getVocab()  {
 };
 
 function loadPreview() {
-   console.log("vacabList is");
-   console.log(vocabList);
+   
    const image = document.querySelector("img");
    const audioTis = document.querySelector("#audioTis");
    const audioQ = document.querySelector("#audioQ");
@@ -69,7 +68,7 @@ function loadPreview() {
          category.innerText = `Category: ${vw.category}`;
          selectedVWord = vw;
          console.log(category);
-         console.log('selecgtedVWord');
+         console.log('selectedVWord');
          console.log(selectedVWord); 
          //console.log('audioN.src') 
          //console.log(audioN.src)
@@ -175,8 +174,8 @@ async function replaceAudioN () { //Updated
    form.append('toDelete', toDelete);
 
    const response = await fetch('/admin/replaceAudioN', {method: 'PUT',
-   body: form,
-   });
+   body: form,});
+   console.log(response);
    window.location = response.url;
 }};
 
@@ -207,7 +206,7 @@ async function updateVWCategory () { //updated
    
    }else {
    const newVWCategory = selectedElement.options[selectedElement.selectedIndex].value;
-   const response = await fetch('admin/updateVWord', {method: 'PUT',
+   const response = await fetch('updateVWord', {method: 'PUT',
       headers: {"Content-Type": "application/json",},
       body: JSON.stringify({newVWCategory: newVWCategory, vocabWordId: selectedVWord.ident}),
    });

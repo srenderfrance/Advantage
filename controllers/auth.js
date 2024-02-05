@@ -188,29 +188,34 @@ module.exports.postRegister = async (req, res, next) => {
 };
 
 module.exports.postLogin = async (req, res, next) => {
+  try {
+  
   const newUser = req.body.username;
-  console.log(newUser);
   const user = await User.findOne({ username: newUser });
-  console.log(req.body.password)
-  console.log(user.password)
-  if (user.password === req.body.password) {
+  console.log(user);
+  if (user === null){
+    console.log('Equals NULL')
+    const failureMessage = "Your username or password were invalid."
+    res.json(failureMessage);
+  } else if (user.password === req.body.password) {
     req.logIn(user, async function (err) {
       if (err) {
         return next(err);
       }
-      //let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-      res.redirect("/student") /*, { student: req.user, activities: activities});//need to make this a redirect it may cause resubmission of form
-    */ });
+      res.redirect("/student");  
+    });
  (req, res, next);
     console.log("You should be logged in...")
-    console.log(user)
- } else{console.log("did't work");
-  // Add some kind of client side notification.
-  res.redirect('/');
+    console.log(user.username)
+ } else {
+  const failureMessage = "Your username or password were invalid."
+  res.json(failureMessage);
 };
 
- };
-
+} catch (error) {
+    console.log(error);
+  }
+};
 module.exports.checkUsername = async (req, res) => {
   try {
     let isUsed;

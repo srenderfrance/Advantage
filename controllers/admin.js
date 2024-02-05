@@ -31,7 +31,6 @@ module.exports.postCohort = async (req, res, next) => {
    };
 
 module.exports.createReg = async (req, res, next) => {
-   console.log(req.body);
 
    const newPreReg = await PreReg.create({
       email: req.body.email.toLowerCase(),
@@ -41,7 +40,6 @@ res.redirect("/admin/schoolAdmin");
 };
 
 module.exports.getStudentList = async (req, res, next) => {
-   console.log(req.body)
    const cohort = await User.find({"cohort.cohortName": req.body.cohortSelection});
    console.log(cohort)
    res.json(cohort);
@@ -55,11 +53,11 @@ module.exports.getStudentList = async (req, res, next) => {
    /*let studentId = `OjectId(${req.body.studentId})`
    console.log(studentId)*/
    let student = await User.findById(studentId);
-   console.log(student);
    if (student.adminLevel === 0) {
    student.adminLevel = 1;
    await student.save();
    } else {console.log(`${student.username} already has admin privlieges.`);
+   window.alert(`${student.username} already has admin privlieges.`);
 };
    let cohort = await Cohort.findOne({cohortName: cohortSelection});
    let studentArray = cohort.students;
@@ -124,8 +122,8 @@ module.exports.getActivityVocab = async (req, res, next) => {
             if (element.description === activityDescription){
                activityVocab = element.vocabWords;
             }};
-      console.log("activityVocab")
-      console.log(activityVocab);
+      //console.log("activityVocab")
+      //console.log(activityVocab);
       if (activityVocab !== undefined){
       for (let i = 0; i < activityVocab.length; i++) {
          const element1 = activityVocab[i];
@@ -143,7 +141,7 @@ module.exports.getActivityVocab = async (req, res, next) => {
                vocabList.push(element2);
       }}}};
 
-   console.log(vocabList);
+   //console.log(vocabList);
    res.json({vocabList: vocabList});
 
 } catch (error) {
@@ -692,22 +690,23 @@ module.exports.replaceAudioQ = async (req, res) => {
 
 module.exports.replaceAudioN = async (req, res) => {
    try {
-   console.log(req.file);
-   console.log(req.body.toDelete)
-   console.log(req.body); 
+   console.log("ReplaceAudioN is Running");
+   console.log(req.body.toDelete);
+    
    
    let theCohort= await Cohort.findById(req.user.cohort);
    const resultD = await cloudinary.uploader.destroy(req.body.toDelete, {resource_type: 'video'});
    console.log('resultD');
    console.log(resultD);
+   console.log(req.file.path);
    const resultU = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
-   
+   console.log(resultU);
     for (let i = 0; i < theCohort.vocabWords.length; i++) {
       const element = theCohort.vocabWords[i];
       if(element.cloudinaryIdN === req.body.toDelete) {
          element.cloudinaryIdN = resultU.public_id;
          element.audioN = resultU.secure_url;
-         //toMark = i;
+         console.log(resultU.secure_url);
    }};
    theCohort.markModified('vocabWords');
        

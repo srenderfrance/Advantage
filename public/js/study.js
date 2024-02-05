@@ -469,6 +469,7 @@ let engine = {}
     
     engine.saveAndRedirect = async function(){
         try {
+            document.querySelector("#sendResults").disabled = true;
             console.log(engine.userReviewResults);
             infoToSend = engine.userReviewResults;
             const response = await fetch("/student/reviewResults", {method: 'POST',
@@ -485,6 +486,7 @@ let engine = {}
     
     engine.backToStudentPage = async function(){
         try {
+            window.confirm("Are you sure you do not want to save before leaving?");
             const response = await fetch("/student", {method: 'GET',
         })
         window.location = response.url;

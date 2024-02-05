@@ -34,7 +34,6 @@ async function giveToStudent () {
     let student = document.querySelector("#studentName").value;
     let studentId;
     let infoToSend;
-    //let studentList = JSON.parse(sessionStorage.getItem("sessionStoreStudentList"));
     const cohortSelection = document.querySelector("#cohortName").value;
     const studentName = student.split(' ');
     for (let i=0; i<studentList.length; i++){

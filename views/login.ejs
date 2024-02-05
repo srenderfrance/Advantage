@@ -8,14 +8,14 @@
 
 <h1>Welcome to Phase 1 Advantage</h1>
 
-<form action="/" method="POST">
+<form action="/" method="POST" id="loginForm">
     <div>
         <label for="username" class="primaryLabel">User Name</label>
         <input type="text" id="username" name="username" required>
         <label for="password" class="primaryLabel">Password</label>
         <input type="text" id="password" name="password" required>
     </div>
-    <button type="submit">Login</button>
+    <button type="button" id="loginButton">Login</button>
 </form>
 <h2>If you haven't registered enter your email and provided password below.</h2>
 <form action="/preRegister" method="POST">
@@ -27,4 +27,5 @@
     </div>
     <button type="submit">Begin Registration</button>
 </form>
+<script type="text/javascript" src="/js/login.js"></script>
 </body>
