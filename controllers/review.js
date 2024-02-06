@@ -156,7 +156,8 @@ module.exports.getAllVocab = async (req, res) => {
                   dictionary.push(filteredVocabWord);
                   break;
       }}};
-      res.json({dictionary: dictionary});
+      const userSelectedVocab = req.user.wordsSelected;
+      res.json({dictionary: dictionary, userSelectedVocab: userSelectedVocab});
    } catch (error) {
       console.log(error);
    }
@@ -716,5 +717,24 @@ module.exports.deleteCustomActivity = async (req, res) => {
    } catch (error) {
    console.log(error);      
    }
-res.redirect("/student");
+res.redirect("/student/customAandD");
 };
+
+module.exports.saveSelectedVocab = async (req, res) => {
+   try {
+      console.log("SaveSelecteVocab is running")
+      console.log(req.body.selectedVocab);
+      const newSelection = req.body.selectedVocab;
+      const student = await User.findById(req.user._id);
+      let selection = student.wordsSelected;
+      for (let i = 0; i < newSelection.length; i++) {
+         const element = newSelection[i];
+         if (!selection.includes(element)){
+            selection.push(element);
+      }}
+      await student.save();
+   } catch (error) {
+      console.log(error)
+   }
+   res.json("New Selection Saved");
+}

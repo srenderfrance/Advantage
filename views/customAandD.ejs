@@ -9,27 +9,48 @@
 <body>
 
 <div>
-    <div class="flex">
-        <h1>Review your Picture Dictionary or Create a Custom Activity</h1>
-        <div class="container smallForm">
-                        <label for="categoryToReview" class="secondaryLabel flex1">Sort by Category</label>
-                        <select name="categoryToReview" id="categoryToReview" required>
-                            <option value="All">All</option>
-                        <% for(let i=0; i < categories.length; i++) {%>
-                            <option value="<%=categories[i] %>"><%= categories[i] %></option>  
-                        <% } %>
-                        </select>
-                        <button type="submit" id="selectByCategory">Select</button>
+    <div class="fullScreen">
+        <div class="flex" id="dictionaryHeader">
+            <h1>Review your Picture Dictionary or Create a Custom Activity</h1>
+            <div class="container smallForm">
+                <label for="categoryToReview" class="secondaryLabel flex1">Sort by Category</label>
+                <select name="categoryToReview" id="categoryToReview" required>
+                    <option value="All">All</option>
+                <% for(let i=0; i < categories.length; i++) {%>
+                    <option value="<%=categories[i] %>"><%= categories[i] %></option>  
+                <% } %>
+                </select>
+                <button type="submit" id="selectByCategory">Select</button>
+            </div>
+        </div> 
+        <div class="dictionaryContainer">
+            <% for(let i=0; i < dictionary.length; i++) {
+                element = dictionary[i]%> 
+                <div id="A<%= 1 + i %>" style="background-image: url('<%= element.imageUrl %>')">
+                    <audio src="<%= element.audioN %>" id="audioN<%= 1 + i %>"></audio>
+                </div> <% } %>
         </div>
-    </div> 
-    <div class="dictionaryContainer">
- <% for(let i=0; i < dictionary.length; i++) {
-        element = dictionary[i]%> 
-            <div id="A<%= 1 + i %>" style="background-image: url('<%= element.imageUrl %>')">
-                <audio src="<%= element.audioN %>" id="audioN<%= 1 + i %>"></audio>
-            </div> <% } %>
+        <div class="flex">
+            <div class="container smallForm">
+                <label class="secondaryLabel flex1" id="toggleButtonLabel">Select Vocab for a Custom Activity</label>
+                <button type="submit" id="selectorToggle">Select</button>
+            </div>
+            <div class="container smallForm">
+                <label class="secondaryLabel flex1">Save Selection</label>
+                <button type="submit" id="saveSelection">Save</button>
+            </div>           
+        </div>
     </div>
-    <h3>To Create a Custom activity, select your vocab words above then give the activity a name.</h3>
+    <div class="fullScreen">
+        <h3>To Create a Custom activity, select your vocab words above then give the activity a name.</h3>
+        <div class="userSelectionContainer">
+            <% for(let i=0; i < wordsSelected.length; i++) {
+                element = wordsSelected[i]%> 
+                <div id="A<%= 1 + i %>" style="background-image: url('<%= element.imageUrl %>')">
+                    <audio src="<%= element.audioN %>" id="audioN<%= 1 + i %>"></audio>
+                </div> <% } %>
+        </div>
+
         <div class="moveRight">
             <input type="text" id="activity" name="description" placeholder="Name Your Activity"
             required>        
@@ -44,7 +65,8 @@
                 <% } %> 
             </select>
             <button type="button" id="deleteCustomActivity">Delete Selected Activity</button>
-        </div>           
+        </div> 
+    </div>          
 </div>        
 
 <div class="navButtons">

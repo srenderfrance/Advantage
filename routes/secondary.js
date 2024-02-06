@@ -12,6 +12,7 @@ router.post('/reviewActivity', reviewController.reviewActivity)
 //router.post('/reviewActivityWaL', reviewController.reviewActivityWaL)
 router.put('/getVocabList', reviewController.getVocabList);
 router.get('/getSelectedVocab', reviewController.getSelectedVocab);
+router.post('/saveSelectedVocab', reviewController.saveSelectedVocab);
 router.post('/createCustomActivity', reviewController.createCustomActivity);
 
 router.post('/reviewResults', reviewController.userReviewResults);

@@ -1,5 +1,6 @@
 
-.dictionaryContainer {
+.dictionaryContainer,
+.userSelectionContainer {
   display: grid;
   gap: 5px;
   grid-auto-columns: auto;
@@ -11,8 +12,23 @@
   margin-left: 8px;
   margin-right: 8px;
 }
-.dictionaryContainer > div {
+.dictionaryContainer > div,
+.userSelectionContainer > div {
   background-size: contain;
   width: 8vw;
   height: 8vw; 
+}
+
+.fullScreen {
+  height: 95vh;
+}
+
+#dictionaryHeader {
+  align-items: center;
+  padding: .5rem;
+}
+
+.selectedVocab,
+.selectedVocab2 {
+  opacity: .5;
 }
