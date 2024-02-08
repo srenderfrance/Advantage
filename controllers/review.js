@@ -97,12 +97,13 @@ module.exports.getDictionary = async (req, res) => {
       const cohort = await Cohort.findById(req.user.cohort);
       let wordsSelected = [];
       for (let i = 0; i < req.user.wordsSelected.length; i++) {
-         const selectedIdenx = req.user.wordsSelected[i];
+         const selectedIndex = req.user.wordsSelected[i];
          for (let index = 0; index < cohort.vocabWords.length; index++) {
             const vocabWord = cohort.vocabWords[index];
-            if (selectedIdenx === vocabWord.ident){
+            if (selectedIndex === vocabWord.ident){
                wordsSelected.push(vocabWord);
       }}};
+      
       const categories = cohort.categories;
       const dictionary = [];
       for (let i = 0; i < cohort.vocabWords.length; i++) {
@@ -111,7 +112,11 @@ module.exports.getDictionary = async (req, res) => {
             for (let i2 = 0; i2 < vocabWord.reviewedBy.length; i2++) {
                element = vocabWord.reviewedBy[i2];
                const checkReviews = (element) => element._id.toString() === req.user._id.toString();
-               console.log(vocabWord.reviewedBy.some(checkReviews)); 
+               //looking for which one is false
+               if (vocabWord.reviewedBy.some(checkReviews) === false){
+               console.log(vocabWord.ident); 
+               }
+
                if(vocabWord.reviewedBy.some(checkReviews) === true){
                   filteredVocabWord = {
                      description: vocabWord.description,
@@ -156,8 +161,44 @@ module.exports.getAllVocab = async (req, res) => {
                   dictionary.push(filteredVocabWord);
                   break;
       }}};
-      const userSelectedVocab = req.user.wordsSelected;
-      res.json({dictionary: dictionary, userSelectedVocab: userSelectedVocab});
+      let userSelectedVocab = [];
+      for (let i = 0; i < req.user.wordsSelected.length; i++) {
+         const selectedIndex = req.user.wordsSelected[i];
+         for (let index = 0; index < cohort.vocabWords.length; index++) {
+            const vocabWord = cohort.vocabWords[index];
+            if (selectedIndex === vocabWord.ident){
+               const filteredVocabWord = {
+                  description: vocabWord.description,
+                  category: vocabWord.category,
+                  imageUrl: vocabWord.imageUrl,
+                  audioN: vocabWord.audioN,
+                  ident: vocabWord.ident,
+               };
+            userSelectedVocab.push(filteredVocabWord);
+      }}};
+      let customActivities = [];
+      for (let i = 0; i < req.user.individualExercises.length; i++) {
+         let vocabWords = [];
+         const element = req.user.individualExercises[i];
+         customActivities.push(element);
+         for (let i2 = 0; i2 < element.vocabWords.length; i2++) {
+            const selectedIndex = element.vocabWords[i2];
+            for (let i3 = 0; i3 < cohort.vocabWords.length; i3++) {
+               const vocabWord = cohort.vocabWords[i3];
+               if (selectedIndex === vocabWord.ident){
+                  const filteredVocabWord = {
+                     description: vocabWord.description,
+                     category: vocabWord.category,
+                     imageUrl: vocabWord.imageUrl,
+                     audioN: vocabWord.audioN,
+                     ident: vocabWord.ident,
+               };
+               vocabWords.push(filteredVocabWord);
+         }}}
+         customActivities[i].vocabWords = vocabWords;
+      };
+
+      res.json({dictionary: dictionary, userSelectedVocab: userSelectedVocab, customActivities: customActivities});
    } catch (error) {
       console.log(error);
    }
@@ -427,23 +468,6 @@ module.exports.userReviewResults = async (req, res, next) => {
       });
 
    console.log(student)
-       //adds activity to has reviewed
-  /*
-   if (isCustomActivity === false && reviewResults.activity !== "Challenging Words" && isReviewByCategory === false && reviewResults.wasReview === true){   
-      console.log("ActivityToAdd")
-      console.log(activity)
-      console.log(student.hasReviewed.includes(activity[0]._id))
-      if (student.hasReviewed.includes(activity[0]._id) === false) {
-         student.hasReviewed.push(activity[0]._id);
-      } else {
-         
-         console.log("Activity has previously been reviewed")};
-   } else if (reviewResults.activity === "Challenging Words") {
-      console.log("Else if Challenging Words");
-   } else {console.log(`Custom Activity Name is ${reviewResults.activity}`)};
-*/
-
-
 
   const vocabArray = theCohort.vocabWords
       console.log('array length')
@@ -524,7 +548,7 @@ module.exports.createCustomActivity = async (req, res) => {
    } catch (error) {
       console.log(error);
    };
-   res.redirect("/student");
+   res.json("Selection Updated");
 };
 
 module.exports.reviewCustomActivity = async (req, res) => {
@@ -703,9 +727,7 @@ module.exports.reviewByCategory = async (req, res) => {
 module.exports.deleteCustomActivity = async (req, res) => {
    try {
       console.log("Delete Custom Activity is running");
-      console.log(req.body);
       let student = await User.findById(req.user._id);
-      console.log(student);
       for (let i = 0; i < student.individualExercises.length; i++) {
          if (req.body.activityToDelete === student.individualExercises[i].description){
             student.individualExercises.splice(i, 1);
@@ -737,4 +759,33 @@ module.exports.saveSelectedVocab = async (req, res) => {
       console.log(error)
    }
    res.json("New Selection Saved");
-}
+};
+
+module.exports.updateIndividualExercise = async (req, res) => {
+   console.log(req.body);
+   let updatedVWIdents = [];
+   for (let i = 0; i < req.body.updatedVocabWords.length; i++) {
+      const element = req.body.updatedVocabWords[i];
+      updatedVWIdents.push(element.ident);
+   };
+   try {
+      
+  
+   const student = await User.findById(req.user._id);
+   for (let i = 0; i < student.individualExercises.length; i++) {
+      const element = student.individualExercises[i];
+      if(element.description === req.body.activityToUpdate){
+         console.log('Activity Found!');
+         element.vocabWords = updatedVWIdents;
+      };
+   console.log("updates student");
+   console.log(student.individualExercises);
+   }; 
+
+   student.markModified('individualExercises');
+   await student.save();
+   } catch (error) {
+      console.log(error);
+};
+res.json("All Done")
+};

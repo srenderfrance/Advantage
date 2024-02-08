@@ -2,6 +2,7 @@ document.querySelector('#selectorToggle').addEventListener('click', toggleSelect
 document.querySelector('#saveSelection').addEventListener('click', saveSelection);
 let vocabDictionary = [];
 let userSelectedVocab = [];
+let customActivities = [];
 
 function toggleSelector () {
     console.log ("Toggled!");
@@ -39,14 +40,14 @@ async function saveSelection () {
     console.log('Time to save Selection');
     const elementsSelected = document.querySelectorAll('.selectedVocab');
     let selectedVw = [];
-    console.log(typeof(elementsSelected[0].style.backgroundImage.slice(5, -2)));
+    //console.log(typeof(elementsSelected[0].style.backgroundImage.slice(5, -2)));
     for (let i = 0; i < elementsSelected.length; i++) {
         const element = elementsSelected[i];
         for (let i2 = 0; i2 < vocabDictionary.length; i2++) {
             const vw = vocabDictionary[i2];
             //console.log(vw.imageUrl);
             //console.log(typeof(vw.imageUrl));
-            if (element.style.backgroundImage.slice(5, -2).toString() === vw.imageUrl.toString()){
+            if (element.style.backgroundImage.slice(5, -2) === vw.imageUrl){
                 console.log(vw.ident);
                 selectedVw.push(vw.ident);
                 break;
@@ -66,6 +67,30 @@ async function saveSelection () {
 
     });
     const data = await response.json();
+    let usvw = []
+    for (let i = 0; i < selectedVw.length; i++) {
+        const element = selectedVw[i];
+        for (let i2 = userSelectedVocab.length -1; i2 > -1; i2--) {//loof fixed for splice.
+            const element2 = userSelectedVocab[i2];
+            if(element2.ident === element){
+                selectedVw.splice(i, 1);
+    }}};
+    for (let i = 0; i < selectedVw.length; i++) {
+        const element = selectedVw[i];
+        for (let i1 = 0; i1 < vocabDictionary.length; i1++) {
+            const element2 = vocabDictionary[i1];
+            if (element2.ident === element){
+                userSelectedVocab.push(element2);
+    }}};
+    userSelectionVocabContainer = document.querySelector('.userSelectionContainer');
+    console.log(userSelectionVocabContainer.id);
+    const letter = userSelectionVocabContainer.id;
+    emptyContainer(userSelectionVocabContainer);
+    fillContainer(userSelectionVocabContainer, userSelectedVocab, letter);
+        console.log("UPDATED userSelectedVocab");
+        console.log(userSelectedVocab);
+        
+    
     console.log(data);
 } catch (error) {
         console.log(error)
@@ -77,7 +102,9 @@ async function createCustomActivity () {
         const activityName = document.querySelector('#activity').value;
         //console.log(activityName)
         let selection = [];
-        const userSelected = document. querySelectorAll('selected2');
+        const userSelected = document.querySelectorAll('.selectedVocab2');
+        console.log("userSelectedVocab");
+        console.log(userSelectedVocab);
         for (let i = 0; i < userSelected.length; i++) {
             const element = userSelected[i];
             for (let i2 = 0; i2 < userSelectedVocab.length; i2++) {
@@ -95,14 +122,15 @@ async function createCustomActivity () {
                 userSelectedVocab.splice(i, 1);
             };
         };
-    console.log(selectedVw);
-
+        console.log(selection);
         const response = await fetch("/student/createCustomActivity", {method: 'POST',
             headers: {"Content-Type": "application/json",},    
             body: JSON.stringify({activityName: activityName, activityVocab: selection}),
-        })
-        //console.log(response);
-        window.location = response.url;
+        });
+        const data = await response.json();
+
+        console.log(data);
+       // window.location = response.url;
     } catch (error) {
         console.log(error);
 }};
@@ -111,7 +139,7 @@ async function deleteCustomAtivity () {
     try {
         const confirmDelete = confirm("Are you sure want to delete this Activity?");
         if(confirmDelete === true){
-            const activityToDelete = document.querySelector('#activityToDelete').value;
+            const activityToDelete = document.querySelector('#activityToEdit').value;
             const response = await fetch('/student/deleteCustomActivity', {method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({activityToDelete: activityToDelete}),
@@ -130,23 +158,43 @@ async function getAllVocab () {
             const data = await response.json();
             vocabDictionary = data.dictionary;
             userSelectedVocab = data.userSelectedVocab;
-            console.log(userSelectedVocab);
+            customActivities = data.customActivities;
+            console.log("GET ALL VOCAB customActivities")
+            console.log(customActivities);
         } catch (error) {
             console.log(error)
         }
 };
 
+function emptyContainer(container) {
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }};
+function fillContainer(container,array, idLetter){
+    console.log("FILL CONTAINER IS RUNNING!")
+    for (let i = 0; i < array.length; i++) {
+            const element = array[i];     
+            const div = document.createElement("div");
+            const idAtt = document.createAttribute("id");
+            idAtt.value = idLetter + (i+1);
+            div.setAttributeNode(idAtt);
+            const audio = document.createElement('audio')
+            const audioIdAtt = document.createAttribute('id');
+            audioIdAtt.value = 'audioN' + (i+1);
+            const sourceAtt = document.createAttribute('src');
+            sourceAtt.value = element.audioN;
+            audio.setAttributeNode(audioIdAtt);
+            audio.setAttributeNode(sourceAtt);
+            container.append(div);
+            const createdDiv = document.getElementById(idAtt.value);
+            createdDiv.style.backgroundImage = 'url(' + element.imageUrl + ')';
+            createdDiv.append(audio);
+}};
 function filterByCategory () {
     let category = document.querySelector('#categoryToReview').value;
     console.log(category);
-
-    function removeAllChildNodes(parent) {
-        while (parent.firstChild) {
-            parent.removeChild(parent.firstChild);
-        }
-    }
     const container = document.querySelector('.dictionaryContainer');
-    removeAllChildNodes(container);
+    emptyContainer(container);
     //let categoryDictionary = [];
     if (category === 'All'){
         for (let i = 0; i < vocabDictionary.length; i++) {
@@ -189,17 +237,139 @@ function filterByCategory () {
             createdDiv.append(audio);
             //console.log(createdDiv);
 }}}};
-function findVocab (Event){
+function findVocab (Event) {
     if(Event.target.matches('.dictionaryContainer > div')){
+        console.log("FIND VOCAB IS RUNNING")
         const div = Event.target.id;
         const audioId = "audioN" + div.slice(1);
         const vocabAudio = document.getElementById(audioId);
         vocabAudio.play();
+}};
+function showSelectedActivity (){
+    const activityToShow = document.querySelector('#activityToEdit').value;
+    console.log(activityToShow);
+    console.log("SHOW SELECTED ACTIVITY RAN")
+    const container = document.querySelector('.customActivityContainer');
+    const idLetter = container.id;
+    console.log(container);
+    console.log(idLetter);
+    let vwArray = [];
+    for (let i = 0; i < customActivities.length; i++) {
+        const element = customActivities[i];
+        if(element.description === activityToShow){
+            vwArray = element.vocabWords;  
+    }}
+    console.log(vwArray);
+    emptyContainer(container);
+    fillContainer(container, vwArray, idLetter);
+
+};
+async function addToActivity() {
+    console.log("Add To Activity is Running!");
+    const vwToAdd = document.querySelectorAll('.selectedVocab2');
+    let arrayToAdd = [];
+    console.log(vwToAdd);
+    console.log("USER SELECTED VOCAB");
+    console.log(userSelectedVocab);
+    for (let i = 0; i < vwToAdd.length; i++) {
+        const element = vwToAdd[i];
+        for (let i2 = userSelectedVocab.length -1; i2 > -1; i2--) {//Splice for loop.
+            const element2 = userSelectedVocab[i2];
+            if (element.style.backgroundImage.slice(5, -2) === element2.imageUrl){
+                console.log(element2.imageUrl);
+                arrayToAdd.push(element2);
+                userSelectedVocab.splice(i2, 1);
+    }}};
+    console.log('ARRAY TO ADD');
+    console.log(arrayToAdd);
+    let currentActivityVL =[];
+    let arrayToShow = [];
+    const cActivity = document.querySelector("#activityToEdit").value;
+    console.log("Activity Selector Value");
+    console.log(cActivity);
+    for (let i = 0; i < customActivities.length; i++) {
+        const element = customActivities[i];
+        if(element.description === cActivity){
+            console.log("Activity");
+            console.log(element.description);
+            currentActivityVL = element.vocabWords;
+    }};
+    console.log("CURRENT ACTIVITY");
+    console.log(currentActivityVL);
+
+    for (let i = 0; i < currentActivityVL.length; i++) {
+        const element = currentActivityVL[i];
+        for (let i2 = arrayToAdd.length -1; i2 > -1; i2--) {//Splice for loop.
+                const element2 = arrayToAdd[i2];
+                if(element.ident === element2.ident){
+                    arrayToAdd.splice(i2, 1);
+    }}};
+    console.log("ArrayToAdd secondtime");
+    console.log(arrayToAdd);
+    arrayToShow.push(...arrayToAdd,...currentActivityVL);
+    const container = document.querySelector('.customActivityContainer');
+    emptyContainer(container);
+    fillContainer(container, arrayToShow, "C" );
+
+    try {
+        const response = await fetch("/student/updateIndividualExercise", {method: 'POST',
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify({activityToUpdate: cActivity, updatedVocabWords: arrayToShow}),
+        });
+   const data = await response.json();       
+   console.log(data);
+    } catch (error) {
+        console.log(error)
+        
     }
+
+};
+
+function moveToCollection () {
+    console.log("MOVE TO COLLECTION IS RUNNING!");
+};
+
+async function removeFromCollection () {
+    console.log("REMOVE FROM COLLECTION IS RUNNING!");
+    const toRemove = document.querySelectorAll('.selectedVocab2');
+    let selection = [];
+    for (let i = 0; i < toRemove.length; i++) {
+            const element = toRemove[i];
+            for (let i2 = userSelectedVocab.length -1; i2 > -1; i2--) {
+                const usersW = userSelectedVocab[i2];
+            if (element.style.backgroundImage.slice(5, -2).toString() === usersW.imageUrl.toString()){
+                console.log(usersW.ident);
+                selection.push(usersW.ident);
+                userSelectedVocab.splice(i2, 1);
+                
+            };
+            
+        }};
+    console.log("THIS IS THE SELECTION");
+    console.log(selection);
+    try {
+        const response = await fetch('/student/removeFromCollection', {method: 'POST',
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify({vocabToRemove: selection}),
+        });
+        data = await response.json();
+        console.log(data);
+    } catch (error) {
+       console.log(error) 
+    };
+    const container = document.querySelector('.userSelectionContainer');
+    emptyContainer(container);
+    fillContainer(container, userSelectedVocab, 'B');
+//Need to set up router and controller
 }
+
 getAllVocab();
-document.addEventListener('click', selectFromUserselection)
+document.querySelector('#activityToEdit').addEventListener('change', showSelectedActivity);
+document.addEventListener('click', selectFromUserselection);
 document.addEventListener('click', findVocab);
 document.querySelector('#deleteCustomActivity').addEventListener('click', deleteCustomAtivity);
 document.querySelector('#newActivity').addEventListener('click', createCustomActivity);
 document.querySelector('#selectByCategory').addEventListener('click', filterByCategory);
+document.querySelector('#addToActivity').addEventListener('click', addToActivity);
+document.querySelector('#moveToCollection').addEventListener('click', moveToCollection);
+document.querySelector('#removeFromCollection').addEventListener('click', removeFromCollection);
