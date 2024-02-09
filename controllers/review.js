@@ -769,23 +769,99 @@ module.exports.updateIndividualExercise = async (req, res) => {
       updatedVWIdents.push(element.ident);
    };
    try {
-      
-  
-   const student = await User.findById(req.user._id);
-   for (let i = 0; i < student.individualExercises.length; i++) {
-      const element = student.individualExercises[i];
-      if(element.description === req.body.activityToUpdate){
-         console.log('Activity Found!');
-         element.vocabWords = updatedVWIdents;
-      };
-   console.log("updates student");
-   console.log(student.individualExercises);
-   }; 
-
-   student.markModified('individualExercises');
-   await student.save();
+      const student = await User.findById(req.user._id);
+      for (let i = 0; i < student.individualExercises.length; i++) {
+         const element = student.individualExercises[i];
+         if(element.description === req.body.activityToUpdate){
+            console.log('Activity Found!');
+            element.vocabWords = updatedVWIdents;
+         };
+      console.log("updates student");
+      console.log(student.individualExercises);
+      }; 
+      student.wordsSelected = req.body.updatedUserSelections;
+      student.markModified('individualExercises');
+      await student.save();
    } catch (error) {
       console.log(error);
 };
 res.json("All Done")
+};
+
+module.exports.removeFromCollection = async (req, res) => {
+console.log(req.body);
+try {
+   const student = await User.findById(req.user._id);
+   let vocab = student.wordsSelected;
+   for (let i = 0; i < req.body.vocabToRemove.length; i++) {
+      const element = req.body.vocabToRemove[i];
+      for (let i2 = vocab.length -1; i2 > -1; i2--) {
+         const element2 = vocab[i2];
+         if (element === element2){
+            vocab.splice(i2, 1);
+   }}};
+   student.wordsSelected = vocab;
+   await student.save();
+} catch (error) {
+  console.log(error); 
+};
+res.json("Deleted")
+};
+
+module.exports.moveToCollection = async (req, res) => {
+   console.log(req.body);
+   try {
+      const student = await User.findById(req.user._id);
+      const individualExercises = student.individualExercises;
+      for (let i = 0; i <individualExercises.length; i++) {//Removes words from activity.
+         const element = individualExercises[i];
+         if (req.body.activity === element.description){
+            for (let i2 = element.vocabWords.length -1; i2 > -1; i2--) {//Made for Splice.
+               const vocabIdent = element.vocabWords[i2];
+               for (let i2 = 0; i2 < req.body.toRemove.length; i2++) {
+                  const identToRemove = req.body.toRemove[i2];
+                  if (vocabIdent === identToRemove){
+                     element.vocabWords.splice(i2, 1);
+      }}}}};
+      const collection = student.wordsSelected;
+      collection.push(...req.body.toRemove);
+      
+      console.log("going to save")
+      student.wordsSelected = collection;
+      student.individualExercises = individualExercises;
+      student.markModified('individualExercises');
+      //student.markModified('wordsSelected');
+      await student.save();
+      console.log('after save')
+   } catch (error) {
+      console.log(error)
+   };
+   res.json("Should Be Good")
+};
+
+module.exports.removeFromActivity = async (req, res) => {
+   console.log(req.body);
+   try {
+      const student = await User.findById(req.user._id);
+      const individualExercises = student.individualExercises;
+      for (let i = 0; i <individualExercises.length; i++) {//Removes words from activity.
+         const element = individualExercises[i];
+         if (req.body.activity === element.description){
+            for (let i2 = element.vocabWords.length -1; i2 > -1; i2--) {//Made for Splice.
+               const vocabIdent = element.vocabWords[i2];
+               for (let i2 = 0; i2 < req.body.toRemove.length; i2++) {
+                  const identToRemove = req.body.toRemove[i2];
+                  if (vocabIdent === identToRemove){
+                     element.vocabWords.splice(i2, 1);
+      }}}}};
+      
+      console.log("going to save")
+      student.individualExercises = individualExercises;
+      student.markModified('individualExercises');
+      await student.save();
+      console.log('after save')
+   } catch (error) {
+      console.log(error)
+   };
+   res.json("Good AND GONE");
 };

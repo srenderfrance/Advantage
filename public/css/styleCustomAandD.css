@@ -31,7 +31,8 @@
 }
 
 .selectedVocab,
-.selectedVocab2 {
+.selectedVocab2, 
+.selectedVocab3 {
   opacity: .5;
 }
 

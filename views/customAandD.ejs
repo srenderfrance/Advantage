@@ -50,7 +50,7 @@
             <div class="userSelectionContainer smallContainer" id="B">
                 <% for(let i=0; i < wordsSelected.length; i++) {
                 element = wordsSelected[i]%> 
-                <div id="A<%= 1 + i %>" style="background-image: url('<%= element.imageUrl %>')">
+                <div id="B<%= 1 + i %>" style="background-image: url('<%= element.imageUrl %>')">
                     <audio src="<%= element.audioN %>" id="audioN<%= 1 + i %>"></audio>
                 </div> <% } %>
             </div>
@@ -80,7 +80,7 @@
                     </select>
                     <div class="flex">
                         <button type="button" id="moveToCollection">Move to Collection</button>
-                        <button type="button" id="removeSelectedWords">Remove From Activity</button>
+                        <button type="button" id="removeFromActivity">Remove From Activity</button>
                         <button type="button" id="deleteCustomActivity">Delete Activity</button>
                     </div> 
                 </div>

@@ -32,6 +32,9 @@ function selectFromUserselection (Event) {
     if (Event.target.matches('.userSelectionContainer > div')){
         const userDiv = Event.target;
         userDiv.classList.toggle('selectedVocab2');
+    } else if (Event.target.matches('.customActivityContainer > div')){
+        const userDiv = Event.target;
+        userDiv.classList.toggle('selectedVocab3')
     };
 };
 
@@ -268,10 +271,11 @@ async function addToActivity() {
     console.log("Add To Activity is Running!");
     const vwToAdd = document.querySelectorAll('.selectedVocab2');
     let arrayToAdd = [];
+    let newIdentArray = [];
     console.log(vwToAdd);
     console.log("USER SELECTED VOCAB");
     console.log(userSelectedVocab);
-    for (let i = 0; i < vwToAdd.length; i++) {
+    for (let i = 0; i < vwToAdd.length; i++) {//This creates an array of VWs from the selected images AND removes them from userSelectedVocab. 
         const element = vwToAdd[i];
         for (let i2 = userSelectedVocab.length -1; i2 > -1; i2--) {//Splice for loop.
             const element2 = userSelectedVocab[i2];
@@ -280,6 +284,10 @@ async function addToActivity() {
                 arrayToAdd.push(element2);
                 userSelectedVocab.splice(i2, 1);
     }}};
+    for (let i = 0; i < userSelectedVocab.length; i++) {//Creates an array for the userSelectedVocag in the database.
+        const element = userSelectedVocab[i];
+        newIdentArray.push(element.ident);
+    };
     console.log('ARRAY TO ADD');
     console.log(arrayToAdd);
     let currentActivityVL =[];
@@ -287,7 +295,7 @@ async function addToActivity() {
     const cActivity = document.querySelector("#activityToEdit").value;
     console.log("Activity Selector Value");
     console.log(cActivity);
-    for (let i = 0; i < customActivities.length; i++) {
+    for (let i = 0; i < customActivities.length; i++) {//This dinds the correct Activity Object to modify.
         const element = customActivities[i];
         if(element.description === cActivity){
             console.log("Activity");
@@ -297,7 +305,7 @@ async function addToActivity() {
     console.log("CURRENT ACTIVITY");
     console.log(currentActivityVL);
 
-    for (let i = 0; i < currentActivityVL.length; i++) {
+    for (let i = 0; i < currentActivityVL.length; i++) {//This removes any VWs that are already in the Activity.
         const element = currentActivityVL[i];
         for (let i2 = arrayToAdd.length -1; i2 > -1; i2--) {//Splice for loop.
                 const element2 = arrayToAdd[i2];
@@ -306,15 +314,20 @@ async function addToActivity() {
     }}};
     console.log("ArrayToAdd secondtime");
     console.log(arrayToAdd);
-    arrayToShow.push(...arrayToAdd,...currentActivityVL);
-    const container = document.querySelector('.customActivityContainer');
-    emptyContainer(container);
-    fillContainer(container, arrayToShow, "C" );
+    arrayToShow.push(...arrayToAdd,...currentActivityVL);//This add the remaining selected VWs to the activity.
+    const userVocabC = document.querySelector('#B');
+    emptyContainer(userVocabC);
+    fillContainer(userVocabC, userSelectedVocab, "B");
+    const userActivityC = document.querySelector('#C');
+    emptyContainer(userActivityC);
+    fillContainer(userActivityC, arrayToShow, "C" );
+    console.log("NEW IDENT ARRAY");
+    console.log(newIdentArray);
 
     try {
         const response = await fetch("/student/updateIndividualExercise", {method: 'POST',
             headers: {"Content-Type": "application/json",},
-            body: JSON.stringify({activityToUpdate: cActivity, updatedVocabWords: arrayToShow}),
+            body: JSON.stringify({activityToUpdate: cActivity, updatedVocabWords: arrayToShow, updatedUserSelections: newIdentArray}),
         });
    const data = await response.json();       
    console.log(data);
@@ -325,8 +338,53 @@ async function addToActivity() {
 
 };
 
-function moveToCollection () {
+async function moveToCollection () {
     console.log("MOVE TO COLLECTION IS RUNNING!");
+    const toMove = document.querySelectorAll('.selectedVocab3');
+    const activityDescription = document.querySelector('#activityToEdit').value;
+    console.log("Activity element");
+    console.log(activityDescription);
+    let vArrayToModify = [];
+    for (let i = 0; i < customActivities.length; i++) {
+        const element = customActivities[i];
+        console.log(element.description);
+        if (element.description === activityDescription){
+            console.log("THEY WERE THE SAME");
+            vArrayToModify = element.vocabWords;
+    }};
+    let selection = [];
+    let forCollection = [];
+    for (let i = 0; i < toMove.length; i++) {
+            const element = toMove[i];
+            for (let i2 = vArrayToModify.length -1; i2 > -1; i2--) {
+                const sW = vArrayToModify[i2];
+                if (element.style.backgroundImage.slice(5, -2) === sW.imageUrl){
+                    console.log(sW.ident);
+                    forCollection.push(sW);
+                    selection.push(sW.ident);
+                    vArrayToModify.splice(i2, 1); 
+    }}};
+    userSelectedVocab.push(...forCollection);
+    try {
+        const response = await fetch("/student/moveToCollection", {method: 'POST',
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify({activity: activityDescription, toRemove: selection}),
+        });
+        const data = await response.json();
+        console.log(data);
+        
+    } catch (error) {
+        console.log(error);
+    };
+    const userSVocab = document.querySelector('#B');
+    const userActivityC = document.querySelector('#C')
+    emptyContainer(userSVocab);
+    fillContainer(userSVocab, userSelectedVocab, 'B');
+    emptyContainer(userActivityC);
+    fillContainer(userActivityC, vArrayToModify, 'C');
+    console.log("THIS IS THE SELECTION");
+    console.log(selection);
+
 };
 
 async function removeFromCollection () {
@@ -347,6 +405,9 @@ async function removeFromCollection () {
         }};
     console.log("THIS IS THE SELECTION");
     console.log(selection);
+    const container = document.querySelector('#B');
+    emptyContainer(container);
+    fillContainer(container, userSelectedVocab, 'B');
     try {
         const response = await fetch('/student/removeFromCollection', {method: 'POST',
             headers: {"Content-Type": "application/json",},
@@ -357,11 +418,50 @@ async function removeFromCollection () {
     } catch (error) {
        console.log(error) 
     };
-    const container = document.querySelector('.userSelectionContainer');
-    emptyContainer(container);
-    fillContainer(container, userSelectedVocab, 'B');
-//Need to set up router and controller
-}
+};
+
+async function removeFromActivity () {
+    console.log("REMOVE FROM ACTIVITY IS RUNNING");
+    const toRemove = document.querySelectorAll('.selectedVocab3');
+    console.log(toRemove);
+    const activityDescription = document.querySelector('#activityToEdit').value;
+    console.log("Activity element");
+    console.log(activityDescription);
+    let vArrayToModify = [];
+    for (let i = 0; i < customActivities.length; i++) {
+        const element = customActivities[i];
+        console.log(element.description);
+        if (element.description === activityDescription){
+            console.log("THEY WERE THE SAME");
+            vArrayToModify = element.vocabWords;
+    }};
+    let selection = [];
+    for (let i = 0; i < toRemove.length; i++) {
+            const element = toRemove[i];
+            for (let i2 = vArrayToModify.length -1; i2 > -1; i2--) {
+                const sW = vArrayToModify[i2];
+                if (element.style.backgroundImage.slice(5, -2) === sW.imageUrl){
+                    console.log(sW.ident);
+                    selection.push(sW.ident);
+                    vArrayToModify.splice(i2, 1); 
+    }}};
+ try {
+        const response = await fetch("/student/removeFromActivity", {method: 'POST',
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify({activity: activityDescription, toRemove: selection}),
+        });
+        const data = await response.json();
+        console.log(data);
+        
+    } catch (error) {
+        console.log(error);
+    };
+    const userActivityC = document.querySelector('#C')
+    emptyContainer(userActivityC);
+    fillContainer(userActivityC, vArrayToModify, 'C');
+    console.log("THIS IS THE SELECTION");
+    console.log(selection);
+};
 
 getAllVocab();
 document.querySelector('#activityToEdit').addEventListener('change', showSelectedActivity);
@@ -373,3 +473,4 @@ document.querySelector('#selectByCategory').addEventListener('click', filterByCa
 document.querySelector('#addToActivity').addEventListener('click', addToActivity);
 document.querySelector('#moveToCollection').addEventListener('click', moveToCollection);
 document.querySelector('#removeFromCollection').addEventListener('click', removeFromCollection);
+document.querySelector('#removeFromActivity').addEventListener('click', removeFromActivity);
