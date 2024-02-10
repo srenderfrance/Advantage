@@ -22,3 +22,12 @@ async function login () {
         console.log(error);
     }
 };
+function togglePassword () {
+    const checkBox = document.querySelector("#passWordI");
+    if (checkBox.type === "password"){
+        checkBox.type = "text";
+    } else {
+        checkBox.type = "password";
+}};
+
+document.querySelector("#passWordCheckBox").addEventListener('click', togglePassword);

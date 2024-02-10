@@ -39,6 +39,7 @@
     width: 90vw;
     height: 75vh;
     border: 5px solid red;
+    margin-top: 5rem;
 }
 #reviewImage {
     width: 100%;

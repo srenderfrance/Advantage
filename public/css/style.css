@@ -321,3 +321,37 @@ margin: .5rem;
     width: 100%;
     display: block;
 }
+
+.checkbox {
+    height: 25px;
+    width: 25px;
+    margin-left: 1rem;
+    appearance: auto;
+    accent-color: hsl(213, 60%, 39%);
+    
+}
+.checkboxLabel {
+    align-self: center;
+}
+
+.passwordInput {
+    font: 1.25rem / 1.5 sans-serif;
+}
+
+.center {
+    align-self: center;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+#div1 {
+    padding-right: 0;
+    padding-left: 5rem;
+    
+}
+
+#div2 {
+    padding-left: 0;
+    padding-right: 5rem;
+    
+}

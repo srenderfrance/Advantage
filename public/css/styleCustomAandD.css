@@ -4,7 +4,7 @@
 .customActivityContainer {
   display: grid;
   gap: 5px;
-  grid-auto-columns: auto;
+  grid-auto-columns: 8vw;
   grid-template-rows: 8vw 8vw 8vw 8vw;
   grid-auto-flow: column;
   height: 35vw;
@@ -54,4 +54,24 @@
 
 h3 {
   margin-bottom: 0;
+  margin-top: 1rem;
+}
+
+.center {
+  align-items: center;
+}
+
+.center > button {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.padding {
+  padding: 1.2rem;
+  padding-bottom: 0;
+}
+
+.splitScreen button {
+  font-weight: 1.1rem;
+  padding: .5rem 1rem;
 }

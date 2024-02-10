@@ -1,7 +1,7 @@
 <head>   
     <!-- external CSS link -->
     <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/style.css" />	
+    <link rel="stylesheet" href="/css/style.css" />
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -9,11 +9,21 @@
 <h1>Welcome to Phase 1 Advantage</h1>
 
 <form action="/" method="POST" id="loginForm">
-    <div>
-        <label for="username" class="primaryLabel">User Name</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password" class="primaryLabel">Password</label>
-        <input type="text" id="password" name="password" required>
+    <div class="flex flexCenter">
+        <div class="flex" id="div1">
+            <label for="username" class="primaryLabel">User Name</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="flex" id="div2">
+            <div>
+                <label for="password" class="primaryLabel">Password</label>
+                <input type="password" class="passwordInput" id="passwordI" name="password" required>
+            </div>
+            <div class="center flex">
+                <input type="checkbox" class="checkbox" id="passwordCheckBox" name="passCheckBox">
+                <label for="passCheckBox" class="checkboxLabel secondaryLabel" id="passCheckBLabel">Show Password</label>
+            </div>
+        </div>
     </div>
     <button type="button" id="loginButton">Login</button>
 </form>

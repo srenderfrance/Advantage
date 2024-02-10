@@ -183,9 +183,9 @@ function fillContainer(container,array, idLetter){
             div.setAttributeNode(idAtt);
             const audio = document.createElement('audio')
             const audioIdAtt = document.createAttribute('id');
-            audioIdAtt.value = 'audioN' + (i+1);
+            audioIdAtt.value = 'audioTis' + idLetter + (i+1);
             const sourceAtt = document.createAttribute('src');
-            sourceAtt.value = element.audioN;
+            sourceAtt.value = element.audioTis;
             audio.setAttributeNode(audioIdAtt);
             audio.setAttributeNode(sourceAtt);
             container.append(div);
@@ -208,9 +208,9 @@ function filterByCategory () {
             div.setAttributeNode(idAtt);
             const audio = document.createElement('audio')
             const audioIdAtt = document.createAttribute('id');
-            audioIdAtt.value = 'audioN' + (i+1);
+            audioIdAtt.value = 'audioTis' + (i+1);
             const sourceAtt = document.createAttribute('src');
-            sourceAtt.value = element.audioN;
+            sourceAtt.value = element.audioTis;
             audio.setAttributeNode(audioIdAtt);
             audio.setAttributeNode(sourceAtt);
             container.append(div);
@@ -229,9 +229,9 @@ function filterByCategory () {
             div.setAttributeNode(idAtt);
             const audio = document.createElement('audio')
             const audioIdAtt = document.createAttribute('id');
-            audioIdAtt.value = 'audioN' + (i+1);
+            audioIdAtt.value = 'audioTis' + (i+1);
             const sourceAtt = document.createAttribute('src');
-            sourceAtt.value = element.audioN;
+            sourceAtt.value = element.audioTis;
             audio.setAttributeNode(audioIdAtt);
             audio.setAttributeNode(sourceAtt);
             container.append(div);
@@ -240,14 +240,31 @@ function filterByCategory () {
             createdDiv.append(audio);
             //console.log(createdDiv);
 }}}};
-function findVocab (Event) {
-    if(Event.target.matches('.dictionaryContainer > div')){
+function playVocab (Event) {
+    if(Event.target.matches('.vWContainer > div')){
         console.log("FIND VOCAB IS RUNNING")
         const div = Event.target.id;
-        const audioId = "audioN" + div.slice(1);
+        console.log(div);
+        const audioId = "audioTis" + div;
+        console.log(audioId);
         const vocabAudio = document.getElementById(audioId);
+        console.log(vocabAudio);
         vocabAudio.play();
+        let duration = vocabAudio.duration * 1000;
+        console.log('Duration');
+        console.log(duration);
+        document.removeEventListener('click', playVocab);
+        setTimeout(remakeListener, duration);
+        
+       
+
 }};
+function remakeListener () {
+    console.log("REMAKE IS RUNNING")
+    document.addEventListener('click', playVocab);
+    console.log('TimeOUT OVER'); 
+}
+
 function showSelectedActivity (){
     const activityToShow = document.querySelector('#activityToEdit').value;
     console.log(activityToShow);
@@ -466,7 +483,7 @@ async function removeFromActivity () {
 getAllVocab();
 document.querySelector('#activityToEdit').addEventListener('change', showSelectedActivity);
 document.addEventListener('click', selectFromUserselection);
-document.addEventListener('click', findVocab);
+document.addEventListener('click', playVocab);
 document.querySelector('#deleteCustomActivity').addEventListener('click', deleteCustomAtivity);
 document.querySelector('#newActivity').addEventListener('click', createCustomActivity);
 document.querySelector('#selectByCategory').addEventListener('click', filterByCategory);

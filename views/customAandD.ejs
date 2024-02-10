@@ -23,11 +23,11 @@
                 <button type="submit" id="selectByCategory">Select</button>
             </div>
         </div> 
-        <div class="dictionaryContainer" id="A">
+        <div class="vWContainer dictionaryContainer" id="A">
             <% for(let i=0; i < dictionary.length; i++) {
                 element = dictionary[i]%> 
                 <div id="A<%= 1 + i %>" style="background-image: url('<%= element.imageUrl %>')">
-                    <audio src="<%= element.audioN %>" id="audioN<%= 1 + i %>"></audio>
+                    <audio src="<%= element.audioTis %>" id="audioTis<%= 1 + i %>"></audio>
                 </div> <% } %>
         </div>
         <div class="flex">
@@ -42,27 +42,35 @@
         </div>
     </div>
     <div>
-        <div class="flex">
+        <div class="splitScreen">
             <h3>Your Vocab Collection</h3>
-            <h3>Your Custom Activities</h3>
+            <div class="flex">
+                <h3>Your Custom Activities</h3>
+                <select name="customActivities" id="activityToEdit" required>
+                    <option value="No Activity Selected">Select Activity to Edit</option>
+                    <% for(let i=0; i < student.individualExercises.length; i++) {%>   
+                        <option value="<%=student.individualExercises[i].description %>"><%= student.individualExercises[i].description %></option>
+                    <% } %> 
+                </select>
+            </div>
         </div>
         <div class="splitScreen">
-            <div class="userSelectionContainer smallContainer" id="B">
+            <div class="vWContainer userSelectionContainer smallContainer" id="B">
                 <% for(let i=0; i < wordsSelected.length; i++) {
                 element = wordsSelected[i]%> 
                 <div id="B<%= 1 + i %>" style="background-image: url('<%= element.imageUrl %>')">
-                    <audio src="<%= element.audioN %>" id="audioN<%= 1 + i %>"></audio>
+                    <audio src="<%= element.audioTis %>" id="audioTisB<%= 1 + i %>"></audio>
                 </div> <% } %>
             </div>
             
-            <div class="customActivityContainer smallContainer" id="C">
+            <div class="vWContainer customActivityContainer smallContainer" id="C">
 
             </div>
         </div>
         <div class="splitScreen">
                 <div class="stack">
-                    <div class="flex">
-                        <input type="text" id="activity" name="description" placeholder="Name Your Activity"
+                    <div class="flex center padding">
+                        <input type="text" id="activity" name="description" placeholder="Enter New Acitvity Name"
                         required>        
                         <button type="button" id="newActivity"> Create New Activity</button>
                     </div>
@@ -71,14 +79,8 @@
                         <button type="button" id="removeFromCollection">Remove From Collection</button>
                     </div>
                 </div>
-                <div class="stack">
-                    <select name="customActivities" id="activityToEdit" required>
-                        <option value="No Activity Selected">Select Activity to Edit</option>
-                        <% for(let i=0; i < student.individualExercises.length; i++) {%>   
-                            <option value="<%=student.individualExercises[i].description %>"><%= student.individualExercises[i].description %></option>
-                        <% } %> 
-                    </select>
-                    <div class="flex">
+                <div class="stack padding">
+                                       <div class="flex">
                         <button type="button" id="moveToCollection">Move to Collection</button>
                         <button type="button" id="removeFromActivity">Remove From Activity</button>
                         <button type="button" id="deleteCustomActivity">Delete Activity</button>

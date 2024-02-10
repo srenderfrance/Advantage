@@ -122,7 +122,7 @@ module.exports.getDictionary = async (req, res) => {
                      description: vocabWord.description,
                      category: vocabWord.category,
                      imageUrl: vocabWord.imageUrl,
-                     audioN: vocabWord.audioN,
+                     audioTis: vocabWord.audioTis,
                      ident: vocabWord.ident,
                   };
                   dictionary.push(filteredVocabWord);
@@ -155,7 +155,7 @@ module.exports.getAllVocab = async (req, res) => {
                      description: vocabWord.description,
                      category: vocabWord.category,
                      imageUrl: vocabWord.imageUrl,
-                     audioN: vocabWord.audioN,
+                     audioTis: vocabWord.audioTis,
                      ident: vocabWord.ident,
                   };
                   dictionary.push(filteredVocabWord);
@@ -171,7 +171,7 @@ module.exports.getAllVocab = async (req, res) => {
                   description: vocabWord.description,
                   category: vocabWord.category,
                   imageUrl: vocabWord.imageUrl,
-                  audioN: vocabWord.audioN,
+                  audioTis: vocabWord.audioTis,
                   ident: vocabWord.ident,
                };
             userSelectedVocab.push(filteredVocabWord);
@@ -190,7 +190,7 @@ module.exports.getAllVocab = async (req, res) => {
                      description: vocabWord.description,
                      category: vocabWord.category,
                      imageUrl: vocabWord.imageUrl,
-                     audioN: vocabWord.audioN,
+                     audioTis: vocabWord.audioTis,
                      ident: vocabWord.ident,
                };
                vocabWords.push(filteredVocabWord);
