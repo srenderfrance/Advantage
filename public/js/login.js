@@ -23,7 +23,7 @@ async function login () {
     }
 };
 function togglePassword () {
-    const checkBox = document.querySelector("#passWordI");
+    const checkBox = document.querySelector("#passWord");
     if (checkBox.type === "password"){
         checkBox.type = "text";
     } else {

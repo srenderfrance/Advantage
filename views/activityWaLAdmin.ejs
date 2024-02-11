@@ -73,7 +73,7 @@
  
 
  <div class="">
-    <div class="previeHeader">
+    <div class="previewHeader">
         <div class="mainSelector">
             <label for="waLActivities" class="primaryLabel">Select Acivity to Preview</label>
             <select name="waLActivities" id="waLActivities" class="selection" >
@@ -87,27 +87,26 @@
 <!--        <h3 id="description">Description: No activity has been selected.</h3>  -->  
     </div>
     <div class="dictionaryContainer">
-        <div class="videoContainer">
-            <video src="" alt="" controls class="videoElement" id="video"></video>
+        <div class="videoContainer flexCenter">
+            <video src="" alt="" controls id="reviewVideo"></video>
         </div>
         <div class="imageWAudioContainer">
-            <div class="imageContainerWAL">
-                <img src="" alt="" id="imageDP">
+            <div id="imageDContainer">
+                <img src="" class="imageWaL" alt="" id="imageDP">
             </div> 
             <div class="audioPreviewContainer">
                 <audio src="" id="audioDP" controls></audio>
             </div>
         </div>
     </div>
-    <div class="reviewContainer">
-        <div class="imageWAudioContainer" id="reviewImage">
-            <div class="imageContainerWAL">
-                <img src="" alt="" id="imageRP">
+    <div class="reviewContainer flexColumn flexCenter alignContentCenter">
+            <h3 id="reviewHeading">Review Image and Audio</h3>
+            <div id="imageRContainer">
+                <img src="" alt="" class="imageWaL" id="imageRP">
+                
             </div>  
-        </div>
-        <div class="audioPreviewContainer">
-                <audio src="" id="audioRP" controls></audio>
-        </div>
+           <audio src="" id="audioRP" controls></audio>
+        
     </div>
 </div>
 

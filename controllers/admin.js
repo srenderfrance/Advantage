@@ -260,7 +260,7 @@ module.exports.postWaL = async (req, res) => {
                console.log('ResultID');
                console.log(resultID);
                activity.additionalInfo[0].imageDURL = resultID.secure_url;
-               activity.additionalInfo[0].imageDCloudinaryID = resultID.public_id0;
+               activity.additionalInfo[0].imageDCloudinaryID = resultID.public_id;
                if(resultID.width < resultID.height){
                   activity.additionalInfo[0].imageDO = 'v';
                } else if(resultID.width > resultID.height){

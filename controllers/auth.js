@@ -189,13 +189,16 @@ module.exports.postRegister = async (req, res, next) => {
 
 module.exports.postLogin = async (req, res, next) => {
   try {
-  
+  console.log('Starting Login');
+  console.log(req.body);
   const newUser = req.body.username;
   const user = await User.findOne({ username: newUser });
-  console.log(user);
+  console.log("USER")
+  console.log(user.username);
+  console.log(user.password);
   if (user === null){
     console.log('Equals NULL')
-    const failureMessage = "Your username or password were invalid."
+    const failureMessage = "Your username or password were invalid.1"
     res.json(failureMessage);
   } else if (user.password === req.body.password) {
     req.logIn(user, async function (err) {
@@ -208,7 +211,7 @@ module.exports.postLogin = async (req, res, next) => {
     console.log("You should be logged in...")
     console.log(user.username)
  } else {
-  const failureMessage = "Your username or password were invalid."
+  const failureMessage = "Your username or password were invalid.2"
   res.json(failureMessage);
 };
 

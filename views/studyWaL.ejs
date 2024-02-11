@@ -28,10 +28,11 @@ if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additio
             }else {%> class="imageContainerS" <%}%> >
             <img class="imageWaL" src="<%=additionalInfo.imageDURL%>">
         <% if (additionalInfo.audioDURL !== ""){%>
-                <audio src="<%=additionalInfo.audioDURL%>" controls style="width: 90px;"></audio><% } %>
+                <audio src="<%=additionalInfo.audioDURL%>" controls style="width: 400px;"></audio><% } %>
         </div>
     <%}%>
-        <div class="reviewContainer">
+        <div class="reviewContainer flexColumn flexCenter alignContentCenter">
+            <h3 id="reviewHeading">Review Image and Audio</h3>
             <% if (additionalInfo.imageRURL !== ""){%>
             <div <% if (additionalInfo.imageRO === 'v') {%> class="imageContainerV" <%
                     } else if (additionalInfo.imageRO === 'h') { %> class="imageContainerH" <%
@@ -40,7 +41,7 @@ if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additio
                 
                 <% if (additionalInfo.audioRURL !== ""){%>
                     
-                        <audio src="<%=additionalInfo.audioRURL%>" controls style="width: 90px;"></style>></audio>
+                        <audio src="<%=additionalInfo.audioRURL%>" controls style="width: 400px;"></audio>
                 
                 <% } %>
             </div>
@@ -92,9 +93,9 @@ if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additio
     </div>
 <% } %>
 <div class="navFoot">
-    <button onclick="window.location.href ='/student'; "class='navButton' id='sendResults'>SAVE & Back to Student Page NOT FUNCTIONAL</button>
+    <!--<button onclick="window.location.href ='/student'; "class='navButton' id='sendResults'>SAVE & Back to Student Page NOT FUNCTIONAL</button>-->
     <button onclick="window.location.href ='/student'; "class="navButton" id="backToStudent">Back to Student Page</button>
-    <button onclick="window.location.href ='/logout';" class="navButton">Logout</button><!--This needs to triger a fetch and send the exercise results to the server-->
+    <button onclick="window.location.href ='/logout';" class="navButton">Logout</button><!--This needs to triger a fetch and send the exercise results to the server. (Maybe not on this page.)-->
     
 </div>
 

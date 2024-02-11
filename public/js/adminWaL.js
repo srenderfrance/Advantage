@@ -18,17 +18,37 @@ async function populatePreview (){
       console.log(additionalInfo.videoURL);
     };
     console.log("startPreivew")
-    const video = document.querySelector("#video");
+    const video = document.querySelector("#reviewVideo");
     video.src=additionalInfo.videoURL;
+    if(additionalInfo.videoO === 'v'){
+      video.classList.toggle('videoElementV');
+    } else if (additionalInfo.videoO === "h") {
+      video.classList.toggle('videoElementH');
+    } else {
+      video.classList.toggle('videoElementS');
+    };
     const imageD = document.querySelector("#imageDP");
     imageD.src=additionalInfo.imageDURL;
+    const imageDContainer = document.querySelector("#imageDContainer");
+    if (additionalInfo.imageDO === 'v'){
+      imageDContainer.classList.toggle('imageContainerV');
+    } else if (additionalInfo.imageDO === 'h'){
+      imageDContainer.classList.toggle('imageContainerH');
+    } else {
+      imageDContainer.classList.toggle('imageContainerS');
+    };
     const audioD = document.querySelector("#audioDP");
     audioD.src=additionalInfo.audioDURL;
     const imageR = document.querySelector("#imageRP");
     imageR.src=additionalInfo.imageRURL;
-    const audioR = document.querySelector("#audioRP");
+    const imageRContainer = document.querySelector("#imageRContainer")
+    if (additionalInfo.imageRO === 'v'){
+      imageRContainer.classList.toggle('imageContainerV');
+    } else if (additionalInfo.imageRO === 'h'){
+      imageRContainer.classList.toggle('imageContainerH');
+    } else {
+      imageRContainer.classList.toggle('imageContainerS');
+    };const audioR = document.querySelector("#audioRP");
     console.log(audioR);
-    audioR.src=additionalInfo.audioRURL;
-    console.log("end Preview")
-
+    audioR.src=additionalInfo.audioRURL; console.log("end Preview")
 }

@@ -16,13 +16,14 @@
     width: auto;
 }
 .imageContainerH {
-    max-height: 35vh;
+    max-height: 100%;
     max-width: 45vw;
 }
 .imageWaL {
     object-fit: contain;
     width: 100%;
     padding: 3px;
+    border: 5px solid black;
     
 }
 .videoContainer {
@@ -73,4 +74,12 @@
     width: 50%;
     height: 90%;
     display: flex;
+}
+
+#reviewHeading {
+    margin: 0 1rem 1rem 1rem;
+}
+
+.alignContentCenter {
+    align-content: center;
 }
