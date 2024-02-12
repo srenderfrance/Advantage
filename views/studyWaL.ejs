@@ -10,10 +10,10 @@
     <H1 id="title"><%= activity.description %></H1>
 </Header>
 <body>
-<% let additionalInfo = activity.additionalInfo[0];
-if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additionalInfo.imageDURL !== ""){%>
+<% let additionalInfo = activity.additionalInfo[0];%>
     <div class="primaryContainer">  
-        <div class="dictionaryContainer">
+        <% if (additionalInfo.videoURL !== "") {%> 
+        <div>
             <div class="videoContainer flexCenter">    
                 <video <% if (additionalInfo.videoO === 'v') {%> class="videoElementV" <%
                     } else if (additionalInfo.videoO === 'h'){%> class= "videoElementH" <%
@@ -21,36 +21,38 @@ if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additio
                 id="reviewVideo" controls src="<%=additionalInfo.videoURL%>"></video>
             </div>
             
-        </div>
-    <% if (additionalInfo.imageDURL !== ""){%>
-        <div <% if (additionalInfo.imageDO === 'v') {%> class="imageContainerV" <%
-            } else if (additionalInfo.imageDO === 'h') { %> class="imageContainerH" <%
-            }else {%> class="imageContainerS" <%}%> >
-            <img class="imageWaL" src="<%=additionalInfo.imageDURL%>">
-        <% if (additionalInfo.audioDURL !== ""){%>
-                <audio src="<%=additionalInfo.audioDURL%>" controls style="width: 400px;"></audio><% } %>
-        </div>
-    <%}%>
-        <div class="reviewContainer flexColumn flexCenter alignContentCenter">
-            <h3 id="reviewHeading">Review Image and Audio</h3>
-            <% if (additionalInfo.imageRURL !== ""){%>
+        </div><%}
+            if (additionalInfo.imageDURL !== ""){%>
+            <div <% if (additionalInfo.imageDO === 'v') {%> class="imageContainerV" <%
+                } else if (additionalInfo.imageDO === 'h') { %> class="imageContainerH" <%
+                }else {%> class="imageContainerS" <%}%> >
+                <img class="imageWaL" src="<%=additionalInfo.imageDURL%>">
+            <% if (additionalInfo.audioDURL !== ""){%>
+                    <audio src="<%=additionalInfo.audioDURL%>" controls style="width: 400px;"></audio><% } %>
+            </div>
+            <%}
+            
+        if (additionalInfo.imageRURL !== ""){%>
+        <div class="reviewContainer flexColumn flexCenter alignContentAround">
+            <div>
+                <h3 id="reviewHeading">Review Image and Audio</h3>
+                <%}
+                 if (additionalInfo.audioRURL !== ""){%>
+                        <audio src="<%=additionalInfo.audioRURL%>" controls style="width: 400px;"></audio>
+                <% } %>
+            </div>
             <div <% if (additionalInfo.imageRO === 'v') {%> class="imageContainerV" <%
                     } else if (additionalInfo.imageRO === 'h') { %> class="imageContainerH" <%
                     }else {%> class="imageContainerS" <%}%> >
                    <img class="imageWaL" src="<%= additionalInfo.imageRURL %>">
-                
-                <% if (additionalInfo.audioRURL !== ""){%>
-                    
-                        <audio src="<%=additionalInfo.audioRURL%>" controls style="width: 400px;"></audio>
-                
-                <% } %>
             </div>
-        <% } %>
+
         </div>
        
     </div>
-    <% } else if (additionalInfo.videoURL === ""){
-        console.log("This isn't set up either!");
+   
+
+    <!--  
     } else if(additionalInfo.videoURL !== ""){%>
     <div class="dictionaryContainer">  
         <div class="videoContainer flexCenter">    
@@ -91,7 +93,7 @@ if (additionalInfo.videoURL !== "" && additionalInfo.ImageRURL !== "" && additio
         </div>
     <% } %>
     </div>
-<% } %>
+<%  %>-->
 <div class="navFoot">
     <!--<button onclick="window.location.href ='/student'; "class='navButton' id='sendResults'>SAVE & Back to Student Page NOT FUNCTIONAL</button>-->
     <button onclick="window.location.href ='/student'; "class="navButton" id="backToStudent">Back to Student Page</button>

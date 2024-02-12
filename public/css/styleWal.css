@@ -29,17 +29,19 @@
 .videoContainer {
     height: 70vh;
     width: auto;
-    border: 5px solid black;
-    ;
 }
+
+.previewHeader {
+    margin: 1rem 0 2rem 2;
+}
+
 .imageWAudioContainer {
     min-width: 40%;
-    border: 5px solid yellow;
 }
+
 .reviewContainer {
     width: 90vw;
     height: 75vh;
-    border: 5px solid red;
     margin-top: 5rem;
 }
 #reviewImage {
@@ -64,6 +66,7 @@
 #reviewVideo {
     max-width: 100%;
     max-height: 100%;
+    border: 5px black solid;
 }
 .flexCenter {
     display: flex;
@@ -77,9 +80,10 @@
 }
 
 #reviewHeading {
-    margin: 0 1rem 1rem 1rem;
+    margin: 0 1rem 2rem 1rem;
+    align-self: center;
 }
 
-.alignContentCenter {
-    align-content: center;
+.alignContentAround {
+    align-content: space-around;
 }
