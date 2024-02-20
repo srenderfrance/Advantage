@@ -35,17 +35,14 @@ module.exports.getStudent = async (req, res) => {
             const element = usedByArray[index];
             if (element._id.toString().includes(userId) && !vocabArray[i].category.includes("Phrases")) {
             total++;
-            }  //else {console.log(vocabArray[i].description)}
+            }; 
       }};  
    return total;
    };
    if (req.user.totalWords !== totalVocab())  {
       console.log("Updating user.totalWords");
-      console.log("New total created equals")
       const student = await User.findById(req.user._id);
       student.totalWords = totalVocab();
-      console.log("new Total")
-      console.log(student.totalWords)
       await student.save();  
    };
    const checkReviews = (element) => element._id.toString() === req.user._id.toString();
@@ -57,13 +54,10 @@ module.exports.getStudent = async (req, res) => {
       let activitiesS = [];
       let activitiesWaL = [];
       let activityToSort;
-      console.log(activities.length);
       let reviewed = activities.filter(e => {         
          if(e.reviewedBy.some(checkReviews)){
             return true;
       }});
-      console.log("Reviewed");
-      console.log(reviewed.length);
       const totalActivities = reviewed.length;
       for (let i = 0; i < reviewed.length; i++){
             const element = reviewed[i];

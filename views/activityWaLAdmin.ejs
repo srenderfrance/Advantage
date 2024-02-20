@@ -61,13 +61,26 @@
                 </div>
                 <div class="gridContainer">    
                     <div class="uploadBlock">
-                        <label for="audioN">Examples Audio</label>
+                        <label for="audioE">Examples Audio</label>
                         <input type="file" id="audioE" class="uploadInput" value="audioE" name="audioE">  
                     </div>
                 </div>  
-            </div>
-        <button type="submit">Upload Media for WaL Activity</button>
+            </div>   
         </div>  
+        <div class="deleteContainer">
+            <button type="submit">Upload Media for WaL Activity</button>
+            <div>
+                <div class="uploadBlock">
+                    <select name="deleteSelector" id="deleteSelector" class="select">
+                        <option value="" disabled selected hidden>Choose media to delete</option>
+                        <option value=""></option>
+                    </select>
+                    <button type="button">Delete Selected Media</button>
+                </div>
+            </div>
+                
+            <button type="button">Delete Activity</button>
+        </div> 
     </div>        
 </form>       
  

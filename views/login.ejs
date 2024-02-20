@@ -4,38 +4,56 @@
     <link rel="stylesheet" href="/css/style.css" />
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body class="coolBackground">
 
-<h1>Welcome to Phase 1 Advantage</h1>
+<h1 class="loginTitle">Welcome to Phase 1 Advantage</h1>
 
 <form action="/" method="POST" id="loginForm">
-    <div class="flex flexCenter">
-        <div class="flex" id="div1">
+    <div class="loginContainer" id="aboveTheWaterLine">
+        <div class="elementGrid" id="div1">
             <label for="username" class="primaryLabel">User Name</label>
             <input type="text" id="username" name="username" required>
         </div>
-        <div class="flex" id="div2">
-            <div>
+        <div class="gridForCheckbox" id="div2">
+            <div class="elementGrid">
                 <label for="password" class="primaryLabel">Password</label>
                 <input type="password" class="passwordInput" id="password" name="password" required>
             </div>
-            <div class="center flex">
-                <input type="checkbox" class="checkbox" id="passwordCheckBox" name="passCheckBox">
-                <label for="passCheckBox" class="checkboxLabel secondaryLabel" id="passCheckBLabel">Show Password</label>
+            <div class="checkboxDiv">
+                <input type="checkbox" class="checkbox" id="passwordCheckBox" name="passCheckBox">   
+                <label for="passCheckBox" class="checkboxLabel secondaryLabel" id="passCheckBLabel">Show Password</label>         
             </div>
+            <div class="checkboxDiv">
+                <button type="button" id="loginButton">Login</button>
+            </div> 
         </div>
     </div>
-    <button type="button" id="loginButton">Login</button>
+    
+</div>
 </form>
-<h2>If you haven't registered enter your email and provided password below.</h2>
+<div class="checkboxDiv">
+    <h3 class="pageBreak">To registered enter your email and provided password below.</h3>
+</div>
 <form action="/preRegister" method="POST">
-    <div>
-        <label for="email" class="primaryLabel">Enter your email address here</label>
-        <input type="email" name="email" required>
-        <label for="password" class="primaryLabel">Enter provided temporary password</label>
-        <input type="text" id="password2" name="password" required>
-    </div>
-    <button type="submit">Begin Registration</button>
+    <div class="loginContainer" id="belowTheWaterLine">
+        <div class="elementGrid">
+            <label for="email" class="primaryLabel">Email Address</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="gridForCheckbox">
+            <div class="elementGrid">
+                <label for="password" class="primaryLabel">Temporary Password</label>
+                <input type="password" id="password2" name="password" required>
+            </div>
+            <div class="checkboxDiv">
+                <input type="checkbox" class="checkbox" id="passwordCheckBox2" name="pass2CheckBox"> 
+                <label for="pass2CheckBox" class="checkboxLabel secondaryLabel" id="passCheckBLabel2">Show Password</label>          
+            </div>
+            <div class="checkboxDiv">
+                <button type="submit">Begin Registration</button>
+            </div>
+        </div>
+    
 </form>
 <script type="text/javascript" src="/js/login.js"></script>
 </body>

@@ -39,23 +39,59 @@
 }
 
 .statscontainer {
+  color: var(--lightFont);
     padding: .5rem;
     margin-right: .8rem;
     margin-left: 1.2rem;
+    min-width: 400px;
+    background-color:rgb(230, 240, 249, .75);
+    box-shadow: 0 5px 60px 0 black;
 }
 
 .reviewContainer {
     margin-left: .8rem;
     margin-right: 2.2rem;
+    box-shadow: 0 5px 60px 0 black;
+    align-self: self-start;
 }
+
+.reviewContainer > :first-child {
+  padding-top: 0;
+}
+
 .studentGrid {
     display: grid;
     grid-template-columns: 1.5fr 2.5fr;
 }
 
+.studentTop {
+  justify-content: space-between;
+  margin: 0 3.5rem 0 3.5rem;
+}
 .section1 {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    margin: 0 3.5rem 3.5rem 3.5rem;
 };
 
+.cohortContainer + button {
+    background-color: hsl(213, 60%, 39%);
+    color: white;
+}
+
+.studentTop > button, .smallForm > button {
+  background: url("/symbols/bcc.jpg"),
+  hsl(191, 42%, 43%);
+  background-size: cover;
+
+}
+.cohortContainer > h2 {
+    justify-content: flex-start;
+}
+
+.coolBackground2 {
+  background-image: url("/symbols/background2.jpg");
+  background-size: cover;
+  background-position: bottom;
+}
 

@@ -193,10 +193,9 @@ module.exports.postLogin = async (req, res, next) => {
   console.log(req.body);
   const newUser = req.body.username;
   const user = await User.findOne({ username: newUser });
-  console.log("USER")
-  console.log(user.username);
-  console.log(user.password);
-  if (user === null){
+  console.log(user.password)
+  console.log(user.username)
+    if (user === null){
     console.log('Equals NULL')
     const failureMessage = "Your username or password were invalid.1"
     res.json(failureMessage);

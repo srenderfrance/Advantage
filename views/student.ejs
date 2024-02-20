@@ -2,16 +2,19 @@
 <head>   
     <!-- external CSS link -->
     <link rel="stylesheet" href="/css/normalize.css">
-	<link rel="stylesheet" href="/css/student.css"> 
     <link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/student.css"> 
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 </head>
 
-<body>
-<h1>Welcome to <%=student.cohort.cohortName %>. You are logged in as:</h1>
-<h1> <%=student.username %> </h1>
-
-<div>
+<body class="coolBackground2">
+    <div class="flex studentTop">
+        <div class="cohortContainer flexColum">
+            <h2>Cohort: <%=student.cohort.cohortName%></h2>
+            <h2>GP: <%=student.username%></h2>
+        </div>
+        <button onclick="window.location.href = '/student/customAandD' ;">Picture Dictionary</button>
+    </div>
     <section class="section1">
         <div class="statsContainer container">
             <h2>Your Stats</h3>
@@ -92,10 +95,9 @@
             </form>
         </div>    
     </section>  
-</div>
+
 
 <div class="navButtons">
-    <button onclick="window.location.href = '/student/customAandD' ;" class="navButton">Review Dictionary or Create Custom Activity</button>
     <% if (student.adminLevel > 0){ %>
         <button onclick="window.location.href ='admin';" class="navButton">Class Admin</button>
    <% } %>

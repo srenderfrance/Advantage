@@ -21,6 +21,10 @@
   height: 8vw; 
 }
 
+h2 {
+  font-size: 2rem;
+}
+
 .fullScreen {
   height: 95vh;
 }
@@ -74,4 +78,12 @@ h3 {
 .splitScreen button {
   font-weight: 1.1rem;
   padding: .5rem 1rem;
+}
+
+label + #activityToEdit {
+  margin: 5px
+}
+
+.splitScreen > .vWContainer {
+    background: rgba(255, 254, 254, 0.3);
 }

@@ -6,12 +6,9 @@
     <link rel="stylesheet" href="/css/styleCustomAandD.css">
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 </head>
-<body>
-
-<div>
-    <div class="fullScreen">
-        <div class="flex" id="dictionaryHeader">
-            <h1>Review your Picture Dictionary or Create a Custom Activity</h1>
+<body class="coolBackground">
+<div class="flex" id="dictionaryHeader">
+            <h2>Review your Picture Dictionary or Create a Custom Activity</h1>
             <div class="container smallForm">
                 <label for="categoryToReview" class="secondaryLabel flex1">Sort by Category</label>
                 <select name="categoryToReview" id="categoryToReview" required>
@@ -23,6 +20,10 @@
                 <button type="submit" id="selectByCategory">Select</button>
             </div>
         </div> 
+<div>
+    <div class="fullScreen">
+
+        
         <div class="vWContainer dictionaryContainer" id="A">
             <% for(let i=0; i < dictionary.length; i++) {
                 element = dictionary[i]%> 
@@ -46,12 +47,14 @@
             <h3>Your Vocab Collection</h3>
             <div class="flex">
                 <h3>Your Custom Activities</h3>
-                <select name="customActivities" id="activityToEdit" required>
-                    <option value="No Activity Selected">Select Activity to Edit</option>
-                    <% for(let i=0; i < student.individualExercises.length; i++) {%>   
-                        <option value="<%=student.individualExercises[i].description %>"><%= student.individualExercises[i].description %></option>
-                    <% } %> 
-                </select>
+                <div class="container smallForm">
+                    <label for="customActivities" class="secondaryLabel flex1">Select Activity to Edit</label>
+                    <select name="customActivities" id="activityToEdit" required>
+                        <% for(let i=0; i < student.individualExercises.length; i++) {%>   
+                            <option value="<%=student.individualExercises[i].description %>"><%= student.individualExercises[i].description %></option>
+                        <% } %> 
+                    </select>
+                </div>
             </div>
         </div>
         <div class="splitScreen">

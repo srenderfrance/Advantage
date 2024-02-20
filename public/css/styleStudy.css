@@ -2,10 +2,6 @@
   box-sizing: border-box;
 }
 
-body {
-    background-color: rgb(81, 76, 76);
-}
-
 header {
   display: flex;
   justify-content: space-between;
@@ -46,15 +42,18 @@ header {
   justify-content: center;
 }
 #title {
-  margin-top: 1rem;
+  color: white;
+  margin-top: 1.2rem;
   margin-bottom: .5rem;
-  font-size: 2.5rem; 
+  font-size: 2.2rem; 
+  text-shadow: 0px 8px 10px rgb(70, 70, 70);
 }
 .vocabContainer,
 .controls {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  background-color: rgb(240, 248, 255 / .5);
 }
 
 .controlContainer {
@@ -63,6 +62,11 @@ header {
   justify-content: space-between;
   margin-bottom: .5rem;
 }
+
+.vocabContainer  div {
+  box-shadow: 5px 5px 15px 0 black;
+}
+
 .navFoot {
   display: flex;
   justify-content: end;
@@ -80,20 +84,23 @@ button {
   cursor: pointer;
   padding: 0.75rem 1.25rem;
   margin: 5px 10px 5px 10px;
-  background-color: hsl(213, 60%, 39%);
+  background-color: rgb(1.4, 48, 66.7);
+  background-image: url("/symbols/frostSS1.jpg");
+  background-blend-mode: hard-light;
+  background-size: cover;
   color: white;
+  box-shadow: 0 5px 10px 0 black;
 
 }
 
  
 .navButton {
-    background-color: rgb(203, 203, 203);
     color: black;
     border-color: hsl(213, 60%, 39%);
+    background-blend-mode: normal;
 }
 
 button[disabled] {
-color: black;
 filter: blur(1.5px);
 }
 
@@ -113,4 +120,9 @@ filter: blur(1.5px);
  /* 50% {transform: translate(0, -50%) rotate(180deg)}
   99% {transform: translate(0, 0%,) rotate(350deg);}*/
   100% {transform: rotate(360deg);}
+}
+
+.coolBackground {
+    background-image: linear-gradient(rgb(168, 211, 248), rgb(68, 149, 220), rgb(185, 215, 241));
+    border: none;
 }
