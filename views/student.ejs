@@ -38,7 +38,7 @@
             </form>
             <form action="/student/reviewActivity" method="POST">
                 <div class="container smallForm">
-                    <label for="activity" class="secondaryLabel flex1">Dirty Dozen Activities</label>
+                    <label for="activity" class="secondaryLabel flex1">Rough and Ready Activities</label>
                     <select name="activity" id="activityDDName" required>
                     <%  for (let i = 0; i < activitiesDD.length; i++) {%>   
                         <option value="<%=activitiesDD[i].description %>"><%= activitiesDD[i].description %></option>

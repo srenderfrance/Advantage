@@ -21,7 +21,9 @@
 }
 .imageWaL {
     object-fit: contain;
-    width: 100%;
+    min-width: 30vw;
+    max-width: 60vw;
+    max-height: 95vh;
     padding: 3px;
     border: 5px solid black;
     
@@ -86,4 +88,19 @@
 
 .alignContentAround {
     align-content: space-around;
+}
+
+#selectorContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+#deleteSelector {
+    align-self: center;
+    height: max-content;
+}
+
+button {
+    height: max-content;
+    align-self: center;
 }

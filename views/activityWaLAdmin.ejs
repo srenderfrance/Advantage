@@ -7,7 +7,7 @@
 	
 </head>
 
-<body>
+<body class="backgroundColorL">
     <h1 id="cohort"> <%=user.cohort.cohortName %></h1>
     <h2>Class Admin: Watch and Listen Activity Upload</h2>
 
@@ -16,7 +16,7 @@
         <div class="headingSelect">
             <h2 id="activityHeading">Select an Activity To Edit</h2>
             <div class="container outlineNone">
-                <select name="activity" id="activityName" class="selection">
+                <select required name="activity" id="activityName" class="selection">
                     <option value="" disabled selected hidden>Choose an Activity</option>
                 <% for(let i=0; i < activities.length; i++) {%>   
                     <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
@@ -69,17 +69,22 @@
         </div>  
         <div class="deleteContainer">
             <button type="submit">Upload Media for WaL Activity</button>
-            <div>
-                <div class="uploadBlock">
+            <div class="flex">
+                <div class="uploadBlock" id="selectorContainer">
                     <select name="deleteSelector" id="deleteSelector" class="select">
                         <option value="" disabled selected hidden>Choose media to delete</option>
-                        <option value=""></option>
+                        <option value="video">Video</option>
+                        <option value="dictionaryImage">Dictionary Image</option>
+                        <option value="reviewImage">Review Image</option>
+                        <option value="dictionaryAudio">Dictionary Audio</option>
+                        <option value="reviewAudio">Review Audio</option>
+                        <option value="exambleMedia">Example Media</option>
                     </select>
-                    <button type="button">Delete Selected Media</button>
+                    <button type="button" id="deleteMediaB">Delete Selected Media</button>
                 </div>
             </div>
                 
-            <button type="button">Delete Activity</button>
+            <button type="button" id="deleteActivityB">Delete Activity</button>
         </div> 
     </div>        
 </form>       

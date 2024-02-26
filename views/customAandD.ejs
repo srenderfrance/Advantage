@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/styleCustomAandD.css">
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 </head>
-<body class="coolBackground">
+<body class="backgroundColorL">
 <div class="flex" id="dictionaryHeader">
             <h2>Review your Picture Dictionary or Create a Custom Activity</h1>
             <div class="container smallForm">
@@ -97,10 +97,10 @@
 <div class="navButtons">
     <button onclick="window.location.href = '/student' ;" class="navButton">Student Page</button>
     <% if (student.adminLevel > 0){ %>
-        <button onclick="window.location.href ='admin';" class="navButton">Class Admin</button>
+        <button onclick="window.location.href ='/admin';" class="navButton">Class Admin</button>
    <% } %>
   <% if (student.adminLevel > 1){ %>
-         <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
+         <button onclick="window.location.href ='/admin/schoolAdmin';" class="navButton">School Admin</button>
     <% } %>
     <button onclick="window.location.href ='/logout';" class="navButton">Logout</button> 
        

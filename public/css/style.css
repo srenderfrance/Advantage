@@ -70,7 +70,7 @@ textarea {
   input::placeholder,
   textarea::placeholder {
     opacity: 1; /* Firefox */
-    color:hsl(213, 60%, 39%)
+    color: var(--lightFont);
   }
 
   button {
@@ -83,7 +83,7 @@ textarea {
     background-image: url("/symbols/frostSS1.jpg");
     background-blend-mode: hard-light;
     background-size: cover;
-    color: white;
+    color: var(--lightFont);
     max-width: max-content;
     box-shadow: 0 5px 10px 0 black;
 }
@@ -267,7 +267,6 @@ img {
     align-items: center;
     justify-content: space-around;
 }
-
 
 .deleteContainer{
     display: flex;
@@ -461,4 +460,14 @@ label {
 
 #aboveTheWaterLine  Label {
     text-shadow: 0 4px 10px black;
+}
+
+.backgroundColor{
+    background-image: linear-gradient(rgb(168, 211, 248), rgb(68, 149, 220), rgb(185, 215, 241));
+    border: none;
+}
+
+.backgroundColorL {
+    background-image: repeating-linear-gradient( rgb(168, 211, 248), rgb(68, 149, 220), rgb(168, 211, 248),  rgb(68, 149, 220), rgb(168, 211, 248),  rgb(68, 149, 220), rgb(168, 211, 248),  rgb(68, 149, 220));
+    border: none;
 }

@@ -5,7 +5,7 @@
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 	
 </head>
-<body>
+<body class="backgroundColor">
     
 <h1 id="cohort"> <%=user.cohort.cohortName %></h1>
 <h2>Class Admin Page</h2>
@@ -20,9 +20,9 @@
         required>
         <label for="activityType" class="primaryLabel">Acitvity Type</label>
         <select name="activityType" id="type" class="selection">
-            <option value="DD">Dirty Dozen</option>
-            <option value="BS">Basic Sentance</option>
-            <option value="CS">Complex Sentance</option>
+            <option value="DD">Rough and Ready</option>
+            <option value="BS">Basic Sentence</option>
+            <option value="CS">Complex Sentence</option>
             <option value="WaL">Watch and Listen</option>
         </select>
         <button type="submit" class="button">Create</button>   
@@ -191,9 +191,9 @@
         </div>    
     </div> -->
 <div class="navButtons">
-    <button onclick="window.location.href ='admin/activityWaL';" class="navButton">WaL Activity Admin</button>
-    <button onclick="window.location.href ='admin/activityDD';" class="navButton">Activitiy Admin DD</button>
-    <button onclick="window.location.href = 'admin/activityP';" class="navButton">Phrases Activity Admin</button>
+    <button onclick="window.location.href ='admin/activityWaL';" class="navButton">WaL Admin</button>
+    <button onclick="window.location.href ='admin/activityDD';" class="navButton">Admin RR</button>
+    <button onclick="window.location.href = 'admin/activityP';" class="navButton">Phrases Admin</button>
     <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
   <% if (user.adminLevel > 1){ %>
          <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>

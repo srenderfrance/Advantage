@@ -189,11 +189,9 @@ module.exports.postActivity = async (req, res, next) => {
 };
 module.exports.postWaL = async (req, res) => {
    console.log("PostWaL is running!");
-   console.log(req.body);
-   console.log(req.body.activity)
-   //console.log(req.files)
    let activities
    let activity
+   let videoIsToBig
    try {
  
       const theCohort = await Cohort.findById(req.user.cohort._id);
@@ -216,38 +214,49 @@ module.exports.postWaL = async (req, res) => {
                imageDO: '',
                imageRURL: '',
                imageRCloudinaryID: '',
+               mediaEO: '',
                imageRO: '',
                audioDURL: '',
                audioDCloudinaryID: '',
+               mediaEO: '',
                audioRURL: '',
                audioRCloudinaryID: '',
-               audioEURL: '',
-               audioECloudinaryID: '',
+               mediaEURL: '',
+               mediaEO: '',
+               mediaECloudinaryID: '',
+               mediaEO: '',
             }; 
+            mediaEO: '',
             activity.additionalInfo.push(WalData);
          }}}; 
          try {
+           
             if (typeof req.files.video !== 'undefined') {
-               if (activity.additionalInfo[0].videoURL !== '') {
-                  const resultVD = await cloudinary.uploader.destroy(activity.additionalInfo[0].videoCloudinaryID, {resource_type: 'video'});
-                  //console.log("ResultVD deleting video");
-                  //console.log(resultVD)
-               };
-               const resultV = await cloudinary.uploader.upload(req.files.video[0].path, {resource_type: "video"});
-               console.log(resultV);
-               activity.additionalInfo[0].videoURL = resultV.secure_url;
-               activity.additionalInfo[0].videoCloudinaryID = resultV.public_id;
-               console.log(resultV.height)
-               console.log(resultV.width);
-               if(resultV.width < resultV.height){
-                  activity.additionalInfo[0].videoO = 'v';
-               } else if(resultV.width > resultV.height){
-                  activity.additionalInfo[0].videoO = 'h';
-               } else {activity.additionalInfo[0].videoO = 's';
-            }};
+               if(req.files.video[0].size > 100000000){
+               videoIsToBig = true;
+               } else {
+                  if (activity.additionalInfo[0].videoURL !== '') {
+                     const resultVD = await cloudinary.uploader.destroy(activity.additionalInfo[0].videoCloudinaryID, {resource_type: 'video'});
+                  };
+                  const resultV = await cloudinary.uploader.upload(req.files.video[0].path, {resource_type: "video"});
+                  console.log("ResultV");
+                  console.log(resultV);
+                  console.log("END RESULT V");
+                  if (resultV.secure_url){
+                  activity.additionalInfo[0].videoURL = resultV.secure_url;
+                  activity.additionalInfo[0].videoCloudinaryID = resultV.public_id;
+                  console.log(resultV.height)
+                  console.log(resultV.width);
+                  if(resultV.width < resultV.height){
+                     activity.additionalInfo[0].videoO = 'v';
+                  } else if(resultV.width > resultV.height){
+                     activity.additionalInfo[0].videoO = 'h';
+                  } else {activity.additionalInfo[0].videoO = 's';
+            }}}};
          } catch (error) {
             console.log("Error upploading or updating video file");
             console.log(error);
+            
          };
          try {
             if (typeof req.files.imageD !== 'undefined') {
@@ -258,7 +267,8 @@ module.exports.postWaL = async (req, res) => {
                };
                const resultID = await cloudinary.uploader.upload(req.files.imageD[0].path, {resource_type: "auto"});
                console.log('ResultID');
-               console.log(resultID);
+               console.log(resultID)
+               if (resultID.secure_url){
                activity.additionalInfo[0].imageDURL = resultID.secure_url;
                activity.additionalInfo[0].imageDCloudinaryID = resultID.public_id;
                if(resultID.width < resultID.height){
@@ -266,6 +276,8 @@ module.exports.postWaL = async (req, res) => {
                } else if(resultID.width > resultID.height){
                   activity.additionalInfo[0].imageDO = 'h';
                } else {activity.additionalInfo[0].imageDO = 's';
+            }} else {
+               console.log("Threre was a problem uploading the Image D.")
             }};
          } catch (error) {
             console.log("Error uploading or deleting ImageD");
@@ -279,6 +291,7 @@ module.exports.postWaL = async (req, res) => {
                   //console.log(resultIRD);
                };
                const resultIR = await cloudinary.uploader.upload(req.files.imageR[0].path, {resource_type: "auto"});
+               if (resultIR.secure_url){
                activity.additionalInfo[0].imageRURL = resultIR.secure_url;
                activity.additionalInfo[0].imageRCloudinaryID = resultIR.public_id;
                 if(resultIR.width < resultIR.height){
@@ -286,6 +299,8 @@ module.exports.postWaL = async (req, res) => {
                 } else if (resultIR.width > resultIR.height){
                   activity.additionalInfo[0].imageRO = 'h';
                 } else {activity.additionalInfo[0].imageRO = 's'
+            }} else {
+               console.log("There was problem uploading the Image R.")
             }};
          } catch (error) {
             console.log("Error uploading or deleting ImageR");
@@ -299,9 +314,12 @@ module.exports.postWaL = async (req, res) => {
                   console.log(resultADD);
                };
                const resultAD = await cloudinary.uploader.upload(req.files.audioD[0].path, {resource_type: "auto"});
+               if (resultAD.secure_url){
                activity.additionalInfo[0].audioDURL = resultAD.secure_url;
                activity.additionalInfo[0].audioDCloudinaryID = resultAD.public_id;
-            };
+            } else {
+               console.log("There was a problem uploading the Audio D.")
+            }};
          } catch (error) {
             console.log("Error uploading or deleting AudioD");
             console.log(error);   
@@ -314,37 +332,34 @@ module.exports.postWaL = async (req, res) => {
                  // console.log(ResultARD);
                };
                const resultAR = await cloudinary.uploader.upload(req.files.audioR[0].path, {resource_type: "auto"});
+               if (resultAR.secure_url){
                activity.additionalInfo[0].audioRURL = resultAR.secure_url;
                activity.additionalInfo[0].audioRCloudinaryID = resultAR.public_id;
-            };
+            } else {
+               console.log("There was a problem uploading the Audio R.")
+            }};
             } catch (error) {
               // console.log("Error uploading or deleting AudioR");
               // console.log(error);
          };
          try {
-            if (typeof req.files.audioE !== 'undefined') {
-               if (activity.additionalInfo[0].audioEURL !== '') {
-                  const resultAED = await cloudinary.uploader.destroy(activity.additionalInfo[0].audioECloudinaryID);
-                 // console.log("ResultAED deleting AudioE");
-                  //console.log(ResultAED);
+            if (typeof req.files.mediaE !== 'undefined') {
+               if (activity.additionalInfo[0].mediaEURL !== '') {
+                  const resultAED = await cloudinary.uploader.destroy(activity.additionalInfo[0].mediaECloudinaryID);
                };
-               const resultAE = await cloudinary.uploader.upload(req.files.audioE[0].path, {resource_type: "auto"});
-               activity.additionalInfo[0].audioEURL = resultAE.secure_url;
-               activity.additionalInfo[0].audioECloudinaryID = resultAE.public_id;
-            }
+               const resultAE = await cloudinary.uploader.upload(req.files.mediaE[0].path, {resource_type: "auto"});
+               if (resultV.secure_url){
+               activity.additionalInfo[0].mediaEURL = resultAE.secure_url;
+               activity.additionalInfo[0].mediaECloudinaryID = resultAE.public_id;
+               } else {
+                  console.log("There was problem uploading the Media E");
+               }}
          } catch (error) {
-            console.log("Error uploading or deleting AudioE");
             console.log(error);
       };
          console.log("uploads done")
          theCohort.markModified('activities');
       await theCohort.save(); 
-      //WHAT IS THIS??
-      /*for(let i= activities.length - 1; i > -1; i--){ //loop fixed for splice
-         if(activities[i].type !== "WaL"){
-         activities.splice(i, 1);
-      }};*/
-      //console.log(activities)
       res.redirect("/admin/activityWaL");
    } catch (error) {
       console.log(error)
@@ -794,76 +809,7 @@ module.exports.deleteActivity = async (req, res) => {
       console.log(error)
    }
 }
-/*
-module.exports.replaceAudio = async (req, res, next) => {
-   console.log('Delete Audio is running');
-   console.log(req.body)
-   console.log(req.body.toDelete);
-   console.log('Id is');
-   console.log(req.body.id);
-   console.log('url is');
-   console.log(req.body.url);
-   
-   const result = await cloudinary.uploader.destroy(req.body.toDelete, {resource_type: 'video'});
-   console.log('Audio should be destoyed')
-   console.log(result);
-   
-   let vocabWord = await VocabWord.find({ $or: [
-      {cloudinaryIdTis: req.body.toDelete}, 
-      {cloudinaryIdQ: req.body.toDelete}, 
-      {cloudinaryIdN: req.body.toDelete}
-   ]});
-   if (typeof req.files.audioT !== 'undefined') {
-         const result = await cloudinary.uploader.upload(req.files.audioT[0].path, { resource_type: "auto"});
-         vocabWord.cloudinaryIdTis = result.public_id;
-         vocabWord.audioTis = result.secure_url;
-      };
 
-   if (typeof req.files.audioQ !== 'undefined'){
-         const result2 = await cloudinary.uploader.upload(req.files.audioQ[0].path, { resource_type: "auto"});
-         vocabWord.cloudinaryIdQ = result2.public_id;
-         vocabWord.audioQ = result2.secure_url;
-      };
-
-   if ( typeof req.files.audioN !== 'undefined') {
-         const result3 = await cloudinary.uploader.upload(req.files.audioN[0].path, { resource_type: "auto"});
-         vocabWord.cloudinaryIdN = result3.public_id;
-         vocabWord.audioN = result3.secure_url;
-   };
-
-      console.log("vocabWord before save")
-      console.log(vocabWord)
-      vocabWord = await vocabWord.save();
-   
-   
-   console.log(vocabWord)
-   vocabWord = vocabWord[0]; 
-   
-   console.log("this is vocabWord")
-   console.log(vocabWord)
-/*
-   if (vocabWord.cloudinaryIdTis === req.body.toDelete) {
-      vocabWord.cloudinaryIdTis = "";
-      vocabWord.audioTis = ""; 
-   }
-   
-   if (vocabWord.cloudinaryIdQ === req.body.toDelete){
-      vocabWord.cloudinaryIdQ = "";
-      vocabWord.audioQ = ""; 
-   }
-   if (vocabWord.cloudinaryIdN === req.body.toDelete){
-      vocabWord.cloudinaryIdN = "";
-      vocabWord.audioN = ""; 
-   }
-   console.log("this is vocabWord after");
-   console.log(vocabWord);
-   vocabWord = await vocabWord.save();
-
-   const activities = await Activity.find({cohort: req.user.cohort})    
-   res.render("cohortAdmin", {user: req.user, cohort: req.user.cohort, activities: activities}); 
-
-};
-*/
 module.exports.deleteVWord = async (req, res) => { 
 
    console.log('delete word is running')
@@ -952,7 +898,6 @@ module.exports.getAdditionalInfo = async (req, res) => {
       const activityDescription = req.body.activity;
       const cohortId = req.user.cohort._id; 
       const cohort = await Cohort.findById(cohortId);
-      
       let additionalInfo
       
          for (let i = 0; i < cohort.activities.length; i++) {
@@ -970,3 +915,151 @@ module.exports.getAdditionalInfo = async (req, res) => {
    console.log(error);
 }};
 
+module.exports.deleteWaLActivity = async (req, res) => {
+   console.log("Delete WaL Activity is Running")
+   try {
+      const activityDescription = req.body.activity;
+      const cohortId = req.user.cohort._id; 
+      const cohort = await Cohort.findById(cohortId);
+      let additionalInfoArray
+      let wasError
+         for (let i = 0; i < cohort.activities.length; i++) {
+            const element = cohort.activities[i];
+            if (element.description === activityDescription){
+               additionalInfoArray = element.additionalInfo;
+               activityKey = i
+               console.log('ActivityKey');
+               console.log(activityKey);
+            }};
+      if (additionalInfoArray.length > 0){
+         additionalInfo = additionalInfoArray[0];
+         console.log("additionalInfo")
+         console.log(additionalInfo);
+         
+         if (additionalInfo.videoURL !== "") {
+            const result1 = await cloudinary.uploader.destroy(additionalInfo.videoCloudinaryID, {resource_type: 'video'});
+            console.log("result1");
+            console.log(result1);
+            };
+
+         if (additionalInfo.imageDURL !== "") {
+            const result2 = await cloudinary.uploader.destroy(additionalInfo.imageDCloudinaryID, {resource_type: 'video'});
+            console.log("result2");
+            console.log(result2);
+            };
+
+         if (additionalInfo.imageRURL !== "") {
+            const result3 = await cloudinary.uploader.destroy(additionalInfo.imageRCloudinaryID, {resource_type: 'video'});
+            console.log("result3");
+            console.log(result3);
+            };
+         if (additionalInfo.audioDURL !== "") {
+            const result4 = await cloudinary.uploader.destroy(additionalInfo.audioDCloudinaryID, {resource_type: 'video'});
+            console.log("result4");
+            console.log(result4);
+            };
+         if (additionalInfo.audioRURL !== "") {
+            const result5 = await cloudinary.uploader.destroy(additionalInfo.audioRCloudinaryID, {resource_type: 'video'});
+            console.log("result5");
+            console.log(result5);
+            };
+         if (additionalInfo.mediaEURL !== "") {
+            const result6 = await cloudinary.uploader.destroy(additionalInfo.mediaECloudinaryID, {resource_type: 'video'});
+            console.log("result6");
+            console.log(result6);
+            };
+      };
+      cohort.activities.splice(activityKey, 1);
+      console.log(cohort.activities[activityKey]);
+      
+
+      cohort.markModified('activities');
+
+      await cohort.save();
+      wasError = false;
+      
+      res.json({wasError});
+ } catch (error) {
+   console.log("Delete WaL Error")
+   console.log(error);
+   wasError = true;
+   res.json({wasError});
+}};
+
+module.exports.deleteWaLMedia = async (req, res) => {
+
+ try {
+      const activityDescription = req.body.activity;
+      const mediaToDelte = req.body.mediaToDelete;
+      const cohortId = req.user.cohort._id; 
+      const cohort = await Cohort.findById(cohortId);
+      let additionalInfoArray
+         for (let i = 0; i < cohort.activities.length; i++) {
+            const element = cohort.activities[i];
+            if (element.description === activityDescription){
+               additionalInfoArray = element.additionalInfo;
+               additionalInfo = additionalInfoArray[0];
+               activityKey = i;
+               console.log("additionalInfo")
+               console.log(additionalInfo);
+
+               if (mediaToDelte === 'video'){
+                  const result1 = await cloudinary.uploader.destroy(additionalInfo.videoCloudinaryID, {resource_type: 'video'});
+                  console.log("result1");
+                  console.log(result1);
+                  console.log(result1.result)
+                  if (result1.result === 'ok'){
+                     additionalInfo.videoCloudinaryID = "";
+                     additionalInfo.videoURL = "";
+                     additionalInfo.videoO = "";
+               }} else if (mediaToDelte === "dictionaryImage"){
+                   const result2 = await cloudinary.uploader.destroy(additionalInfo.imageDCloudinaryID, {resource_type: 'image'});
+                   console.log("result2");
+                   console.log(result2.result);
+                   if (result2.result === 'ok') {
+                     additionalInfo.imageDCloudinaryID = "";
+                     additionalInfo.imageDURL = "";
+                     additionalInfo.imageDO = "";
+               }} else if (mediaToDelte === "dictionaryAudio"){
+                  const result3 = await cloudinary.uploader.destroy(additionalInfo.audioDCloudinaryID, {resource_type: 'video'});
+                  console.log("result3");
+                  console.log(result3);
+                  if (result3.result === 'ok'){
+                     additionalInfo.audioDCloudinaryID = "";
+                     additionalInfo.audioDURL = "";
+               }} else if (mediaToDelte === "reviewImage"){
+                  const result4 = await cloudinary.uploader.destroy(additionalInfo.imageRCloudinaryID, {resource_type: 'image'});
+                  console.log("result4");
+                  console.log(result4);
+                  if (result4.result === 'ok'){
+                     additionalInfo.imageRCloudinaryID = "";
+                     additionalInfo.imageRURL = "";
+                     additionalInfo.imageRO = "";
+               }} else if (mediaToDelte === "reviewAudio"){
+                  const result5 = await cloudinary.uploader.destroy(additionalInfo.audioRCloudinaryID, {resource_type: 'video'});
+                  console.log("result5")
+                  console.log(result5);
+                  if (result5.result === 'ok'){
+                     additionalInfo.audioRCloudinaryID = "";
+                     additionalInfo.audioRURL = "";
+               }} else if (mediaToDelte === "exampleMedia"){
+                  const result6 = await cloudinary.uploader.destroy(additionalInfo.mediaECloudinaryID, {resource_type: 'video'});
+                  console.log("Result6");
+                  console.log(result6);
+                  if (result6.result === 'ok'){
+                     additionalInfo.mediaECloudinaryID = "";
+                     additionalInfo.mediaEURL = "";
+                     additionalInfo.mediaO = "";
+         }}}};
+
+      
+      cohort.markModified('activities');
+
+      await cohort.save();
+      let wasError = false;
+      
+      res.json(wasError);
+      } catch (error) {
+         
+      }
+   };

@@ -1,4 +1,56 @@
 document.querySelector('#waLActivities').addEventListener('change', populatePreview);
+document.querySelector("#deleteMediaB").addEventListener('click', deleteMedia);
+document.querySelector('#deleteActivityB').addEventListener('click', deleteActivity);
+
+async function deleteMedia (){
+  console.log("Delete Media Running");
+  try {
+  const activity = document.querySelector("#activityName").value;
+  if (activity === ""){
+    window.alert('No activity has been selected.');
+  } else {
+    const mediaToDelete = document.querySelector("#deleteSelector").value;
+    const response = await fetch("/admin/deleteWaLMedia", {method: 'PUT',
+    headers: {"Content-Type": "application/json",},
+    body: JSON.stringify({activity: activity, mediaToDelete: mediaToDelete}),
+    });
+    const data = await response.json();
+    console.log(data);
+   
+  }
+  
+} catch (error) {
+  console.log(error);
+  } 
+
+  window.location.reload();
+}
+
+async function deleteActivity () {
+  try {
+    
+  
+  console.log("Delete Activity Is Running");
+  const activity = document.querySelector("#activityName").value;
+  console.log(activity === "");
+  if (activity === ""){
+    window.alert('No activity has been selected.');
+  } else {window.confirm("Are you sure you want to delete this Activity?")};
+   const response = await fetch("/admin/deleteWaLActivity", {method: 'PUT',
+      headers: {"Content-Type": "application/json",},
+      body: JSON.stringify({activity: activity}),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.wasError === false){
+         window.location.reload();
+         console.log("should have reloaded")
+      } else {window.alert("There was an Error deleting the activity.")}
+     
+} catch (error) {
+  console.log(error); 
+  };
+};
 
 async function populatePreview (){
     console.log("populatePreview is running");
@@ -50,5 +102,6 @@ async function populatePreview (){
       imageRContainer.classList.toggle('imageContainerS');
     };const audioR = document.querySelector("#audioRP");
     console.log(audioR);
-    audioR.src=additionalInfo.audioRURL; console.log("end Preview")
+    audioR.src=additionalInfo.audioRURL; 
+    console.log("end Preview");
 }
