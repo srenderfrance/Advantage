@@ -58,6 +58,14 @@ module.exports.getStudent = async (req, res) => {
          if(e.reviewedBy.some(checkReviews)){
             return true;
       }});
+      for (let i = notReviewed.length -1; i > -1; i--) {
+         const element = notReviewed[i];
+         if(element.type === 'WaL'){
+            activitiesWaL.unshift(element);
+            notReviewed.splice(i, 1);
+         }
+         
+      }
       const totalActivities = reviewed.length;
       for (let i = 0; i < reviewed.length; i++){
             const element = reviewed[i];
