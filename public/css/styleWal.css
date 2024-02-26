@@ -17,7 +17,10 @@
 }
 .imageContainerH {
     max-height: 100%;
-    max-width: 45vw;
+    
+}
+img {
+    width: auto;
 }
 .imageWaL {
     object-fit: contain;
@@ -84,6 +87,10 @@
 #reviewHeading {
     margin: 0 1rem 2rem 1rem;
     align-self: center;
+}
+
+.alignContentBetween {
+    align-content: space-between;
 }
 
 .alignContentAround {

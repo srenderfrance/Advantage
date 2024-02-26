@@ -58,6 +58,7 @@ module.exports.getStudent = async (req, res) => {
          if(e.reviewedBy.some(checkReviews)){
             return true;
       }});
+      //This sorts WaL activities to thier array without being marked "watched"
       for (let i = notReviewed.length -1; i > -1; i--) {
          const element = notReviewed[i];
          if(element.type === 'WaL'){

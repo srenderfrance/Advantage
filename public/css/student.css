@@ -39,7 +39,7 @@
 }
 
 .statscontainer {
-  color: var(--lightFont);
+    color: var(--lightFont);
     padding: .5rem;
     margin-right: .8rem;
     margin-left: 1.2rem;
@@ -48,6 +48,9 @@
     box-shadow: 0 5px 60px 0 black;
 }
 
+.statscontainer > h2 {
+    text-shadow: 0px 4px 4px rgb(70, 70, 70);
+}
 .reviewContainer {
     margin-left: .8rem;
     margin-right: 2.2rem;

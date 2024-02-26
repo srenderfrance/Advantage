@@ -162,7 +162,6 @@ h2 {
     padding: 0 .5rem;  
     text-shadow: 0px 8px 10px rgb(70, 70, 70);
     color: var(--primaryFontClr); 
-    text-shadow: 0px 8px 10px rgb(70, 70, 70);
 }
 
 h3 {
@@ -172,7 +171,7 @@ h3 {
     font-size: 1.8rem;
     color: var(--primaryFontClr);
     margin-top: 2rem;
-    text-shadow: 0px 4px 5px rgb(70, 70, 70);
+    text-shadow: 0px 3px 3px rgb(70, 70, 70);
 }
 
 .container {
