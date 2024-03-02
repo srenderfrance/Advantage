@@ -49,7 +49,8 @@
                 <h3>Your Custom Activities</h3>
                 <div class="container smallForm">
                     <label for="customActivities" class="secondaryLabel flex1">Select Activity to Edit</label>
-                    <select name="customActivities" id="activityToEdit" required>
+                    <select name="customActivities" id="activityToEdit2" required>
+                        <option value="">Select Activity</option>
                         <% for(let i=0; i < student.individualExercises.length; i++) {%>   
                             <option value="<%=student.individualExercises[i].description %>"><%= student.individualExercises[i].description %></option>
                         <% } %> 

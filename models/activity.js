@@ -23,6 +23,10 @@ const ActivitySchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    ready: {
+        type: Boolean,
+        default: false
+    },
     additionalInfo: {
         type: Array,
         default: [ActivityWaLSchema],

@@ -133,7 +133,7 @@ async function createCustomActivity () {
         const data = await response.json();
 
         console.log(data);
-       // window.location = response.url;
+       window.location.reload();
     } catch (error) {
         console.log(error);
 }};
@@ -142,7 +142,7 @@ async function deleteCustomAtivity () {
     try {
         const confirmDelete = confirm("Are you sure want to delete this Activity?");
         if(confirmDelete === true){
-            const activityToDelete = document.querySelector('#activityToEdit').value;
+            const activityToDelete = document.querySelector('#activityToEdit2').value;
             const response = await fetch('/student/deleteCustomActivity', {method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({activityToDelete: activityToDelete}),
@@ -266,7 +266,7 @@ function remakeListener () {
 }
 
 function showSelectedActivity (){
-    const activityToShow = document.querySelector('#activityToEdit').value;
+    const activityToShow = document.querySelector('#activityToEdit2').value;
     console.log(activityToShow);
     console.log("SHOW SELECTED ACTIVITY RAN")
     const container = document.querySelector('.customActivityContainer');
@@ -309,7 +309,7 @@ async function addToActivity() {
     console.log(arrayToAdd);
     let currentActivityVL =[];
     let arrayToShow = [];
-    const cActivity = document.querySelector("#activityToEdit").value;
+    const cActivity = document.querySelector("#activityToEdit2").value;
     console.log("Activity Selector Value");
     console.log(cActivity);
     for (let i = 0; i < customActivities.length; i++) {//This dinds the correct Activity Object to modify.
@@ -358,7 +358,7 @@ async function addToActivity() {
 async function moveToCollection () {
     console.log("MOVE TO COLLECTION IS RUNNING!");
     const toMove = document.querySelectorAll('.selectedVocab3');
-    const activityDescription = document.querySelector('#activityToEdit').value;
+    const activityDescription = document.querySelector('#activityToEdit2').value;
     console.log("Activity element");
     console.log(activityDescription);
     let vArrayToModify = [];
@@ -441,7 +441,7 @@ async function removeFromActivity () {
     console.log("REMOVE FROM ACTIVITY IS RUNNING");
     const toRemove = document.querySelectorAll('.selectedVocab3');
     console.log(toRemove);
-    const activityDescription = document.querySelector('#activityToEdit').value;
+    const activityDescription = document.querySelector('#activityToEdit2').value;
     console.log("Activity element");
     console.log(activityDescription);
     let vArrayToModify = [];
@@ -481,7 +481,7 @@ async function removeFromActivity () {
 };
 
 getAllVocab();
-document.querySelector('#activityToEdit').addEventListener('change', showSelectedActivity);
+document.querySelector('#activityToEdit2').addEventListener('change', showSelectedActivity);
 document.addEventListener('click', selectFromUserselection);
 document.addEventListener('click', playVocab);
 document.querySelector('#deleteCustomActivity').addEventListener('click', deleteCustomAtivity);

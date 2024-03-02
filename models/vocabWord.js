@@ -44,7 +44,18 @@ const VocabWordSchema = new mongoose.Schema({
         type: Array,
         default: [],
     },
-    link: {
+
+    vocabType: {
+        type: String,
+        default: "new", 
+    },
+
+    linkedVocab: {
+        type: Array,
+        default: [],
+    },
+    
+    specialInfo: {
         type: Object,
         default: {},
     },

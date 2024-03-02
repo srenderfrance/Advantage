@@ -193,6 +193,9 @@ h3 {
     font-size: large;
 }
 
+.uploadBlockRR {
+    margin-top: 1rem;
+}
 
 .uploadBlock label {
     margin-bottom: 10px;
@@ -215,7 +218,73 @@ h3 {
     margin: 0rem 1rem .5rem 1rem;
 }
 
+#activitytoEdit {
+    margin: 1rem;
+    text-decoration: underline;
+}
 
+#activityToEdit2 {
+    margin: .3rem;
+}
+#vocabType {
+    align-self: center;
+}
+
+.uploadGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr;
+    height: 60vh;
+}
+
+.block1{
+    grid-column: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.block2 {
+    grid-column: 3 / 4;
+    display: grid;
+    justify-items: right;
+    max-width: 2.5rem;
+}
+
+.block3 {
+    grid-column: 4 / 5;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.block4 {
+    grid-column: 1 / 2;
+}
+
+.block5 {
+    grid-column: 2 / 4;
+}
+
+#newVocabulary { /*RR admin*/
+    margin-right: 1rem;
+}
+
+.uploadGrid h4 {  /*RR admin*/
+    font-size: 1.5rem;
+    margin: 1.5rem 2rem 3.5rem 2rem;
+}
+.uploadGrid .checkboxLabel{ /*RR admin*/
+    font-size: 1.5rem;
+    font-family: serif;
+    margin-top: .8rem
+}
+
+.flexColumn2 { /*RR admin*/
+    display: flex;
+    align-items: flex-end; 
+    flex-direction: column;
+    gap: 2rem;
+}
 .moveRight{
     display: flex;
     justify-content: end;
@@ -311,6 +380,12 @@ img {
     padding: 1rem;
 }
 
+.flexInputsRR {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+}
 .spaceBetween {
     justify-content: space-between;
 }
@@ -469,4 +544,19 @@ label {
 .backgroundColorL {
     background-image: repeating-linear-gradient( rgb(168, 211, 248), rgb(68, 149, 220), rgb(168, 211, 248),  rgb(68, 149, 220), rgb(168, 211, 248),  rgb(68, 149, 220), rgb(168, 211, 248),  rgb(68, 149, 220));
     border: none;
+}
+
+.flexSplit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.aSelfCenter {
+    align-self: center;
+}
+
+.statsContainer h3 {
+    font: bold 1.8rem sans-serif;
+    text-shadow: none;
 }

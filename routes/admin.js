@@ -19,6 +19,7 @@ router.post("/cohortName", adminController.getStudentList);
 router.post("/updateCohortAdmin", adminController.updateCohortAdmin);
 router.post("/removeCohortAdmin", adminController.removeCohortAdmin);
 
+
 router.post("/activity", adminController.postActivity);
 router.put("/getVocabList", adminController.getActivityVocab); //why is this a put?
 router.post("/createVocab", upload.fields([{name: 'image', maxCount: 1}, {name:'audioQ', maxCount: 1}, {name: 'audioTis', maxCount: 1}, {name: 'audioN', maxCount: 1}]), adminController.postVocabWord);
@@ -31,6 +32,7 @@ router.put("/replaceAudioN", upload.single('newAudioN'), adminController.replace
 router.put("/updateVWord", adminController.updateVocabWord);
 router.put("/deleteVWord", adminController.deleteVWord);
 router.put("/deleteActivity", adminController.deleteActivity);
+router.put("/finalizeActivity", adminController.finalizeActivity);
 
 router.post("/createWaL", upload.fields([{name: 'video', maxCount: 1}, {name: "imageD", maxCount: 1}, {name: 'imageR', maxCount: 1}, {name: 'audioD', maxCount: 1}, {name: 'audioR', maxCount: 1}, {name: 'audioE'}]), adminController.postWaL);
 router.put("/getAdditionalInfo", adminController.getAdditionalInfo);

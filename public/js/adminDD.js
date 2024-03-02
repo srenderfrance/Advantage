@@ -1,4 +1,5 @@
-document.querySelector("#selectActivity").addEventListener("click", getVocab);
+document.querySelector("#selectActivity").addEventListener("click", populateDropDown1);
+document.querySelector('#activityName2').addEventListener('change', populateDropDown2)
 //document.querySelector("#existingVocabWords").addEventListener("change", populateExtraInfo);
 document.querySelector("#existingVocabWords").addEventListener("change", loadPreview);
 document.querySelector("#replaceImage").addEventListener("click", replaceImage);
@@ -9,36 +10,119 @@ document.querySelector("#changeVWDescription").addEventListener("click", updateV
 document.querySelector("#changeVWCategory").addEventListener("click", updateVWCategory);
 document.querySelector("#deleteVW").addEventListener("click", deleteVW);
 document.querySelector("#deleteActivity").addEventListener("click", deleteActivity);
+document.querySelector('#selectActivity2').addEventListener("click", linkAudio);
+document.querySelector("#vocabType").addEventListener('change', toggleCheckbox);
+document.querySelector('#submitButton').addEventListener('click', uploadVocabWord);
+document.querySelector("#finalizeActivity").addEventListener("click", finalizeActivity);
 
 let vocabList = [];
 let selectedVWord = {};
+let vocabList2 = [];
 
-//const cohort = document.querySelector("#cohort").value;
-async function getVocab()  {
-   console.log("getVocab is running")
+async function uploadVocabWord (){
+   console.log("Upload Vocab Word Is running");
+
+   const formElement = document.querySelector("#newVWForm");
+   
+   const form = new FormData(formElement);
+   console.log(Array.from(formElement));
+
+   try {
+      const response = await fetch("/admin/createVocab", {method: 'POST',
+      body: form,});
+
+      
+      const data = await response.json();
+      console.log("data")
+      populateDropDown1();
+    
+      document.querySelector("#image").value = "";
+      document.querySelector("#audioQ").value = "";
+      document.querySelector("#audioT").value = "";
+      document.querySelector("#audioN").value = "";
+      document.querySelector("#newVocabWord").value = "";
+      document.querySelector("#category").value = "";
+      document.querySelector("#vwToLink").value = "";
+      document.querySelector("#activityName2").value = "";
+
+      console.log(data);
+   } catch (error) {
+      
+   }
+
+
+}
+
+async function populateDropDown1 () {
+   console.log("populate1")
    const activity = document.querySelector("#activityName").value;
+const vocabList = await getVocab(activity);
+   console.log(vocabList);
+   let toInsert = ""
+      for (let i = 0; i < vocabList.length; i++){
+         toInsert += `<option value="${vocabList[i].description}">${vocabList[i].description}</option> `
+      }
+      const dropDownSelector = document.querySelector("#existingVocabWords");
+      for (let i = dropDownSelector.options.length - 1; i > 0; i--){
+         dropDownSelector.remove(i);
+      }
+      dropDownSelector.insertAdjacentHTML("beforeend", `${toInsert}`);
+          
+      document.querySelector('#activityToEdit').innerText = `Selected Activity: ${activity}`;
+      document.querySelector('#activityToEdit').style.textDecoration = 'none';
+      const audioNodes = document.querySelectorAll(".audioPreviewContainer audio");
+      console.log(audioNodes);
+      for (let i = 0; i < audioNodes.length; i++) {
+         const element = audioNodes[i];
+         element.src = "";
+      }
+
+      document.querySelector("#description").innerText = "Description: No vocab word has been selected.";
+      document.querySelector("#kind").innerText = "";
+      document.querySelector(".imageContainer img").src = "Category: No vocab word has been selected.";
+      document.querySelector("#newVWDescription").value = "";
+      document.querySelector("#newVWCategory").value = "";
+      console.log("NEW TIS")
+      console.log(document.querySelector("#newAudioTis").value);
+      document.querySelector("#newAudioTis").value = "";
+      document.querySelector("#newAudioQ").value = "";
+      document.querySelector("#newAudioN").value = "";
+      document.querySelector("#newImage").value = "";
+      //document.querySelector("#").value = "";
+}
+async function populateDropDown2 () {
+   const activity = document.querySelector("#activityName2").value;
+   vocabList2 = await getVocab(activity);
+   let toInsert = ""
+          for (let i = 0; i < vocabList.length; i++){
+             toInsert += `<option value="${vocabList[i].ident}">${vocabList[i].description}</option> `
+          }
+   const dropDownSelector = document.querySelector("#vwToLink");
+   for (let i = dropDownSelector.options.length - 1; i > 0; i--){
+         dropDownSelector.remove(i);
+      }
+   dropDownSelector.insertAdjacentHTML("beforeend", `${toInsert}`);
+}
+//const cohort = document.querySelector("#cohort").value;
+async function getVocab(activityD)  {
+   console.log("getVocab is running")
    //console.log('activity');
    //console.log(activity);
    //console.log(typeof(activity))
-   if (activity !== ''){
+   console.log(activityD)
+   if (activityD !== ''){
       const response = await fetch("/admin/getVocabList", {method: 'PUT',
       headers: {"Content-Type": "application/json",},
-      body: JSON.stringify({activity: activity}),
+      body: JSON.stringify({activity: activityD}),
       });
       const data = await response.json();
-
-      //console.log(data.vocabList);
+      console.log("data.vL")
+      console.log(data.vocabList);
 
       vocabList = data.vocabList;
       //console.log(vocabList);
-      let toInsert = ""
-          for (let i = 0; i < vocabList.length; i++){
-             toInsert += `<option value="${vocabList[i].description}">${vocabList[i].description}</option> `
-          }
-          //console.log(toInsert)
-          dropDownDefaultElement = document.querySelector("#existingVocabWords");
-          dropDownDefaultElement.insertAdjacentHTML("beforeend", `${toInsert}`)
-      document.querySelector('#activityToEdit').innerText = `Add vocabulary word to: ${activity}`
+     return vocabList;
+
    } else {alert("No Activity was selected.")}
 
 };
@@ -217,11 +301,11 @@ async function deleteVW () {
    console.log(selectedVWord);
 
    const activity = document.querySelector("#activityName").value;
-   const response = await fetch('admin/deleteVWord', {method: 'PUT',
+   const response = await fetch('/admin/deleteVWord', {method: 'PUT',
       headers: {"Content-Type": "application/json",},
       body: JSON.stringify({vocabWordId: selectedVWord.ident, activity: activity}),
    });
-window.location = response.url;
+window.location.reload();
 
 };
 
@@ -239,7 +323,58 @@ async function deleteActivity () {
          window.location = response.url;
       }
    } catch (error) {
-      console.log(error)
+      console.log(error);
+   };
+};
+
+function linkAudio () {
+   console.log("LINK AUDIO IS RUNNING");
+   let linkedStatus = false;
+   const vw = document.querySelector("#vwToLink").value;
+   if(vw === ""){
+      window.alert("No Vocab Word has been selected.");
+   };
+   toggleAudioInputs();
+   if (linkedStatus === false) {
+      linkedStatus = true;
+      for (let i = 0; i < vocabList2.length; i++) {
+      const element = vocabList2[i];
+      if(element.description === vw){
+         console.log(element);
+      }
+      
+   }
+   } else {
+   linkedStatus = false;
+   toggleAudioInputs();
+   } ;
+   
+   
+   function toggleAudioInputs () {
+   document.querySelector("#audioT").toggleAttribute('disabled');
+   document.querySelector("#audioQ").toggleAttribute('disabled');
+   document.querySelector("#audioN").toggleAttribute('disabled');
+   }
+
+};
+
+function toggleCheckbox () {
+   console.log("toggle checkbox running");
+   if (document.querySelector("#vocabType").value === "individual") {
+      document.querySelector("#newVocabulary").toggleAttribute("disabled");
    }
 }
 
+async function finalizeActivity () {
+   console.log("Finalize Activity is Running");
+   const activity = document.querySelector("#activityName").value;
+   try {
+     const response = await fetch('/admin/finalizeActivity', {method: 'PUT',
+         headers: {"Content-Type": "application/json",},
+         body: JSON.stringify({activity: activity}),
+      });
+         window.location = response.url;
+  } catch (error) {
+     console.log(error); 
+   }
+}

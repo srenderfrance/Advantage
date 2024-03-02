@@ -13,9 +13,15 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports.getStudent = async (req, res) => {
    try {
+
       console.log('get Student is running CONTROLLER')
       let cohort = await Cohort.findById(req.user.cohort);
-      let activities = cohort.activities;
+      let activities = [];
+      for (let i = 0; i < cohort.activities.length; i++) {
+         const element = cohort.activities[i];
+         if (element.ready === true) {
+            activities.push(element);
+      }}; 
       const categories = cohort.categories;
       let wordsSelected = [];
       for (let i = 0; i < req.user.wordsSelected.length; i++) {
@@ -33,7 +39,7 @@ module.exports.getStudent = async (req, res) => {
          const usedByArray = vocabArray[i].reviewedBy;
          for (let index = 0; index < usedByArray.length; index++) {
             const element = usedByArray[index];
-            if (element._id.toString().includes(userId) && !vocabArray[i].category.includes("Phrases")) {
+            if (element._id.toString().includes(userId) && vocabArray[i].vocabType === 'new') {
             total++;
             }; 
       }};  
@@ -475,8 +481,6 @@ module.exports.userReviewResults = async (req, res, next) => {
   const vocabArray = theCohort.vocabWords
       console.log('array length')
       console.log(vocabArray.length)
-      console.log("test");
-      console.log(vocabArray[0].reviewedBy[0]._id.toString());
    const totalVocab = function () {
       let total = 0
       const userId = req.user._id.toString();
@@ -484,7 +488,7 @@ module.exports.userReviewResults = async (req, res, next) => {
          const usedByArray = vocabArray[i].reviewedBy;
          for (let i = 0; i < usedByArray.length; i++) {
             const element = usedByArray[i];
-            if (element._id.toString().includes(userId) && vocabArray[i].category.includes("Phrases") === false) {
+            if (element._id.toString().includes(userId) && vocabArray[i].vocabType === 'new' && vocabArray[i].category.includes("Phrases") === false) {
             total++;
             }  
       }}  

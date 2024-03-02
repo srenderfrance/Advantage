@@ -14,28 +14,38 @@
     <h2>Rough and Ready Activity Admin</h2>
 
 
-<form action="/admin/createVocab" enctype="multipart/form-data" method="POST">
+<form id="newVWForm" action="/admin/createVocab" enctype="multipart/form-data" method="POST">
     <div class="container">
-        <div class="headingSelect">
-            <h2>Select an Activity To Edit</h2>
-            <div class="container outlineNone">
-                <select name="activity" id="activityName" class="selection" required>
-                    <option value="" disabled selected hidden>Choose an Activity</option>
-                <% for(let i=0; i < activities.length; i++) {%>   
-                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                <% } %>
-                </select> 
-                <button type="button" id="selectActivity">Select</button> 
+        <div class="flexSplit">
+            <div class="flex">
+                <h2>Select an Activity To Edit</h2>
+                <div class="container outlineNone aSelfCenter">
+                    <select name="activity" id="activityName" class="selection" required>
+                        <option value="" disabled selected hidden>Choose an Activity</option>
+                    <% for(let i=0; i < activities.length; i++) {%>   
+                        <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                    <% } %>
+                    </select> 
+                    <button type="button" id="selectActivity">Select</button> 
+                </div>
             </div>
+            <button type="button" id="finalizeActivity">Finalize Activity</button>
         </div>
-        <h3 id="activityToEdit">Add vocabulary word to: No Activity Selected</h3>    
-        <div class="container gridContainer" id="uploadContainer">
-            <div class="container flexColumn">
-                <div class="gridContainer" >
+        <div class="flex spaceBetween">
+            <h3 id="activityToEdit">No Activity Selected</h3>
+            <select name="vocabType" id="vocabType" class="selection">
+                <option value="new">All Vocab is NEW</option>
+                <option value="other">No vocab is NEW</option>
+                <option value="individual">Select individually</option>
+            </select>    
+        </div>
+        <div class="container uploadGrid" id="uploadContainer">
+            <div class="block1">
+               <div class="flexInputsRR" >
                     <label for="newVocabWord" class="primaryLabel">Description:</label>
                     <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or phrase" required>
-                </div>
-                <div class="gridContainer">
+                </div> 
+                <div class="flexInputsRR">
                     <label for="category" class="primaryLabel">Category</label>
                     <select name="category" id="category" class="selection" required>
                         <option value="" disabled selected hidden>Choose a Category</option>
@@ -43,37 +53,62 @@
                         <option value="<%=categories[i] %>"><%= categories[i] %></option>  
                     <% } %>
                     </select>
-                </div>
-                <div class="gridContainer moveRight" >
-                    <div class="uploadBlock">  
-                        <label for="image">Vocab Word Image</label>
-                        <input type="file" class="uploadInput" id="image" value="image" name="image"> 
-                    </div>         
+                </div>    
+            </div>
+            <div class="block2">
+                <label for="newVocabCB" class="checkboxLabel secondaryLabel" id="passCheckBLabel">Count this as New Vocabulary</label>    
+                <input type="checkbox" checked disabled class="checkbox" id="newVocabulary" name="newVocabCB">   
+                
+            </div>
+            <div class="block3">
+                <h4>To link this Vocab Word to the audio from an existing Vocab Word, ust the Selectors below.</h2>
+                <div class="flexColumn2">
+                    <div class="container outlineNone">
+                        <select name="activity2" id="activityName2" class="selection">
+                            <option value="" disabled selected hidden>Choose an Activity</option>
+                        <% for(let i=0; i < activities.length; i++) {%>   
+                            <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                        <% } %>
+                        </select> 
+                    </div>   
+                    <div class="mainSelector" >
+                        <select name="vwToLink" id="vwToLink" class="selection" > 
+                            <option value="">Select Vocab Word</option>
+                        </select>
+                    </div>
+                    <button type="button" id="selectActivity2">Select</button> 
                 </div>
             </div>
-            <div class="container flexColumn">
-                <div class="gridContainer">
-                    <div class="uploadBlock"> 
+            <div class="block4">
+                 <div class="flexColumn">
+                     <div class="uploadBlockRR">  
+                        <label for="image">Vocab Word Image</label>
+                        <input type="file" class="uploadInput" id="image" value="image" name="image"> 
+                    </div>
+                    <div class="uploadBlockRR"> 
                         <label for="audioT">Vocab Word Introduction Audio</label>
                         <input type="file" id="audioT" class="uploadInput" value="audioTis" name="audioTis">
                     </div>
+                     
                 </div>
-                <div class="gridContainer">
-                    <div class="uploadBlock">
+
+            </div>   
+            <div class="block5">
+                <div class="flexColumn">
+                    <div class="uploadBlockRR">
                         <label for="audioQ">Question Audio</label>
                         <input type="file" id="audioQ" class="uploadInput" value="audioQ" name="audioQ">
                     </div>
-                </div>
-                <div class="gridContainer">    
-                    <div class="uploadBlock">
+                    <div class="uploadBlockRR">
                         <label for="audioN">The Correction Audio</label>
                         <input type="file" id="audioN" class="uploadInput" value="audioN" name="audioN">  
-                    </div>
-                </div>  
+                    </div>  
+                </div>
             </div>
-        <button type="submit">Upload New Vocab Word</button>
         </div>  
-    </div>        
+        <button id="submitButton" type="button">Upload New Vocab Word</button>
+    </div>  
+    
 </form>       
     <div class="container">
         <h2>Vocab Word Preview/Edit</h2>

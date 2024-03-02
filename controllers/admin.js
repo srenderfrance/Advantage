@@ -166,6 +166,7 @@ module.exports.postActivity = async (req, res, next) => {
            vocabWords: [],
            reviewedBy: [],
            type: req.body.activityType,
+           ready: false,
            additionalInfo: [],
 
       };
@@ -226,7 +227,6 @@ module.exports.postWaL = async (req, res) => {
                mediaECloudinaryID: '',
                mediaEO: '',
             }; 
-            mediaEO: '',
             activity.additionalInfo.push(WalData);
          }}}; 
          try {
@@ -369,28 +369,27 @@ module.exports.postWaL = async (req, res) => {
    //res.render("activityWaLAdmin",{ user: req.user, activities: activities});
 }
 module.exports.postVocabWord = async (req, res) => {
-   
+   const activityDescription = req.body.activit;
    console.log("Post VocabWord is running");
    console.log(req.body)
    //console.log(typeof(req.files.image))
    try {
       let theCohort = await Cohort.findById(req.user.cohort._id);
 
+      let existingLinks = [];
+      const vwToLink = parseInt(req.body.vwToLink);
+     
       console.log('theCohort.vocabWords.length');
-      console.log(theCohort.vocabWords.length)
+      console.log(theCohort.vocabWords.length);
       
       let newIdent
       if(theCohort.vocabWords.length === 0){
          newIdent = 1;
       } else { for (let i = 1; i <= theCohort.vocabWords.length + 1; i++) {
-         //console.log(i);
-        //console.log(theCohort.vocabWords.some(vw => vw.ident === i))
          if(theCohort.vocabWords.some(vw => vw.ident === i) === false){
             newIdent = i;
-            //console.log(`NewIdent: ${newIdent}`);
             break;
          }}};
-
       let vocabWord = {
         description: req.body.description,
         category: req.body.category,
@@ -403,22 +402,43 @@ module.exports.postVocabWord = async (req, res) => {
         audioN: '',
         cloudinaryIdN: '',
         reviewedBy: [],
+        vocabType: 'new',
+        linkedVocab: [],
         ident: newIdent,
-          
+        specialInfo: {}  
       };
+      if (req.body.vocabType === 'other'){
+         vocabWord.vocabType = 'other';
+      } else if (req.body.vocabType === 'individual'){
+         if (typeof(req.body.newVocabCB === 'undefined')){
+            vocabWord.vocabType = 'other';
+      }};
+      // linking audio files with previous VW
+      if (req.body.vwToLink !== ''){
+         for (let i = 0; i < theCohort.vocabWords.length; i++) {
+            const element = theCohort.vocabWords[i];
+            if (element.ident === vwToLink){
+               vocabWord.imageUrl = element.imageUrl;
+               vocabWord.cloudinaryIdImage = element.cloudinaryIdImage;
+               vocabWord.audioTis = element.audioTis;
+               vocabWord.cloudinaryIdTis = element.cloudinaryIdTis;
+               vocabWord.audioQ = element.audioQ;
+               vocabWord.cloudinaryIdQ = element.cloudinaryIdQ;
+               vocabWord.audioN = element.audioN;
+               vocabWord.cloudinaryIdN = element.cloudinaryIdN;
+               existingLinks = element.linkedVocab;
+               vocabWord.linkedVocab = existingLinks;
+               vocabWord.linkedVocab.push(vwToLink);
+               console.log("exiting Links");
+               console.log(existingLinks);
+      }}};
 
-   const activityDescription = req.body.activity;
       for (let i = 0; i < theCohort.activities.length; i++) {
          const element = theCohort.activities[i];
-         console.log(element.description);
-         console.log(element)
+         
          if (element.description === activityDescription){
-            console.log(element.vocabWords);
             element.vocabWords.push(vocabWord.ident);
-            console.log(element.vocabWords);
          }};
-   //console.log("ident")
-   //console.log(vocabWord.ident);
    
       if (typeof req.files.image !== 'undefined') {
          const resultI = await cloudinary.uploader.upload(req.files.image[0].path, {resource_type: "auto"});
@@ -443,24 +463,37 @@ module.exports.postVocabWord = async (req, res) => {
          vocabWord.cloudinaryIdN = result3.public_id;
          vocabWord.audioN = result3.secure_url;
       };
-      //console.log("vocabWord before save");
       
       theCohort.vocabWords.push(vocabWord);
-   
-      console.log("vocabWors");
-      console.log(theCohort.vocabWords);
-      console.log("Activities");
-      console.log(theCohort.activities)
+      theCohort.markModified('vocabWords');
       theCohort.markModified('activities');
-      theCohort = await theCohort.save();
-            
-      console.log('vocabWord after')
-      console.log(theCohort)
-            
-      console.log("A new vocab word has been created!");
-      //console.log(vocabWord._id);
-   
-      
+      await theCohort.save();
+
+//There were issues getting all changes to save in the DB the second call and save seemed to help. NOT ideal, but it works for now.
+      const cohort = await Cohort.findById(req.user.cohort._id);
+
+     /* for (let i = 0; i < cohort.vocabWords.length; i++) {
+         const element = cohort.vocabWords[i];
+        if (element.ident === vwToLink){
+             element.linkedVocab.push(vocabWord.ident);
+             //cohort.markModified(`vocabWords[${i}]`);
+             console.log("element.linkedVocab");
+             console.log(element.linkedVocab);
+      }};*/
+      for (let i2 = 0; i2 < existingLinks.length; i2++){
+         const existingLINK = existingLinks[i2];            
+         for (let index = 0; index < cohort.vocabWords.length; index++) {
+            const element2 = cohort.vocabWords[index];
+            if (element2.ident === existingLINK){
+               element2.linkedVocab.push(vocabWord.ident);
+               //cohort.markModified(`vocabWords[${index}].linkedVocab`);
+               console.log("element2.linkedVocab");
+               console.log(element2.linkedVocab);
+               break;
+      }}}
+      cohort.markModified('vocabWords')
+      await cohort.save();
+
    } catch (error) {
       console.log('catch')
       console.log(error)   
@@ -468,7 +501,7 @@ module.exports.postVocabWord = async (req, res) => {
 
 
    console.log('ready to redirect');
-   res.redirect("/admin/activityDD");
+   res.json(activityDescription);
 
 };
 
@@ -746,8 +779,8 @@ module.exports.deleteActivity = async (req, res) => {
          console.log("toDelete");
          console.log(vwToDelete);
          if(vwToDelete !== undefined){
-            for (let i = 0; i < vwToDelete.length; i++) {
-               const element = vwToDelete[i];
+            for (let i2 = 0; i2 < vwToDelete.length; i2++) {
+               const element = vwToDelete[i2];
                for (let index = theCohort.vocabWords.length - 1; index > -1; index--) {//loop has been fixed for "splice" use.
                   const element2 = theCohort.vocabWords[index];
                   if(element === element2.ident){
@@ -888,7 +921,7 @@ module.exports.deleteVWord = async (req, res) => {
    } catch (error) {
       console.log(error)
 };
-   res.redirect("/adminDD");
+   res.redirect("/admin/adminDD");
 
 };
 
@@ -1063,3 +1096,21 @@ module.exports.deleteWaLMedia = async (req, res) => {
          
       }
    };
+
+   module.exports.finalizeActivity = async (req, res) => {
+   try {
+      console.log(req.body.activity); 
+      const activity = req.body.activity;   
+      const cohort = await Cohort.findById(req.user.cohort._id);
+      for (let i = 0; i < cohort.activities.length; i++) {
+         const element = cohort.activities[i];
+        if (element.description === activity) {
+         element.ready = true;
+      }};
+      cohort.markModified("activities");
+      await cohort.save();
+      res.redirect("/admin/activityDD");
+   } catch (error) {
+     console.log(error);
+     res.json('There was an error')
+}};
