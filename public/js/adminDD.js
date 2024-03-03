@@ -21,7 +21,7 @@ let vocabList2 = [];
 
 async function uploadVocabWord (){
    console.log("Upload Vocab Word Is running");
-
+   document.querySelector('#submitButton').disabled = true;
    const formElement = document.querySelector("#newVWForm");
    
    const form = new FormData(formElement);
@@ -34,6 +34,7 @@ async function uploadVocabWord (){
       
       const data = await response.json();
       console.log("data")
+      console.log(data);
       populateDropDown1();
     
       document.querySelector("#image").value = "";
@@ -44,7 +45,8 @@ async function uploadVocabWord (){
       document.querySelector("#category").value = "";
       document.querySelector("#vwToLink").value = "";
       document.querySelector("#activityName2").value = "";
-
+      console.log(document.querySelector("#submitButton"));
+      document.querySelector("#submitButton").disabled = false;
       console.log(data);
    } catch (error) {
       
@@ -272,7 +274,7 @@ async function updateVWDescription () {//updated
    } else {
    
    
-   const response = await fetch('admin/updateVWord', {method: 'PUT',
+   const response = await fetch('updateVWord', {method: 'PUT',
       headers: {"Content-Type": "application/json",},
       body: JSON.stringify({newVWDescription: newVWDescription, vocabWordId: selectedVWord.ident}),
    });

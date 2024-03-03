@@ -369,9 +369,10 @@ module.exports.postWaL = async (req, res) => {
    //res.render("activityWaLAdmin",{ user: req.user, activities: activities});
 }
 module.exports.postVocabWord = async (req, res) => {
-   const activityDescription = req.body.activit;
+   const activityDescription = req.body.activity;
    console.log("Post VocabWord is running");
-   console.log(req.body)
+   console.log(req.body);
+  // console.log(req.files)
    //console.log(typeof(req.files.image))
    try {
       let theCohort = await Cohort.findById(req.user.cohort._id);
@@ -433,17 +434,22 @@ module.exports.postVocabWord = async (req, res) => {
                console.log(existingLinks);
       }}};
 
+        let activityLocation   
       for (let i = 0; i < theCohort.activities.length; i++) {
          const element = theCohort.activities[i];
          
          if (element.description === activityDescription){
             element.vocabWords.push(vocabWord.ident);
+            activityLocation = i;
+            console.log(activityLocation)
          }};
+
    
       if (typeof req.files.image !== 'undefined') {
          const resultI = await cloudinary.uploader.upload(req.files.image[0].path, {resource_type: "auto"});
          vocabWord.imageUrl = resultI.secure_url;
-         vocabWord.cloudinaryIdImage = resultI.public_id
+         vocabWord.cloudinaryIdImage = resultI.public_id;
+         
       };
 
       if (typeof req.files.audioTis !== 'undefined') {
@@ -480,6 +486,13 @@ module.exports.postVocabWord = async (req, res) => {
              console.log("element.linkedVocab");
              console.log(element.linkedVocab);
       }};*/
+      console.log("newIdent");
+      console.log(newIdent);
+      console.log("vocabWord.Ident")
+      console.log(vocabWord.ident);
+      console.log('activity Description');
+      console.log(activityDescription)
+    
       for (let i2 = 0; i2 < existingLinks.length; i2++){
          const existingLINK = existingLinks[i2];            
          for (let index = 0; index < cohort.vocabWords.length; index++) {
@@ -491,7 +504,11 @@ module.exports.postVocabWord = async (req, res) => {
                console.log(element2.linkedVocab);
                break;
       }}}
+      console.log('activity location')
+      console.log(activityLocation);
+      console.log(theCohort.activities[activityLocation]);
       cohort.markModified('vocabWords')
+
       await cohort.save();
 
    } catch (error) {
@@ -501,7 +518,7 @@ module.exports.postVocabWord = async (req, res) => {
 
 
    console.log('ready to redirect');
-   res.json(activityDescription);
+   res.json({activityDescription});
 
 };
 
