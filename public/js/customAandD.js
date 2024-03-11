@@ -105,9 +105,21 @@ async function createCustomActivity () {
         const activityName = document.querySelector('#activity').value;
         //console.log(activityName)
         let selection = [];
+        let activityNameIsUsed = false;
+
         const userSelected = document.querySelectorAll('.selectedVocab2');
         console.log("userSelectedVocab");
         console.log(userSelectedVocab);
+        for (let i = 0; i < customActivities.length; i++) {
+            const activityDescription = customActivities[i].description;
+            if (activityName === activityDescription){
+                activityNameIsUsed = true;
+        }}
+        if (activityNameIsUsed === true) {
+             window.alert("This activity name has aready been used.");
+        } else if (userSelected.length > 12){
+            window.alert('You have selected more than 12 Vocab Words. An Activity cannot have more than 12 Vocab Words.');
+        } else {
         for (let i = 0; i < userSelected.length; i++) {
             const element = userSelected[i];
             for (let i2 = 0; i2 < userSelectedVocab.length; i2++) {
@@ -134,7 +146,7 @@ async function createCustomActivity () {
 
         console.log(data);
        window.location.reload();
-    } catch (error) {
+    }} catch (error) {
         console.log(error);
 }};
 

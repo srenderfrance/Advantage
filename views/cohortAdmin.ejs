@@ -9,7 +9,7 @@
     
 <h1 id="cohort"> <%=user.cohort.cohortName %></h1>
 <h2>Class Admin Page</h2>
-<form action="/admin/activity" method="POST">  
+<form method="POST" id="newActivityForm" action="/admin/activity" enctype="multipart/form-data">  
     <div class="container">
         <h2>Create New Activity</h2>
         <label for="activity" class="primaryLabel">Activity Description</label>
@@ -25,174 +25,14 @@
             <option value="CS">Complex Sentence</option>
             <option value="WaL">Watch and Listen</option>
         </select>
-        <button type="submit" class="button">Create</button>   
+        <button type="button" class="submit" id="submitActivity">Create</button>   
+        
     </div>
 </form>  
-<!--
-<form action="/admin/createVocab" enctype="multipart/form-data" method="POST">
-    <div class="container">
-        <div class="headingSelect">
-            <h2>Select an Activity To Edit</h2>
-            <div class="container outlineNone">
-                <select name="activity" id="activityName" class="selection">
-                    <option value="" disabled selected hidden>Choose an Activity</option>
-                <% for(let i=0; i < activities.length; i++) {%>   
-                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                <% } %>
-                </select> 
-                <button type="button" id="selectActivity">Select</button> 
-            </div>
-        </div>
-        <h3 id = "activityToEdit">Add vocabulary word to: No Activity Selected</h3>    
-        <div class="container gridContainer" id="uploadContainer">
-            <div class="container flexColumn">
-                <div class="gridContainer" >
-                    <label for="newVocabWord" class="primaryLabel">Description:</label>
-                    <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or phrase" required>
-                </div>
-                <div class="gridContainer">
-                    <label for="category" class="primaryLabel">Category</label>
-                    <select name="category" id="category" class="selection" required>
-                        <option value="" disabled selected hidden>Choose a Category</option>
-                    <% for(let i=0; i < categories.length; i++) {%>
-                        <option value="<%=categories[i] %>"><%= categories[i] %></option>  
-                    <% } %>
-                    </select>
-                </div>
-                <div class="gridContainer moveRight" >
-                    <div class="uploadBlock">  
-                        <label for="image">Vocab Word Image</label>
-                        <input type="file" class="uploadInput" id="image" value="image" name="image"> 
-                    </div>         
-                </div>
-            </div>
-            <div class="container flexColumn">
-                <div class="gridContainer">
-                    <div class="uploadBlock"> 
-                        <label for="audioT">Vocab Word Introduction Audio</label>
-                        <input type="file" id="audioT" class="uploadInput" value="audioTis" name="audioTis">
-                    </div>
-                </div>
-                <div class="gridContainer">
-                    <div class="uploadBlock">
-                        <label for="audioQ">Question Audio</label>
-                        <input type="file" id="audioQ" class="uploadInput" value="audioQ" name="audioQ">
-                    </div>
-                </div>
-                <div class="gridContainer">    
-                    <div class="uploadBlock">
-                        <label for="audioN">The Correction Audio</label>
-                        <input type="file" id="audioN" class="uploadInput" value="audioN" name="audioN">  
-                    </div>
-                </div>  
-            </div>
-        <button type="submit">Upload New Vocab Word</button>
-        </div>  
-    </div>        
-</form>       
-    <div class="container">
-        <h2>Vocab Word Preview/Edit</h2>
-       
-        <div>
-            <div class="previewContainer">
-                <div>
-                    <div class="mainSelector">
-                        <label for="existingVocabWords" class="primaryLabel">Select vocab word to edit</label>
-                        <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
-                            <option value="">Vocab Words</option>
-                        </select>
-                    </div>
-                    <h3 id="description">Description: No vocab word has been selected.</h3>
-                    <h3 id="kind">Category: No vocab word has been selected.</h3>
-                </div>
-                <div class="imagecontainer">
-                    <img src="" alt="">
-                </div> 
-            </div>
-            <div class="audioPreviewContainer">
-                <div class="flex">
-                    <div>
-                        <h3 class="preview">Play Introduction Audio</h3>
-                        <audio src="" controls id="audioTis"></audio>
-                    </div> 
-                </div>   
-                <div class="flex">
-                    <div>
-                        <h3 class="preview">Play Question Audio</h3>
-                        <audio src="" controls id="audioQPreview"></audio>
-                    </div>
-                </div>
-                <div class="flex">
-                    <div>
-                        <h3 class="preview">Play Correction Audio</h3>
-                        <audio src="" controls id="audioNPreview"></audio>
-                    </div> 
-                </div>
-            </div>
-                <div class="flex">
-                    <div>
-                        <label for="newVWDescription" class="primaryLabel">Description:</label>
-                        <input type="text" id="newVWDescription" name="description" placeholder="Enter New Description">
-                        <button type="button" class="deleteButton" id="changeVWDescription">Change Descritption</button>
-                    </div>
-                    <div>
-                        <label for="newVWCategory" class="primaryLabel">Category</label>
-                        <select name="category" id="newVWCategory" class="selection" required>
-                        <option value="" disabled selected hidden>Choose a Category</option>
-                            <% for(let i=0; i < categories.length; i++) {%>
-                                <option value="<%=categories[i] %>"><%= categories[i] %></option>  
-                            <% } %>
-                       </select> 
-                        <button type="button" id="changeVWCategory" class="deleteButton">Change Category</button>
-                    </div>
-                </div>
-                <div class="deleteContainer">
-                        <form method="put" enctype="multipart/form-data" id="newImageForm">
-                            <div class="uploadBlock">  
-                                <label for="image">Change Image</label>
-                                <input type="file" class="uploadInput replaceInput" id="newImage" value="newImage" name="newImage"> 
-                                <button type="button" id="replaceImage" class="deleteButton">Replace Photo</button>
-                            </div>
-                        </form>
-                        <form method="put" id="newAudioTisForm" enctype="multipart/form-data">
-                            <div class="uploadBlock">
-                                <label for="audioT">Introduction Audio</label>
-                                <input type="file" id="newAudioTis" class="uploadInput replaceInput" value="newAudioTis" name="newAudioTis">
-                                <button type="button" id="replaceAudioTis" class="deleteButton">Replace Intro Audio</button>
-                            </div>
-                        </form>
-                        <form method="put" id="newAudioQForm" enctype="multipart/form-data">
-                            <div class="uploadBlock">
-                                <label for="audioQ">Question Audio</label>
-                                <input type="file" id="newAudioQ" class="uploadInput replaceInput" value="newAudioQ" name="newAudioQ">
-                                <button type="button" id="replaceAudioQ" class="deleteButton">Replace Question Audio</button>        
-                            </div> 
-                        </form>
-                        <form methos="put" id="newAudioNForm" enctype="multipart/form-data">
-                            <div class="uploadBlock">
-                                <label for="audioN">The Correction Audio</label>
-                                <input type="file" id="newAudioN" class="uploadInput replaceInput" value="newAudioN" name="newAudioN">  
-                                <button type="button" id="replaceAudioN" class="deleteButton">Replace Correction Audio</button>
-                            </div>    
-                        </form>
-                </div>
-                <div class="flex spaceBetween border">
-                    <div class="deleteButtonContainer border">
-                        <h3 class="deleteHeading">Delete VOCAB WORD</h4>
-                        <p class="description">Delete and Remove all element of the word</p>
-                        <button type="button" id="deleteVW" class="deleteButton">DELETE</button>
-                    </div>
-                    <div class="deleteButtonContainer border">
-                        <h3 class="deleteHeading">Delete ACTIVITY</h4>
-                        <p class="description">Delete the entire activity including all vocab words associated with it</p>
-                        <button type="button" id="deleteActivity" class="deleteButton">DELETE</button>
-                    </div>
-                </div>
-        </div>    
-    </div> -->
+
 <div class="navButtons">
+    <button onclick="window.location.href ='admin/activityDD';" class="navButton">RR Admin</button>
     <button onclick="window.location.href ='admin/activityWaL';" class="navButton">WaL Admin</button>
-    <button onclick="window.location.href ='admin/activityDD';" class="navButton">Admin RR</button>
     <button onclick="window.location.href = 'admin/activityP';" class="navButton">Phrases Admin</button>
     <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
   <% if (user.adminLevel > 1){ %>

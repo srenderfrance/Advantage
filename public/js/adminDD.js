@@ -26,12 +26,16 @@ async function uploadVocabWord (){
    
    const form = new FormData(formElement);
    console.log(Array.from(formElement));
+   for (let i = 0; i < vocabList.length; i++){
+      vwDescription = vocabList[i].description;
+      if (vwDescription === document.querySelector("#newVocabWord").value){
+         window.alert("This activity already has a Vocab Word with that description. Please choose another.")
+   }};
 
    try {
       const response = await fetch("/admin/createVocab", {method: 'POST',
       body: form,});
 
-      
       const data = await response.json();
       console.log("data")
       console.log(data);
@@ -370,10 +374,11 @@ function toggleCheckbox () {
 async function finalizeActivity () {
    console.log("Finalize Activity is Running");
    const activity = document.querySelector("#activityName").value;
+   const vocabType = document.querySelector('#vocabType').value;
    try {
      const response = await fetch('/admin/finalizeActivity', {method: 'PUT',
          headers: {"Content-Type": "application/json",},
-         body: JSON.stringify({activity: activity}),
+         body: JSON.stringify({activity: activity, vocabType: vocabType}),
       });
          window.location = response.url;
   } catch (error) {
