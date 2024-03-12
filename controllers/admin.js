@@ -991,7 +991,9 @@ module.exports.deleteWaLMedia = async (req, res) => {
 
  try {
       const activityDescription = req.body.activity;
-      const mediaToDelte = req.body.mediaToDelete;
+      const mediaToDelete = req.body.mediaToDelete;
+      console.log('mediatoDelete')
+      console.log(mediaToDelete)
       const cohortId = req.user.cohort._id; 
       const cohort = await Cohort.findById(cohortId);
       let additionalInfoArray
@@ -1004,54 +1006,85 @@ module.exports.deleteWaLMedia = async (req, res) => {
                console.log("additionalInfo")
                console.log(additionalInfo);
 
-               if (mediaToDelte === 'video'){
+               if (mediaToDelete === 'video'){
                   const result1 = await cloudinary.uploader.destroy(additionalInfo.videoCloudinaryID, {resource_type: 'video'});
                   console.log("result1");
                   console.log(result1);
                   console.log(result1.result)
-                  if (result1.result === 'ok'){
-                     additionalInfo.videoCloudinaryID = "";
-                     additionalInfo.videoURL = "";
-                     additionalInfo.videoO = "";
-               }} else if (mediaToDelte === "dictionaryImage"){
-                   const result2 = await cloudinary.uploader.destroy(additionalInfo.imageDCloudinaryID, {resource_type: 'image'});
-                   console.log("result2");
-                   console.log(result2.result);
-                   if (result2.result === 'ok') {
-                     additionalInfo.imageDCloudinaryID = "";
-                     additionalInfo.imageDURL = "";
-                     additionalInfo.imageDO = "";
-               }} else if (mediaToDelte === "dictionaryAudio"){
+                  if (result1.result !== 'ok'){
+                     console.log("Admin attemted to Delete the following media Assets but they were not found in the DB");
+                     console.log(`${req.body.activity} Video`);
+                     console.log(additionalInfo.videoCloudinaryID);
+                     console.log(additionalInfo.videoURL);
+                  }
+                  additionalInfo.videoCloudinaryID = "";
+                  additionalInfo.videoURL = "";
+                  additionalInfo.videoO = "";
+               } else if (mediaToDelete === "dictionaryImage"){
+                  const result2 = await cloudinary.uploader.destroy(additionalInfo.imageDCloudinaryID, {resource_type: 'image'});
+                  console.log("result2");
+                  console.log(result2.result);
+                  if (result2.result !== 'ok') {
+                     console.log("Admin attemted to Delete the following media Assets but they were not found in the DB");
+                     console.log(`${req.body.activity} Dictionary Image`);
+                     console.log(additionalInfo.imageDCloudinaryID);
+                     console.log(additionalInfo.imageDURL);
+                     }
+                  additionalInfo.imageDCloudinaryID = "";
+                  additionalInfo.imageDURL = "";
+                  additionalInfo.imageDO = "";
+               } else if (mediaToDelete === "dictionaryAudio"){
                   const result3 = await cloudinary.uploader.destroy(additionalInfo.audioDCloudinaryID, {resource_type: 'video'});
                   console.log("result3");
                   console.log(result3);
-                  if (result3.result === 'ok'){
-                     additionalInfo.audioDCloudinaryID = "";
-                     additionalInfo.audioDURL = "";
-               }} else if (mediaToDelte === "reviewImage"){
+                  if (result3.result !== 'ok'){
+                     console.log("Admin attemted to Delete the following media Assets but they were not found in the DB");
+                     console.log(`${req.body.activity} Dictionary Audio`);
+                     console.log(additionalInfo.audioDCloudinaryID);
+                     console.log(additionalInfo.audioDURL);    
+                  };
+                  additionalInfo.audioDCloudinaryID = "";
+                  additionalInfo.audioDURL = "";
+               } else if (mediaToDelete === "reviewImage"){
                   const result4 = await cloudinary.uploader.destroy(additionalInfo.imageRCloudinaryID, {resource_type: 'image'});
                   console.log("result4");
                   console.log(result4);
-                  if (result4.result === 'ok'){
-                     additionalInfo.imageRCloudinaryID = "";
-                     additionalInfo.imageRURL = "";
-                     additionalInfo.imageRO = "";
-               }} else if (mediaToDelte === "reviewAudio"){
-                  const result5 = await cloudinary.uploader.destroy(additionalInfo.audioRCloudinaryID, {resource_type: 'video'});
+                  if (result4.result !== 'ok'){
+                     console.log("admin attemted to delete the following media assets but they were not found in the db");
+                     console.log(`${req.body.activity} Review Image`);
+                     console.log(additionalinfo.imageRCloudinaryid);
+                     console.log(additionalinfo.imageRURL);
+                  };
+                  additionalinfo.imageRCloudinaryid = "";
+                  additionalinfo.imageRURL = "";
+                  additionalinfo.imageRO = "";
+               } else if (mediatodelete === "reviewaudio"){
+                  const result5 = await cloudinary.uploader.destroy(additionalinfo.audiorcloudinaryid, {resource_type: 'video'});
                   console.log("result5")
                   console.log(result5);
-                  if (result5.result === 'ok'){
-                     additionalInfo.audioRCloudinaryID = "";
-                     additionalInfo.audioRURL = "";
-               }} else if (mediaToDelte === "exampleMedia"){
-                  const result6 = await cloudinary.uploader.destroy(additionalInfo.mediaECloudinaryID, {resource_type: 'video'});
-                  console.log("Result6");
+                  if (result5.result !== 'ok'){
+                  console.log("admin attemted to delete the following media assets but they were not found in the db");
+                  console.log(`${req.body.activity} Review Audio`);
+                  console.log(additionalinfo.audioRCloudinaryid);
+                  console.log(additionalinfo.audioRURL);
+               };
+               additionalinfo.audioRCloudinaryid = "";
+               additionalinfo.audioRURL = "";
+               } else if (mediatodelete === "examplemedia"){
+                  const result6 = await cloudinary.uploader.destroy(additionalinfo.mediaecloudinaryid, {resource_type: 'video'});
+                  console.log("result6");
                   console.log(result6);
-                  if (result6.result === 'ok'){
-                     additionalInfo.mediaECloudinaryID = "";
-                     additionalInfo.mediaEURL = "";
-                     additionalInfo.mediaO = "";
-         }}}};
+                  if (result6.result !== 'ok'){
+                     console.log("admin attemted to delete the following media assets but they were not found in the db");
+                     console.log(`${req.body.activity} Example Media`);
+                     console.log(additionalinfo.mediaECloudinaryid);
+                     console.log(additionalinfo.mediaEURL);
+   
+                  };
+                  additionalinfo.mediaECloudinaryid = "";
+                  additionalinfo.mediaEURL = "";
+                  additionalinfo.mediaEO = "";
+      }}};
 
       
       cohort.markModified('activities');

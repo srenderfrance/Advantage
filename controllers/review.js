@@ -17,7 +17,7 @@ module.exports.getStudent = async (req, res) => {
       console.log('get Student is running CONTROLLER')
       let cohort = await Cohort.findById(req.user.cohort);
       let activities = [];
-      for (let i = 0; i < cohort.activities.length; i++) {
+      for (let i = 0; i < cohort.activities.length; i++) { //The also filters out WAL activities from the Array
          const element = cohort.activities[i];
          if (element.ready === true) {
             activities.push(element);
@@ -56,6 +56,7 @@ module.exports.getStudent = async (req, res) => {
       if(e.reviewedBy.some(checkReviews) === false){
           return true;
    }});
+   console.log(notReviewed)
       let activitiesDD = [];
       let activitiesS = [];
       let activitiesWaL = [];
@@ -65,14 +66,12 @@ module.exports.getStudent = async (req, res) => {
             return true;
       }});
       //This sorts WaL activities to thier array without being marked "watched"
-      for (let i = notReviewed.length -1; i > -1; i--) {
-         const element = notReviewed[i];
-         if(element.type === 'WaL'){
+      for (let i = 0; i < cohort.activities.length; i++) {
+         const element = cohort.activities[i];
+         if(element.type === "WaL"){
             activitiesWaL.unshift(element);
-            notReviewed.splice(i, 1);
-         }
-         
-      }
+      }};
+      console.log(activitiesWaL)
       const totalActivities = reviewed.length;
       for (let i = 0; i < reviewed.length; i++){
             const element = reviewed[i];
