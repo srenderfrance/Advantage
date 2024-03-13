@@ -560,3 +560,13 @@ label {
     font: bold 1.8rem sans-serif;
     text-shadow: none;
 }
+
+#newActivityForm {
+    margin-bottom: 2rem;
+}
+
+#newActivityForm > .container {
+    min-height: 33vh;
+    padding-top: .01rem;
+    outline: none;
+}

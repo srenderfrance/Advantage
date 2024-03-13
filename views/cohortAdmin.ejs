@@ -29,16 +29,19 @@
         
     </div>
 </form>  
-
-<div class="navButtons">
-    <button onclick="window.location.href ='admin/activityDD';" class="navButton">RR Admin</button>
-    <button onclick="window.location.href ='admin/activityWaL';" class="navButton">WaL Admin</button>
-    <button onclick="window.location.href = 'admin/activityP';" class="navButton">Phrases Admin</button>
-    <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
-  <% if (user.adminLevel > 1){ %>
-         <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
-    <% } %>
-    <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
+<div class="flexSplit">
+    <div class="flex">
+        <button onclick="window.location.href ='admin/activityDD';">RR Admin</button>
+        <button onclick="window.location.href ='admin/activityWaL';">WaL Admin</button>
+        <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>
+    </div>
+    <div class="navButtons">
+        <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
+      <% if (user.adminLevel > 1){ %>
+             <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
+        <% } %>
+        <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
+    </div>
 </div>
 <script type="text/javascript" src="/js/cohortAdmin.js"></script>
 </body>

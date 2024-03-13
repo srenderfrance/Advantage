@@ -78,9 +78,10 @@ module.exports.getActivityWaLAdmin = async (req, res) => {
     const cohort = await Cohort.findById(req.user.cohort._id);
     let activities = cohort.activities;
     //const categories = cohort.categories;
+    console.log(activities.length)
 
-    for(let i= activities.length - 1; i > -1; i--){ //loop fixed for splice
-       if(activities[i].type !== "WaL"){
+    for(let i = activities.length - 1; i > -1; i--){ //loop fixed for splice
+       if(activities[i].type !== 'WaL'){
        activities.splice(i, 1);
     }};    
     console.log("GetActivitWaLAdmin ran")
@@ -100,7 +101,12 @@ module.exports.getActivityDDAdmin = async (req, res) => {
 
   try {
     const cohort = await Cohort.findById(req.user.cohort._id);
-    const activities = cohort.activities;
+    const activities = [];
+    for (let i = 0; i < cohort.activities.length; i++) {
+      const element = cohort.activities[i];
+      if (element.type === "DD"){
+        activities.push(element);
+    }};
     const categories = cohort.categories;
     res.render("activityDDAdmin",{ user: req.user, activities: activities, categories: categories});
 
@@ -193,8 +199,8 @@ module.exports.postLogin = async (req, res, next) => {
   console.log(req.body);
   const newUser = req.body.username;
   const user = await User.findOne({ username: newUser });
-  console.log(user.password)
-  console.log(user.username)
+  //console.log(user.password)
+  //console.log(user.username)
     if (user === null){
     console.log('Equals NULL')
     const failureMessage = "Your username or password were invalid.1"

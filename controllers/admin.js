@@ -1057,7 +1057,7 @@ module.exports.deleteWaLMedia = async (req, res) => {
                   };
                   additionalinfo.imageRCloudinaryid = "";
                   additionalinfo.imageRURL = "";
-                  additionalinfo.imageRO = "";
+                  additionalinfo.imageRO= "";
                } else if (mediatodelete === "reviewaudio"){
                   const result5 = await cloudinary.uploader.destroy(additionalinfo.audiorcloudinaryid, {resource_type: 'video'});
                   console.log("result5")
@@ -1065,8 +1065,8 @@ module.exports.deleteWaLMedia = async (req, res) => {
                   if (result5.result !== 'ok'){
                   console.log("admin attemted to delete the following media assets but they were not found in the db");
                   console.log(`${req.body.activity} Review Audio`);
-                  console.log(additionalinfo.audioRCloudinaryid);
-                  console.log(additionalinfo.audioRURL);
+                     console.log(additionalinfo.imageRCloudinaryid);
+                     console.log(additionalinfo.imageRURL);
                };
                additionalinfo.audioRCloudinaryid = "";
                additionalinfo.audioRURL = "";
@@ -1075,16 +1075,10 @@ module.exports.deleteWaLMedia = async (req, res) => {
                   console.log("result6");
                   console.log(result6);
                   if (result6.result !== 'ok'){
-                     console.log("admin attemted to delete the following media assets but they were not found in the db");
-                     console.log(`${req.body.activity} Example Media`);
-                     console.log(additionalinfo.mediaECloudinaryid);
-                     console.log(additionalinfo.mediaEURL);
-   
-                  };
-                  additionalinfo.mediaECloudinaryid = "";
-                  additionalinfo.mediaEURL = "";
-                  additionalinfo.mediaEO = "";
-      }}};
+                     additionalinfo.mediaECloudinaryid = "";
+                     additionalinfo.mediaEURL = "";
+                     additionalinfo.mediaEO = "";
+         }}}};
 
       
       cohort.markModified('activities');
