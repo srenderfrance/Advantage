@@ -617,7 +617,7 @@ module.exports.replaceImage = async (req, res, next) => {
       if(element.cloudinaryIdImage === req.body.toDelete) {
          element.cloudinaryIdImage = cloudinaryIdImage;
          element.imageUrl = imageUrl;
-         //toMark = i;
+         break;
    }};
    theCohort.markModified('vocabWords');
        

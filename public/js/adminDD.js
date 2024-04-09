@@ -49,6 +49,17 @@ async function uploadVocabWord (){
       document.querySelector("#category").value = "";
       document.querySelector("#vwToLink").value = "";
       document.querySelector("#activityName2").value = "";
+
+      
+      if (document.querySelector("#audioQ").hasAttribute('disabled')){
+         document.querySelector("#audioQ").toggleAttribute('disabled');
+      };
+      if (document.querySelector("#audioT").hasAttribute('disabled')){
+         document.querySelector("#audioT").toggleAttribute('disabled');
+      };
+      if (document.querySelector("#audioN").hasAttribute('disabled')){
+         document.querySelector("#audioN").toggleAttribute('disabled');
+      };
       console.log(document.querySelector("#submitButton"));
       document.querySelector("#submitButton").disabled = false;
       console.log(data);

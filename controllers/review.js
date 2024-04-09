@@ -165,6 +165,7 @@ module.exports.getAllVocab = async (req, res) => {
                      imageUrl: vocabWord.imageUrl,
                      audioTis: vocabWord.audioTis,
                      ident: vocabWord.ident,
+                     linkedVocab: vocabWord.linkedVocab,
                   };
                   dictionary.push(filteredVocabWord);
                   break;
@@ -181,6 +182,7 @@ module.exports.getAllVocab = async (req, res) => {
                   imageUrl: vocabWord.imageUrl,
                   audioTis: vocabWord.audioTis,
                   ident: vocabWord.ident,
+                  linkedVocab: vocabWord.linkedVocab, 
                };
             userSelectedVocab.push(filteredVocabWord);
       }}};
@@ -200,6 +202,7 @@ module.exports.getAllVocab = async (req, res) => {
                      imageUrl: vocabWord.imageUrl,
                      audioTis: vocabWord.audioTis,
                      ident: vocabWord.ident,
+                     linkedVocab: vocabWord.linkedVocab,
                };
                vocabWords.push(filteredVocabWord);
          }}}

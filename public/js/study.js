@@ -1,3 +1,4 @@
+//const { ConnectionClosedEvent } = require("mongodb") //Don't know where this came from...
 
 
 
@@ -52,10 +53,11 @@ const audioTis12 = document.querySelector('#audioTis12')
 const audioQ12 = document.querySelector('#audioQ12')
 const audioN12 = document.querySelector('#audioN12')
 
-function MakeVocabWord(done,correctAnswer,gotWrong,introduction,responseN,question,visual){
+function MakeVocabWord(done,correctAnswer,gotWrong,linkedVocab,introduction,responseN,question,visual){
     this.done = done
     this.correctAnswer = correctAnswer
     this.gotWrong = gotWrong
+    this.linkedVocab = linkedVocab
     this.introduction = introduction
     this.responseN = responseN
     this.question = question
@@ -63,18 +65,18 @@ function MakeVocabWord(done,correctAnswer,gotWrong,introduction,responseN,questi
     this.ident = Number
 };
 
-let wOne = new MakeVocabWord(false,false,false,audioTis1,audioN1,audioQ1,document.querySelector('#A1'),{});
-let wTwo = new MakeVocabWord(false,false,false,audioTis2,audioN2,audioQ2,document.querySelector('#A2'),{});
-let wThree = new MakeVocabWord(false,false,false,audioTis3,audioN3,audioQ3,document.querySelector('#A3'),{});
-let wFour = new MakeVocabWord(false,false,false, audioTis4,audioN4,audioQ4,document.querySelector('#A4'),{});
-let wFive = new MakeVocabWord(false,false,false,audioTis5,audioN5,audioQ5,document.querySelector('#A5'),{});
-let wSix = new MakeVocabWord(false,false,false,audioTis6,audioN6,audioQ6,document.querySelector('#A6'),{});
-let wSeven = new MakeVocabWord(false,false,false,audioTis7,audioN7,audioQ7,document.querySelector('#A7'),{});
-let wEight = new MakeVocabWord(false,false,false,audioTis8,audioN8,audioQ8,document.querySelector('#A8'),{});
-let wNine = new MakeVocabWord(false,false,false,audioTis9,audioN9,audioQ9,document.querySelector('#A9'),{});
-let wTen = new MakeVocabWord(false,false,false,audioTis10,audioN10,audioQ10,document.querySelector('#A10'),{});
-let wEleven = new MakeVocabWord(false,false,false,audioTis11,audioN11,audioQ11,document.querySelector('#A11'),{});
-let wTwelve = new MakeVocabWord(false,false,false,audioTis12,audioN12,audioQ12,document.querySelector('#A12'),{});
+let wOne = new MakeVocabWord(false,false,false,false,audioTis1,audioN1,audioQ1,document.querySelector('#A1'),{});
+let wTwo = new MakeVocabWord(false,false,false,false,audioTis2,audioN2,audioQ2,document.querySelector('#A2'),{});
+let wThree = new MakeVocabWord(false,false,false,false,audioTis3,audioN3,audioQ3,document.querySelector('#A3'),{});
+let wFour = new MakeVocabWord(false,false,false,false, audioTis4,audioN4,audioQ4,document.querySelector('#A4'),{});
+let wFive = new MakeVocabWord(false,false,false,false,audioTis5,audioN5,audioQ5,document.querySelector('#A5'),{});
+let wSix = new MakeVocabWord(false,false,false,false,audioTis6,audioN6,audioQ6,document.querySelector('#A6'),{});
+let wSeven = new MakeVocabWord(false,false,false,false,audioTis7,audioN7,audioQ7,document.querySelector('#A7'),{});
+let wEight = new MakeVocabWord(false,false,false,false,audioTis8,audioN8,audioQ8,document.querySelector('#A8'),{});
+let wNine = new MakeVocabWord(false,false,false,false,audioTis9,audioN9,audioQ9,document.querySelector('#A9'),{});
+let wTen = new MakeVocabWord(false,false,false,false,audioTis10,audioN10,audioQ10,document.querySelector('#A10'),{});
+let wEleven = new MakeVocabWord(false,false,false,false,audioTis11,audioN11,audioQ11,document.querySelector('#A11'),{});
+let wTwelve = new MakeVocabWord(false,false,false,false,audioTis12,audioN12,audioQ12,document.querySelector('#A12'),{});
 
 
 
@@ -86,7 +88,8 @@ let engine = {}
     engine.questionList = [];
     engine.currentQuestion = engine.questionList[0]; //The vocabword that is the correct answer to the most recent question.
     engine.lastTwo = [engine.introduced[0], engine.introduced[1]];
-    engine.vocabList =[];
+    engine.vocabList = [];
+    engine.linkedVocab = [];
     engine.userReviewResults = { //Results to be sent back to the server/DB.
         'activity': '',
         'mistakes': [],
@@ -116,18 +119,34 @@ let engine = {}
            
             console.log(`activity is ${this.activity}`)
             console.log(engine.vocabList); 
-            console.log(engine.theDozen.length)
+            //console.log(engine.theDozen.length)
             const diff = engine.theDozen.length - engine.vocabList.length;
-            console.log(`diff = ${diff}`);
+           // console.log(`diff = ${diff}`);
             if(diff > 0) {
                 for (let index = 0; index < diff; index++) {
                     engine.theDozen.pop();
                     engine.toIntroduce.pop();    
+            }};
+
+            console.log(engine.theDozen);    
+            for (let i = 0; i < engine.theDozen.length; i++) {
+                engine.theDozen[i].ident = engine.vocabList[i].ident;
+                console.log(engine.theDozen[i].ident);
+                if(engine.vocabList[i].linkedVocab.length > 0){
+                    engine.theDozen[i].linkedVocab = true;
+                } 
                 }
-            }    
-           for (let i = 0; i < engine.theDozen.length; i++) {
-                engine.theDozen[i].ident = engine.vocabList[i].ident; 
+                console.log("VocabList before creating LINKEDV")
+                console.log(engine.vocabList)
+            for (let i = 0; i < engine.vocabList.length; i++) {
+                const vw = engine.vocabList[i];
+                if (vw.linkedVocab.length > 0){
+                    console.log(`LinkedVocab.length is: ${vw.linkedVocab.length}`)
+                    engine.linkedVocab.push(vw);
                 }
+            console.log('LINKED VOCAB CREATED')
+            console.log(engine.linkedVocab);
+            }
             document.getElementById('review').disabled = false;  
             document.getElementById('start').disabled = false;
             document.getElementById('undo').disabled = true;
@@ -145,10 +164,10 @@ let engine = {}
     
     engine.stopClicks = function(duration){
         let visualArray = engine.theDozen.map(element => element.visual);
-        console.log(`Delay is: ${duration}`)
+        //console.log(`Delay is: ${duration}`)
         let delay = 1000 * duration
         console.log('stop clicks is running');
-        console.log(`Now Delay is: ${delay}`);
+        //console.log(`Now Delay is: ${delay}`);
         
         visualArray.forEach(element => {
             element.style.pointerEvents = 'none';
@@ -158,7 +177,6 @@ let engine = {}
             visualArray.forEach(element => {
                 element.style.pointerEvents = 'auto';})
                 console.log('The wait is over!');
-                console.log(delay);
             }, delay);
         
     };
@@ -180,6 +198,7 @@ let engine = {}
         engine.introduceNewWord();
     };
     engine.introduceNewWord = function() {
+        console.log("Introduce NEW Word Running")
         if (engine.toIntroduce.length === 0) {
             engine.end()
         } else {
@@ -187,9 +206,9 @@ let engine = {}
             engine.newWord.visual.style.display = 'block';
             engine.newWord.introduction.play();
             let duration = engine.newWord.introduction.duration;
-            console.log('intro duration');
-            console.log(duration);
-            engine.stopClicks(duration);
+            //console.log('intro duration');
+            //console.log(duration);
+            //engine.stopClicks(duration);
             engine.newWord.introduction.addEventListener('ended', reset);
         };
 
@@ -202,6 +221,7 @@ let engine = {}
             }else{
                 let visualArray = engine.introduced.map(element => element.visual)
                 visualArray.forEach(element => {element.addEventListener('click', engine.evaluateResponse)})
+                console.log("RESET calling Make Question List")
                 engine.makeQuestionList()
                 engine.askQuestion() 
             }};
@@ -209,15 +229,20 @@ let engine = {}
             function resetStart(callback){
             engine.newWord.visual.classList.toggle('selected')
             engine.newWord.introduction.removeEventListener('ended', reset)
-            let word = engine.toIntroduce.shift()
-            engine.introduced.unshift(word)
+            let word = engine.toIntroduce.shift();
+            console.log("Introduced before unshift");
+            console.log(engine.introduced.length);
+            engine.introduced.unshift(word);
+            console.log(engine.introduced.length);
             engine.newWord = engine.toIntroduce[0]
             callback()}
     }};
    
     engine.makeQuestionList = function(){
+        console.log("MakeQuestionLIST IS RUNNING")
         let tempArray = [] //This array is to be used create a copy of the array engine.introduced
         engine.questionList = []
+        console.log(`E.introduced.length is: ${engine.introduced.length}`)
         if (engine.introduced.length < 8) {
             engine.introduced.forEach(element =>{tempArray.push(element)}) //This copies engine.introduced into tempArray
              for (i = tempArray.length; i>0; i--) { //This iterates through tempArray, randamly removing an element and pushing it into questionList
@@ -237,52 +262,56 @@ let engine = {}
                 engine.questionList.push(randomElement)}}
 
         if (engine.introduced.length > 7){
-            engine.lastTwo = [engine.introduced[0], engine.introduced[1]]
-            randomIndex = engine.makeRandomIndex(engine.questionList)
-            randomIndex2 = engine.makeRandomIndex(engine.questionList)
-            console.log(randomIndex)
-            console.log(randomIndex2)
-            engine.questionList.splice(randomIndex, 0, engine.lastTwo[0])
-            engine.questionList.splice(randomIndex2, 0, engine.lastTwo[1])
-            console.log(engine.questionList)
+            engine.lastTwo = [engine.introduced[0], engine.introduced[1]];
+            randomIndex = engine.makeRandomIndex(engine.questionList);
+            randomIndex2 = engine.makeRandomIndex(engine.questionList);
+            //console.log(randomIndex);
+            //console.log(randomIndex2);
+            engine.questionList.splice(randomIndex, 0, engine.lastTwo[0]);
+            engine.questionList.splice(randomIndex2, 0, engine.lastTwo[1]);
+            console.log("QuestionList");
+            console.log(engine.questionList);
         }else if(engine.introduced.length > 5){
-            console.log('3')
-            engine.lastTwo = [engine.introduced[0], engine.introduced[1]]
-            randomIndex = engine.makeRandomIndex(engine.questionList)
-            randomIndex2 = engine.makeRandomIndex(engine.questionList)
-            console.log(randomIndex)
-            console.log(randomIndex2)
-            engine.questionList.splice(randomIndex, 0, engine.lastTwo[0])
-            engine.questionList.splice(randomIndex2, 0, engine.lastTwo[1])
+            console.log('3');
+            engine.lastTwo = [engine.introduced[0], engine.introduced[1]];
+            randomIndex = engine.makeRandomIndex(engine.questionList);
+            randomIndex2 = engine.makeRandomIndex(engine.questionList);
+            //console.log(randomIndex);
+            //console.log(randomIndex2);
+            engine.questionList.splice(randomIndex, 0, engine.lastTwo[0]);
+            engine.questionList.splice(randomIndex2, 0, engine.lastTwo[1]);
         }else if(engine.introduced.length > 3){
-            let randomIndex = engine.makeRandomIndex(engine.questionList)
-            let randomIndex2 
-            let randElement
+            let randomIndex = engine.makeRandomIndex(engine.questionList);
+            let randomIndex2 ;
+            let randElement;
             if (randomIndex === 0) {
                 let elementArray = [2,3,4]
-                randElement =engine.makeRandomIndex(elementArray)
-                randomIndex2 = elementArray[randElement]
+                randElement =engine.makeRandomIndex(elementArray);
+                randomIndex2 = elementArray[randElement];
             } else if (randomIndex === 1){
-                let elementArray = [0,3,4]
-                randElement =engine.makeRandomIndex(elementArray)
-                randomIndex2 = elementArray[randElement]
+                let elementArray = [0,3,4];
+                randElement =engine.makeRandomIndex(elementArray);
+                randomIndex2 = elementArray[randElement];
             }else if (randomIndex === 2){
-                let elementArray = [0,1,4]
-                randElement =engine.makeRandomIndex(elementArray)
-                randomIndex2 = elementArray[randElement]
+                let elementArray = [0,1,4];
+                randElement =engine.makeRandomIndex(elementArray);
+                randomIndex2 = elementArray[randElement];
             }else if (randomIndex === 3){
-                let elementArray = [0,1,2]
-                randElement =engine.makeRandomIndex(elementArray)
-                randomIndex2 = elementArray[randElement]
+                let elementArray = [0,1,2];
+                randElement =engine.makeRandomIndex(elementArray);
+                randomIndex2 = elementArray[randElement];
             }else{
-                let elementArray = [0,1,4]
-                randElement = engine.makeRandomIndex(elementArray)
-                randomIndex2 = elementArray[randElement]
-            }
-            engine.questionList.splice(randomIndex2, 0, engine.questionList[randomIndex])
-            //let randomElement = engine.questionList[randomIndex]
-           
-            }}
+                let elementArray = [0,1,4];
+                randElement = engine.makeRandomIndex(elementArray);
+                randomIndex2 = elementArray[randElement];
+            };
+            engine.questionList.splice(randomIndex2, 0, engine.questionList[randomIndex]);
+            
+        console.log("QuestionList Created");
+        console.log(engine.questionList);   
+        };
+        engine.filterQuestionList();
+    };
 
     engine.makeRandomIndex = function(arr) {
             return Math.floor(Math.random() * arr.length)
@@ -297,6 +326,102 @@ let engine = {}
     engine.makeVisibleAll = function() {
         let visualArray = engine.theDozen.map(element => element.visual);
         visualArray.forEach(element => {element.style.display = 'block'});
+
+    };
+
+    engine.filterQuestionList = function() {
+        console.log("Question List");
+        for (let i = 0; i < engine.questionList.length; i++) {
+            console.log(engine.questionList[i].ident);
+        }
+
+        let linksArray = [];
+        let linkSets = [];  
+        
+        
+        for (let i = 0; i < engine.vocabList.length; i++) {
+            const vocabWord = engine.vocabList[i];
+            if (vocabWord.linkedVocab.length > 0){
+                const links = structuredClone(vocabWord.linkedVocab);
+                links.push(vocabWord.ident);
+                linksArray.push(links);
+        }};
+        console.log('LINKS ARRAY');
+        console.log(linksArray);
+
+        function filterOutSets (array) {
+            //console.log("FILTER SETS START");
+            //console.log(array);
+            const newSet = new Set(array[0]);
+            array.shift();
+            for (let i = 0; i < array.length; i++) {
+                let arrayToSearch = array[i];
+                for (let j = 0; j < arrayToSearch.length; j++) {
+                    const element = arrayToSearch[j];
+                    //console.log(newSet.has(element));
+                    if (newSet.has(element)){
+                        for (let k = 0; k < arrayToSearch.length; k++) {
+                            const idToAdd = arrayToSearch[k];
+                            newSet.add(idToAdd);
+                        };
+                        array[i] = [];
+            }}};
+            linkSets.push(newSet);
+                
+           //console.log(array.length);
+            console.log("SETS");
+            console.log(linkSets);
+
+            for (let i = array.length -1; i > -1; i--) {
+                const subArray = array[i];
+                //console.log(`Sub Array length is: ${subArray.length}`)
+                if(subArray.length < 1){
+                    array.splice(i, 1);
+        }}};
+
+        function mapQuestionList (set) {
+            let indexMap = [];
+            for (let i = 0; i < engine.questionList.length; i++) {
+                const element = engine.questionList[i];
+                ;
+                if (set.has(element.ident)){
+                    indexMap.push(i);
+            }};
+            console.log("indexMap")
+            console.log(indexMap);
+            return indexMap;
+            };
+        function removeElement (array) {    
+            const randomElement = engine.makeRandomIndex(array);
+            const indexValue = array[randomElement];
+            console.log(`Random Index Value is: ${indexValue}`);
+            engine.questionList.splice(indexValue, 1);               
+        };
+
+        console.log(linksArray.length);
+        while (linksArray.length > 0) {
+            filterOutSets(linksArray);
+        };
+
+        for (let i = 0; i < linkSets.length; i++) {
+            const set = linkSets[i];
+            console.log(`i is: ${i}`);
+            console.log(`QuestionList length is: ${engine.questionList.length}`);
+            indexMap = mapQuestionList(set);
+            if(indexMap.length > 2){
+                let toRemove = indexMap.length - 2;
+                console.log(indexMap.length)
+                console.log(`To Remove is; ${toRemove}`);
+                for (let j = 0; j < toRemove; j++) {
+                    console.log(`J is: ${j}`);
+                    console.log(set)
+                    indexM = mapQuestionList(set); 
+                    removeElement(indexM);
+                    console.log(`QuestionList length is: ${engine.questionList.length}`);
+            }};
+        }
+        console.log("QuestionList");
+        console.log(engine.questionList);
 
     };
 
@@ -319,16 +444,25 @@ let engine = {}
         engine.theDozen.forEach(element =>{tempArray.push(element)});
         for (i = tempArray.length; i>0; i--) {
             let randomElement = engine.makeRandomElement(tempArray);
-            engine.questionList.push(randomElement)};
+            engine.questionList.push(randomElement)
+        };
         engine.theDozen.forEach(element =>{tempArray.push(element)});
         tempArray.forEach(element =>{engine.questionList.splice(engine.makeRandomIndex(engine.questionList), 0, element)});
+        console.log('Question LIST')
+        console.log(engine.questionList);
+        engine.filterQuestionList();
+        console.log("QUESTIONLIST AFTER")
+        console.log(engine.questionList);
         engine.makeVisibleAll();
         engine.askQuestion();
+        
         visualArray.forEach(element => {element.addEventListener('click', engine.evaluateResponse)});
-        };
+    };
     
-    
-    engine.askQuestion = function(){
+   
+
+    engine.askQuestion = function() {
+        console.log("Asking Question");
         console.log(engine.questionList)
         if (engine.questionList.length > 0) { 
             engine.currentQuestion = engine.questionList[0]
@@ -336,30 +470,166 @@ let engine = {}
             engine.currentQuestion.question.play();
             let duration = engine.currentQuestion.question.duration;
             engine.stopClicks(duration);
-            engine.currentQuestion.correctAnswer = true
+            engine.currentQuestion.correctAnswer = true;
+           if (engine.currentQuestion.linkedVocab === true){
+                console.log("LINKEDVOCAB")
+                let linkedVocab = [];
+                for (let i = 0; i < engine.vocabList.length; i++) {
+                    const element = engine.vocabList[i];
+                    if (element.ident === engine.currentQuestion.ident){
+                        console.log(`VisibleV i = ${i} and element.ident = ${element.ident}`)
+                        linkedVocab = structuredClone(element.linkedVocab);
+                        console.log(linkedVocab)
+                        linkedVocab.push(element.ident);
+                        console.log(linkedVocab);
+                }};
+                for (let i = 0; i < linkedVocab.length; i++) {
+                    const element = linkedVocab[i];
+                    for (let j = 0; j < engine.theDozen.length; j++) {
+                        const theDozenElement = engine.theDozen[j];
+                        //console.log(theDozenElement)
+                        if (element === theDozenElement.ident && theDozenElement.visual.style.display === 'block'){
+                            theDozenElement.correctAnswer = true;
+                            console.log(`Correct Anwser is: ${element}`)
+                }}}};
+        console.log("End of ASk Question");
         } else {
+            //console.log("VISUAL ARRAY");
+            //console.log(visualArray);
             let visualArray = engine.questionList.map(element => element.visual)
             visualArray.forEach(element => {element.removeEventListener('click', engine.evaluateResponse)})
             engine.introduceNewWord()
-}}
-          
+    }};
+
+    engine.thatsRightStart = function(element){
+        element.visual.classList.add('thatsRight'); 
+        console.log('should have transfomed');
+                
+    };
+
+    engine.thatsRightMiddle = function(){
+        console.log("Thats Right Middle Running")
+        engine.stopClicks(1);
+        engine.currentQuestion.done = true;
+        engine.currentQuestion.correctAnswer = false;
+        engine.questionList.shift();
+        document.getElementById('undo').disabled = true;
+
+    };
+
+    
+    engine.thatsRightEnd = function(arr){
+        console.log("Thanks Right End Running");
+        setTimeout(() => {
+            for (let i = 0; i < arr.length; i++) {
+                const element = arr[i];
+                element.visual.classList.remove('thatsRight')
+            }
+            engine.askQuestion()
+        }, 1000);
+        console.log("settimeout over")
+    };
+    
     engine.evaluateResponse = function(Event){
         console.log('evaluating');
+        console.log(engine.theDozen)
         engine.theDozen.forEach(element =>{
                 if (element.visual == Event.currentTarget) {
-                    if (element.correctAnswer === true) {
-                        element.visual.classList.add('thatsRight'); 
-                        engine.stopClicks(1);
-                        console.log('should have transfomed');
-                        engine.currentQuestion.done = true;
-                        engine.currentQuestion.correctAnswer = false;
-                        engine.questionList.shift();
-                        document.getElementById('undo').disabled = true;
-                        setTimeout(() => {
-                            element.visual.classList.remove('thatsRight')
-                            engine.askQuestion()
-                        }, 1000);
-                        console.log("settimeout over")
+                    if (element.correctAnswer === true && element.linkedVocab === false) {
+                        console.log("EVALUATE IF 1")
+                        engine.thatsRightStart(element);
+                        engine.thatsRightMiddle();
+                        const elementArray = [element];
+                        engine.thatsRightEnd(elementArray);
+                        console.log("111111111111")
+                    } else if (element.correctAnswer === true && element.linkedVocab === true){
+                        console.log("If Else is running")
+                        let lv;
+                        let visibleLV = [];
+
+                        //This sets lv equal to the linkvedVocab Array of the correctly selected element.
+                        for (let i = 0; i < engine.vocabList.length; i++) { 
+                            const vw = engine.vocabList[i];
+                            //console.log(element.ident);
+                            //console.log(vw.ident)
+                            if (vw.ident === element.ident){
+                                lv = structuredClone(vw.linkedVocab);
+                                lv.push(vw.ident);
+                                console.log(lv)
+                        }};
+                        console.log("Creating VISIBLELV");
+                        for (let i = 0; i < lv.length; i++) {
+                            const linkedVW = lv[i];
+                            for (let j = 0; j < engine.theDozen.length; j++){
+                                const theDozenElement = engine.theDozen[j];
+                                if (theDozenElement.ident === linkedVW && theDozenElement.visual.style.display === 'block'){
+                                    console.log("THERE WAS A MATCH")
+                                    console.log(`LinkedVW is ${linkedVW}`)
+                                    console.log(`TDE ident ${theDozenElement.ident}`);
+                                    console.log(`TDE display is ${theDozenElement.visual.style.display}`);
+                                    visibleLV.push(theDozenElement.ident);
+                                    break;
+                        }}};
+
+                        console.log("VisibleLV");
+                        console.log(visibleLV);
+                        
+                        if (visibleLV.length === 1){
+                            console.log('VisibleLV is 1');
+                            console.log('Evaluating IF 2');
+                            engine.thatsRightStart(element);
+                            engine.thatsRightMiddle();
+                            const elementArray = [element];
+                            engine.thatsRightEnd(elementArray);   
+                            console.log("22222222222222");
+                        } else if (visibleLV.length > 1) {
+                            console.log("VisibleLV is not 1")
+                            if (element.visual.classList.contains('selected') === false){
+                                element.visual.classList.toggle('selected');
+                            };
+                            let allAnswersSelected = true;
+                            for (let i = 0; i < visibleLV.length; i++) {
+                                const lvIdent = visibleLV[i];
+                                console.log(lvIdent);
+                                for (let j = 0; j < engine.theDozen.length; j++) {
+                                    const vwElement = engine.theDozen[j];
+                                    if(vwElement.ident === lvIdent && vwElement.visual.style.display === 'block'){
+                                        if(vwElement.visual.classList.contains('selected') === false){
+                                           allAnswersSelected = false;
+                                           console.log('All Answers ARE NOT SELECTED')
+                            }}}};
+                                if (allAnswersSelected === true){
+                                    for (let i = 0; i < visibleLV.length; i++) {
+                                        const lvIdent = visibleLV[i];
+                                        for (let j = 0; j < engine.theDozen.length; j++) {
+                                            const theDozenElement = engine.theDozen[j];
+                                            if (theDozenElement.ident === lvIdent){
+                                                console.log('EVALUATING IF 3');
+                                                engine.thatsRightStart(theDozenElement) 
+                                                console.log('START3333333333');
+                                                 
+                                    }}};
+                                console.log('EVAL IF 3M')
+                                engine.thatsRightMiddle();
+                                console.log("M33333333333");
+                                let eArray = [];
+                                for (let i = 0; i < visibleLV.length; i++) {
+                                        const lvIdent = visibleLV[i];
+                                        for (let j = 0; j < engine.theDozen.length; j++) {
+                                            const theDozenElement = engine.theDozen[j];
+                                            if (theDozenElement.ident === lvIdent){
+                                                eArray.push(theDozenElement);
+                                                console.log(theDozenElement);
+                                                theDozenElement.visual.classList.toggle('selected');
+                                }}}; 
+                                engine.thatsRightEnd(eArray);
+                                document.getElementById('undo').disabled = true;
+                              
+                                 
+                        }} else {
+                            console.log('There was a problem createing VisibleLV!!!');
+                        }
+
                     } else {
                         element.responseN.play();
                         let duration = element.responseN.duration;
@@ -367,7 +637,6 @@ let engine = {}
                         element.responseN.addEventListener('ended', engine.repeatQuestion);
                         engine.currentQuestion.gotWrong = true;
                         console.log(engine.currentQuestion);
-                        console.log(engine.theDozen);
                         let mistake = engine.currentQuestion.ident; 
                         engine.userReviewResults.mistakes.push(mistake);
                         console.log(engine.userReviewResults.mistakes);
