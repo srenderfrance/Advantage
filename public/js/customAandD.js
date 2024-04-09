@@ -220,8 +220,10 @@ function filterByCategory () {
             div.setAttributeNode(idAtt);
             const audio = document.createElement('audio')
             const audioIdAtt = document.createAttribute('id');
-            audioIdAtt.value = 'audioTis' + (i+1);
+            audioIdAtt.value = 'audioTisA' + (i+1);
             const sourceAtt = document.createAttribute('src');
+            console.log("AUDIOTIS")
+            console.log(element.audioTis);
             sourceAtt.value = element.audioTis;
             audio.setAttributeNode(audioIdAtt);
             audio.setAttributeNode(sourceAtt);
@@ -241,8 +243,10 @@ function filterByCategory () {
             div.setAttributeNode(idAtt);
             const audio = document.createElement('audio')
             const audioIdAtt = document.createAttribute('id');
-            audioIdAtt.value = 'audioTis' + (i+1);
+            audioIdAtt.value = 'audioTis' + idAtt.value;
             const sourceAtt = document.createAttribute('src');
+            console.log('Source ATT');
+            console.log(sourceAtt);
             sourceAtt.value = element.audioTis;
             audio.setAttributeNode(audioIdAtt);
             audio.setAttributeNode(sourceAtt);
