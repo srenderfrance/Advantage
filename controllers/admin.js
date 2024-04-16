@@ -57,13 +57,13 @@ module.exports.getStudentList = async (req, res, next) => {
    if (student.adminLevel === 0) {
    student.adminLevel = 1;
    await student.save();
-   } else {console.log(`${student.username} already has admin privlieges.`);
-   window.alert(`${student.username} already has admin privlieges.`);
+   } else {console.log(`${student.username} already has admin privileges.`);
+   window.alert(`${student.username} already has admin privileges.`);
 };
    let cohort = await Cohort.findOne({cohortName: cohortSelection});
    let studentArray = cohort.students;
    
-   console.log(`This is the studendArray ${studentArray}`);
+   console.log(`This is the studentArray ${studentArray}`);
    console.log(studentArray);
     for (let i = 0; i < studentArray.length; i++) {    
          if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === 0){
@@ -90,11 +90,11 @@ module.exports.getStudentList = async (req, res, next) => {
    if (student.adminLevel === 1) {
    student.adminLevel = 0;
    await student.save();
-   } else console.log(`${student.username} cannot remove admin privlieges.`);
+   } else console.log(`${student.username} cannot remove admin privileges.`);
    let cohort = await Cohort.findOne({cohortName: cohortSelection});
    let studentArray = cohort.students;
    
-   console.log(`This is the studendArray ${studentArray}`);
+   console.log(`This is the studentArray ${studentArray}`);
    console.log(studentArray);
     for (let i = 0; i < studentArray.length; i++) {    
          if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === 1){
@@ -191,18 +191,6 @@ module.exports.postActivity = async (req, res) => {
 
       res.json({bodyObjectEmpty, activityNameIsUsed});
 
-      /*if (req.body.type === "DD"){
-         res.redirect("/admin/activityDD");
-         console.log('Redirect DD')
-      } else if(req.body.type === "WaL"){
-      res.redirect("/admin/activityWaL");
-      console.log("Redirect WAL")
-      console.log("THIS REDIECT RAN");
-      } else if (req.body.type === "BS" && "CS"){
-         req.res("/admin/activityP")
-         console.log('Redirect OTHER')
-      }*/
-
    }}
    } catch (error) {
      console.log(error) 
@@ -250,6 +238,8 @@ module.exports.postWaL = async (req, res) => {
             }; 
             activity.additionalInfo.push(WalData);
          }}}; 
+         console.log("REQ.FILES")
+         console.log(req.files);
          try {
            
             if (typeof req.files.video !== 'undefined') {
@@ -275,7 +265,7 @@ module.exports.postWaL = async (req, res) => {
                   } else {activity.additionalInfo[0].videoO = 's';
             }}}};
          } catch (error) {
-            console.log("Error upploading or updating video file");
+            console.log("Error uploading or updating video file");
             console.log(error);
             
          };
@@ -298,7 +288,7 @@ module.exports.postWaL = async (req, res) => {
                   activity.additionalInfo[0].imageDO = 'h';
                } else {activity.additionalInfo[0].imageDO = 's';
             }} else {
-               console.log("Threre was a problem uploading the Image D.")
+               console.log("There was a problem uploading the Image D.")
             }};
          } catch (error) {
             console.log("Error uploading or deleting ImageD");
@@ -366,12 +356,14 @@ module.exports.postWaL = async (req, res) => {
          try {
             if (typeof req.files.mediaE !== 'undefined') {
                if (activity.additionalInfo[0].mediaEURL !== '') {
-                  const resultAED = await cloudinary.uploader.destroy(activity.additionalInfo[0].mediaECloudinaryID);
+                  const resultMED = await cloudinary.uploader.destroy(activity.additionalInfo[0].mediaECloudinaryID);
                };
-               const resultAE = await cloudinary.uploader.upload(req.files.mediaE[0].path, {resource_type: "auto"});
-               if (resultV.secure_url){
-               activity.additionalInfo[0].mediaEURL = resultAE.secure_url;
-               activity.additionalInfo[0].mediaECloudinaryID = resultAE.public_id;
+               const resultME = await cloudinary.uploader.upload(req.files.mediaE[0].path, {resource_type: "auto"});
+               if (resultME.secure_url){
+                  console.log("RESULT ME")
+                  console.log(resultME);
+               activity.additionalInfo[0].mediaEURL = resultME.secure_url;
+               activity.additionalInfo[0].mediaECloudinaryID = resultME.public_id;
                } else {
                   console.log("There was problem uploading the Media E");
                }}
@@ -440,7 +432,7 @@ module.exports.postVocabWord = async (req, res) => {
          for (let i = 0; i < theCohort.vocabWords.length; i++) {
             const element = theCohort.vocabWords[i];
             if (element.ident === vwToLink){
-               vocabWord.imageUrl = element.imageUrl;
+               //vocabWord.imageUrl = element.imageUrl;
                vocabWord.cloudinaryIdImage = element.cloudinaryIdImage;
                vocabWord.audioTis = element.audioTis;
                vocabWord.cloudinaryIdTis = element.cloudinaryIdTis;
@@ -602,7 +594,7 @@ module.exports.replaceImage = async (req, res, next) => {
       
    if(req.body.toDelete !== ''){
    const result = await cloudinary.uploader.destroy(req.body.toDelete);
-   console.log('Image should be destoyed')
+   console.log('Image should be destroyed')
    console.log(result);
    };
    const resultNewImage = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
@@ -992,7 +984,7 @@ module.exports.deleteWaLMedia = async (req, res) => {
  try {
       const activityDescription = req.body.activity;
       const mediaToDelete = req.body.mediaToDelete;
-      console.log('mediatoDelete')
+      console.log('mediaToDelete')
       console.log(mediaToDelete)
       const cohortId = req.user.cohort._id; 
       const cohort = await Cohort.findById(cohortId);
@@ -1012,7 +1004,7 @@ module.exports.deleteWaLMedia = async (req, res) => {
                   console.log(result1);
                   console.log(result1.result)
                   if (result1.result !== 'ok'){
-                     console.log("Admin attemted to Delete the following media Assets but they were not found in the DB");
+                     console.log("Admin attempted to Delete the following media Assets but they were not found in the DB");
                      console.log(`${req.body.activity} Video`);
                      console.log(additionalInfo.videoCloudinaryID);
                      console.log(additionalInfo.videoURL);
@@ -1025,7 +1017,7 @@ module.exports.deleteWaLMedia = async (req, res) => {
                   console.log("result2");
                   console.log(result2.result);
                   if (result2.result !== 'ok') {
-                     console.log("Admin attemted to Delete the following media Assets but they were not found in the DB");
+                     console.log("Admin attempted to Delete the following media Assets but they were not found in the DB");
                      console.log(`${req.body.activity} Dictionary Image`);
                      console.log(additionalInfo.imageDCloudinaryID);
                      console.log(additionalInfo.imageDURL);
@@ -1038,7 +1030,7 @@ module.exports.deleteWaLMedia = async (req, res) => {
                   console.log("result3");
                   console.log(result3);
                   if (result3.result !== 'ok'){
-                     console.log("Admin attemted to Delete the following media Assets but they were not found in the DB");
+                     console.log("Admin attempted to Delete the following media Assets but they were not found in the DB");
                      console.log(`${req.body.activity} Dictionary Audio`);
                      console.log(additionalInfo.audioDCloudinaryID);
                      console.log(additionalInfo.audioDURL);    
@@ -1050,35 +1042,41 @@ module.exports.deleteWaLMedia = async (req, res) => {
                   console.log("result4");
                   console.log(result4);
                   if (result4.result !== 'ok'){
-                     console.log("admin attemted to delete the following media assets but they were not found in the db");
+                     console.log("admin attempted to delete the following media assets but they were not found in the db");
                      console.log(`${req.body.activity} Review Image`);
-                     console.log(additionalinfo.imageRCloudinaryid);
-                     console.log(additionalinfo.imageRURL);
+                     console.log(additionalInfo.imageRCloudinaryID);
+                     console.log(additionalInfo.imageRURL);
                   };
-                  additionalinfo.imageRCloudinaryid = "";
-                  additionalinfo.imageRURL = "";
-                  additionalinfo.imageRO= "";
-               } else if (mediatodelete === "reviewaudio"){
-                  const result5 = await cloudinary.uploader.destroy(additionalinfo.audiorcloudinaryid, {resource_type: 'video'});
+                  additionalInfo.imageRCloudinaryID = "";
+                  additionalInfo.imageRURL = "";
+                  additionalInfo.imageRO= "";
+               } else if (mediaToDelete === "reviewAudio"){
+                  console.log("Else if ReviewMedia is Running")
+                  const result5 = await cloudinary.uploader.destroy(additionalInfo.audioRCloudinaryID, {resource_type: 'video'});
                   console.log("result5")
                   console.log(result5);
                   if (result5.result !== 'ok'){
-                  console.log("admin attemted to delete the following media assets but they were not found in the db");
+                  console.log("admin attempted to delete the following media assets but they were not found in the db");
                   console.log(`${req.body.activity} Review Audio`);
-                     console.log(additionalinfo.imageRCloudinaryid);
-                     console.log(additionalinfo.imageRURL);
+                     console.log(additionalInfo.imageRCloudinaryID);
+                     console.log(additionalInfo.imageRURL);
                };
-               additionalinfo.audioRCloudinaryid = "";
-               additionalinfo.audioRURL = "";
-               } else if (mediatodelete === "examplemedia"){
-                  const result6 = await cloudinary.uploader.destroy(additionalinfo.mediaecloudinaryid, {resource_type: 'video'});
+               additionalInfo.audioRCloudinaryID = "";
+               additionalInfo.audioRURL = "";
+               } else if (mediaToDelete === "exampleMedia"){
+                  const result6 = await cloudinary.uploader.destroy(additionalInfo.mediaECloudinaryID, {resource_type: 'video'});
                   console.log("result6");
                   console.log(result6);
                   if (result6.result !== 'ok'){
-                     additionalinfo.mediaECloudinaryid = "";
-                     additionalinfo.mediaEURL = "";
-                     additionalinfo.mediaEO = "";
-         }}}};
+                  console.log("admin attempted to delete the following media assets but they were not found in the db");
+                  console.log(`${req.body.activity} Example Media`);
+                     console.log(additionalInfo.mediaECloudinaryID);
+                     console.log(additionalInfo.mediaEURL);
+               };
+                     additionalInfo.mediaECloudinaryID = "";
+                     additionalInfo.mediaEURL = "";
+                     additionalInfo.mediaEO = "";
+         }}};
 
       
       cohort.markModified('activities');
@@ -1105,7 +1103,7 @@ module.exports.deleteWaLMedia = async (req, res) => {
         if (element.description === activity) {
          element.ready = true;
          if(vocabType === "new" || 'other'){
-            console.log("finalzing vocabType");
+            console.log("finalizing vocabType");
                for (let i = 0; i < element.vocabWords.length; i++) {
                   const vwIdent = element.vocabWords[i];
                   for (let index = 0; index < cohort.vocabWords.length; index++) {
@@ -1121,3 +1119,6 @@ module.exports.deleteWaLMedia = async (req, res) => {
      console.log(error);
      res.json('There was an error')
 }};
+
+
+//cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc

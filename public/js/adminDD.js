@@ -3,7 +3,7 @@ document.querySelector('#activityName2').addEventListener('change', populateDrop
 //document.querySelector("#existingVocabWords").addEventListener("change", populateExtraInfo);
 document.querySelector("#existingVocabWords").addEventListener("change", loadPreview);
 document.querySelector("#replaceImage").addEventListener("click", replaceImage);
-document.querySelector("#replaceaudioTis").addEventListener("click", replaceAudioTis);
+document.querySelector("#replaceAudioTis").addEventListener("click", replaceAudioTis);
 document.querySelector("#replaceAudioQ").addEventListener("click", replaceAudioQ);
 document.querySelector("#replaceAudioN").addEventListener("click", replaceAudioN);
 document.querySelector("#changeVWDescription").addEventListener("click", updateVWDescription);
@@ -184,7 +184,7 @@ async function replaceImage () {
    const vocabWord = document.querySelector("#existingVocabWords").value;
    const fileElement = document.querySelector("#newImage").value;
    if(fileElement === ""){
-      alert("No file is attatched.")
+      alert("No file is attached.")
    } else {
    vocabList.forEach((vw) => {
       if (vw.description === vocabWord){
@@ -204,11 +204,11 @@ window.location = response.url;
       console.log(error);
 }}};
 
-async function replaceAudioTis () { //Updated
+async function replaceAudioTis () { //Needs try catch
    console.log("delete Audio Tis is running");
    const fileElement = document.querySelector("#newAudioTis").value;
    if(fileElement === ""){
-      alert("No file is attatched.")
+      alert("No file is attached.")
    } else {
 
    let toDelete
@@ -228,11 +228,11 @@ async function replaceAudioTis () { //Updated
    window.location = response.url;
 }};
 
-async function replaceAudioQ () { //Updated
+async function replaceAudioQ () { //Needs Try catch
    console.log("delete AudioQ is running")
    const fileElement = document.querySelector("#newAudioQ").value;
    if(fileElement === ""){
-      alert("No file is attatched.")
+      alert("No file is attached.")
    } else {
 
    let toDelete
@@ -256,11 +256,11 @@ async function replaceAudioQ () { //Updated
 }};
 
 
-async function replaceAudioN () { //Updated
+async function replaceAudioN () { //Needs Try catch
    console.log("delete AudioN is running")
    const fileElement = document.querySelector("#newAudioN").value;
    if(fileElement === ""){
-      alert("No file is attatched.")
+      alert("No file is attached.")
    } else {
   
    let toDelete
@@ -280,12 +280,12 @@ async function replaceAudioN () { //Updated
    window.location = response.url;
 }};
 
-async function updateVWDescription () {//updated
+async function updateVWDescription () {//Needs Try catch
    console.log(selectedVWord);
    const newVWDescription = document.querySelector("#newVWDescription").value;
    console.log('newWVDescription')
    if(newVWDescription === ""){
-      alert("No Despcription Provided");
+      alert("No Description Provided");
    } else {
    
    
@@ -298,7 +298,7 @@ async function updateVWDescription () {//updated
 
 }};
 
-async function updateVWCategory () { //updated
+async function updateVWCategory () { //Needs try catch
    console.log(selectedVWord);
    const selectedElement =  document.querySelector("#newVWCategory");
    console.log("selectElement")
@@ -396,3 +396,5 @@ async function finalizeActivity () {
      console.log(error); 
    }
 }
+
+//cSpell:ignore cloudinary cloudinaryid durl eurl

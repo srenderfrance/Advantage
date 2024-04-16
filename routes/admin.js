@@ -31,7 +31,7 @@ router.put("/deleteVWord", adminController.deleteVWord);
 router.put("/deleteActivity", adminController.deleteActivity);
 router.put("/finalizeActivity", adminController.finalizeActivity);
 
-router.post("/createWaL", upload.fields([{name: 'video', maxCount: 1}, {name: "imageD", maxCount: 1}, {name: 'imageR', maxCount: 1}, {name: 'audioD', maxCount: 1}, {name: 'audioR', maxCount: 1}, {name: 'audioE'}]), adminController.postWaL);
+router.post("/createWaL", upload.fields([{name: 'video', maxCount: 1}, {name: "imageD", maxCount: 1}, {name: 'imageR', maxCount: 1}, {name: 'audioD', maxCount: 1}, {name: 'audioR', maxCount: 1}, {name: 'mediaE'}]), adminController.postWaL);
 router.put("/getAdditionalInfo", adminController.getAdditionalInfo);
 router.put("/deleteWaLActivity", adminController.deleteWaLActivity);
 router.put("/deleteWaLMedia", adminController.deleteWaLMedia);

@@ -69,7 +69,7 @@ async function populatePreview (){
       console.log(additionalInfo);
       console.log(additionalInfo.videoURL);
     };
-    console.log("startPreivew")
+    console.log("startPreview")
     const video = document.querySelector("#reviewVideo");
     video.src=additionalInfo.videoURL;
     if(additionalInfo.videoO === 'v'){
@@ -105,3 +105,5 @@ async function populatePreview (){
     audioR.src=additionalInfo.audioRURL; 
     console.log("end Preview");
 }
+
+//cSpell:ignore cloudinary cloudinaryid durl eurl rurl

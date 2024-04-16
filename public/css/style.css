@@ -516,7 +516,7 @@ label {
 }
 
 .coolBackground {
-    background-color: rgb(104, 97, 97);
+   /*background-color: rgb(104, 97, 97);*/
     background-image: url('/symbols/loginBG.jpg');
     background-size: cover;
     background-blend-mode: hard-light;
