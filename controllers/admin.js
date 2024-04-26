@@ -447,8 +447,8 @@ module.exports.postVocabWord = async (req, res) => {
                console.log(existingLinks);
       }}};
 
-        let activityLocation   
-      for (let i = 0; i < theCohort.activities.length; i++) {
+         let activityLocation   
+         for (let i = 0; i < theCohort.activities.length; i++) {
          const element = theCohort.activities[i];
          
          if (element.description === activityDescription){
@@ -779,8 +779,10 @@ module.exports.deleteActivity = async (req, res) => {
                         };
                         if (element2.cloudinaryIdImage !== ""){
                            const result = await cloudinary.uploader.destroy(element2.cloudinaryIdImage);
-                     }};
+                     }
+                     console.log(`This is the Index to splice: ${index}`)
                      theCohort.vocabWords.splice(index, 1);
+                  };
          }}};
            
 
@@ -788,13 +790,14 @@ module.exports.deleteActivity = async (req, res) => {
             //console.log(theCohort.vocabWords);
 
          theCohort.activities.splice(i, 1);
+         
 
       }};
      //console.log("Activities after");
      //console.log(theCohort.activities);
    
    //theCohort.markModified('activities'); //is this needed?
-  
+   theCohort.markModified('vocabWords');
    theCohort = theCohort.save();  
 
    res.redirect("/admin"); 
@@ -1121,4 +1124,318 @@ module.exports.deleteWaLMedia = async (req, res) => {
 }};
 
 
+module.exports.uploadVWFromFolder = async (req, res) => { 
+let test = 0;
+const newVWsArray = [];
+let vocabSet = new Set();
+const activity = req.body.activity;
+let identSet = new Set();
+try {
+   
+   console.log("UPLOADING FROM FOLDER!!");
+   //console.log(req.body);
+   //console.log(req.files);
+
+   const cohort = await Cohort.findById(req.user.cohort._id);
+   for (let i = 0; i < cohort.vocabWords.length; i++) {
+      const vw = cohort.vocabWords[i];
+      identSet.addI(vw.ident);
+   };
+   const vocabType = req.body.vocabType;
+   let category = ""
+   if (req.body.category !== undefined){
+      category = req.body.category;
+   };
+   const uploads = req.files.folderUpload;
+   const totalUploads = uploads.length;
+   console.log(`Total Uploads: ${totalUploads}`);
+  // console.log(uploads);
+   //console.log('THAT ALL OF THEM')
+   
+   
+   
+
+   if (typeof totalUploads === 'number' && totalUploads < 11){
+      console.log ("LESS THAN 11")
+      await processUploadBatch (uploads);
+      console.log("UPLOAD BATCH PROCESSED");
+      //await saveNewVocab();
+      res.json({activity})
+   } else if (typeof totalUploads === 'number' && totalUploads > 10){
+         console.log(`UPloads Length 1: ${uploads.length}`)
+      while (uploads.length > 10) {
+         let uploadBatch = uploads.splice(0, 10);
+         console.log(`UPLOAD BATCH Length: ${uploadBatch.length}`);
+         console.log(`UPloads Length 3: ${uploads.length}`)
+         await processUploadBatch (uploadBatch);
+      };
+      console.log("The Last UPLOADS")
+      console.log(uploads);
+
+      await processUploadBatch (uploads);
+      console.log("NEW VWs ARRAY BEFORE LAST SAVE")
+      console.log(newVWsArray);
+      await saveNewVocab();
+      res.json({activity});
+   };
+
+   async function processUploadBatch (uploadArray) { // Limit is 10 uploads at a time on Cloudinary Free tier.
+   console.log(`Process Upload Batch is running. Uploads to process: ${uploadArray.length}`)
+  
+   const resultArray = [];
+   const theKeysArray = [];
+      for (let  i = 0;  i < uploadArray.length;  i++) {
+         const fileObject = uploadArray[i];
+         let descriptionObj = describeAndDesignate(fileObject);
+         console.log("DESCRIPTION OBJECT AFTER MAKE DESCRIPTION");
+         console.log(descriptionObj);
+
+         const description = descriptionObj.description;
+         const designation = descriptionObj.designation;
+    
+            if (vocabSet.has(description) === false) {
+               vocabSet.add(description);
+               let ident = 1
+               while (identSet.has(ident) === true) {
+                  ident++;
+               };
+               let vocabWord = { 
+                  description: description,
+                  category: category,
+                  imageUrl: '',
+                  cloudinaryIdImage: '',
+                  audioTis: '',
+                  cloudinaryIdTis: '',
+                  audioQ: '',
+                  cloudinaryIdQ: '',
+                  audioN: '',
+                  cloudinaryIdN: '',
+                  reviewedBy: [],
+                  vocabType: vocabType,
+                  linkedVocab: [],
+                  ident: ident,
+                  specialInfo: {}  
+               };
+               identSet.add(ident);
+               newVWsArray.push(vocabWord);
+               let newKey = {
+                  description: description,
+                  results: []
+               };
+              // console.log("Designation 1205");
+              // console.log(designation);
+
+               const theKey = {
+                  filename: fileObject.filename,
+                  designation: designation,
+               };
+               newKey.results.push(theKey);
+               theKeysArray.push(newKey);
+
+            } else {
+               console.log("BATCH PROCESS ELSE IS RUNNING");
+               let newKey = {
+                  description: description,
+                  results: []
+               };
+               const theKey = {
+                  filename: fileObject.filename,
+                  designation: designation,
+               };
+               newKey.results.push(theKey);
+               theKeysArray.push(newKey);
+         };
+         if (designation === "Do Not Upload") {
+            console.log("This File Was not uploaded");
+            console.log(fileObject);
+         };
+         if (designation !== "Do Not Upload") {
+         resultArray[i] = cloudinary.uploader.upload(fileObject.path, {resource_type: "auto"});
+         if (designation === "Zero") { //Also for debugging purposes
+            console.log("UPLOADED ZERO");
+            console.log(resultArray[i]);
+         }
+         }
+      };
+      /*console.log("After Loop")
+      console.log("Vocab Set");
+      console.log(vocabSet);
+      console.log("Results Array");
+      console.log(resultArray);
+      console.log(resultArray[0])
+      console.log("the Keys Array");
+      console.log(theKeysArray[0]);
+      console.log(theKeysArray[1]);*/
+
+      const promisesToAwait = resultArray.filter(function (el) { //This removes any empty slots from the Array that are created when uploads are designated "Do Not Upload"
+         return el != null;
+      });
+      const uploadData = await Promise.allSettled(promisesToAwait);
+      console.log("After All Settled");
+      /*console.log(resultArray[0].promiseDispatch);
+      console.log(resultArray[0].valueOf);
+      console.log(resultArray[0].inspect); */ 
+      //console.log("UPLOAD DATA")
+      //console.log(uploadData);
+      for (let i = 0; i < uploadData.length; i++) {// These loops add the URLs and ID from the upload results to the correct KEY object, associating them with the correct VW description.
+         const upload = uploadData[i];
+         //console.log ("UPLOAD")
+         //console.log(upload)
+         for (j = 0; j < theKeysArray.length; j++) {
+            const key = theKeysArray[j];
+            for (let k = 0; k < key.results.length; k++) {
+               const result = key.results[k];
+               if (result.filename === upload.value.original_filename) {
+                  if (key.description === "Two") {
+                     console.log ("UPDATING KEY TWO");
+                     console.log (key);
+                  }
+                  result.secure_url = upload.value.secure_url;
+                  result.public_id = upload.value.public_id;
+                  //console.log("Updated Key");
+                  //console.log(key);
+      }};
+        
+      }};
+     
+      for (let i = 0; i < theKeysArray.length; i++) {
+         const key = theKeysArray[i];
+         for (let j = 0; j < newVWsArray.length; j++) {
+            const newVocabWord = newVWsArray[j];
+
+          /*console.log("KEY DESCRIPTION");
+            console.log(key);
+            console.log("NEW VOCAB DESCRIPTION");
+            console.log(newVocabWord.description); */
+
+            if (key.description === newVocabWord.description) {
+              // console.log("THEY MATCHED");
+               
+               for (let k = 0; k < key.results.length; k++) {//This adds the information from the KEYS to the New Vocab Word Objects
+                  const result = key.results[k];
+                  //console.log("RESULT!!")
+                  //console.log (result);
+               
+                  if(result.designation === 'None') {
+                     newVocabWord.cloudinaryIdTis = result.public_id;
+                     newVocabWord.audioTis = result.secure_url;
+                  } else if (result.designation === 'i') {
+                     newVocabWord.cloudinaryIdImage = result.public_id;
+                     newVocabWord.imageUrl = result.secure_url;
+                  } else if (result.designation === 'w' ) {
+                     newVocabWord.cloudinaryIdQ = result.public_id;
+                     newVocabWord.audioQ = result.secure_url;
+                  } else if(result.designation === 'n') {
+                     newVocabWord.cloudinaryIdN = result.public_id;
+                     newVocabWord.audioN = result.secure_url;
+                  };
+               };
+               
+   }}}};
+
+   function describeAndDesignate (fileObject) {
+     if (test > 9) {
+      console.log(fileObject)
+     }
+      if (/[A-Z]/.test(fileObject.originalname.charAt(0)) === true){ //If file name starts with a capital letter.
+         let newStr = "";
+                  
+         for (let i = 0; i < fileObject.originalname.length; i++) {
+            const char = fileObject.originalname[i]; 
+            if (char !== "."){
+               newStr = newStr + char;
+            } else {
+               return {description: newStr, designation: 'None'}
+               break
+            };
+         };
+         } else { //If file name starts with s lower case letter.
+            let newStr = "";
+            let designation = "";
+            if (fileObject.originalname[0] === 'i' || fileObject.originalname[0] === 'w' || fileObject.originalname[0] ===  'n') {
+               designation = fileObject.originalname[0];
+            } else { 
+               designation = "Do Not Upload";
+            };
+
+            let newString = fileObject.originalname.slice(1);
+            for (let i = 0; i < newString.length; i++) {
+               const char = newString[i]; 
+               if (char !== "."){
+                  newStr = newStr + char;
+               } else {
+                  newStr = newStr[0].toUpperCase() + newStr.slice(1);
+                  return {description: newStr, designation: designation}
+                  break
+            }};
+   }};
+   test++;
+   } catch (error) {
+   console.log(error);  
+   };
+
+   async function saveNewVocab () {
+   try {
+   
+   const cohort = await Cohort.findById(req.user.cohort._id);
+   console.log("SAVE Running");
+   
+      for (let i = newVWsArray.length - 1; i > -1; i--) {
+      const newVW = newVWsArray[i];
+      for (let j = 0; j < cohort.vocabWords.length; j++) {
+         const existingVW = cohort.vocabWords[j];
+         if (existingVW.description === newVW.description) {//Finds existing VWs with the same description.
+            console.log("FIRST IF");
+            console.log(existingVW.description)
+            for (let k = 0; k < cohort.activities.length; k++) {
+               const existingActivity = cohort.activities[k];
+               if (existingActivity.description === activity) {
+                  console.log("SECOND IF");
+                  for (let l = 0; l < existingActivity.vocabWords.length; l++) {//checks to see if the existing VW with the same description is in the same Activity.
+                     const element = existingActivity.vocabWords[l];
+                     if (element === existingVW.ident){
+                        console.log("THIRD IF");
+                        if (newVW.cloudinaryIdTis !== "") {
+                           console.log("FORTH IF")
+                           existingVW.cloudinaryIdTis = newVW.cloudinaryIdTis;
+                           existingVW.audioTis = newVW.audioTis;
+                        } else if (newVW.cloudinaryIdImage !== "") {
+                           console.log("FIFth IF");
+                           existingVW.cloudinaryIdImage = newVW.cloudinaryIdImage;
+                           existingVW.imageUrl = newVW.imageUrl;
+                        } else if (newVW.cloudinaryIdN !== "") {
+                           console.log("SIXTH IF");
+                           existingVW.cloudinaryIdN = newVW.cloudinaryIdN;
+                           existingVW.audioN = newVW.audioN;
+                        } else if (newVW.cloudinaryIdQ !== "") {
+                           console.log("SEVENTH IF");
+                           existingVW.cloudinaryIdQ = newVW.cloudinaryIdQ;
+                           existingVW.audioQ = newVW.audioQ;
+                        };
+                        console.log("SPLICING newVWsARRAY");
+                        newVWsArray.splice(i, 1);
+      }}}}}}};
+
+      for (let i = 0; i < newVWsArray.length; i++) {
+         const newVW = newVWsArray[i];
+         cohort.vocabWords.push(newVW);
+      for (let i = 0; i < cohort.activities.length; i++) {
+         const element = cohort.activities[i];
+         if (element.description === activity) {
+            element.vocabWords.push(newVW.ident);
+      }}};
+
+      cohort.markModified('activities');
+      cohort.markModified('vocabWords')
+      await cohort.save();
+
+   
+   
+   
+   } catch (error) {
+   console.log(error);
+   };
+   
+   };
+};
 //cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc

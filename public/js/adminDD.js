@@ -26,20 +26,44 @@ async function uploadVocabWord (){
    
    const form = new FormData(formElement);
    console.log(Array.from(formElement));
-   for (let i = 0; i < vocabList.length; i++){
-      vwDescription = vocabList[i].description;
-      if (vwDescription === document.querySelector("#newVocabWord").value){
-         window.alert("This activity already has a Vocab Word with that description. Please choose another.")
+   const folderInput = document.querySelector('#folderUpload').value;
+   console.log("FolderInput")
+
+   if (folderInput === ""){
+   
+      for (let i = 0; i < vocabList.length; i++){
+         vwDescription = vocabList[i].description;
+         if (vwDescription === document.querySelector("#newVocabWord").value){
+            window.alert("This activity already has a Vocab Word with that description. Please choose another.")
+      }};
+
+      try {
+         const response = await fetch("/admin/createVocab", {method: 'POST',
+         body: form,});
+
+         const data = await response.json();
+         console.log("data")
+         console.log(data);
+
+         console.log(data);
+      } catch (error) {
+         console.log(error);
+      }
+   } else {
+      try {
+               const response = await fetch("/admin/uploadVWFromFolder", {method: 'POST',
+               body: form,});
+      
+               const data = await response.json();
+               console.log("data")
+               console.log(data);
+      
+               console.log(data);
+      } catch (error) {
+         console.log(error);
    }};
 
-   try {
-      const response = await fetch("/admin/createVocab", {method: 'POST',
-      body: form,});
-
-      const data = await response.json();
-      console.log("data")
-      console.log(data);
-      populateDropDown1();
+   populateDropDown1();
     
       document.querySelector("#image").value = "";
       document.querySelector("#audioQ").value = "";
@@ -49,6 +73,7 @@ async function uploadVocabWord (){
       document.querySelector("#category").value = "";
       document.querySelector("#vwToLink").value = "";
       document.querySelector("#activityName2").value = "";
+      document.querySelector('#folderUpload').value = "";
 
       
       if (document.querySelector("#audioQ").hasAttribute('disabled')){
@@ -62,12 +87,6 @@ async function uploadVocabWord (){
       };
       console.log(document.querySelector("#submitButton"));
       document.querySelector("#submitButton").disabled = false;
-      console.log(data);
-   } catch (error) {
-      
-   }
-
-
 }
 
 async function populateDropDown1 () {

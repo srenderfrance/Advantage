@@ -22,6 +22,7 @@ router.post("/removeCohortAdmin", adminController.removeCohortAdmin);
 router.post("/activity", adminController.postActivity);
 router.put("/getVocabList", adminController.getActivityVocab); //why is this a put?
 router.post("/createVocab", upload.fields([{name: 'image', maxCount: 1}, {name:'audioQ', maxCount: 1}, {name: 'audioTis', maxCount: 1}, {name: 'audioN', maxCount: 1}]), adminController.postVocabWord);
+router.post("/uploadVWFromFolder", upload.fields([{name:'folderUpload', maxCount: 80}]), adminController.uploadVWFromFolder);
 router.put("/replaceImage", upload.single('newImage'), adminController.replaceImage);
 router.put("/replaceAudioTis", upload.single('newAudioTis'), adminController.replaceAudioTis);
 router.put("/replaceAudioQ", upload.single('newAudioQ'), adminController.replaceAudioQ);

@@ -22,6 +22,9 @@ button {
   -moz-appearance: none;
   appearance: none;
 }
+label {
+padding-left: 10px;
+}
 
 input,
 select,

@@ -71,12 +71,13 @@ module.exports.getStudent = async (req, res) => {
          if(element.type === "WaL"){
             activitiesWaL.unshift(element);
       }};
-      console.log(activitiesWaL)
+      console.log("Activities WaL");
+      console.log(activitiesWaL);
+      
       const totalActivities = reviewed.length;
       for (let i = 0; i < reviewed.length; i++){
             const element = reviewed[i];
          if(element.hasOwnProperty('type')){
-            console.log("IT HAS A TYPE")
             if (element.type === "DD") {
                activitiesDD.unshift(element);
                console.log(`Activities DD length: ${activitiesDD.length}`)

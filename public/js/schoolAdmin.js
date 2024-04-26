@@ -43,7 +43,7 @@ async function giveToStudent () {
             console.log(studentId); 
             infoToSend = [studentId, cohortSelection];
         }};
-    console.log("infotoSend")
+    console.log("infoToSend")
     console.log(infoToSend);
     const response = await fetch("/admin/updateCohortAdmin", {method: 'POST',
     headers: {"Content-Type": "application/json",},    
@@ -68,7 +68,7 @@ async function removeFromStudent () {
             console.log(studentId); 
             infoToSend = [studentId, cohortSelection];
         }};
-    console.log("infotoSend")
+    console.log("infoToSend")
     console.log(infoToSend);
     const response = await fetch("/admin/removeCohortAdmin", {method: 'POST',
     headers: {"Content-Type": "application/json",},    

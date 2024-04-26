@@ -105,8 +105,16 @@
                     </div>  
                 </div>
             </div>
-        </div>  
-        <button id="submitButton" type="button">Upload New Vocab Word</button>
+            <div>
+                 
+            </div>
+        </div>   
+        <div class="uploadBlockRR">
+            <label for="folderUpload">Upload by Folder</label>
+            <input type="file" id="folderUpload" webkitdirectory = "true" multiple class="uploadInput" value="folderUpload" name="folderUpload">  
+            <button id="submitButton"  type="button">Upload New Vocab Word</button> 
+        </div>
+       
     </div>  
     
 </form>       
@@ -153,7 +161,7 @@
                     <div>
                         <label for="newVWDescription" class="primaryLabel">Description:</label>
                         <input type="text" id="newVWDescription" name="description" placeholder="Enter New Description">
-                        <button type="button" class="deleteButton" id="changeVWDescription">Change Descritption</button>
+                        <button type="button" class="deleteButton" id="changeVWDescription">Change Description</button>
                     </div>
                     <div>
                         <label for="newVWCategory" class="primaryLabel">Category</label>

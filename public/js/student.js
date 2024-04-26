@@ -12,4 +12,5 @@ async function reviewByTopic () {
         console.log(error);
     }
 };
+
 document.querySelector('#selectByTopic').addEventListener('click', reviewByTopic);
