@@ -1139,7 +1139,7 @@ try {
    const cohort = await Cohort.findById(req.user.cohort._id);
    for (let i = 0; i < cohort.vocabWords.length; i++) {
       const vw = cohort.vocabWords[i];
-      identSet.addI(vw.ident);
+      identSet.add(vw.ident);
    };
    const vocabType = req.body.vocabType;
    let category = ""
