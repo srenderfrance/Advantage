@@ -3,7 +3,7 @@ const { default: mongoose } = require("mongoose");
 const ActivityWaLSchema = new mongoose.Schema({
     
   
-    imageDULR: {
+    imageDURL: {
         type: String,
         default: "",
     },
@@ -61,3 +61,8 @@ const ActivityWaLSubdoc = mongoose.model('ActivityWaLSubdoc', ActivityWaLSubdocS
 
 
 module.exports = ActivityWaLSubdoc;
+
+
+
+
+//cSpell:ignore cloudinary subdoc durl rurl eurl

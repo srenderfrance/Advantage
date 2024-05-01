@@ -590,6 +590,9 @@ module.exports.replaceImage = async (req, res, next) => {
    console.log(req.file);
    console.log('req.body is')
    console.log (req.body);
+
+    
+   const vwIdent = Number(req.body.vwIdent)
    try {
       
    if(req.body.toDelete !== ''){
@@ -603,69 +606,78 @@ module.exports.replaceImage = async (req, res, next) => {
 
      
    let theCohort= await Cohort.findById(req.user.cohort);
-   //let toMark  
+   
    for (let i = 0; i < theCohort.vocabWords.length; i++) {
       const element = theCohort.vocabWords[i];
-      if(element.cloudinaryIdImage === req.body.toDelete) {
+      if(element.ident === vwIdent) {
          element.cloudinaryIdImage = cloudinaryIdImage;
          element.imageUrl = imageUrl;
          break;
    }};
    theCohort.markModified('vocabWords');
        
-   theCohort = theCohort.save();
-
+   await theCohort.save();
+   res.json("Update Done");
 } catch (error) {
      console.log(error);
-   }
-       
-   res.redirect("/admin/activityDD"); 
+     res.json("error")
 }
+       
+   
+};
 
 module.exports.replaceAudioTis = async (req, res) => {
    try {
    console.log(req.file);
    console.log(req.body.toDelete)
-   console.log(req.body);
+   console.log(req.body.vwIdent);
 
+    
+   const vwIdent = Number(req.body.vwIdent)
    if (req.body.toDelete !== ""){
    const resultD = await cloudinary.uploader.destroy(req.body.toDelete, {resource_type: 'video'});
    console.log(resultD);
-   }
-   /*if (resultD.result === 'not found' && vocabWord.cloudinaryIdTis !== ""){
-      console.log(`There is a problem with the cloudinaryIdTis on ${vocabWord}`);
-      //res. send error....
-   } else {
-*/
+   };
+
    const resultU = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
    let theCohort= await Cohort.findById(req.user.cohort);
 
-  for (let i = 0; i < theCohort.vocabWords.length; i++) {
+   for (let i = 0; i < theCohort.vocabWords.length; i++) {
       const element = theCohort.vocabWords[i];
-      if(element.cloudinaryIdTis === req.body.toDelete) {
+      if(element.ident === vwIdent) {
          element.cloudinaryIdTis = resultU.public_id;
          element.audioTis = resultU.secure_url;
-         //toMark = i;
-   }};
+          if (element.linkedVocab.length > 0) {
+            console.log("UPDATING Linked Vocab");
+            console.log(element.linkedVocab);
+            for (let j = 0; j < element.linkedVocab.length; j++) {
+               const  linkedVW = element.linkedVocab[j];
+               for (let k = 0; k < theCohort.vocabWords.length; k++) {
+                  const vw = theCohort.vocabWords[k];
+                  if (vw.ident === linkedVW) {
+                     vw.cloudinaryIdTis = resultU.public_id;
+                     vw.audioTis = resultU.secure_url;
+   }}}}}};
    theCohort.markModified('vocabWords');
        
-   theCohort = theCohort.save();
+   await theCohort.save();
 
-/*  } */
-   res.redirect("/admin/activityDD"); 
+
+   res.json("Update Done");
    } catch (error) {
-      console.log(error);     
-   };
-
-};
+      console.log(error);  
+      res.json("error");   
+}};
 
 module.exports.replaceAudioQ = async (req, res) => {
-   try {
+try {
+
    console.log(req.file);
    console.log(req.body.toDelete)
-   console.log(req.body);
+   console.log(req.body.vwIdent);
  
     
+   const vwIdent = Number(req.body.vwIdent)
    let theCohort= await Cohort.findById(req.user.cohort);
    if (req.body.toDelete !== ""){
       const resultD = await cloudinary.uploader.destroy(req.body.toDelete, {resource_type: 'video'});
@@ -675,29 +687,43 @@ module.exports.replaceAudioQ = async (req, res) => {
    const resultU = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
    
  
-  for (let i = 0; i < theCohort.vocabWords.length; i++) {
+   for (let i = 0; i < theCohort.vocabWords.length; i++) {
       const element = theCohort.vocabWords[i];
-      if(element.cloudinaryIdQ === req.body.toDelete) {
+      if(element.ident === vwIdent) {
          element.cloudinaryIdQ = resultU.public_id;
          element.audioQ = resultU.secure_url;
-         //toMark = i;
-   }};
-   theCohort.markModified('vocabWords');
-       
-   theCohort = theCohort.save();  
+         if (element.linkedVocab.length > 0) {
+            console.log("UPDATING Linked Vocab");
+            console.log(element.linkedVocab);
+            for (let j = 0; j < element.linkedVocab.length; j++) {
+               const  linkedVW = element.linkedVocab[j];
+               for (let k = 0; k < theCohort.vocabWords.length; k++) {
+                  const vw = theCohort.vocabWords[k];
+                  if (vw.ident === linkedVW) {
+                     vw.cloudinaryIdQ = resultU.public_id;
+                     vw.audioQ = resultU.secure_url;
+   }}}}}};
 
-   res.redirect("/admin/activityDD"); 
+   theCohort.markModified('vocabWords');
+   await theCohort.save();  
+
+   res.json("Update Done");
    } catch (error) {
       console.log(error);     
-   };
-
-
-}
+      res.json('error');
+}};
 
 module.exports.replaceAudioN = async (req, res) => {
-   try {
+try {
+
+
    console.log("ReplaceAudioN is Running");
    console.log(req.body.toDelete);
+   console.log("THE IDENT")
+   console.log(req.body.vwIdent);
+   const vwIdent = Number(req.body.vwIdent)
+   console.log(typeof vwIdent);
+   console.log(vwIdent);
     
    
    let theCohort= await Cohort.findById(req.user.cohort);
@@ -709,20 +735,32 @@ module.exports.replaceAudioN = async (req, res) => {
    console.log(req.file.path);
    const resultU = await cloudinary.uploader.upload(req.file.path, {resource_type: "auto"});
    console.log(resultU);
-    for (let i = 0; i < theCohort.vocabWords.length; i++) {
+   for (let i = 0; i < theCohort.vocabWords.length; i++) {
       const element = theCohort.vocabWords[i];
-      if(element.cloudinaryIdN === req.body.toDelete) {
+      if(element.ident === vwIdent) {
          element.cloudinaryIdN = resultU.public_id;
          element.audioN = resultU.secure_url;
          console.log(resultU.secure_url);
-   }};
+         if (element.linkedVocab.length > 0) {
+            console.log("UPDATING Linked Vocab");
+            console.log(element.linkedVocab);
+            for (let j = 0; j < element.linkedVocab.length; j++) {
+               const  linkedVW = element.linkedVocab[j];
+               for (let k = 0; k < theCohort.vocabWords.length; k++) {
+                  const vw = theCohort.vocabWords[k];
+                  if (vw.ident === linkedVW) {
+                     vw.cloudinaryIdN = resultU.public_id;
+                     vw.audioN = resultU.secure_url;
+   }}}}}};
+
    theCohort.markModified('vocabWords');
        
-   theCohort = theCohort.save();  
+   await theCohort.save();  
    
-   res.redirect("/admin/activityDD"); 
+   res.json("Update Done");
    } catch (error) {
       console.log(error);     
+      res.json('error');
    };
 };
 
@@ -798,7 +836,7 @@ module.exports.deleteActivity = async (req, res) => {
    
    //theCohort.markModified('activities'); //is this needed?
    theCohort.markModified('vocabWords');
-   theCohort = theCohort.save();  
+   await theCohort.save();  
 
    res.redirect("/admin"); 
    } catch (error) {
@@ -879,7 +917,7 @@ module.exports.deleteVWord = async (req, res) => {
    console.log('cohort vocabWords');
    console.log(theCohort.vocabWords);
    theCohort.markModified('activities');
-   theCohort = theCohort.save();
+   await theCohort.save();
       
    } catch (error) {
       console.log(error)

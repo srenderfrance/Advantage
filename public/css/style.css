@@ -44,11 +44,13 @@ textarea {
 }
 
 input[type="text"] {
-    min-width: 50px
+    min-width: 50px;
+    padding-left: 10px;
 }
 
 input[type="text"],
 input[type="email"],
+input[type="date"],
 select,
 textarea {
   font: 1.25rem / 1.5 sans-serif;
@@ -221,7 +223,7 @@ h3 {
     margin: 0rem 1rem .5rem 1rem;
 }
 
-#activitytoEdit {
+#activityToEdit {
     margin: 1rem;
     text-decoration: underline;
 }
@@ -237,6 +239,7 @@ h3 {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 2fr;
     height: 60vh;
+    outline: none;
 }
 
 .block1{

@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
     },
     nativeLanguage: {
         type: String,
-        reuired: true
+        required: true
     },
     wordsSelected: {
         type: Array,
@@ -61,4 +61,4 @@ const UserSchema = new mongoose.Schema({
 })
 
 const User = mongoose.model('User', UserSchema);
-module.exports = User
+module.exports = User;

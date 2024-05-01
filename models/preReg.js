@@ -7,8 +7,8 @@ const PreRegSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        reuired: true
+        required: true
     }
 });
 const PreReg = mongoose.model('PreReg', PreRegSchema);
-module.exports = PreReg
+module.exports = PreReg;

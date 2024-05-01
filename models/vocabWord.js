@@ -74,4 +74,8 @@ const VocabWordSubdocSchema = new mongoose.Schema({
     }
 });
 const VocabWordSubdoc = mongoose.model('VocabWordSubdoc', VocabWordSubdocSchema);
-module.exports = VocabWordSubdoc
+module.exports = VocabWordSubdoc;
+
+
+
+//cSpell:ignore cloudinary subdoc

@@ -11,3 +11,7 @@ cloudinary.config({
 });
 
 module.exports = cloudinary;
+
+
+
+//cSpell:ignore cloudinary

@@ -45,3 +45,5 @@ const ActivitySubdoc = mongoose.model('ActivitySubdoc', ActivitySubdocSchema);
 
 
 module.exports = ActivitySubdoc;
+
+//cSpell:ignore subdoc

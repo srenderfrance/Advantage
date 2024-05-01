@@ -84,7 +84,7 @@ module.exports.getActivityWaLAdmin = async (req, res) => {
        if(activities[i].type !== 'WaL'){
        activities.splice(i, 1);
     }};    
-    console.log("GetActivitWaLAdmin ran")
+    console.log("GetActivityWaLAdmin ran")
     res.render("activityWaLAdmin",{ user: req.user, activities: activities});
 
   
@@ -156,7 +156,7 @@ module.exports.postRegister = async (req, res, next) => {
       nativeLanguage: req.body.nativeLanguage, 
       individualExercises: undefined,
       problemWords: undefined,
-      corhortAdmin: undefined,
+      cohortAdmin: undefined,
       reviewHistory: undefined,
 
    });

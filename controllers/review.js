@@ -25,10 +25,10 @@ module.exports.getStudent = async (req, res) => {
       const categories = cohort.categories;
       let wordsSelected = [];
       for (let i = 0; i < req.user.wordsSelected.length; i++) {
-         const selectedIdenx = req.user.wordsSelected[i];
+         const selectedIndex = req.user.wordsSelected[i];
          for (let index = 0; index < cohort.vocabWords.length; index++) {
             const vocabWord = cohort.vocabWords[index];
-            if (selectedIdenx === vocabWord.ident){
+            if (selectedIndex === vocabWord.ident){
                wordsSelected.push(vocabWord);
       }}};
    const vocabArray = cohort.vocabWords
@@ -65,14 +65,12 @@ module.exports.getStudent = async (req, res) => {
          if(e.reviewedBy.some(checkReviews)){
             return true;
       }});
-      //This sorts WaL activities to thier array without being marked "watched"
+      //This sorts WaL activities to their array without being marked "watched"
       for (let i = 0; i < cohort.activities.length; i++) {
          const element = cohort.activities[i];
          if(element.type === "WaL"){
             activitiesWaL.unshift(element);
       }};
-      console.log("Activities WaL");
-      console.log(activitiesWaL);
       
       const totalActivities = reviewed.length;
       for (let i = 0; i < reviewed.length; i++){
@@ -80,7 +78,6 @@ module.exports.getStudent = async (req, res) => {
          if(element.hasOwnProperty('type')){
             if (element.type === "DD") {
                activitiesDD.unshift(element);
-               console.log(`Activities DD length: ${activitiesDD.length}`)
             } else if(element.type === 'WaL'){
                console.log('WAL');
                console.log(element.reviewedBy);
@@ -434,7 +431,7 @@ module.exports.userReviewResults = async (req, res, next) => {
          console.log("updated words selected")
          console.log(student.wordsSelected);
       });
-//upated problemwords array 
+//updated problemWords array 
       console.log("dealing with problemWords");
       console.log(student.problemWords);
       let challengingArray = []
@@ -552,7 +549,7 @@ module.exports.createCustomActivity = async (req, res) => {
       /*let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
       console.log(activities);
       const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
-      console.log("selectedvocab");
+      console.log("selectedVocab");
       console.log(selectedVocab)*/
  
    } catch (error) {
@@ -587,11 +584,11 @@ module.exports.reviewCustomActivity = async (req, res) => {
             console.log(vocabArray);
             }
       } else {
-         console.log("else: NOT Challange Words")
+         console.log("else: NOT Challenge Words")
          for (let i = 0; i < req.user.individualExercises.length; i++) {
             if (customActivity === req.user.individualExercises[i].description)
             vocabArray = req.user.individualExercises[i].vocabWords;   
-            console.log('vocabArray req.use.individualExcersises')
+            console.log('vocabArray req.use.individualExercises')
       }};
    console.log("this is vocabArray");
    console.log(vocabArray);
@@ -679,7 +676,7 @@ module.exports.reviewByCategory = async (req, res) => {
                if(reviewerId.toString() !== req.user._id.toString()){
                   vWord.reviewedBy.splice(index, 1)
                }}};
-               console.log('vocabArra after splice')
+               console.log('vocabArray after splice')
                console.log(vocabArray);
                console.log('example')
                console.log(vocabArray[0].reviewedBy[0].totalReviews);
@@ -689,7 +686,7 @@ module.exports.reviewByCategory = async (req, res) => {
 
          console.log("Array after sort");
          console.log(vocabArray);
-//sellect the lest reviewed group of vwords that includes at least 12 words
+//select the lest reviewed group of vwords that includes at least 12 words
          let workingArray = [];
          console.log(vocabArray.length);
          console.log(vocabArray.length < 12);
@@ -716,12 +713,12 @@ module.exports.reviewByCategory = async (req, res) => {
          };
 
         /* let vocabArray2 = vocabArray.map((x) => x = x._id);
-         console.log("maped array");
+         console.log("mapped array");
          console.log(vocabArray2);
 
          vocabArray = await VocabWord.find({'_id': {$in: vocabArray2}});
 */
-         const vocabList = shuffleArray(vocabArray, 12); //this is probabaly not neccesary now.
+         const vocabList = shuffleArray(vocabArray, 12); //this is probably not necessary now.
          const student = await User.findById(req.user._id);
          student.currentVocabList = vocabList; 
          await student.save();
@@ -754,7 +751,7 @@ res.redirect("/student/customAandD");
 
 module.exports.saveSelectedVocab = async (req, res) => {
    try {
-      console.log("SaveSelecteVocab is running")
+      console.log("SaveSelectedVocab is running")
       console.log(req.body.selectedVocab);
       const newSelection = req.body.selectedVocab;
       const student = await User.findById(req.user._id);
@@ -875,3 +872,7 @@ module.exports.removeFromActivity = async (req, res) => {
    };
    res.json("Good AND GONE");
 };
+
+
+
+//cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc Aand vwords Idents
