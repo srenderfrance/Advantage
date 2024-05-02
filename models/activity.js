@@ -27,6 +27,14 @@ const ActivitySchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    subType: {
+        type: String,
+        default: "",
+    },
+    activityNumber: {
+        type: Number,
+        default: null,
+    },
     additionalInfo: {
         type: Array,
         default: [ActivityWaLSchema],
