@@ -134,19 +134,21 @@ let engine = {}
                 console.log(engine.theDozen[i].ident);
                 if(engine.vocabList[i].linkedVocab.length > 0){
                     engine.theDozen[i].linkedVocab = true;
-                } 
-                }
-                console.log("VocabList before creating LINKED V")
-                console.log(engine.vocabList)
+            }};
+
+                console.log("VocabList before creating LINKED V");
+                console.log(engine.vocabList);
+
             for (let i = 0; i < engine.vocabList.length; i++) {
                 const vw = engine.vocabList[i];
                 if (vw.linkedVocab.length > 0){
-                    console.log(`LinkedVocab.length is: ${vw.linkedVocab.length}`)
+
                     engine.linkedVocab.push(vw);
-                }
+            }};
+            
             console.log('LINKED VOCAB CREATED')
             console.log(engine.linkedVocab);
-            }
+
             document.getElementById('review').disabled = false;  
             document.getElementById('start').disabled = false;
             document.getElementById('undo').disabled = true;
@@ -332,7 +334,7 @@ let engine = {}
     engine.filterQuestionList = function() {
         console.log("Question List");
         for (let i = 0; i < engine.questionList.length; i++) {
-            console.log(engine.questionList[i].ident);
+            //console.log(engine.questionList[i].ident);
         }
 
         let linksArray = [];
@@ -346,12 +348,14 @@ let engine = {}
                 links.push(vocabWord.ident);
                 linksArray.push(links);
         }};
-        console.log('LINKS ARRAY');
-        console.log(linksArray);
+
+        //console.log('LINKS ARRAY');
+        //console.log(linksArray);
 
         function filterOutSets (array) {
             //console.log("FILTER SETS START");
             //console.log(array);
+
             const newSet = new Set(array[0]);
             array.shift();
             for (let i = 0; i < array.length; i++) {
@@ -511,7 +515,7 @@ let engine = {}
         console.log("Thats Right Middle Running")
         engine.stopClicks(1);
         engine.currentQuestion.done = true;
-        engine.currentQuestion.correctAnswer = false;
+        //engine.currentQuestion.correctAnswer = false;
         engine.questionList.shift();
         document.getElementById('undo').disabled = true;
 
@@ -523,7 +527,8 @@ let engine = {}
         setTimeout(() => {
             for (let i = 0; i < arr.length; i++) {
                 const element = arr[i];
-                element.visual.classList.remove('thatsRight')
+                element.visual.classList.remove('thatsRight');
+                element.correctAnswer = false;
             }
             engine.askQuestion()
         }, 1000);
@@ -589,21 +594,21 @@ let engine = {}
                             };
                             let allAnswersSelected = true;
                             for (let i = 0; i < visibleLV.length; i++) {
-                                const lvIdent = visibleLV[i];
-                                console.log(lvIdent);
+                                const lVocabIdent = visibleLV[i];
+                                console.log(lVocabIdent);
                                 for (let j = 0; j < engine.theDozen.length; j++) {
                                     const vwElement = engine.theDozen[j];
-                                    if(vwElement.ident === lvIdent && vwElement.visual.style.display === 'block'){
+                                    if(vwElement.ident === lVocabIdent && vwElement.visual.style.display === 'block'){
                                         if(vwElement.visual.classList.contains('selected') === false){
                                            allAnswersSelected = false;
                                            console.log('All Answers ARE NOT SELECTED')
                             }}}};
                                 if (allAnswersSelected === true){
                                     for (let i = 0; i < visibleLV.length; i++) {
-                                        const lvIdent = visibleLV[i];
+                                        const linkedVIdent = visibleLV[i];
                                         for (let j = 0; j < engine.theDozen.length; j++) {
                                             const theDozenElement = engine.theDozen[j];
-                                            if (theDozenElement.ident === lvIdent){
+                                            if (theDozenElement.ident === linkedVIdent){
                                                 console.log('EVALUATING IF 3');
                                                 engine.thatsRightStart(theDozenElement) 
                                                 console.log('START3333333333');
