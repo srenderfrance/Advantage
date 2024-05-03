@@ -83,10 +83,10 @@ let wTwelve = new MakeVocabWord(false,false,false,false,audioTis12,audioN12,audi
 let engine = {}
     engine.theDozen = [wOne, wTwo, wThree, wFour, wFive, wSix, wSeven, wEight, wNine, wTen, wEleven, wTwelve];
     engine.toIntroduce = [wOne, wTwo, wThree, wFour, wFive, wSix, wSeven, wEight, wNine, wTen, wEleven, wTwelve];
-    engine.newWord = engine.toIntroduce[0]; //The word being introcuded for the first time.
+    engine.newWord = engine.toIntroduce[0]; //The word being introduced for the first time.
     engine.introduced = []; //The array of vocabWords that has already been introduced.
     engine.questionList = [];
-    engine.currentQuestion = engine.questionList[0]; //The vocabword that is the correct answer to the most recent question.
+    engine.currentQuestion = engine.questionList[0]; //The vocab word that is the correct answer to the most recent question.
     engine.lastTwo = [engine.introduced[0], engine.introduced[1]];
     engine.vocabList = [];
     engine.linkedVocab = [];
@@ -136,7 +136,7 @@ let engine = {}
                     engine.theDozen[i].linkedVocab = true;
                 } 
                 }
-                console.log("VocabList before creating LINKEDV")
+                console.log("VocabList before creating LINKED V")
                 console.log(engine.vocabList)
             for (let i = 0; i < engine.vocabList.length; i++) {
                 const vw = engine.vocabList[i];
@@ -245,7 +245,7 @@ let engine = {}
         console.log(`E.introduced.length is: ${engine.introduced.length}`)
         if (engine.introduced.length < 8) {
             engine.introduced.forEach(element =>{tempArray.push(element)}) //This copies engine.introduced into tempArray
-             for (i = tempArray.length; i>0; i--) { //This iterates through tempArray, randamly removing an element and pushing it into questionList
+             for (i = tempArray.length; i>0; i--) { //This iterates through tempArray, randomly removing an element and pushing it into questionList
             let randomElement = engine.makeRandomElement(tempArray)
             engine.questionList.push(randomElement)}
         }else{ 
@@ -451,7 +451,7 @@ let engine = {}
         console.log('Question LIST')
         console.log(engine.questionList);
         engine.filterQuestionList();
-        console.log("QUESTIONLIST AFTER")
+        console.log("QUESTION LIST AFTER")
         console.log(engine.questionList);
         engine.makeVisibleAll();
         engine.askQuestion();
@@ -472,7 +472,7 @@ let engine = {}
             engine.stopClicks(duration);
             engine.currentQuestion.correctAnswer = true;
            if (engine.currentQuestion.linkedVocab === true){
-                console.log("LINKEDVOCAB")
+                console.log("LINKED VOCAB")
                 let linkedVocab = [];
                 for (let i = 0; i < engine.vocabList.length; i++) {
                     const element = engine.vocabList[i];
@@ -490,7 +490,7 @@ let engine = {}
                         //console.log(theDozenElement)
                         if (element === theDozenElement.ident && theDozenElement.visual.style.display === 'block'){
                             theDozenElement.correctAnswer = true;
-                            console.log(`Correct Anwser is: ${element}`)
+                            console.log(`Correct Answer is: ${element}`)
                 }}}};
         console.log("End of ASk Question");
         } else {
@@ -503,7 +503,7 @@ let engine = {}
 
     engine.thatsRightStart = function(element){
         element.visual.classList.add('thatsRight'); 
-        console.log('should have transfomed');
+        console.log('should have transformed');
                 
     };
 
@@ -534,7 +534,7 @@ let engine = {}
         console.log('evaluating');
         console.log(engine.theDozen)
         engine.theDozen.forEach(element =>{
-                if (element.visual == Event.currentTarget) {
+                if (element.visual === Event.currentTarget) {
                     if (element.correctAnswer === true && element.linkedVocab === false) {
                         console.log("EVALUATE IF 1")
                         engine.thatsRightStart(element);
@@ -547,7 +547,7 @@ let engine = {}
                         let lv;
                         let visibleLV = [];
 
-                        //This sets lv equal to the linkvedVocab Array of the correctly selected element.
+                        //This sets lv equal to the linkedVocab Array of the correctly selected element.
                         for (let i = 0; i < engine.vocabList.length; i++) { 
                             const vw = engine.vocabList[i];
                             //console.log(element.ident);
@@ -557,7 +557,7 @@ let engine = {}
                                 lv.push(vw.ident);
                                 console.log(lv)
                         }};
-                        console.log("Creating VISIBLELV");
+                        console.log("Creating VISIBLE V");
                         for (let i = 0; i < lv.length; i++) {
                             const linkedVW = lv[i];
                             for (let j = 0; j < engine.theDozen.length; j++){
@@ -627,7 +627,7 @@ let engine = {}
                               
                                  
                         }} else {
-                            console.log('There was a problem createing VisibleLV!!!');
+                            console.log('There was a problem creating VisibleLV!!!');
                         }
 
                     } else {
@@ -714,9 +714,9 @@ let engine = {}
         engine.makeVisibleAll()                      
     };
                     
-    engine.filalizeSelection = async function() {
+    engine.finalizeSelection = async function() {
          
-        console.log('filalize Selestion')
+        console.log('finalize Selection')
         console.log(engine.theDozen)
 
         let selection = [];
@@ -768,7 +768,7 @@ engine.createActivity();
 
 
 document.querySelector('#showAll').addEventListener('click', engine.makeVisibleAll);
-document.querySelector('#addSelection').addEventListener('click', engine.filalizeSelection);
+document.querySelector('#addSelection').addEventListener('click', engine.finalizeSelection);
 document.querySelector('#review').addEventListener('click', engine.reviewAll);      
 document.querySelector('#repeatThat').addEventListener('click', engine.repeatQuestion);     
 document.querySelector('#start').addEventListener('click', engine.introductions);

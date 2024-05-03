@@ -13,7 +13,7 @@ async function createNewActivity () {
    console.log(description);
    const date = formArray[1].value;
    console.log(date);
-   const type = formArray[2].value;
+   const type = formArray[3].value;
    console.log(type);
   //console.log(form.entries)
 /*for (const pair of form.entries()) {
@@ -28,7 +28,7 @@ async function createNewActivity () {
       console.log(data);
       if (data.bodyObjectEmpty){
         if(data.bodyObjectEmpty === true){
-          console.log("EMTY EMPTY EMPTY")
+          console.log("EMPTY EMPTY EMPTY")
         }
       }
       if (data.activityNameIsUsed){
@@ -41,9 +41,9 @@ async function createNewActivity () {
          window.location.href ='/admin/activityDD';
         } else if (type === "WaL"){
           window.location.href = '/admin/activityWaL';
-        } else if (type === "BS" || "CS"){
+        } /*else if (type === "BS" || "CS"){
           window.location.href = '/admin/activityP';
-        }
+        }*/
 
 
       }

@@ -45,16 +45,18 @@ textarea {
 
 input[type="text"] {
     min-width: 50px;
-    padding-left: 10px;
+    
 }
 
 input[type="text"],
 input[type="email"],
 input[type="date"],
+input[type='number'],
 select,
 textarea {
   font: 1.25rem / 1.5 sans-serif;
-  box-sizing: border-box;  
+  box-sizing: border-box; 
+  padding-left: 10px; 
 }
 
 .primaryLabel {

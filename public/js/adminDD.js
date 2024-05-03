@@ -395,7 +395,9 @@ async function deleteVW () {
       headers: {"Content-Type": "application/json",},
       body: JSON.stringify({vocabWordId: selectedVWord.ident, activity: activity}),
    });
-window.location.reload();
+   await populateDropDown1();
+
+indow.location.reload();
 
 };
 
