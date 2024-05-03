@@ -125,11 +125,11 @@
             <div class="block4">
                  <div class="flexColumn">
                      <div class="uploadBlockRR">  
-                        <label for="image">Vocab Word Image</label>
+                        <label for="image" class="secondaryLabel">Vocab Word Image</label>
                         <input type="file" class="uploadInput" id="image" value="image" name="image"> 
                     </div>
                     <div class="uploadBlockRR"> 
-                        <label for="audioT">Vocab Word Introduction Audio</label>
+                        <label for="audioT" class="secondaryLabel">Vocab Word Introduction Audio</label>
                         <input type="file" id="audioT" class="uploadInput" value="audioTis" name="audioTis">
                     </div>
                      
@@ -139,25 +139,24 @@
             <div class="block5">
                 <div class="flexColumn">
                     <div class="uploadBlockRR">
-                        <label for="audioQ">Question Audio</label>
+                        <label for="audioQ" class="secondaryLabel">Question Audio</label>
                         <input type="file" id="audioQ" class="uploadInput" value="audioQ" name="audioQ">
                     </div>
                     <div class="uploadBlockRR">
-                        <label for="audioN">The Correction Audio</label>
+                        <label for="audioN" class="secondaryLabel">The Correction Audio</label>
                         <input type="file" id="audioN" class="uploadInput" value="audioN" name="audioN">  
                     </div>  
                 </div>
             </div>
-            <div>
-                 
-            </div>
         </div>   
-        <div class="uploadBlockRR">
-            <label for="folderUpload">Upload by Folder</label>
+        <div class="uploadBlockRR padding1">
+            <label for="folderUpload" class="secondaryLabel">Upload by Folder</label>
             <input type="file" id="folderUpload" webkitdirectory = "true" multiple class="uploadInput" value="folderUpload" name="folderUpload">  
-            <button id="submitButton"  type="button">Upload New Vocab Word</button> 
+           
         </div>
-       
+        <div class="moveRight padding2">
+            <button id="submitButton" type="button">Upload New Vocab Word</button> 
+        </div>           
     </div>  
     
 </form>       

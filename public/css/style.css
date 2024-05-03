@@ -65,7 +65,7 @@ textarea {
 }
 .secondaryLabel  {
     font: bold 1.1rem sans-serif;
-    padding-left: .5rem;
+    padding-left: 1rem;
     padding-right: .5rem;
 }
 .secondaryLabel ~ select {
@@ -74,25 +74,25 @@ textarea {
     font-weight: 550;
     text-shadow: 2px 2px 0 black;
 }
-  input::placeholder,
-  textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
     opacity: 1; /* Firefox */
     color: var(--lightFont);
-  }
+}
 
-  button {
-    font: 1.25rem sans-serif;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    padding: 0.75rem 1.25rem;
-    margin: 10px;
-    background-color: rgb(1.4, 48, 66.7);
-    background-image: url("/symbols/frostSS1.jpg");
-    background-blend-mode: hard-light;
-    background-size: cover;
-    color: var(--lightFont);
-    max-width: max-content;
-    box-shadow: 0 5px 10px 0 black;
+button {
+  font: 1.25rem sans-serif;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  padding: 0.75rem 1.25rem;
+  margin: 10px;
+  background-color: rgb(1.4, 48, 66.7);
+  background-image: url("/symbols/frostSS1.jpg");
+  background-blend-mode: hard-light;
+  background-size: cover;
+  color: var(--lightFont);
+  max-width: max-content;
+  box-shadow: 0 5px 10px 0 black;
 }
 
 .navButton {
@@ -578,3 +578,27 @@ label {
     padding-top: .01rem;
     outline: none;
 }
+
+.spaceOnTop {
+    padding-top: 3rem;
+}
+
+.spacing {
+    padding-top: 1.5rem;
+    padding-right: 6rem;
+}
+
+.paddingTop {
+    padding-top: 1.5rem;
+}
+
+.padding1 {
+    padding-left: 3rem;
+}
+.padding2 {
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+}
+
+
+/*  cSpell:ignore downarrow    */ 

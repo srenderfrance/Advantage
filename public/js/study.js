@@ -521,7 +521,6 @@ let engine = {}
 
     };
 
-    
     engine.thatsRightEnd = function(arr){
         console.log("Thanks Right End Running");
         setTimeout(() => {
