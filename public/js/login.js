@@ -43,6 +43,17 @@ function togglePassword2 () {
         checkBox.type = "password";
 }};
 
+function submitLogin (event) {
+    if (event.key === 'Enter' || event.code === "Enter") {
+        document.querySelector('#loginForm').submit();
+}};
 
+function submitRegister (event) {
+    if (event.key === 'Enter' || event.code === "Enter") {
+        document.querySelector("#registerForm").submit();
+}};
+
+document.querySelector("#password2").addEventListener('keydown', submitRegister);
+document.querySelector("#password").addEventListener('keydown', submitLogin);
 document.querySelector("#passWordCheckBox").addEventListener('click', togglePassword);
 document.querySelector('#passwordCheckBox2').addEventListener('click', togglePassword2);

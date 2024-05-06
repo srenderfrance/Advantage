@@ -4,21 +4,26 @@ document.querySelector("#submitActivity").addEventListener("click", createNewAct
 async function createNewActivity () {
 
  const formElement = document.querySelector("#newActivityForm");
-    try {
    const form = new FormData(formElement);
    console.log(Array.from(formElement));
    console.log("FORM")
    const formArray = Array.from(formElement);
    const description = formArray[0].value;
    console.log(description);
-   const date = formArray[1].value;
+   const date = formArray[2].value;
    console.log(date);
-   const type = formArray[3].value;
+   const type = formArray[1].value;
    console.log(type);
-  //console.log(form.entries)
-/*for (const pair of form.entries()) {
-  console.log(pair[0], pair[1]);
-}*/
+   const actNumber = formArray[3].value;
+   console.log(actNumber)
+
+if (description === ''){
+    window.alert("A description is needed to create a new Activity,")
+} else if (date === '' && actNumber === ''){
+  window.alert("Either a date or an activity number are needed to create an Activity.")
+} else{
+ try {
+
       const response = await fetch("/admin/activity", {method: 'POST',
       headers: {"Content-Type": "application/json",},
       body: JSON.stringify({description: description, date: date, type: type})
@@ -49,6 +54,6 @@ async function createNewActivity () {
       }
    } catch (error) {
     console.log(error);
-   }
+   };
 
-}
+}};

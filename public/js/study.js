@@ -208,9 +208,7 @@ let engine = {}
             engine.newWord.visual.style.display = 'block';
             engine.newWord.introduction.play();
             let duration = engine.newWord.introduction.duration;
-            //console.log('intro duration');
-            //console.log(duration);
-            //engine.stopClicks(duration);
+            engine.stopClicks(duration);
             engine.newWord.introduction.addEventListener('ended', reset);
         };
 
