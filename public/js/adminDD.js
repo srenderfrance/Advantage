@@ -14,6 +14,10 @@ document.querySelector('#selectActivity2').addEventListener("click", linkAudio);
 document.querySelector("#vocabType").addEventListener('change', toggleCheckbox);
 document.querySelector('#submitButton').addEventListener('click', uploadVocabWord);
 document.querySelector("#finalizeActivity").addEventListener("click", finalizeActivity);
+document.querySelector("#changeActivityName").addEventListener("click", updateActivity);
+document.querySelector("#changeSubType").addEventListener("click", updateActivity);
+document.querySelector("#changeActivityDate").addEventListener("click", updateActivity);
+document.querySelector("#changeActivityNumber").addEventListener("click", updateActivity);
 
 let vocabList = [];
 let selectedVWord = {};
@@ -94,8 +98,10 @@ async function uploadVocabWord (){
 async function populateDropDown1 () {
    console.log("populate1")
    const activity = document.querySelector("#selectActivity").value;
-const vocabList = await getVocab(activity);
-   console.log(vocabList);
+   const data = await getVocab(activity);
+   console.log(data);
+   const vocabList = data.vocabList;
+   const activityInfo = data.activityInfo;
    let toInsert = ""
       for (let i = 0; i < vocabList.length; i++){
          toInsert += `<option value="${vocabList[i].description}">${vocabList[i].description}</option> `
@@ -108,8 +114,26 @@ const vocabList = await getVocab(activity);
           
       document.querySelector('#activityToEdit').innerText = `Selected Activity: ${activity}`;
       document.querySelector('#activityToEdit').style.textDecoration = 'none';
-      const audioNodes = document.querySelectorAll(".audioPreviewContainer audio");
       
+      const audioNodes = document.querySelectorAll(".audioPreviewContainer audio");
+      console.log("Checking ActivityInfo")
+      console.log(activityInfo.date)
+      console.log(activityInfo.subType)
+      console.log(activityInfo.number)
+      // Populates Activity Modification Section
+      document.querySelector('#activityToEdit2').innerText = `Selected Activity: ${activity}`;
+      document.querySelector('#activityToEdit2').style.textDecoration = 'none';
+      document.querySelector('#actSubT').innerText = `Sub-Type: ${activityInfo.subType}`;
+      if (activityInfo.date !== null) {
+         document.querySelector('#actDate').innerText = `Date: ${activityInfo.date}`;
+      } else {
+      document.querySelector('#actDate').innerText = `Date: None`;
+      };
+      if (activityInfo.number !== null) {
+         document.querySelector('#actNumber').innerText = `Activity Number: ${activityInfo.number}`;
+      } else {
+         document.querySelector('#actNumber').innerText = `Activity Number: None`;
+      }
       for (let i = 0; i < audioNodes.length; i++) {
          const element = audioNodes[i];
          element.src = "";
@@ -149,21 +173,85 @@ async function getVocab(activityD)  {
    //console.log(typeof(activity))
    console.log(activityD)
    if (activityD !== ''){
-      const response = await fetch("/admin/getVocabList", {method: 'PUT',
+      const response = await fetch("/admin/getVocabList", {
+      method: 'PUT',
       headers: {"Content-Type": "application/json",},
       body: JSON.stringify({activity: activityD}),
       });
       const data = await response.json();
       console.log("data.vL")
       console.log(data.vocabList);
+      console.log(data.activityInfo);
 
-      vocabList = data.vocabList;
+      //vocabList = data.vocabList;
+
       //console.log(vocabList);
-     return vocabList;
+     return data;
 
    } else {alert("No Activity was selected.")}
 
 };
+
+async function updateActivity (Event) {
+   console.log(Event.target);
+   console.log(Event.target.id)
+   const originalDescription = document.querySelector("#selectActivity").value;
+   const newActName = document.querySelector("#newActivityName").value;
+   const newActDate = document.querySelector("#newActivityDate").value;
+   const newActNumber = document.querySelector("#newActivityNumber").value;
+   const newActSubType = document.querySelector("#newActivitySubType").value;
+
+   const newActivityInfo = {
+      originalDescription: originalDescription,
+      description: newActName,
+      date: newActDate,
+      subType: newActSubType,
+      activityNumber: newActNumber,
+      fieldToModify: ""
+   };
+   if (Event.target.id === "changeActivityName") {
+      newActivityInfo.fieldToModify = "description";
+   } else if (Event.target.id === "changeActivityDate") {
+      newActivityInfo.fieldToModify = "date";
+   } else if (Event.target.id === "changeActivityNumber") {
+      newActivityInfo.fieldToModify = "number";
+   } else if (Event.target.id === "changeSubType") {
+      newActivityInfo.fieldToModify = "subType"
+   }
+   console.log("NewActivityInfo");
+   console.log(newActivityInfo);
+   const actDate = document.querySelector("#actDate").value;
+   const actNumber = document.querySelector("#actNumber").value;
+   if (newActivityInfo.fieldToModify === "description" && newActivityInfo.description === "") {
+      window.alert('You must provide a Description for the activity.');
+   } else if (newActivityInfo.fieldToModify === "date" && newActivityInfo.date === "") {
+      if (actNumber === 'none') {
+         window.alert("You cannot remove the Activity Date unless the activity has a Number.");
+      }
+   } else if (newActivityInfo.fieldToModify === 'number' && newActivityInfo.number ==="") {
+      if (actDate === 'none') {
+         window.alert("You cannot remove the Activity Number unless the activity has a Date.")
+      }
+   }
+   console.log("NEW ACT INFO BEFORE FETCH")
+   console.log(newActivityInfo);
+   try {
+      const response = await fetch('updateActivity', {
+      method:'PUT',
+      headers: {"Content-Type": "application/json",},
+      body: JSON.stringify({newActivityInfo: newActivityInfo}),
+      });
+      document.querySelector("#newActivityName").value = "";
+      document.querySelector("#newActivityDate").value = "";
+      document.querySelector("#newActivityNumber").value = "";
+      document.querySelector("#newActivitySubType").value = "";
+
+
+      await populateDropDown1();
+   } catch (error) {
+      console.log(error);
+   }
+}
 
 function loadPreview() {
    
@@ -461,10 +549,11 @@ async function finalizeActivity () {
    console.log("Finalize Activity is Running");
    const activity = document.querySelector("#selectActivity").value;
    const vocabType = document.querySelector('#vocabType').value;
+   const subType = document.querySelector('#activitySubType').value;
    try {
      const response = await fetch('/admin/finalizeActivity', {method: 'PUT',
          headers: {"Content-Type": "application/json",},
-         body: JSON.stringify({activity: activity, vocabType: vocabType}),
+         body: JSON.stringify({activity: activity, vocabType: vocabType, subType: subType}),
       });
          window.location = response.url;
   } catch (error) {

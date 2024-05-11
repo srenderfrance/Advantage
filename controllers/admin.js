@@ -115,13 +115,21 @@ module.exports.getActivityVocab = async (req, res, next) => {
       const activityDescription = req.body.activity;
       const cohortId = req.user.cohort._id; 
       const cohort = await Cohort.findById(cohortId);
-      
+      let activityInfo = {
+         date: Date,
+         subType: "",
+         number: Number,
+      };
       let activityVocab
       let vocabList = [];
          for (let i = 0; i < cohort.activities.length; i++) {
             const element = cohort.activities[i];
             if (element.description === activityDescription){
+               console.log(element)
                activityVocab = element.vocabWords;
+               activityInfo.date = element.date;
+               activityInfo.subType = element.subType;
+               activityInfo.number = element.activityNumber;
             }};
       //console.log("activityVocab")
       //console.log(activityVocab);
@@ -140,10 +148,10 @@ module.exports.getActivityVocab = async (req, res, next) => {
 
             if(element1 === element2.ident) {
                vocabList.push(element2);
-      }}}};
+      }}}}; 
 
-   //console.log(vocabList);
-   res.json({vocabList: vocabList});
+   console.log(activityInfo);
+   res.json({vocabList: vocabList, activityInfo: activityInfo});
 
 } catch (error) {
    console.log(error);
@@ -180,6 +188,8 @@ module.exports.postActivity = async (req, res) => {
            reviewedBy: [],
            type: req.body.type,
            ready: false,
+           subType: "",
+           activityNumber: req.body.activityNumber,
            additionalInfo: [],
 
       };
@@ -197,6 +207,47 @@ module.exports.postActivity = async (req, res) => {
    }
 
 };
+
+module.exports.updateActivity = async (req, res) => {
+   console.log("UPDATE Activity Is Running")
+   console.log(req.body);
+   const info = req.body.newActivityInfo;
+   console.log(info.originalDescription)
+   console.log(info.date)
+
+   try {
+      const cohort = await Cohort.findById(req.user.cohort);
+      for (let i = 0; i < cohort.activities.length; i++) {
+         const activity = cohort.activities[i];
+         if (activity.description === info.originalDescription) {
+            console.log('Activity');
+            console.log(activity);
+            if (info.fieldToModify === 'description') {
+               console.log('description')
+               activity.description = info.description;
+            } else if (info.fieldToModify === 'date') {
+               console.log('DATE')
+               activity.date = info.date;
+            } else if (info.fieldToModify === 'number') {
+               console.log("NUMBER")
+               activity.activityNumber = info.activityNumber
+            } else if (info.fieldToModify === 'subType') {
+               console.log("SUBTYPE")
+               activity.subType = info.subType; 
+      };
+      console.log(activity)
+   }};
+      cohort.markModified('activities');
+      await cohort.save();
+
+
+      res.json("Good");
+   } catch (error) {
+     console.log(error);
+     res.json("Not Good");
+   };
+};
+
 module.exports.postWaL = async (req, res) => {
    console.log("PostWaL is running!");
    let activities
@@ -215,7 +266,7 @@ module.exports.postWaL = async (req, res) => {
          console.log("additionalInfo is");
          console.log(activity.additionalInfo);
          if(activity.additionalInfo.length === 0){
-            const WalData= {
+            const WalData = {
                videoURL: '',
                videoCloudinaryID: '',
                videoO: '',
@@ -1136,13 +1187,16 @@ module.exports.deleteWaLMedia = async (req, res) => {
       console.log(req.body.activity); 
       const activity = req.body.activity;
       const vocabType = req.body.vocabType;
+      const subType = req.body.subType;
       console.log(vocabType);
+      console.log(subType)
 
       const cohort = await Cohort.findById(req.user.cohort._id);
       for (let i = 0; i < cohort.activities.length; i++) {
          const element = cohort.activities[i];
         if (element.description === activity) {
          element.ready = true;
+         element.subType = subType;
          if(vocabType === "new" || 'other'){
             console.log("finalizing vocabType");
                for (let i = 0; i < element.vocabWords.length; i++) {

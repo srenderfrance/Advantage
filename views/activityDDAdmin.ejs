@@ -15,8 +15,8 @@
 
 
 <form id="newVWForm" action="/admin/createVocab" enctype="multipart/form-data" method="POST">
-    <div class="container">
-        <div class="container">
+    <div class="container padding">
+        <div class="divider">
             <div class="flexSplit">
                 <div class="flex">
                     <h2>Select an Activity To Edit</h2>
@@ -31,13 +31,14 @@
                 </div>
                 <select name="activitySubType" id="activitySubType" class="selection">
                     <option value="" disabled selected hidden>Choose a Sub-Category</option>
-                    <option value="nouns">Basic Nouns</option>
-                    <option value="verbs">Basic Verbs</option>
-                    <option value="adjectives">Basic Adjectives</option>
-                    <option value="conjugations">Verb Conjugations</option>
-                    <option value="phrases">Basic Phrases</option>
-                    <option value="lexicarryLike">Lexicarry Like</option>
-                    <option value="grammarFlooding">Grammar Flooding</option>
+                    <option value="Adj/Adv">Adj/Adv</option>
+                    <option value="Conjugations">Conjugations</option>
+                    <option value="Grammar Flooding">G. Flooding</option>
+                    <option value="LexicarryLike">Lexicarry</option>
+                    <option value="Nouns">Nouns</option>
+                    <option value="Phrases">Phrases</option>
+                    <option value="Random">Random</option>
+                    <option value="Verbs">Verbs</option>
                 </select> 
                  <select name="vocabType" id="vocabType" class="selection">
                     <option value="new">All Vocab is NEW</option>
@@ -45,37 +46,10 @@
                     <option value="individual">Select individually</option>
                 </select>    
             </div>
-                <div class="moveRight"> 
-                    <button type="button" id="finalizeActivity">Finalize Activity</button>
-                </div> 
-               <div class="flex spaceBetween">
-                    <div> 
-                        <div>
-                            <label for="newActivityName" class="primaryLabel">Activity Name:</label>
-                            <input type="text" id="newActivityName" name="newActivityName" placeholder="Enter New Activity Name">
-                            <button type="button" class="deleteButton" id="changeActivityName">Change Activity Name</button>
-                        </div>
-                        <div>
-                            <label for="newActivityDate" class="primaryLabel">Activity Date:</label>
-                            <input type="date" id="newActivityDate" name="newActivityDate" placeholder="Enter New Activity Date">
-                            <button type="button" class="deleteButton" id="changeActivityDate">Change Activity Date</button>
-                        </div>
-                    </div>  
-                        <div> 
-                            <select name="activitySubType" id="activitySubType" class="selection">
-                                <option value="" disabled selected hidden>Choose a Sub-Category</option>
-                                <option value="nouns">Basic Nouns</option>
-                                <option value="verbs">Basic Verbs</option>
-                                <option value="adjectives">Basic Adjectives</option>
-                                <option value="conjugations">Verb Conjugations</option>
-                                <option value="phrases">Basic Phrases</option>
-                                <option value="lexicarryLike">Lexicarry Like</option>
-                                <option value="grammarFlooding">Grammar Flooding</option>
-                            </select>
-                            <button type="button" class="deleteButton" id="changeSubCategory">Change Sub-Category</button>
-                        </div>
-                </div> 
-            </div>
+            <div class="moveRight"> 
+                <button type="button" id="finalizeActivity">Finalize Activity</button>
+            </div> 
+        </div>      
                
            
         <div>
@@ -162,7 +136,6 @@
 </form>       
     <div class="container">
         <h2>Vocab Word Preview/Edit</h2>
-       
         <div>
             <div class="previewContainer">
                 <div>
@@ -178,6 +151,11 @@
                 <div class="imagecontainer">
                     <img src="" alt="">
                 </div> 
+                    <div class="deleteButtonContainer border">
+                        <h3 class="deleteHeading">Delete VOCAB WORD</h4>
+                        <p class="description">Delete and completely remove all element of the word</p>
+                        <button type="button" id="deleteVW" class="deleteButton">DELETE</button>
+                    </div>
             </div>
             <div class="audioPreviewContainer">
                 <div class="flex">
@@ -199,66 +177,112 @@
                     </div> 
                 </div>
             </div>
-                <div class="flex">
-                    <div>
-                        <label for="newVWDescription" class="primaryLabel">Description:</label>
-                        <input type="text" id="newVWDescription" name="description" placeholder="Enter New Description">
-                        <button type="button" class="deleteButton" id="changeVWDescription">Change Description</button>
-                    </div>
-                    <div>
-                        <label for="newVWCategory" class="primaryLabel">Category</label>
-                        <select name="category" id="newVWCategory" class="selection" required>
-                        <option value="" disabled selected hidden>Choose a Category</option>
-                            <% for(let i=0; i < categories.length; i++) {%>
-                                <option value="<%=categories[i] %>"><%= categories[i] %></option>  
-                            <% } %>
-                       </select> 
-                        <button type="button" id="changeVWCategory" class="deleteButton">Change Category</button>
-                    </div>
+            <div class="flex">
+                <div>
+                    <input type="text" id="newVWDescription" name="description" placeholder="Enter New Description">
+                    <button type="button" class="deleteButton" id="changeVWDescription">Change</button>
                 </div>
-                <div class="deleteContainer">
-                        <form method="put" enctype="multipart/form-data" id="newImageForm">
-                            <div class="uploadBlock">  
-                                <label for="image">Change Image</label>
-                                <input type="file" class="uploadInput replaceInput" id="newImage" value="newImage" name="newImage"> 
-                                <button type="button" id="replaceImage" class="deleteButton">Replace Photo</button>
+                <div>
+                    <select name="category" id="newVWCategory" class="selection" required>
+                    <option value="" disabled selected hidden>Choose a Category</option>
+                        <% for(let i=0; i < categories.length; i++) {%>
+                            <option value="<%=categories[i] %>"><%= categories[i] %></option>  
+                        <% } %>
+                   </select> 
+                    <button type="button" id="changeVWCategory" class="deleteButton">Change</button>
+                </div>
+            </div>
+            <div class="deleteContainer divider">
+                    <form method="put" enctype="multipart/form-data" id="newImageForm">
+                        <div class="uploadBlock">  
+                            <label for="image">Change Image</label>
+                            <input type="file" class="uploadInput replaceInput" id="newImage" value="newImage" name="newImage"> 
+                            <button type="button" id="replaceImage" class="deleteButton">Replace</button>
+                        </div>
+                    </form>
+                    <form method="put" id="newAudioTisForm" enctype="multipart/form-data">
+                        <div class="uploadBlock">
+                            <label for="audioT">Introduction Audio</label>
+                            <input type="file" id="newAudioTis" class="uploadInput replaceInput" value="newAudioTis" name="newAudioTis">
+                            <button type="button" id="replaceAudioTis" class="deleteButton">Replace</button>
+                        </div>
+                    </form>
+                    <form method="put" id="newAudioQForm" enctype="multipart/form-data">
+                        <div class="uploadBlock">
+                            <label for="audioQ">Question Audio</label>
+                            <input type="file" id="newAudioQ" class="uploadInput replaceInput" value="newAudioQ" name="newAudioQ">
+                            <button type="button" id="replaceAudioQ" class="deleteButton">Replace</button>        
+                        </div> 
+                    </form>
+                    <form method="put" id="newAudioNForm" enctype="multipart/form-data">
+                        <div class="uploadBlock">
+                            <label for="audioN">The Correction Audio</label>
+                            <input type="file" id="newAudioN" class="uploadInput replaceInput" value="newAudioN" name="newAudioN">  
+                            <button type="button" id="replaceAudioN" class="deleteButton">Replace</button>
+                        </div>    
+                    </form>
+            </div>
+           
+                <div class="gridColumnWide divider">
+                        <div class="activityBox1"> 
+                            <div class="activityBox3">                            
+                                <h2>Currently Selected Activity</h2>
+                                <h2 id="activityToEdit2">No Activity Selected</h2>  
                             </div>
-                        </form>
-                        <form method="put" id="newAudioTisForm" enctype="multipart/form-data">
-                            <div class="uploadBlock">
-                                <label for="audioT">Introduction Audio</label>
-                                <input type="file" id="newAudioTis" class="uploadInput replaceInput" value="newAudioTis" name="newAudioTis">
-                                <button type="button" id="replaceAudioTis" class="deleteButton">Replace Intro Audio</button>
+
+                            <div class="activityBox2"> 
+                                <input type="text" id="newActivityName" name="newActivityName" placeholder="Enter New Activity Name">
+                                <button type="button" class="deleteButton" id="changeActivityName">Change</button>
                             </div>
-                        </form>
-                        <form method="put" id="newAudioQForm" enctype="multipart/form-data">
-                            <div class="uploadBlock">
-                                <label for="audioQ">Question Audio</label>
-                                <input type="file" id="newAudioQ" class="uploadInput replaceInput" value="newAudioQ" name="newAudioQ">
-                                <button type="button" id="replaceAudioQ" class="deleteButton">Replace Question Audio</button>        
-                            </div> 
-                        </form>
-                        <form method="put" id="newAudioNForm" enctype="multipart/form-data">
-                            <div class="uploadBlock">
-                                <label for="audioN">The Correction Audio</label>
-                                <input type="file" id="newAudioN" class="uploadInput replaceInput" value="newAudioN" name="newAudioN">  
-                                <button type="button" id="replaceAudioN" class="deleteButton">Replace Correction Audio</button>
-                            </div>    
-                        </form>
-                </div>
-                <div class="flex spaceBetween border">
-                    <div class="deleteButtonContainer border">
-                        <h3 class="deleteHeading">Delete VOCAB WORD</h4>
-                        <p class="description">Delete and Remove all element of the word</p>
-                        <button type="button" id="deleteVW" class="deleteButton">DELETE</button>
+                        </div>  
+                    <div class="flexColumn">  
+                        <div class="deleteButtonContainer border">
+                            <h3 class="deleteHeading">Delete ACTIVITY</h4>
+                            <p class="description">Delete the entire activity including all vocab words associated with it</p>
+                            <button type="button" id="deleteActivity" class="deleteButton">DELETE</button>
+                        </div>
                     </div>
-                    <div class="deleteButtonContainer border">
-                        <h3 class="deleteHeading">Delete ACTIVITY</h4>
-                        <p class="description">Delete the entire activity including all vocab words associated with it</p>
-                        <button type="button" id="deleteActivity" class="deleteButton">DELETE</button>
-                    </div>
-                </div>
-        </div>    
+                    <div class="activityBox4 span2">
+                                <div>
+                                    <h3 id="actSubT">Activity Sub-Type:</h3>
+                                    <div class="activityBox2">
+                                        <select name="activitySubType" id="newActivitySubType" class="selection">
+                                            <option value="" disabled selected hidden>Choose a Sub-Category</option>
+                                            <option value="Adj/Adv">Adj/Adv</option>
+                                            <option value="Conjugations">Conjugations</option>
+                                            <option value="Grammar Flooding">G. Flooding</option>
+                                            <option value="LexicarryLike">Lexicarry</option>
+                                            <option value="Nouns">Nouns</option>
+                                            <option value="Phrases">Phrases</option>
+                                            <option value="Random">Random</option>
+                                            <option value="Verbs">Verbs</option>
+                                        </select>
+                                        <button type="button" class="deleteButton" id="changeSubType">Change</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 id="actDate">Activity Date:</h3>
+                                    <div class="uploadBlock">
+                                        <label for="newActivityDate" class="primaryLabel">Activity Date:</label>
+                                        <div>
+                                            <input type="date" id="newActivityDate" name="newActivityDate" placeholder="Enter New Activity Date">
+                                            <button type="button" class="deleteButton" id="changeActivityDate">Change</button>
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 id="actNumber">Activity Number:</h3>
+                                    <div class="uploadBlock">
+                                        <label for="activityNumber" class="primaryLabel">Activity number</label>
+                                        <div>
+                                            <input type="number" id="newActivityNumber" name="number" placeholder="Meeting#.Activity#">
+                                            <button type="button" class="deleteButton" id="changeActivityNumber">Change</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>    
+            
     </div>
 <div class="navButtons">
     
@@ -274,4 +298,4 @@
 
 </body>
 
-//cSpell:ignore lexicarry
+<!-- cSpell:ignore lexicarry -->

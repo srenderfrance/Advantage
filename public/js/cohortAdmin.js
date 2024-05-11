@@ -26,7 +26,7 @@ if (description === ''){
 
       const response = await fetch("/admin/activity", {method: 'POST',
       headers: {"Content-Type": "application/json",},
-      body: JSON.stringify({description: description, date: date, type: type})
+      body: JSON.stringify({description: description, date: date, type: type, activityNumber: actNumber})
 });
       const data = await response.json();
       console.log("data")

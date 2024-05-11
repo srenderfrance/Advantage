@@ -11,6 +11,9 @@ form {
     
     padding-top: 10px;
 }
+select {
+    max-height: 45px;
+}
 
 legend,
 fieldset,
@@ -45,18 +48,19 @@ textarea {
 
 input[type="text"] {
     min-width: 50px;
-    
 }
 
 input[type="text"],
 input[type="email"],
 input[type="date"],
 input[type='number'],
+input[type='password'],
 select,
 textarea {
-  font: 1.25rem / 1.5 sans-serif;
-  box-sizing: border-box; 
-  padding-left: 10px; 
+    font: 1.25rem / 1.5 sans-serif;
+    box-sizing: border-box; 
+    padding-left: 10px; 
+    min-height: 45px;
 }
 
 .primaryLabel {
@@ -73,6 +77,8 @@ textarea {
     background-color: rgb(103, 152, 172);
     font-weight: 550;
     text-shadow: 2px 2px 0 black;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 input::placeholder,
 textarea::placeholder {
@@ -144,6 +150,10 @@ input[type=file] {
 .replaceInput {
     width: 20vw;
 }
+
+/*.secondaryLabel ~ .filterSelect {
+    font-size: 1rem;
+}*/
 /*End form and input styling*/
 
 
@@ -225,7 +235,7 @@ h3 {
     margin: 0rem 1rem .5rem 1rem;
 }
 
-#activityToEdit {
+#activityToEdit, #activityToEdit2 {
     margin: 1rem;
     text-decoration: underline;
 }
@@ -588,6 +598,9 @@ label {
     padding-right: 6rem;
 }
 
+.padding {
+    padding: 1rem;
+}
 .paddingTop {
     padding-top: 1.5rem;
 }
@@ -598,6 +611,57 @@ label {
 .padding2 {
     padding-right: 2rem;
     padding-bottom: 2rem;
+}
+
+.gridColumnWide {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding-bottom: 1rem;
+}
+
+.paddingL6 {
+    padding-left: 1rem;
+}
+
+.activityBox1 {
+    display: flex;
+    align-items: space-between;
+    justify-content:space-between;
+
+}
+
+.activityBox2 {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+}
+
+.activityBox3 {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.activityBox2 > input, button, select {
+    margin-right: .5rem;
+    font: 1.2rem;
+    
+}
+
+.activityBox4 {
+    display: flex;
+    justify-content: space-around;
+}
+
+.span2 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.divider {
+    border-bottom: 3px solid black;
 }
 
 

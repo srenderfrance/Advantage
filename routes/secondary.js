@@ -24,3 +24,5 @@ router.post('/removeFromCollection', reviewController.removeFromCollection);
 router.post('/moveToCollection', reviewController.moveToCollection);
 router.post('/removeFromActivity', reviewController.removeFromActivity);
 module.exports = router
+
+//cSpell:ignore Aand

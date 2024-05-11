@@ -44,6 +44,16 @@
                         <option value="<%=activitiesDD[i].description %>"><%= activitiesDD[i].description %></option>
                     <% } %>
                     </select>
+                    <select name="filter" id="selectFilter" class="filterSelect">
+                        <option value="" disabled selected hidden>Filter</option>
+                                <option value="Nouns">Nouns</option>
+                                <option value="Verbs">Verbs</option>
+                                <option value="Adjectives">Adjectives</option>
+                                <option value="Conjugations">Conjugations</option>
+                                <option value="Phrases">Phrases</option>
+                                <option value="LexicarryLike">Lexicarry</option>
+                                <option value="Grammar Flooding">G. Flooding</option>
+                    </select>
                     <button type="submit" id="selectActivity">Select</button>
                 </div>    
             </form>
@@ -74,8 +84,8 @@
                     <label for="customAvtivities" class="secondaryLabel flex1">Custom Activities</label>
                     <select name="activity" id="activityName" required>
                         <option value="Challenging Words">Challenging Words</option>
-                      <% for(let i=0; i < student.individualExercises.length; i++) {%>   
-                        <option value="<%=student.individualExercises[i].description %>"><%= student.individualExercises[i].description %></option>
+                      <% for(let i=0; i < individualExercises.length; i++) {%>   
+                        <option value="<%=individualExercises[i].description %>"><%= individualExercises[i].description %></option>
                     <% } %> 
                     </select>
                     <button type="submit" id="selectActivity">Select</button>
@@ -113,4 +123,4 @@
 <script type="text/javascript" src="/js/student.js"></script>
 </body>
 
-//cSpell:ignore Aand
+//cSpell:ignore Aand lexicarry

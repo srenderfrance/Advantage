@@ -9,7 +9,7 @@ function toggleSelector () {
     let labelElement = document.querySelector("#toggleButtonLabel");
     if (labelElement.textContent === "Select Vocab for a Custom Activity"){
         document.addEventListener('click', selectionToggle);
-        labelElement.textContent = "Return to Dicionary Mode";
+        labelElement.textContent = "Return to Dictionary Mode";
     } else {
         labelElement.textContent = "Select Vocab for a Custom Activity";
         document.removeEventListener('click', selectionToggle);
@@ -28,7 +28,7 @@ function selectionToggle (Event) {
     };
      
 };
-function selectFromUserselection (Event) {
+function selectFromUserSelection (Event) {
     if (Event.target.matches('.userSelectionContainer > div')){
         const userDiv = Event.target;
         userDiv.classList.toggle('selectedVocab2');
@@ -62,7 +62,7 @@ async function saveSelection () {
             const element = elementsSaved[i];
             element.classList.toggle('selectedVocab');
         };
-    console.log(selectedVw);
+    
     try {
     const response = await fetch("/student/saveSelectedVocab", {method: 'POST',
         headers: {"Content-Type": "application/json",},
@@ -70,18 +70,23 @@ async function saveSelection () {
 
     });
     const data = await response.json();
-    let usvw = []
-    for (let i = 0; i < selectedVw.length; i++) {
-        const element = selectedVw[i];
-        for (let i2 = userSelectedVocab.length -1; i2 > -1; i2--) {//loof fixed for splice.
-            const element2 = userSelectedVocab[i2];
-            if(element2.ident === element){
-                selectedVw.splice(i, 1);
+
+    console.log(selectedVw)
+
+    for (let i = 0; i < userSelectedVocab.length; i++) {
+        const element = userSelectedVocab[i];
+        for (let j = selectedVw.length -1; j > -1; j--) {//loop fixed for splice.
+            const element2 = selectedVw[j];
+            if(element.ident === element2){
+                selectedVw.splice(j, 1);
     }}};
+
+    console.log(selectedVw);
+
     for (let i = 0; i < selectedVw.length; i++) {
         const element = selectedVw[i];
-        for (let i1 = 0; i1 < vocabDictionary.length; i1++) {
-            const element2 = vocabDictionary[i1];
+        for (let j = 0; j < vocabDictionary.length; j++) {
+            const element2 = vocabDictionary[j];
             if (element2.ident === element){
                 userSelectedVocab.push(element2);
     }}};
@@ -116,7 +121,7 @@ async function createCustomActivity () {
                 activityNameIsUsed = true;
         }}
         if (activityNameIsUsed === true) {
-             window.alert("This activity name has aready been used.");
+             window.alert("This activity name has already been used.");
         } else if (userSelected.length > 12){
             window.alert('You have selected more than 12 Vocab Words. An Activity cannot have more than 12 Vocab Words.');
         } else {
@@ -150,7 +155,7 @@ async function createCustomActivity () {
         console.log(error);
 }};
 
-async function deleteCustomAtivity () {
+async function deleteCustomActivity () {
     try {
         const confirmDelete = confirm("Are you sure want to delete this Activity?");
         if(confirmDelete === true){
@@ -222,8 +227,6 @@ function filterByCategory () {
             const audioIdAtt = document.createAttribute('id');
             audioIdAtt.value = 'audioTisA' + (i+1);
             const sourceAtt = document.createAttribute('src');
-            console.log("AUDIOTIS")
-            console.log(element.audioTis);
             sourceAtt.value = element.audioTis;
             audio.setAttributeNode(audioIdAtt);
             audio.setAttributeNode(sourceAtt);
@@ -317,7 +320,7 @@ async function addToActivity() {
                 arrayToAdd.push(element2);
                 userSelectedVocab.splice(i2, 1);
     }}};
-    for (let i = 0; i < userSelectedVocab.length; i++) {//Creates an array for the userSelectedVocag in the database.
+    for (let i = 0; i < userSelectedVocab.length; i++) {//Creates an array for the userSelectedVocab in the database.
         const element = userSelectedVocab[i];
         newIdentArray.push(element.ident);
     };
@@ -328,7 +331,7 @@ async function addToActivity() {
     const cActivity = document.querySelector("#activityToEdit2").value;
     console.log("Activity Selector Value");
     console.log(cActivity);
-    for (let i = 0; i < customActivities.length; i++) {//This dinds the correct Activity Object to modify.
+    for (let i = 0; i < customActivities.length; i++) {//This binds the correct Activity Object to modify.
         const element = customActivities[i];
         if(element.description === cActivity){
             console.log("Activity");
@@ -345,7 +348,7 @@ async function addToActivity() {
                 if(element.ident === element2.ident){
                     arrayToAdd.splice(i2, 1);
     }}};
-    console.log("ArrayToAdd secondtime");
+    console.log("ArrayToAdd Second Time");
     console.log(arrayToAdd);
     arrayToShow.push(...arrayToAdd,...currentActivityVL);//This add the remaining selected VWs to the activity.
     const userVocabC = document.querySelector('#B');
@@ -372,11 +375,17 @@ async function addToActivity() {
 };
 
 async function moveToCollection () {
+
     console.log("MOVE TO COLLECTION IS RUNNING!");
+    
     const toMove = document.querySelectorAll('.selectedVocab3');
     const activityDescription = document.querySelector('#activityToEdit2').value;
+
+    console.log("TO MOVE");
+    console.log(toMove);
     console.log("Activity element");
     console.log(activityDescription);
+
     let vArrayToModify = [];
     for (let i = 0; i < customActivities.length; i++) {
         const element = customActivities[i];
@@ -389,15 +398,17 @@ async function moveToCollection () {
     let forCollection = [];
     for (let i = 0; i < toMove.length; i++) {
             const element = toMove[i];
-            for (let i2 = vArrayToModify.length -1; i2 > -1; i2--) {
-                const sW = vArrayToModify[i2];
+            for (let j = vArrayToModify.length -1; j > -1; j--) {
+                const sW = vArrayToModify[j];
                 if (element.style.backgroundImage.slice(5, -2) === sW.imageUrl){
                     console.log(sW.ident);
                     forCollection.push(sW);
                     selection.push(sW.ident);
-                    vArrayToModify.splice(i2, 1); 
+                    vArrayToModify.splice(j, 1); 
     }}};
     userSelectedVocab.push(...forCollection);
+    console.log("Selection")
+    console.log(selection)
     try {
         const response = await fetch("/student/moveToCollection", {method: 'POST',
             headers: {"Content-Type": "application/json",},
@@ -423,6 +434,8 @@ async function moveToCollection () {
 async function removeFromCollection () {
     console.log("REMOVE FROM COLLECTION IS RUNNING!");
     const toRemove = document.querySelectorAll('.selectedVocab2');
+    console.log("TO REMOVE")
+    console.log(toRemove)
     let selection = [];
     for (let i = 0; i < toRemove.length; i++) {
             const element = toRemove[i];
@@ -467,16 +480,17 @@ async function removeFromActivity () {
         if (element.description === activityDescription){
             console.log("THEY WERE THE SAME");
             vArrayToModify = element.vocabWords;
+            console.log(vArrayToModify)
     }};
     let selection = [];
     for (let i = 0; i < toRemove.length; i++) {
             const element = toRemove[i];
-            for (let i2 = vArrayToModify.length -1; i2 > -1; i2--) {
-                const sW = vArrayToModify[i2];
+            for (let j = vArrayToModify.length -1; j > -1; j--) {
+                const sW = vArrayToModify[j];
                 if (element.style.backgroundImage.slice(5, -2) === sW.imageUrl){
                     console.log(sW.ident);
                     selection.push(sW.ident);
-                    vArrayToModify.splice(i2, 1); 
+                    vArrayToModify.splice(j, 1); 
     }}};
  try {
         const response = await fetch("/student/removeFromActivity", {method: 'POST',
@@ -498,12 +512,16 @@ async function removeFromActivity () {
 
 getAllVocab();
 document.querySelector('#activityToEdit2').addEventListener('change', showSelectedActivity);
-document.addEventListener('click', selectFromUserselection);
+document.addEventListener('click', selectFromUserSelection);
 document.addEventListener('click', playVocab);
-document.querySelector('#deleteCustomActivity').addEventListener('click', deleteCustomAtivity);
+document.querySelector('#deleteCustomActivity').addEventListener('click', deleteCustomActivity);
 document.querySelector('#newActivity').addEventListener('click', createCustomActivity);
 document.querySelector('#selectByCategory').addEventListener('click', filterByCategory);
 document.querySelector('#addToActivity').addEventListener('click', addToActivity);
 document.querySelector('#moveToCollection').addEventListener('click', moveToCollection);
 document.querySelector('#removeFromCollection').addEventListener('click', removeFromCollection);
 document.querySelector('#removeFromActivity').addEventListener('click', removeFromActivity);
+
+
+
+//cSpell:ignore usvw

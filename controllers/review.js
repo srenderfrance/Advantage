@@ -22,6 +22,7 @@ module.exports.getStudent = async (req, res) => {
          if (element.ready === true) {
             activities.push(element);
       }}; 
+      
       const categories = cohort.categories;
       let wordsSelected = [];
       for (let i = 0; i < req.user.wordsSelected.length; i++) {
@@ -75,23 +76,42 @@ module.exports.getStudent = async (req, res) => {
       const totalActivities = reviewed.length;
       for (let i = 0; i < reviewed.length; i++){
             const element = reviewed[i];
-         if(element.hasOwnProperty('type')){
+         if(element.hasOwnProperty('type')) {
             if (element.type === "DD") {
                activitiesDD.unshift(element);
-            } else if(element.type === 'WaL'){
+            } else if(element.type === 'WaL') {
                console.log('WAL');
                console.log(element.reviewedBy);
                activitiesWaL.unshift(element);
                console.log(`Activities WALL: ${activitiesWaL.length}`)
-            } else if (element.type === 'CS' && 'BS'){
+            } else if (element.type === 'CS' && 'BS') {
                activitiesS.unshift(element);
             };
          } else { 
          activitiesDD.unshift(element);
          } //console.log(activitiesDD[i]);
       }
+      function sortAlpha (array){
+      array.sort(function (a,b) {
+         if(a.description > b.description) {
+            return 1;
+         };
+         if (a.description < b.description) {
+            return -1;
+         };
+         return 0;
+      })};
+         
+     sortAlpha (activitiesDD);
+     sortAlpha (activitiesWaL);
+     sortAlpha (categories);
+     const individualExercises = req.user.individualExercises;
+     sortAlpha (individualExercises);
 
-      res.render("student",  {student: req.user, totalActivities: totalActivities, activitiesDD: activitiesDD, activitiesS: activitiesS, activitiesWaL: activitiesWaL, categories: categories, wordsSelected: wordsSelected, notReviewed: notReviewed});
+      res.render("student",  
+         {student: req.user, individualExercises: individualExercises, totalActivities: totalActivities, activitiesDD: activitiesDD, 
+            activitiesS: activitiesS, activitiesWaL: activitiesWaL, categories: categories, wordsSelected: wordsSelected, 
+            notReviewed: notReviewed});
    } catch (error) {
       console.log(error);
 
@@ -816,19 +836,22 @@ res.json("Deleted")
 };
 
 module.exports.moveToCollection = async (req, res) => {
-   console.log(req.body);
+   console.log(req.body.toRemove);
    try {
       const student = await User.findById(req.user._id);
       const individualExercises = student.individualExercises;
-      for (let i = 0; i <individualExercises.length; i++) {//Removes words from activity.
+      for (let i = 0; i < individualExercises.length; i++) {//Removes words from activity.
          const element = individualExercises[i];
          if (req.body.activity === element.description){
-            for (let i2 = element.vocabWords.length -1; i2 > -1; i2--) {//Made for Splice.
-               const vocabIdent = element.vocabWords[i2];
-               for (let i2 = 0; i2 < req.body.toRemove.length; i2++) {
-                  const identToRemove = req.body.toRemove[i2];
+            for (let j = element.vocabWords.length -1; j > -1; j--) {//Made for Splice.
+               console.log(element.vocabWords);
+               const vocabIdent = element.vocabWords[j];
+               for (let k = 0; k < req.body.toRemove.length; k++) {
+                  const identToRemove = req.body.toRemove[k];
                   if (vocabIdent === identToRemove){
-                     element.vocabWords.splice(i2, 1);
+                     console.log("second if");
+                     console.log(vocabIdent);
+                     element.vocabWords.splice(j, 1);
       }}}}};
       const collection = student.wordsSelected;
       collection.push(...req.body.toRemove);
@@ -852,14 +875,18 @@ module.exports.removeFromActivity = async (req, res) => {
       const student = await User.findById(req.user._id);
       const individualExercises = student.individualExercises;
       for (let i = 0; i <individualExercises.length; i++) {//Removes words from activity.
-         const element = individualExercises[i];
-         if (req.body.activity === element.description){
-            for (let i2 = element.vocabWords.length -1; i2 > -1; i2--) {//Made for Splice.
-               const vocabIdent = element.vocabWords[i2];
-               for (let i2 = 0; i2 < req.body.toRemove.length; i2++) {
-                  const identToRemove = req.body.toRemove[i2];
+         const exercise = individualExercises[i];
+         if (req.body.activity === exercise.description){
+            console.log("First IF")
+            console.log(exercise.description)
+            for (let j = exercise.vocabWords.length -1; j > -1; j--) {//Made for Splice.
+               const vocabIdent = exercise.vocabWords[j];
+               for (let k = 0; k < req.body.toRemove.length; k++) {
+                  const identToRemove = req.body.toRemove[k];
                   if (vocabIdent === identToRemove){
-                     element.vocabWords.splice(i2, 1);
+                     console.log("Second IF")
+                     console.log(identToRemove)
+                     exercise.vocabWords.splice(j, 1);
       }}}}};
       
       console.log("going to save")
