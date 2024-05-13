@@ -10,7 +10,7 @@
 <body class="coolBackground2">
     <div class="flex studentTop">
         <div class="cohortContainer flexColum">
-            <h2>Cohort: <%=student.cohort.cohortName%></h2>
+            <h2 id="currentCohort">Cohort: <%=student.cohort.cohortName%></h2>
             <h2>GP: <%=student.username%></h2>
         </div>
         <button onclick="window.location.href = '/student/customAandD' ;">Picture Dictionary</button>
@@ -28,24 +28,19 @@
             
                 <div class="container smallForm">
                     <label for="newActivity" class="secondaryLabel flex1">New Activities</label>
-                    <select name="activity" id="activityName" required>
+                    <select name="activity" id="activityName" class="mainSelect" required>
                     <% for (let i = 0; i < notReviewed.length; i++) {%>   
                     <option value="<%=notReviewed[i].description %>"><%= notReviewed[i].description %></option>
                     <% } %>
                     </select>
-                    <button type="submit" id="selectActivity">Select</button>
-                </div>
-            </form>
-            <form action="/student/reviewActivity" method="POST">
-                <div class="container smallForm">
-                    <label for="activity" class="secondaryLabel flex1">Rough and Ready Activities</label>
-                    <select name="activity" id="activityDDName" required>
-                    <%  for (let i = 0; i < activitiesDD.length; i++) {%>   
-                        <option value="<%=activitiesDD[i].description %>"><%= activitiesDD[i].description %></option>
-                    <% } %>
-                    </select>
-                    <select name="filter" id="selectFilter" class="filterSelect">
-                        <option value="" disabled selected hidden>Filter</option>
+                    <select name="filter" id="filterNewActivities" class="filterSelect">
+                        <option value="" disabled selected hidden>Sort/Filter</option>
+                            <optgroup label="Sort">
+                                <option value="Alphabetical">Alphabetical</option>
+                                <option value="Date">Date</option>
+                                <option value="Number">Number</option>
+                            </optgroup>
+                            <optgroup label="Filter">                                
                                 <option value="Nouns">Nouns</option>
                                 <option value="Verbs">Verbs</option>
                                 <option value="Adjectives">Adjectives</option>
@@ -53,6 +48,37 @@
                                 <option value="Phrases">Phrases</option>
                                 <option value="LexicarryLike">Lexicarry</option>
                                 <option value="Grammar Flooding">G. Flooding</option>
+                            </optgroup>
+                    </select>
+                    <button type="submit" id="selectActivity">Select</button>
+                </div>
+            </form>
+            <form action="/student/reviewActivity" method="POST">
+                <div class="container smallForm">
+                    <label for="activity" class="secondaryLabel flex1">Rough and Ready Activities</label>
+                    <select name="activity" id="activityDDName" class="mainSelect" required>
+                    <%  for (let i = 0; i < activitiesDD.length; i++) {%>   
+                        <option value="<%=activitiesDD[i].description %>"><%= activitiesDD[i].description %></option>
+                    <% } %>
+                    </select>
+
+                    <select name="filter" id="filterActivities" class="filterSelect">
+                        <option value="" disabled selected hidden>Sort/Filter</option>
+                            <optgroup label="Sort">
+                                <option value="Alphabetical">Alphabetical</option>
+                                <option value="Date">Date</option>
+                                <option value="Number">Number</option>
+                            </optgroup>
+                            <optgroup label="Filter">                                
+                                <option value="Nouns">Nouns</option>
+                                <option value="Verbs">Verbs</option>
+                                <option value="Adjectives">Adjectives</option>
+                                <option value="Conjugations">Conjugations</option>
+                                <option value="Phrases">Phrases</option>
+                                <option value="LexicarryLike">Lexicarry</option>
+                                <option value="Grammar Flooding">G. Flooding</option>
+                            </optgroup>
+
                     </select>
                     <button type="submit" id="selectActivity">Select</button>
                 </div>    
@@ -60,10 +86,28 @@
             <form action="/student/reviewActivity" method="POST">
                 <div class="container smallForm">
                     <label for="activity" class="secondaryLabel flex1">Watch and Learn Activities</label>
-                    <select name="activity" id="activityWaLName" required>
+                    <select name="activity" id="activityWaLName" class="mainSelect" required>
                     <%  for (let i = 0; i < activitiesWaL.length; i++) {%>   
                         <option value="<%=activitiesWaL[i].description %>"><%= activitiesWaL[i].description %></option>
                     <% } %>
+                    </select>
+                    <select name="filter" id="filterWaL" class="filterSelect">
+                        <option value="" disabled selected hidden>Sort/Filter</option>
+                            <optgroup label="Sort">
+                                <option value="Alphabetical">Alphabetical</option>
+                                <option value="Date">Date</option>
+                                <option value="Number">Number</option>
+                            </optgroup>
+                            <optgroup label="Filter">                                
+                                <option value="Nouns">Nouns</option>
+                                <option value="Verbs">Verbs</option>
+                                <option value="Adjectives">Adjectives</option>
+                                <option value="Conjugations">Conjugations</option>
+                                <option value="Phrases">Phrases</option>
+                                <option value="LexicarryLike">Lexicarry</option>
+                                <option value="Grammar Flooding">G. Flooding</option>
+                            </optgroup>
+
                     </select>
                     <button type="submit" id="selectActivity">Select</button>
                 </div>    
@@ -82,7 +126,7 @@
             <form action="/student/reviewCustomActivity" method="POST">
                 <div class="container smallForm">
                     <label for="customAvtivities" class="secondaryLabel flex1">Custom Activities</label>
-                    <select name="activity" id="activityName" required>
+                    <select name="activity" id="activityName" class="mainSelect" required>
                         <option value="Challenging Words">Challenging Words</option>
                       <% for(let i=0; i < individualExercises.length; i++) {%>   
                         <option value="<%=individualExercises[i].description %>"><%= individualExercises[i].description %></option>
@@ -94,7 +138,7 @@
             <form action="/student/reviewByCategory" method="POST">
                 <div class="container smallForm">
                     <label for="categoryToReview" class="secondaryLabel flex1">Category Review</label>
-                    <select name="categoryToReview" id="categoryToReview" required>
+                    <select name="categoryToReview" id="categoryToReview" class="mainSelect" required>
                         <option value="All">Review All</option>
                     <% for(let i=0; i < categories.length; i++) {%>
                         <option value="<%=categories[i] %>"><%= categories[i] %></option>  

@@ -233,21 +233,35 @@ async function updateActivity (Event) {
          window.alert("You cannot remove the Activity Number unless the activity has a Date.")
       }
    }
-   console.log("NEW ACT INFO BEFORE FETCH")
-   console.log(newActivityInfo);
    try {
       const response = await fetch('updateActivity', {
       method:'PUT',
       headers: {"Content-Type": "application/json",},
       body: JSON.stringify({newActivityInfo: newActivityInfo}),
       });
+      
+      
+      if (newActivityInfo.fieldToModify === 'description') {
+         optionsArray = document.querySelectorAll("#selectActivity > option");
+         for (let i = 0; i < optionsArray.length; i++) {
+            const optionNode = optionsArray[i];
+            if (optionNode.value === newActivityInfo.originalDescription) {
+               optionNode.value = newActivityInfo.description;
+               optionNode.innerText = newActivityInfo.description;
+            };
+            
+         }
+         console.log(optionsArray)
+      };
+      await populateDropDown1();
       document.querySelector("#newActivityName").value = "";
       document.querySelector("#newActivityDate").value = "";
       document.querySelector("#newActivityNumber").value = "";
       document.querySelector("#newActivitySubType").value = "";
 
 
-      await populateDropDown1();
+      
+      
    } catch (error) {
       console.log(error);
    }

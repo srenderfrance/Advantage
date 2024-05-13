@@ -900,6 +900,105 @@ module.exports.removeFromActivity = async (req, res) => {
    res.json("Good AND GONE");
 };
 
+module.exports.getActivities = async (req, res) => {
+
+   console.log('GET Activities is Running');
+   console.log(req.body);
+   console.log(req.body.currentCohort)
+
+   function sortAlpha (array){
+      array.sort(function (a,b) {
+         if(a.description > b.description) {
+            return 1;
+         };
+         if (a.description < b.description) {
+            return -1;
+         };
+         return 0;
+   })};
+
+   function sortDate (array) {
+      array.sort(function (a,b) {
+         let date1;
+         let date2;
+         if (a.date.length === 8){
+            const part1 = a.date.slice(6);
+            const part2 = a.date.slice(3,5);
+            const part3 = a.date.slice(0,2);
+            date1 = `${part1}`+`${part2}`+`${part3}`;
+         } else if (a.date.length === 10) {
+            const part1 = a.date.slice(8);
+            const part2 = a.date.slice(3,5);
+            const part3 = a.date.slice(0,2);
+            date1 = `${part1}`+`${part2}`+`${part3}`;
+         };
+          if (b.date.length === 8){
+            const part1 = b.date.slice(6);
+            const part2 = b.date.slice(3,5);
+            const part3 = b.date.slice(0,2);
+            date2 = `${part1}`+`${part2}`+`${part3}`;
+         } else if (b.date.length === 10) {
+            const part1 = b.date.slice(8);
+            const part2 = b.date.slice(3,5);
+            const part3 = b.date.slice(0,2);
+            date2 = `${part1}`+`${part2}`+`${part3}`;
+         }; 
+
+         if (date1 > date2) {
+            return 1;
+         };
+         if (date1 < date2) {
+            return -1;
+         };
+         return 0;
+      })
+   }
+
+try { 
+      let response = await Cohort.find({cohortName: req.body.currentCohort}).exec();
+      const cohort = response[0];
+
+      let activities = [];
+      let activitiesWaL = [];
+
+      for (let i = 0; i < cohort.activities.length; i++) { //The also filters out WAL activities from the Array
+         const element = cohort.activities[i];
+         if (element.ready === true) {
+            activities.push(element);
+      
+
+      }}; 
+      for (let i = 0; i < cohort.activities.length; i++) {
+         const element = cohort.activities[i];
+         if(element.type === "WaL"){
+            activitiesWaL.unshift(element);
+      }};
+ 
+      sortAlpha(activities);
+      sortAlpha(activitiesWaL);
+
+      let activitiesDate = [];
+      for (let i = 0; i < activities.length; i++) {
+         const element = activities[i];
+         activitiesDate.push(element);
+      };
+      let activitiesWaLDate = [];
+      for (let i = 0; i < activitiesWaL.length; i++) {
+         const element = activitiesWaL[i];
+         activitiesWaLDate.push(element);
+      };
+
+      sortDate(activitiesDate);
+      sortDate(activitiesWaLDate);
+
+      res.json({activitiesAlpha: activities, activitiesWaLAlpha: activitiesWaL, activitiesDate: activitiesDate, activitiesWaLDate: activitiesWaLDate});
+    
+} catch (error) {
+   console.log(error);
+};
+
+};
+
 
 
 //cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc Aand vwords Idents

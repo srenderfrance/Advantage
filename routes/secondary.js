@@ -23,6 +23,7 @@ router.post('/updateIndividualExercise', reviewController.updateIndividualExerci
 router.post('/removeFromCollection', reviewController.removeFromCollection);
 router.post('/moveToCollection', reviewController.moveToCollection);
 router.post('/removeFromActivity', reviewController.removeFromActivity);
+router.post('/getActivities', reviewController.getActivities);
 module.exports = router
 
 //cSpell:ignore Aand

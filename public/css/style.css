@@ -74,7 +74,6 @@ textarea {
 }
 .secondaryLabel ~ select {
     font-size: 1.2rem; 
-    background-color: rgb(103, 152, 172);
     font-weight: 550;
     text-shadow: 2px 2px 0 black;
     padding-top: 6px;
@@ -129,10 +128,25 @@ select {
     color: var(--lightFont);
 }
 
-option {
+.filterSelect > option, .selection > option, select > option {
     color: var(--primaryFontClr);
     background-color:rgb(230, 240, 249, .75);
-    
+}
+
+.filterSelect > optgroup {
+    color: var(--primaryFontClr);
+    background-color:rgb(230, 240, 249, .75);
+    /*font-size: 1rem; */
+
+}
+
+.filterSelect {
+    flex-grow: 0;
+    max-width: 11rem;
+}
+
+.mainSelect {
+    max-width: 20rem;
 }
 .selection { 
     margin: 0 .5rem;
