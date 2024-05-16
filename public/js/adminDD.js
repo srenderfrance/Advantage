@@ -100,7 +100,8 @@ async function populateDropDown1 () {
    const activity = document.querySelector("#selectActivity").value;
    const data = await getVocab(activity);
    console.log(data);
-   const vocabList = data.vocabList;
+   vocabList = data.vocabList;
+   console.log(vocabList)
    const activityInfo = data.activityInfo;
    let toInsert = ""
       for (let i = 0; i < vocabList.length; i++){
@@ -144,20 +145,25 @@ async function populateDropDown1 () {
       document.querySelector(".imageContainer img").src = "Category: No vocab word has been selected.";
       document.querySelector("#newVWDescription").value = "";
       document.querySelector("#newVWCategory").value = "";
+      
       console.log("NEW TIS")
       console.log(document.querySelector("#newAudioTis").value);
+      
       document.querySelector("#newAudioTis").value = "";
       document.querySelector("#newAudioQ").value = "";
       document.querySelector("#newAudioN").value = "";
       document.querySelector("#newImage").value = "";
+
+      console.log(vocabList)
       
 }
 async function populateDropDown2 () {
    const activity = document.querySelector("#activityName2").value;
-   vocabList2 = await getVocab(activity);
+   const data = await getVocab(activity);
+   vocabList2 = data.vocabList;
    let toInsert = ""
-          for (let i = 0; i < vocabList.length; i++){
-             toInsert += `<option value="${vocabList[i].ident}">${vocabList[i].description}</option> `
+          for (let i = 0; i < vocabList2.length; i++){
+             toInsert += `<option value="${vocabList2[i].ident}">${vocabList2[i].description}</option> `
           }
    const dropDownSelector = document.querySelector("#vwToLink");
    for (let i = dropDownSelector.options.length - 1; i > 0; i--){
@@ -166,6 +172,7 @@ async function populateDropDown2 () {
    dropDownSelector.insertAdjacentHTML("beforeend", `${toInsert}`);
 }
 //const cohort = document.querySelector("#cohort").value;
+
 async function getVocab(activityD)  {
    console.log("getVocab is running")
    //console.log('activity');
@@ -173,20 +180,21 @@ async function getVocab(activityD)  {
    //console.log(typeof(activity))
    console.log(activityD)
    if (activityD !== ''){
-      const response = await fetch("/admin/getVocabList", {
-      method: 'PUT',
-      headers: {"Content-Type": "application/json",},
-      body: JSON.stringify({activity: activityD}),
-      });
-      const data = await response.json();
-      console.log("data.vL")
-      console.log(data.vocabList);
-      console.log(data.activityInfo);
-
-      //vocabList = data.vocabList;
-
-      //console.log(vocabList);
-     return data;
+      try {
+         const response = await fetch("/admin/getVocabList", {
+         method: 'PUT',
+         headers: {"Content-Type": "application/json",},
+         body: JSON.stringify({activity: activityD}),
+         });
+         const data = await response.json();
+         console.log("data.vL")
+         console.log(data.vocabList);
+         console.log(data.activityInfo); 
+         return data;
+      } catch (error) {
+        console.log(error);
+      };
+    
 
    } else {alert("No Activity was selected.")}
 
@@ -268,6 +276,8 @@ async function updateActivity (Event) {
 }
 
 function loadPreview() {
+   console.log("Loading Preview");
+   console.log(vocabList);
    
    const image = document.querySelector("img");
    const audioTis = document.querySelector("#audioTis");
@@ -276,21 +286,19 @@ function loadPreview() {
    const vocabWord = document.querySelector("#existingVocabWords").value;
    let description = document.querySelector("#description");
    let category = document.querySelector("#kind");
+
    console.log(category);
-   
+
    vocabList.forEach((vw) => {
       if (vw.description === vocabWord){
          image.src = vw.imageUrl;
-        
-         audioTis.src = vw.audioTis;
-         
+         audioTis.src = vw.audioTis; 
          audioQPreview.src = vw.audioQ;
+
          console.log(audioQPreview.src)
          description.innerText = `Description: ${vw.description}`;
          category.innerText = `Category: ${vw.category}`;
          selectedVWord = vw;
-        
-
          audioNPreview.src = vw.audioN;
 
    }});

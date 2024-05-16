@@ -38,6 +38,7 @@
     "@types/passport-local": "^1.0.35",
     "@types/validator": "^13.11.1",
     "cross-env": "^7.0.3",
+    "jsdom": "^24.0.0",
     "nodemon": "^3.0.1"
   }
 }
