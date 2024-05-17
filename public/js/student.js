@@ -32,6 +32,7 @@ async function getActivities () {
         body: JSON.stringify({currentCohort}),
        })
        data = await response.json();
+
        console.log(data)
 
        if (data.activitiesAlpha !== undefined) {
@@ -42,9 +43,14 @@ async function getActivities () {
        activitiesWaLAlpha = data.activitiesWaLAlpha;
        } else {activitiesWaLAlpha = []};
        
-       if (data.activitiesNew !== undefined) {
-       activitiesNewAlpha = data.activitiesNew;
-       } else {activitiesNewAlpha = []};
+       if (data.activitiesNewAlpha !== undefined) {
+       activitiesNewAlpha = data.activitiesNewAlpha;
+       console.log(data.activitiesNewAlpha)
+       console.log("ActivitiesNewAlpha Good")
+       console.log(activitiesNewAlpha)
+       } else {activitiesNewAlpha = []
+        console.log("ActivitiesNewAlpha Not good")
+       };
     } catch (error) {
        console.log(error);
     };
@@ -69,6 +75,7 @@ async function getActivities () {
     sortDate(activitiesDate);
     sortDate(activitiesWaLDate);
     sortDate(activitiesNewDate);
+    console.log(activitiesNewDate)
 
     function sortDate (array) {
         console.log("sorting Date")
@@ -137,24 +144,27 @@ async function getActivities () {
 
 function filterAndSort (event) {
     console.log("filtering or sorting!");
+    console.log(event.target.value);
     const param = event.target.value;
-    if (param === "filterNewActivities") { //Handles filtering and sorting the New activity drop down.
+    if (event.target.id === "filterNewActivities") { //Handles filtering and sorting the New activity drop down.
         const dropD = document.querySelector("#activityName");
+        let currentList = activitiesNewAlpha;
         console.log('yes1');
         if (param === "Date") {
             console.log ("DATE")
+            currentList = activitiesNewDate;
             clearAndPopulate(dropD, activitiesNewDate);
         } else if (param === "Alphabetical") {
             console.log("Alphabetical");
             clearAndPopulate(dropD, activitiesNewAlpha);
+            currentList = activitiesNewAlpha;
         } else if (param === "Number") {
             console.log("Number");
+            currentList = activitiesNewNumber;
             clearAndPopulate(dropD, activitiesNewNumber);
         } else {
             console.log("GOING TO RUN FILTER");
-            console.log(currentList)
             const newList = filter(param, currentList);
-            console.log(newList)
             clearAndPopulate(dropD, newList);
         }
     }

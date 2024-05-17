@@ -951,7 +951,8 @@ try {
    if(e.reviewedBy.some(checkReviews) === false){
        return true;
    }});
-
+   console.log(activitiesNew);
+   
    activities = activities.filter(e => {         
    if(e.reviewedBy.some(checkReviews)){
        return true;
