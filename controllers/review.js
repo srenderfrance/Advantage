@@ -9,6 +9,7 @@ const Category = require('../models/category');
 const cloudinary = require('../middleware/cloudinary');
 const { format } = require('morgan');
 const ObjectId = require('mongodb').ObjectId;
+const utils = require('../controllers/utils');
 
 
 module.exports.getStudent = async (req, res) => {
@@ -91,22 +92,13 @@ module.exports.getStudent = async (req, res) => {
          activitiesDD.unshift(element);
          } //console.log(activitiesDD[i]);
       }
-      function sortAlpha (array){
-      array.sort(function (a,b) {
-         if(a.description > b.description) {
-            return 1;
-         };
-         if (a.description < b.description) {
-            return -1;
-         };
-         return 0;
-      })};
+      
          
-     sortAlpha (activitiesDD);
-     sortAlpha (activitiesWaL);
-     sortAlpha (categories);
+     utils.sortAlpha (activitiesDD);
+     utils.sortAlpha (activitiesWaL);
+     utils.sortAlpha (categories);
      const individualExercises = req.user.individualExercises;
-     sortAlpha (individualExercises);
+     utils.sortAlpha (individualExercises);
 
       res.render("student",  
          {student: req.user, individualExercises: individualExercises, totalActivities: totalActivities, activitiesDD: activitiesDD, 

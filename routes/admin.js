@@ -36,4 +36,5 @@ router.post("/createWaL", upload.fields([{name: 'video', maxCount: 1}, {name: "i
 router.put("/getAdditionalInfo", adminController.getAdditionalInfo);
 router.put("/deleteWaLActivity", adminController.deleteWaLActivity);
 router.put("/deleteWaLMedia", adminController.deleteWaLMedia);
+router.put("/getActivities", adminController.getActivities);
 module.exports = router;

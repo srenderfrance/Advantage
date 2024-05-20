@@ -11,6 +11,7 @@ const e = require("express");
 const { ConnectionPoolReadyEvent } = require("mongodb");
 const ObjectId = require('mongodb').ObjectId;
 const multer = require("multer");
+const utils = require('../controllers/utils')
 //const Category = require('../models/category');
 
 
@@ -1520,14 +1521,46 @@ try {
       cohort.markModified('activities');
       cohort.markModified('vocabWords')
       await cohort.save();
-
-   
-   
    
    } catch (error) {
    console.log(error);
-   };
-   
-   };
+   }};
 };
+
+module.exports.getActivities = async (req, res) => {
+   console.log(req.body);
+   const activityTypes = req.body.activityTypes;
+
+   let response = await Cohort.find({cohortName: req.body.currentCohort}).exec();
+   const cohort = response[0];
+   const activitiesAlpha = [];
+   const activitiesWaL = [];
+
+   if (activityTypes.DD === true) {
+   for (let i = 0; i < cohort.activities.length; i++) { 
+      const element = cohort.activities[i];
+      if (element.type === "DD") {
+         delete element.additionalInfo;
+         delete element.vocabWords;
+         delete element.reviewedBy; 
+         activitiesAlpha.push(element);
+   }}; 
+   utils.sortAlpha(activitiesAlpha);
+   };
+   if (activityTypes.WaL === true) {
+      for (let i = 0; i < cohort.activities.length; i++) { 
+      const element = cohort.activities[i];
+      if (element.type === "WaL") {
+         //delete element.additionalInfo;
+         delete element.vocabWords;
+         delete element.reviewedBy; 
+         activitiesAlpha.push(element);
+   }};
+   }
+   const activities = {
+      activitiesAlpha: activitiesAlpha,
+      activitiesWaLA: activitiesWaL,
+   }
+   res.json({activitiesAlpha})
+}
 //cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc

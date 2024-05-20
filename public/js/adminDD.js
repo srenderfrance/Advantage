@@ -18,10 +18,14 @@ document.querySelector("#changeActivityName").addEventListener("click", updateAc
 document.querySelector("#changeSubType").addEventListener("click", updateActivity);
 document.querySelector("#changeActivityDate").addEventListener("click", updateActivity);
 document.querySelector("#changeActivityNumber").addEventListener("click", updateActivity);
+document.querySelector('#filterActivities').addEventListener("change", filterAndSort);
 
-let vocabList = [];
-let selectedVWord = {};
-let vocabList2 = [];
+const vocabList = [];
+const selectedVWord = {};
+const vocabList2 = [];
+let activitiesAlpha = [];
+const activitiesNumber = [];
+const activitiesDate = [];
 
 async function uploadVocabWord (){
    console.log("Upload Vocab Word Is running");
@@ -581,6 +585,155 @@ async function finalizeActivity () {
   } catch (error) {
      console.log(error); 
    }
-}
+};
+
+function filterAndSort (event) {
+    console.log("filtering or sorting!");
+    console.log(event.target.value);
+    const param = event.target.value;
+    
+    if (event.target.id === "filterActivities") { //Handles Filtering and Sorting the RR Activity dropdown.
+        console.log("YES 2")
+        const dropD = document.querySelector("#selectActivity");
+        let currentList = activitiesAlpha;
+        if (param === "Date") {
+            console.log ("DATE");
+            currentList = activitiesDate;
+            clearAndPopulate(dropD, activitiesDate);
+        } else if (param === "Alphabetical") {
+            console.log("Alphabetical");
+            currentList = activitiesAlpha;
+            clearAndPopulate(dropD, activitiesAlpha);
+        } else if (param === "Number") {
+            console.log("Number");
+            currentList = activitiesNumber;
+            clearAndPopulate(dropD, activitiesNumber);
+        } else {
+            console.log("GOING TO RUN FILTER");
+            const newList = filter(param, currentList);
+            clearAndPopulate(dropD, newList);
+        }
+    };
+   
+    function clearAndPopulate (dropDown, array) {
+        console.log("Clearing and Populating")
+        for (let i = dropDown.options.length - 1; i > -1; i--){
+         dropDown.remove(i);
+        }; 
+        let toInsert = ""
+        for (let i = 0; i < array.length; i++){
+         toInsert += `<option value="${array[i].description}">${array[i].description}</option>`
+        };
+        dropDown.insertAdjacentHTML("beforeend", `${toInsert}`);
+    };
+    function filter (param, array) {
+        let filteredArray = [];
+        for (let i = 0; i < array.length; i++) {
+            const element = array[i];
+            if (element.subType === param) {
+                filteredArray.push(element)
+        }}
+        return filteredArray;
+    }; 
+};
+
+async function getActivities () {
+    console.log("Running Get Activities")
+
+    const currentCohort = document.querySelector("#cohort").innerText;
+    console.log(currentCohort);
+    try {
+       const response = await fetch ('/admin/getActivities', {
+        method: "Put",
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify({currentCohort: currentCohort, activityTypes: {DD: true}}),
+       })
+       data = await response.json();
+
+       console.log(data)
+
+       if (data.activitiesAlpha !== undefined) {
+       activitiesAlpha = data.activitiesAlpha;
+       } else {activitiesAlpha = []};
+
+       
+    } catch (error) {
+       console.log(error);
+    };
+
+    for (let i = 0; i < activitiesAlpha.length; i++) {
+        const element = activitiesAlpha[i];
+        activitiesDate.push(element);
+        activitiesNumber.push(element);
+    };
+    
+    sortDate(activitiesDate);
+   
+
+    function sortDate (array) {
+        console.log("sorting Date")
+      array.sort(function (a,b) {
+         let date1;
+         let date2;
+         if (a.date.length === 8){
+            const part1 = a.date.slice(6);
+            const part2 = a.date.slice(3,5);
+            const part3 = a.date.slice(0,2);
+            date1 = `${part1}`+`${part2}`+`${part3}`;
+         } else if (a.date.length === 10) {
+            const part1 = a.date.slice(8);
+            const part2 = a.date.slice(3,5);
+            const part3 = a.date.slice(0,2);
+            date1 = `${part1}`+`${part2}`+`${part3}`;
+         };
+          if (b.date.length === 8){
+            const part1 = b.date.slice(6);
+            const part2 = b.date.slice(3,5);
+            const part3 = b.date.slice(0,2);
+            date2 = `${part1}`+`${part2}`+`${part3}`;
+         } else if (b.date.length === 10) {
+            const part1 = b.date.slice(8);
+            const part2 = b.date.slice(3,5);
+            const part3 = b.date.slice(0,2);
+            date2 = `${part1}`+`${part2}`+`${part3}`;
+         }; 
+
+         if (date1 > date2) {
+            return 1;
+         };
+         if (date1 < date2) {
+            return -1;
+         };
+         return 0;
+    })};
+    console.log("NUMBER TEST")
+    console.log(activitiesNumber[0])
+    sortNumber(activitiesNumber);
+    console.log(activitiesNumber[0])
+    
+    function sortNumber (array) {
+        console.log("Sort Number Running")
+        
+        array.sort(function (a,b) {
+            if (a.activityNumber === null) {
+                return 1;
+            };
+            if (b.activityNumber === null) {
+                return -1;
+            };
+            if (a.activityNumber > b.activityNumber) {
+                return 1;
+            };
+            if (a.activityNumber < b.activityNumber) {
+                return -1;
+            };
+            if (a.activityNumber === b.activityNumber) {
+            return 0;
+            };
+    })};
+};
+
+
+getActivities();
 
 //cSpell:ignore cloudinary cloudinaryid durl eurl

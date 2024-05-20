@@ -19,14 +19,38 @@
         <div class="divider">
             <div class="flexSplit">
                 <div class="flex">
+                    <div>
                     <h2>Select an Activity To Edit</h2>
                     <div class="container outlineNone aSelfCenter">
+
+                    <div class="flex">
                         <select name="activity" id="selectActivity" class="selection" required>
                             <option value="" disabled selected hidden>Choose an Activity</option>
                         <% for(let i=0; i < activities.length; i++) {%>   
                             <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
                         <% } %>
                         </select> 
+                        <select name="filter" id="filterActivities" class="filterSelect">
+                        <option value="" disabled selected hidden>Sort/Filter</option>
+                            <optgroup label="Sort">
+                                <option value="Alphabetical">Alphabetical</option>
+                                <option value="Date">Date</option>
+                                <option value="Number">Number</option>
+                            </optgroup>
+                            <optgroup label="Filter">                                
+                                <option value="Nouns">Nouns</option>
+                                <option value="Verbs">Verbs</option>
+                                <option value="Adjectives">Adjectives</option>
+                                <option value="Conjugations">Conjugations</option>
+                                <option value="Phrases">Phrases</option>
+                                <option value="LexicarryLike">Lexicarry</option>
+                                <option value="Grammar Flooding">G. Flooding</option>
+                            </optgroup>
+
+                    </select>
+                    
+                    </div>
+                    </div>
                     </div>
                 </div>
                 <select name="activitySubType" id="activitySubType" class="selection">

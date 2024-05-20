@@ -4,7 +4,8 @@ const User = require('../models/user');
 const Cohort = require('../models/cohort');
 const Activity = require('../models/activity');
 const PreReg = require('../models/preReg');
-const Category = require('../models/category')
+const Category = require('../models/category');
+const utils = require('../controllers/utils');
 
 //let adminCohortExport = {}
 module.exports.getLogin = (req, res) => {
@@ -107,6 +108,7 @@ module.exports.getActivityDDAdmin = async (req, res) => {
       if (element.type === "DD"){
         activities.push(element);
     }};
+    utils.sortAlpha(activities);
     const categories = cohort.categories;
     res.render("activityDDAdmin",{ user: req.user, activities: activities, categories: categories});
 
