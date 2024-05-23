@@ -541,33 +541,43 @@ module.exports.createCustomActivity = async (req, res) => {
       console.log('user wordsSelected');
       console.log(req.user.wordsSelected)
 
-      let student = await User.findById(req.user._id);
-      const newActivity = {description: req.body.activityName, vocabWords: req.body.activityVocab};
-      student.individualExercises.push(newActivity);
-      console.log(student.individualExercises)
-      
-      for (let i = student.wordsSelected.length -1; i > -1; i--) {
-         const element = student.wordsSelected[i];
-         for (let index = 0; index < req.body.activityVocab.length; index++) {
-            const toRemove = req.body.activityVocab[index];
-            if (element === toRemove){
-               student.wordsSelected.splice(i, 1)
-      }}};
-      console.log(student.wordsSelected)
-      await student.save();
-      //const vocabWordId = new ObjectId(req.body.vocabWord);
+      const cohort = await Cohort.findById(req.user.cohort._id);
 
-
-      /*let activities = await Activity.where('cohort').equals(req.user.cohort).select('description');
-      console.log(activities);
-      const selectedVocab = await VocabWord.find({'_id': {$in: req.user.wordsSelected}});
-      console.log("selectedVocab");
-      console.log(selectedVocab)*/
+      let cannotUse = false;
+      if (req.body.activityName === "Challenging Words"){
+         console.log("Challenging WORDS")
+         cannotUse = true;
+      };
+      for (let i = 0; i < cohort.categories.length; i++) {
+         const element = cohort.categories[i];
+         if (element === req.body.activityName){
+            cannotUse = true;
+            break;
+      }};
+      if (cannotUse === true){
+         res.json({cannotUse});
+      } else {
+         let student = await User.findById(req.user._id);
+         const newActivity = {description: req.body.activityName, vocabWords: req.body.activityVocab};
+         student.individualExercises.push(newActivity);
+         console.log(student.individualExercises)
+            
+         for (let i = student.wordsSelected.length -1; i > -1; i--) {
+            const element = student.wordsSelected[i];
+            for (let index = 0; index < req.body.activityVocab.length; index++) {
+               const toRemove = req.body.activityVocab[index];
+               if (element === toRemove){
+                  student.wordsSelected.splice(i, 1)
+         }}};
+         console.log(student.wordsSelected)
+         await student.save(); 
+         res.json("Selection Updated");
+      };
  
    } catch (error) {
       console.log(error);
    };
-   res.json("Selection Updated");
+  
 };
 
 module.exports.reviewCustomActivity = async (req, res) => {

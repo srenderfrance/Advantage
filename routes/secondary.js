@@ -6,24 +6,24 @@ const { ensureAuth } = require('../middleware/auth');
 
 router.get('/', ensureAuth, reviewController.getStudent);
 router.get('/customAandD', ensureAuth, reviewController.getDictionary);
-router.put('/getAllVocab', reviewController.getAllVocab);
-router.post('/reviewActivity', reviewController.reviewActivity)
-//router.post('/reviewActivityDD', reviewController.reviewActivityDD);
-//router.post('/reviewActivityWaL', reviewController.reviewActivityWaL)
-router.put('/getVocabList', reviewController.getVocabList);
-router.get('/getSelectedVocab', reviewController.getSelectedVocab);
-router.post('/saveSelectedVocab', reviewController.saveSelectedVocab);
-router.post('/createCustomActivity', reviewController.createCustomActivity);
+router.get('/getSelectedVocab', ensureAuth, reviewController.getSelectedVocab);
 
-router.post('/reviewResults', reviewController.userReviewResults);
-router.post('/reviewCustomActivity', reviewController.reviewCustomActivity);
-router.post('/reviewByCategory', reviewController.reviewByCategory);
-router.post('/deleteCustomActivity', reviewController.deleteCustomActivity);
-router.post('/updateIndividualExercise', reviewController.updateIndividualExercise);
-router.post('/removeFromCollection', reviewController.removeFromCollection);
-router.post('/moveToCollection', reviewController.moveToCollection);
-router.post('/removeFromActivity', reviewController.removeFromActivity);
-router.post('/getActivities', reviewController.getActivities);
+router.put('/getAllVocab', ensureAuth, reviewController.getAllVocab);
+router.put('/getVocabList', ensureAuth, reviewController.getVocabList);
+
+router.post('/reviewActivity', ensureAuth, reviewController.reviewActivity)
+router.post('/saveSelectedVocab', ensureAuth,reviewController.saveSelectedVocab);
+router.post('/createCustomActivity', ensureAuth, reviewController.createCustomActivity);
+router.post('/reviewResults', ensureAuth, reviewController.userReviewResults);
+router.post('/reviewCustomActivity', ensureAuth, reviewController.reviewCustomActivity);
+router.post('/reviewByCategory', ensureAuth, reviewController.reviewByCategory);
+router.post('/deleteCustomActivity', ensureAuth, reviewController.deleteCustomActivity); 
+router.post('/updateIndividualExercise', ensureAuth, reviewController.updateIndividualExercise);
+router.post('/removeFromCollection', ensureAuth, reviewController.removeFromCollection);
+router.post('/moveToCollection', ensureAuth, reviewController.moveToCollection);
+router.post('/removeFromActivity', ensureAuth, reviewController.removeFromActivity);
+router.post('/getActivities', ensureAuth, reviewController.getActivities);
+
 module.exports = router
 
 //cSpell:ignore Aand

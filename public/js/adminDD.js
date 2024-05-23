@@ -20,8 +20,8 @@ document.querySelector("#changeActivityDate").addEventListener("click", updateAc
 document.querySelector("#changeActivityNumber").addEventListener("click", updateActivity);
 document.querySelector('#filterActivities').addEventListener("change", filterAndSort);
 
-const vocabList = [];
-const selectedVWord = {};
+let vocabList = [];
+let selectedVWord = {};
 const vocabList2 = [];
 let activitiesAlpha = [];
 const activitiesNumber = [];

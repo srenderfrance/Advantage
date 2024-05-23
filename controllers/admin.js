@@ -114,8 +114,7 @@ module.exports.getActivityVocab = async (req, res, next) => {
    console.log('getActivityVocab is running')
    try {
       const activityDescription = req.body.activity;
-      const cohortId = req.user.cohort._id; 
-      const cohort = await Cohort.findById(cohortId);
+      const cohort = await Cohort.findById(req.user.cohort._id);
       let activityInfo = {
          date: Date,
          subType: "",
@@ -184,7 +183,7 @@ module.exports.postActivity = async (req, res) => {
       
       const activity = {
            date: req.body.date,
-           description: req.body.description, //need to have a function double check and make sure the description has not already been used
+           description: req.body.description,
            vocabWords: [],
            reviewedBy: [],
            type: req.body.type,
@@ -1350,16 +1349,6 @@ try {
          }
          }
       };
-      /*console.log("After Loop")
-      console.log("Vocab Set");
-      console.log(vocabSet);
-      console.log("Results Array");
-      console.log(resultArray);
-      console.log(resultArray[0])
-      console.log("the Keys Array");
-      console.log(theKeysArray[0]);
-      console.log(theKeysArray[1]);*/
-
       const promisesToAwait = resultArray.filter(function (el) { //This removes any empty slots from the Array that are created when uploads are designated "Do Not Upload"
          return el != null;
       });

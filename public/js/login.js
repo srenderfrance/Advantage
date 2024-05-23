@@ -17,8 +17,10 @@ async function login () {
         });
              
             if (response.redirected === true) {
+                console.log("Response.Redirected was TRUE")
                 window.location = response.url;
             } else{
+                
                 const data = await response.json();
                 console.log("Not Redirecting");
 
@@ -45,11 +47,12 @@ function togglePassword2 () {
 
 function submitLogin (event) {
     if (event.key === 'Enter' || event.code === "Enter") {
-        document.querySelector('#loginForm').submit();
+        login();
 }};
 
 function submitRegister (event) {
     if (event.key === 'Enter' || event.code === "Enter") {
+
         document.querySelector("#registerForm").submit();
 }};
 

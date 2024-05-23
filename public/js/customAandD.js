@@ -149,9 +149,12 @@ async function createCustomActivity () {
         });
         const data = await response.json();
 
-        console.log(data);
+        console.log(data.cannotUse);
+        if (data.cannotUse === true) {
+            window.alert("That activity name is not available. Please choose another option.");
+        } else {
        window.location.reload();
-    }} catch (error) {
+    }}} catch (error) {
         console.log(error);
 }};
 
