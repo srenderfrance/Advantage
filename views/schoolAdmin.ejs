@@ -6,23 +6,31 @@
 	
 </head>
 <body class="backgroundColorL">
-<h1>School ADMIN PAGE</h1>   
 
-<form action="/admin/preReg" method="POST">
-    <div>
-        <h2>Create PreRegistration Login Credentials</h2>
-        <label for="emial" class="primaryLabel">Email Address</label>
-        <input type="text" id="email" name="email" required>
-        <label for="password" class="primaryLabel">Create Password</label>
-        <input type="text" id="password" name="password" required>
-    </div>
-    <button type="submit">Create</button>
-</form>
+<div class="flex top">
+    <div class="cohortContainer flexColum">
+        <h2>School Admin</h2>   
+    </div>   
+</div>   
+<div>
+    <h2>Create PreRegistration Login Credentials</h2>
+    <form action="/admin/preReg" method="POST">
+        <div>
+            
+            <label for="emial" class="primaryLabel">Email Address</label>
+            <input type="text" id="email" name="email" required>
+            <label for="password" class="primaryLabel">Create Password</label>
+            <input type="text" id="password" name="password" required>
+        </div>
+        <button type="submit">Create</button>
+    </form>
+</div>
 
+ <h2>Create New Cohort</h2>
 <form action="/admin/newCohort" method="POST">
     <div>
-        <h2>Create New Class</h2>
-        <label for="cohort" class="primaryLabel">New Class Name</label>
+       
+        <label for="cohort" class="primaryLabel">Cohort Name</label>
         <input type="text" id="cohort" name="cohortName"
         required>
          <label for="language" class="primaryLabel">Language</label>
@@ -34,37 +42,47 @@
     </div>    
     <button type="submit">Create</button>
  </form>
- <h2>Add/Remove class admin privileges</h2>
-    <div class="dropDown">
-        <label for="cohort" class="primaryLabel">Select Class</label>    
+ <h2>Add/Remove Cohort Admin Privileges</h2>
+    <div class="">
+        <label for="cohort" class="primaryLabel">Select the appropriate Cohort then select the GP.</label>   
             <select name="cohort" id="cohortName" required>
-                <option value="">Select Class</option>
+                <option value="">Select Cohort</option>
                 <% for(let i=0; i < cohorts.length; i++) {%>   
                 <option value="<%= cohorts[i].cohortName %>"><%= cohorts[i].cohortName %></option>
-            <% } %>
+                <% } %>
+            </select>  
+            <select name="student" id="StudentName">
+                <option value="">Select GP</option>
             </select>
     </div>    
-    <button type="button" id="cohortSelection">Select</button>
 
-<form action="admin/updateCohortAdmin" method="PUT">
-    <div class="dropDown">
-        <label for="student" class="primaryLabel">Student</label>
-            <select name="student" id="StudentName">
-            <option value="">Select Student</option>
-            </select>
-    </div>
-    <button type="button" id="giveToStudent">Give Class Admin Privileges</button>
-    <button type="button" id="removeFromStudent">Remove Class Admin Privileges</button>
-</form>
+
+    <button type="button" id="giveToStudent">Give Admin Privileges</button>
+    <button type="button" id="removeFromStudent">Remove Admin Privileges</button>
+
 
 <!-- Need a way to enter cohort End date, and make it so you can only edit cohorts you created -->
 
-<div class="navButtons">
-    <button onclick="window.location.href ='/admin';" class="navButton">Class Admin</button>
-    <button onclick="window.location.href ='/student';" class="navButton">Student Page</button>
-    <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
- </div>   
+<div class="flexSplit">
+    <div class="flex">
+        <% if (user.adminLevel > 0){ %>
+            <button onclick="window.location.href ='/admin';">Activity Admin</button>
+        <% } %>   
+        <% if (user.adminLevel > 0){ %>
+            <button onclick="window.location.href ='/admin/activityDD';">RR Admin</button>
+        <% } %>
+        <% if (user.adminLevel > 0){ %>
+            <button onclick="window.location.href ='/admin/activityWaL';">WaL Admin</button>
+        <% } %>
+        <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
+    </div>
+    <div class="navButtons">
+        <button onclick="window.location.href ='student';" class="navButton">GP HOME</button>
+        <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
+    </div>
+</div>
+   
 <script type="text/javascript" src="/js/schoolAdmin.js"></script>
 </body>
 
-//cSpell:ignore lexicarry 
+<!-- cSpell:ignore lexicarry 

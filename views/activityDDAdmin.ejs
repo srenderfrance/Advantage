@@ -10,8 +10,15 @@
 
 
 <body class="backgroundColorL">
-    <h1 id="cohort"> <%=user.cohort.cohortName %></h1>
-    <h2>Rough and Ready Activity Admin</h2>
+
+<div class="flex top">
+    <div class="cohortContainer flexColum">
+                <h2>Rough and Ready Activity Admin</h2>   
+                <h2 id="cohort">Cohort: <%=user.cohort.cohortName %></h2>
+   
+    </div>   
+</div>
+    
 
 
 <form id="newVWForm" action="/admin/createVocab" enctype="multipart/form-data" method="POST">
@@ -308,15 +315,26 @@
                 </div>    
             
     </div>
-<div class="navButtons">
-    
-    <button onclick="window.location.href ='/admin';" class="navButton">Class Admin</button>
-    <button onclick="window.location.href ='/student';" class="navButton">Student Page</button>
-  <% if (user.adminLevel > 1){ %>
-         <button onclick="window.location.href ='/admin/schoolAdmin';" class="navButton">School Admin</button>
-    <% } %>
-    <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
+
+ <div class="flexSplit">
+    <div class="flex">
+        <% if (user.adminLevel > 0){ %>
+            <button onclick="window.location.href ='/admin';">Activity Admin</button>
+        <% } %>   
+        <% if (user.adminLevel > 0){ %>
+            <button onclick="window.location.href ='/admin/activityWaL';">WaL Admin</button>
+        <% } %>
+        <% if (user.adminLevel > 1){ %>
+            <button onclick="window.location.href ='/admin/schoolAdmin';">School Admin</button>
+        <% } %>
+        <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
+    </div>
+    <div class="navButtons">
+        <button onclick="window.location.href ='/student';" class="navButton">GP HOME</button>
+        <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
+    </div>
 </div>
+
 <script type="text/javascript" src="/js/adminDD.js"></script>
 
 

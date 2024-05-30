@@ -1517,25 +1517,31 @@ try {
 };
 
 module.exports.getActivities = async (req, res) => {
-   console.log(req.body);
+   console.log(req.body.currentCohort);
+   const cohortSelection = req.body.currentCohort;
    const activityTypes = req.body.activityTypes;
+   try {
+      
+      let response = await Cohort.findOne({cohortName: cohortSelection});
+      console.log("RESPONSE")
+      console.log(response.cohortName);
+      const cohort = response;
+      const activitiesAlpha = [];
+      const activitiesWaL = [];
 
-   let response = await Cohort.find({cohortName: req.body.currentCohort}).exec();
-   const cohort = response[0];
-   const activitiesAlpha = [];
-   const activitiesWaL = [];
+      if (activityTypes.DD === true) {
+      for (let i = 0; i < cohort.activities.length; i++) { 
+         const element = cohort.activities[i];
+         if (element.type === "DD") {
+            delete element.additionalInfo;
+            delete element.vocabWords;
+            delete element.reviewedBy; 
+            activitiesAlpha.push(element);
+      }}};
+   
 
-   if (activityTypes.DD === true) {
-   for (let i = 0; i < cohort.activities.length; i++) { 
-      const element = cohort.activities[i];
-      if (element.type === "DD") {
-         delete element.additionalInfo;
-         delete element.vocabWords;
-         delete element.reviewedBy; 
-         activitiesAlpha.push(element);
-   }}; 
-   utils.sortAlpha(activitiesAlpha);
-   };
+utils.sortAlpha(activitiesAlpha);
+   
    if (activityTypes.WaL === true) {
       for (let i = 0; i < cohort.activities.length; i++) { 
       const element = cohort.activities[i];
@@ -1551,5 +1557,8 @@ module.exports.getActivities = async (req, res) => {
       activitiesWaLA: activitiesWaL,
    }
    res.json({activitiesAlpha})
-}
+} catch (error) {
+   console.log(error)
+}};
+
 //cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc

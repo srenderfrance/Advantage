@@ -7,11 +7,15 @@
 </head>
 <body class="backgroundColor">
     
-<h1 id="cohort"> <%=user.cohort.cohortName %></h1>
-<h2>Class Admin Page</h2>
+<div class="flex top">
+    <div class="cohortContainer flexColum">
+        <h2 id="cohort">Activity Admin</h2>
+        <h2>Cohort: <%=user.cohort.cohortName %></h2>       
+    </div>   
+</div>
 <form method="POST" id="newActivityForm" action="/admin/activity" enctype="multipart/form-data">  
     <div class="container">
-        <h2>Create New Activity</h2>
+        <h2 class="selection">Create New Activity</h2>
         <div class="flex spaceOnTop">
             <div class="loginContainer">
                 <div class="elementGrid">                
@@ -20,7 +24,7 @@
                 </div>
                 <div class="elementGrid paddingTop">
                     <label for="activityType" class="primaryLabel">Activity Type</label>
-                    <select name="activityType" id="type" class="selection">
+                    <select name="activityType" id="type" class="selection2">
                         <option value="DD">Rough and Ready</option>
                     <!--<option value="BS">Basic Sentence</option> --> 
                     <!--<option value="CS">Complex Sentence</option> --> 
@@ -50,13 +54,14 @@
     <div class="flex">
         <button onclick="window.location.href ='admin/activityDD';">RR Admin</button>
         <button onclick="window.location.href ='admin/activityWaL';">WaL Admin</button>
-      <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
+       <% if (user.adminLevel > 1){ %>
+             <button onclick="window.location.href ='admin/schoolAdmin';">School Admin</button>
+        <% } %>
+        <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
     </div>
     <div class="navButtons">
-        <button onclick="window.location.href ='student';" class="navButton">Student Page</button>
-      <% if (user.adminLevel > 1){ %>
-             <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
-        <% } %>
+        <button onclick="window.location.href ='student';" class="navButton">GP HOME</button>
+     
         <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
     </div>
 </div>

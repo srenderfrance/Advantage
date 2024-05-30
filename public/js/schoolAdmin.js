@@ -1,4 +1,4 @@
-document.querySelector("#cohortSelection").addEventListener("click", sendCohortSelection);
+document.querySelector("#cohortName").addEventListener("change", sendCohortSelection);
 document.querySelector("#giveToStudent").addEventListener("click", giveToStudent);
 document.querySelector("#removeFromStudent").addEventListener("click", removeFromStudent);
 

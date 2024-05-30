@@ -640,7 +640,8 @@ function filterAndSort (event) {
 async function getActivities () {
     console.log("Running Get Activities")
 
-    const currentCohort = document.querySelector("#cohort").innerText;
+    const cohortH2 = document.querySelector("#cohort").innerText;
+    const currentCohort = cohortH2.slice(8)
     console.log(currentCohort);
     try {
        const response = await fetch ('/admin/getActivities', {

@@ -153,6 +153,10 @@ select {
        
 }  
 
+.selection2 {
+    margin: 0;
+}
+
 input[type=file] {
     font: 1.25rem sans-serif;
     border-radius: 0.25rem;
@@ -678,5 +682,13 @@ label {
     border-bottom: 3px solid black;
 }
 
+.top {
+  justify-content: space-between;
+  margin: 0 3.5rem 0 3.5rem;
+}
+
+.cohortContainer > h2 {
+    justify-content: flex-start;
+}
 
 /*  cSpell:ignore downarrow    */ 

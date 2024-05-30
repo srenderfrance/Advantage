@@ -8,7 +8,7 @@
 </head>
 
 <body class="coolBackground2">
-    <div class="flex studentTop">
+    <div class="flex top">
         <div class="cohortContainer flexColum">
             <h2 id="currentCohort">Cohort: <%=student.cohort.cohortName%></h2>
             <h2>GP: <%=student.username%></h2>
@@ -21,7 +21,7 @@
             <h3>Total vocabulary: <%=student.totalWords %> </h3>
             <h3>Total number of Activities: <%=totalActivities%> </h3>
             <h3>Total of activity review sessions: <%=student.totalReviews %> </h3>
-            <h3>Total total Challenging Words to review: <%=student.problemWords.length %> </h3>
+            <h3>Total Challenging Words to review: <%=student.problemWords.length %> </h3>
         </div>
         <div class="reviewContainer"> 
             <form action="/student/reviewActivity" method="POST">
@@ -150,21 +150,30 @@
         </div>    
     </section>  
 
-
-<div class="navButtons">
-    <% if (student.adminLevel > 0){ %>
-        <button onclick="window.location.href ='admin';" class="navButton">Class Admin</button>
-   <% } %>
-  <% if (student.adminLevel > 1){ %>
-         <button onclick="window.location.href ='admin/schoolAdmin';" class="navButton">School Admin</button>
-    <% } %>
-    <button onclick="window.location.href ='/logout';" class="navButton">Logout</button> 
-       
-    
-
+<div class="flexSplit">
+    <div class="flex">
+        <% if (student.adminLevel > 0){ %>
+            <button onclick="window.location.href ='admin';">Activity Admin</button>
+        <% } %>   
+        <% if (student.adminLevel > 0){ %>
+            <button onclick="window.location.href ='admin/activityDD';">RR Admin</button>
+        <% } %>
+        <% if (student.adminLevel > 0){ %>
+            <button onclick="window.location.href ='admin/activityWaL';">WaL Admin</button>
+        <% } %>
+        <% if (student.adminLevel > 1){ %>
+            <button onclick="window.location.href ='admin/schoolAdmin';">School Admin</button>
+        <% } %>
+        <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
+    </div>
+    <div class="navButtons">
+     
+        <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
+    </div>
 </div>
+
     
 <script type="text/javascript" src="/js/student.js"></script>
 </body>
 
-//cSpell:ignore Aand lexicarry
+<!-- cSpell:ignore Aand lexicarry

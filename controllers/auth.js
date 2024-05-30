@@ -58,7 +58,7 @@ module.exports.getSchoolAdmin = async (req, res) => {
   //console.log (cohorts);
   //console.log(cohorts.length)
   //adminCohortExport = cohorts
-  res.render("schoolAdmin", {cohorts: cohorts} );
+  res.render("schoolAdmin", {cohorts: cohorts, user: req.user} );
   //console.log(adminCohortExport)
 };
 
