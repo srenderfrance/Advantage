@@ -1,5 +1,4 @@
-
-
+const crypto = require('crypto');
 
 
 function sortAlpha (array){
@@ -13,7 +12,41 @@ function sortAlpha (array){
          return 0;
       })};
 
-module.exports = {sortAlpha};
+function salt () {
+   return crypto.randomBytes(16).toString('hex');
+};
+
+function hashPassword(password, salt, callback) {
+   try {
+      return new Promise((resolve, reject) => {   
+         password = password.normalize();
+         console.log("password inside of hash function")
+         //console.log(password);
+         //console.log(salt)
+         const iterations = 10000;
+         const hashBytes = 64;
+         const digest = 'sha512';
+
+         crypto.pbkdf2(password, salt, iterations, hashBytes, digest, (err, derivedKey) => {
+            console.log("PBKDF2")
+            console.log(password)
+            console.log(salt)
+            if (err) {
+               reject (err)
+            } else {
+               resolve (derivedKey.toString('hex'));
+            }
+   });
+})
+
+  } catch (error) {
+     console.log(error); 
+   }
+};
+
+
+
+
 /*
 function updateLV (cohort, vocabWord, mediaKeyObj, newMediaObj) { //The newMediaObj parameter needs 2 keys {ulr: , id: }
    const links = vocabWord.linkedVocab;
@@ -54,5 +87,8 @@ function updateLV (cohort, vocabWord, mediaKeyObj, newMediaObj) { //The newMedia
 module.exports = {updateLV};
 
 */
+
+
+module.exports = {sortAlpha, salt, hashPassword};
 
 //cSpell:ignore cloudinary     

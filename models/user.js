@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, trusted } = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    salt: {
+        type: String,
+        require: true   
     },
     email: {
         type: String,

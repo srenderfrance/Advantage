@@ -11,7 +11,8 @@ const e = require("express");
 const { ConnectionPoolReadyEvent } = require("mongodb");
 const ObjectId = require('mongodb').ObjectId;
 const multer = require("multer");
-const utils = require('../controllers/utils')
+const crypto = require('crypto');
+const utils = require('../controllers/utils');
 //const Category = require('../models/category');
 
 
@@ -33,11 +34,27 @@ module.exports.postCohort = async (req, res, next) => {
    };
 
 module.exports.createReg = async (req, res, next) => {
+const salt = utils.salt();
+console.log("SALT")
+console.log(salt)
+const password = req.body.password;
+const hashedPassword = await utils.hashPassword(password, salt, (hash) => {
+   console.log(`Hashed password with salt is: ${hash}`);
 
-   const newPreReg = await PreReg.create({
+});
+console.log("Hashed Pass")
+console.log(hashedPassword);  
+const newPreReg = await PreReg.create({
       email: req.body.email.toLowerCase(),
-      password: req.body.password,
+      salt: salt,
+      password: hashedPassword,
    });
+/*
+  
+*/
+
+
+
 res.redirect("/admin/schoolAdmin");
 };
 
