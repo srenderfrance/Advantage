@@ -691,4 +691,17 @@ label {
     justify-content: flex-start;
 }
 
+.demoSelect {
+    
+    margin-right: 3rem;
+    margin-left: 5rem;
+
+    display: flex;
+    
+}
+
+.mainLoginContainer {
+    display: flex;
+   
+}
 /*  cSpell:ignore downarrow    */ 
