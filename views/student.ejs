@@ -164,6 +164,10 @@
         <% if (student.adminLevel > 1){ %>
             <button onclick="window.location.href ='admin/schoolAdmin';">School Admin</button>
         <% } %>
+        <% if (student.adminLevel > 1){ %>
+            <button onclick="window.location.href ='admin/superAdmin';">Global Admin</button>
+        <% } %>
+
         <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
     </div>
     <div class="navButtons">

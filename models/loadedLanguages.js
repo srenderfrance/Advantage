@@ -12,7 +12,7 @@ const loadedLanguageSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    vocabWords: {
+    vocabWords: { 
         type: Array,
         default: [VocabWordSubdocSchema],
     },

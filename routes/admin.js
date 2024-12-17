@@ -10,10 +10,13 @@ router.get("/schoolAdmin", ensureAuth, authController.getSchoolAdmin)
 router.get("/activityWaL", ensureAuth, authController.getActivityWaLAdmin);
 router.get("/activityDD", ensureAuth, authController.getActivityDDAdmin);
 router.get("/activityP", ensureAuth, authController.getActivityPAdmin);
+/*router.get("/getCohorts", ensureAuth, adminController.getCohortInfo);*/
+router.get("/superAdmin", ensureAuth, authController.getSuperAdmin);
 
+router.post("/getMaterialLoader", ensureAuth, adminController.getMaterialUploader);
 router.post("/preReg", ensureAuth, adminController.createReg);
+router.post("/newSchool", ensureAuth, adminController.createNewSchool);
 router.post("/newCohort", ensureAuth, adminController.postCohort);
-router.post("/cohortName", ensureAuth, adminController.getStudentList);
 router.post("/updateCohortAdmin", ensureAuth, adminController.updateCohortAdmin);
 router.post("/removeCohortAdmin", ensureAuth, adminController.removeCohortAdmin);
 router.post("/activity", ensureAuth, adminController.postActivity);

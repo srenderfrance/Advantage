@@ -8,6 +8,7 @@ const Category = require('../models/category');
 const utils = require('../controllers/utils');
 const crypto = require('crypto');
 
+
 //let adminCohortExport = {}
 module.exports.getLogin = (req, res) => {
 
@@ -73,7 +74,7 @@ module.exports.logout = (req, res, next) => {
  };
 
 module.exports.getSchoolAdmin = async (req, res) => {
-  const cohorts = await Cohort.find()
+  const cohorts = await Cohort.find();
   //console.log (cohorts);
   //console.log(cohorts.length)
   //adminCohortExport = cohorts
@@ -81,7 +82,10 @@ module.exports.getSchoolAdmin = async (req, res) => {
   //console.log(adminCohortExport)
 };
 
-
+module.exports.getSuperAdmin = async (req, res) => {
+  const cohorts = await Cohort.find();
+  res.render("superAdmin", {cohorts: cohorts, user: req.user});
+};
 
 module.exports.getCohortAdmin = async (req, res) => {
   console.log('Get Cohort Admin Running')
@@ -270,7 +274,9 @@ module.exports.checkUsername = async (req, res) => {
   } catch (error) {
     console.log(error);
   };
-}
+};
+
+
 
 
 //cSpell:ignore Regs

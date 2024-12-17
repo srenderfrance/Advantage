@@ -4,6 +4,11 @@ const ActivitySubdocSchema = require('../models/activity');
 
 
 const CohortSchema = new mongoose.Schema({
+    school: {
+        type: String,
+        unique: true,
+        required: true,
+    },
     cohortName: {
         type: String, 
         unique: true,
@@ -34,7 +39,7 @@ const CohortSchema = new mongoose.Schema({
     },
     categories: {
         type: [String],
-        default: ["Not Categorized", "Adjectives/Descriptive Words", "Animals", "Body Parts", "Common Objects", "Countries & Nationalities", "Days/Months/Time", "Descriptions of People (Phrases)", "Emotions & Feelings", "Food & Drinks", "Grammar Flooding", "Geography/Countryside", "Household Items", "Inside Locations/Parts of Buildings", "Lexicarry", "None", "Numbers", "Office/School Items", "Places in the City", "Sounds/Letters", "Verbs", "Verb Conjugations"],
+        default: ["Not Categorized", "Descriptive Words", "Animals", "Body Parts", "Common Objects", "Countries & Nationalities", "Days/Months/Time", "Descriptions of People (Phrases)", "Emotions & Feelings", "Food & Drinks", "Grammar Flooding", "Geography/Countryside", "Household Items", "Inside Locations/Parts of Buildings", "Lexicarry", "None", "Numbers", "Office/School Items", "Places in the City", "Sounds/Letters", "Verbs", "Verb Conjugations"],
     }
  
 });

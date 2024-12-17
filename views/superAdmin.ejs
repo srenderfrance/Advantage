@@ -1,5 +1,4 @@
-<head>   
-    <!-- external CSS link -->
+<!-- external CSS link -->
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/style.css" />	
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
@@ -9,15 +8,23 @@
 
 <div class="flex top">
     <div class="cohortContainer flexColum">
-        <h2>School Admin</h2>   
+        <h2>Global Admin</h2>   
     </div>   
 </div>   
+<div>
+    <h2>Create New School</h2>
+            <div>
+                <label for="schoolName" class="primaryLabel">New School Name</label>
+                <input type="text" id="schoolName" name="schoolName" required>
+            </div>
+            <button type="button" id="subNewSchool">Create</button>
+</div>
 <div>
     <h2>Create PreRegistration Login Credentials</h2>
     <form action="/admin/preReg" method="POST">
         <div>
             
-            <label for="emial" class="primaryLabel">Email Address</label>
+        <label for="email" class="primaryLabel">Email Address</label>
             <input type="text" id="email" name="email" required>
             <label for="password" class="primaryLabel">Create Password</label>
             <input type="text" id="password" name="password" required>
@@ -26,7 +33,16 @@
     </form>
 </div>
 
- <h2>Create New Cohort</h2>
+<h2>Pre Loaded Material and Classes</h2>
+    <label class="primaryLabel" for="materialTypeSelector">Select Material Type</label>
+    <select name="materialTypeSelector" id="materialType">
+        <option value="default">Select Type</option>
+        <option value="demo">Demo</option>
+        <option value="class">Class</option>
+        <option value="activity">Activity</option>
+        <option value="library">Library</option>
+    </select>
+<h2>Create New Cohort</h2>
 <form action="/admin/newCohort" method="POST">
     <div>
        
@@ -77,12 +93,12 @@
         <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
     </div>
     <div class="navButtons">
-        <button onclick="window.location.href ='/student';" class="navButton">GP HOME</button>
+        <button onclick="window.location.href ='student';" class="navButton">GP HOME</button>
         <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
     </div>
 </div>
    
-<script type="text/javascript" src="/js/schoolAdmin.js"></script>
+<script type="text/javascript" src="/js/superAdmin.js"></script>
 </body>
 
 <!-- cSpell:ignore lexicarry 

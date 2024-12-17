@@ -23,17 +23,15 @@ async function reviewByTopic () {
 };
 
 async function getActivities () {
-    console.log("Running Get Activities")
+    console.log("Running Get Activities");
     const currentCohort = document.querySelector("#currentCohort").innerText.slice(8);
     try {
        const response = await fetch ('student/getActivities', {
         method: "POST",
         headers: {"Content-Type": "application/json",},
         body: JSON.stringify({currentCohort}),
-       })
+       });
        data = await response.json();
-
-       console.log(data)
 
        if (data.activitiesAlpha !== undefined) {
        activitiesAlpha = data.activitiesAlpha;

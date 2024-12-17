@@ -1,23 +1,24 @@
-document.querySelector("#cohortName").addEventListener("change", sendCohortSelection);
+document.querySelector("#cohortName").addEventListener("change", popDrop);
 document.querySelector("#giveToStudent").addEventListener("click", giveToStudent);
 document.querySelector("#removeFromStudent").addEventListener("click", removeFromStudent);
 
 let studentList;
 
-async function sendCohortSelection() {
+async function getCohorts() {
     const cohortSelection = document.querySelector("#cohortName").value;
-    const response = await fetch("/admin/cohortName", {method: 'POST',
+    const response = await fetch("/admin/cohortName", {method: 'GET',
             headers: {"Content-Type": "application/json",},
-            body: JSON.stringify({cohortSelection: cohortSelection}),
         });
     const data = await response.json();
     console.log(data);
-    studentList = data;
+    cohortInfo = data;
     /*console.log(studentList);
     console.log(studentList.length)*/
     
     //sessionStorage.setItem("sessionStoreStudentList", JSON.stringify(studentList));
 
+};
+function popDrop () {
     let toInsert = ""
     for (let i = 0; i < studentList.length; i++){
         console.log('name')
@@ -28,16 +29,17 @@ async function sendCohortSelection() {
     dropDownDefaultElement = document.querySelector("#studentName");
     dropDownDefaultElement.insertAdjacentHTML("beforeend", `${toInsert}`)
     };
-   
+  
+
     
 async function giveToStudent () {
     let student = document.querySelector("#studentName").value;
     let studentId;
     let infoToSend;
     const cohortSelection = document.querySelector("#cohortName").value;
-    const studentName = student.split(' ');
+    /*const studentName = student.split(' '); */
     for (let i=0; i<studentList.length; i++){
-        if (studentList[i].firstName === studentName[0] && studentList[i].lastName === studentName[1]){
+        if ("${studentList[i].firstName} ${studentList[i].lastName}" === student){
             studentId = studentList[i]._id;
             console.log('studentID set');
             console.log(studentId); 
@@ -48,9 +50,17 @@ async function giveToStudent () {
     const response = await fetch("/admin/updateCohortAdmin", {method: 'POST',
     headers: {"Content-Type": "application/json",},    
     body: JSON.stringify({infoToSend: infoToSend}),
-});
-console.log("location.reload")
-location.reload();
+    });
+    data = await response.json();
+    console.log(data);    
+    if(data === "granted") {
+        window.alert("Privileges granted.");
+        console.log("location.reload")
+        location.reload();
+    } else if (data === "Already had it") {
+        window.alert("GP already has admin privileges")
+    } else {window.alert("There was a problem.")};
+
 };
 
 
@@ -73,7 +83,16 @@ async function removeFromStudent () {
     const response = await fetch("/admin/removeCohortAdmin", {method: 'POST',
     headers: {"Content-Type": "application/json",},    
     body: JSON.stringify({infoToSend: infoToSend}),
-});
-console.log("location.reload")
-location.reload();
+    });
+    data = await response.json();
+    console.log(data);
+    if (data === "Privileges revoked") {
+        window.alert("Privileges Revoked");
+        location.reload();
+    } else if (data ==="GP has no admin privileges") {
+        window.alert("GP has no admin privileges to remove");
+    } else if (data === "Cannot remove admin privileges") {
+        window.alert("Cannot remove admin privileges");    
+    };
 };
+

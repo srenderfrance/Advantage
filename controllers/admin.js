@@ -13,6 +13,7 @@ const ObjectId = require('mongodb').ObjectId;
 const multer = require("multer");
 const crypto = require('crypto');
 const utils = require('../controllers/utils');
+const School = require('../models/school');
 //const Category = require('../models/category');
 
 
@@ -74,9 +75,12 @@ module.exports.getStudentList = async (req, res, next) => {
    let student = await User.findById(studentId);
    if (student.adminLevel === 0) {
    student.adminLevel = 1;
+   res.json("granted");
    await student.save();
-   } else {console.log(`${student.username} already has admin privileges.`);
-   window.alert(`${student.username} already has admin privileges.`);
+   } else {
+      console.log(`${student.username} already has admin privileges.`);
+      res.json("Already had it")
+  /* window.alert(`${student.username} already has admin privileges.`); */
 };
    let cohort = await Cohort.findOne({cohortName: cohortSelection});
    let studentArray = cohort.students;
@@ -94,7 +98,7 @@ module.exports.getStudentList = async (req, res, next) => {
             console.log("It should have saved")
         
          }}; 
- res.redirect(308, "/admin/schoolAdmin", { user: req.user });
+ /* res.redirect(308, "/admin/schoolAdmin", { user: req.user }); */
 };
 
  module.exports.removeCohortAdmin = async (req, res, next) => {
@@ -108,25 +112,30 @@ module.exports.getStudentList = async (req, res, next) => {
    if (student.adminLevel === 1) {
    student.adminLevel = 0;
    await student.save();
-   } else console.log(`${student.username} cannot remove admin privileges.`);
-   let cohort = await Cohort.findOne({cohortName: cohortSelection});
-   let studentArray = cohort.students;
+   res.json("Privileges revoked")
+   } else if (student.adminLevel === 0) { 
+      console.log("No privileges to remove");   
+      res.json("GP has no admin privileges");
+   } else {
+      console.log(`${student.username} cannot remove admin privileges.`);
+      res.json("Cannot remove admin privileges");
+   };
+      let cohort = await Cohort.findOne({cohortName: cohortSelection});
+      let studentArray = cohort.students;
    
-   console.log(`This is the studentArray ${studentArray}`);
-   console.log(studentArray);
-    for (let i = 0; i < studentArray.length; i++) {    
-         if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === 1){
-            studentArray[i].adminLevel = 0;
-            cohort.students = studentArray;
-            cohort.markModified('students');
-            await cohort.save();
-            console.log("It should have saved")
-           
-         };
-       
- }; res.redirect(308, "/admin/schoolAdmin");
-};
+      console.log(`This is the studentArray ${studentArray}`);
+      console.log(studentArray);
+      for (let i = 0; i < studentArray.length; i++) {    
+           if (studentId === studentArray[i].id.toString() && studentArray[i].adminLevel === 1){
+              studentArray[i].adminLevel = 0;
+              cohort.students = studentArray;
+              cohort.markModified('students');
+              await cohort.save();
+              console.log("It should have saved")
+      }}; 
+ /*res.redirect(308, "/admin/schoolAdmin"); */
 
+};
 module.exports.getActivityVocab = async (req, res, next) => {
    console.log('getActivityVocab is running')
    try {
@@ -1578,4 +1587,34 @@ utils.sortAlpha(activitiesAlpha);
    console.log(error)
 }};
 
+module.exports.createNewSchool = async (req, res) => {
+  try {
+console.log(req.body);
+      const schoolName = req.body.newSchool;
+      console.log(schoolName);
+      const school = School.create ({
+      schoolName: schoolName,
+    });
+  } catch (error) {
+    console.log(error);
+  };
+};
+
+module.exports.getMaterialUploader = async (req, res) => {
+   try {
+      const materialType = req.body.materialType;
+      if (materialType === "demo"){
+         console.log("DEMO")
+      } else if (materialType === "class"){
+         console.log("CLASS");
+      } else if (materialType === "activity"){
+         console.log("ACTIVITY");
+      } else if (materialType === "library"){
+         console.log("LIBRARY");
+      };
+
+   } catch (error) {
+      console.log(error);
+   }
+}
 //cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc
