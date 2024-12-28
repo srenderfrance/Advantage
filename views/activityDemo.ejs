@@ -1,0 +1,280 @@
+
+<head>   
+    <!-- external CSS link -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css">	
+    <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+	
+</head>
+
+<body class="backgroundColorL">
+
+<div class="flex top">
+    <div class="cohortContainer flexColum">
+                <h2>Demo Activity Admin</h2>   
+    </div>   
+</div>
+<h2 class="selection">Create New Demo</h2>
+<form method="POST" id="newDemoForm" action="/admin/demo" enctype="multipart/form-data">  
+    <div class="flex spaceOnTop">
+        <div class="loginContainer">
+            <div class="elementGrid">                
+                <input type="text" id="activity" name="description" placeholder="Description" required>
+            </div>
+            <div class="elementGrid paddingTop">
+                <select name="activityType" id="type" class="selection2">
+                    <option value="DD">Rough and Ready</option>
+                <!--<option value="BS">Basic Sentence</option> --> 
+                <!--<option value="CS">Complex Sentence</option> --> 
+                    <option value="WaL">Watch and Listen</option>
+                </select> 
+            </div>
+        </div>
+        <div class="loginContainer">
+            <div class="elementGrid">
+                <input type="text" id="language" name="language" placeholder="Language"
+                required>
+            </div>
+            <div class="elementGrid paddingTop">
+                <input type="text" id="info" name="info" placeholder="Additional Info">
+            </div>
+        </div>   
+    </div> 
+</form>
+    <div class="moveRight spacing">
+        <button type="button" class="submit" id="submitDemo">Create</button>   
+    </div>   
+<form id="newVWForm" action="/admin/createVocab" enctype="multipart/form-data" method="POST">
+    <div class="container padding">
+        <div class="divider">
+            <div class="flexSplit">
+                <div class="flex">
+                    <div>
+                        <h2>Select Demo To Edit</h2>
+                        <div class="container outlineNone aSelfCenter">
+                            <div class="flex">
+                                <select name="activity" id="selectActivity" class="selection" required>
+                                    <option value="" disabled selected hidden>Choose an Activity</option>
+                                <% for(let i=0; i < activities.length; i++) {%>   
+                                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                                <% } %>
+                                </select> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="moveRight"> 
+                <button type="button" id="finalizeActivity">Finalize Demo</button>
+            </div> 
+        </div>      
+        
+           
+           
+        <div>
+            <h3 id="activityToEdit">No Demo Selected</h3>
+        </div>
+        <div class="container uploadGrid" id="uploadContainer">
+            
+            <div class="block1">
+               <div class="flexInputsRR" >
+                    <label for="newVocabWord" class="primaryLabel">Description:</label>
+                    <input type="text" id="newVocabWord" name="description" placeholder="Enter a word or phrase" required>
+                </div> 
+            </div>
+            <div class="block3">
+                <h4>To link this Vocab Word to the audio from an existing Vocab Word, use the menus below.</h2>
+                <div class="flexColumn2">
+                    <div class="container outlineNone">
+                        <select name="activity2" id="activityName2" class="selection">
+                            <option value="" disabled selected hidden>Choose a Demo</option>
+                        <% for(let i=0; i < activities.length; i++) {%>   
+                            <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
+                        <% } %>
+                        </select> 
+                    </div>   
+                    <div class="mainSelector" >
+                        <select name="vwToLink" id="vwToLink" class="selection" > 
+                            <option value="">Select Vocab Word</option>
+                        </select>
+                    </div>
+                    <button type="button" id="selectActivity2">Select</button> 
+                </div>
+            </div>
+            <div class="block4">
+                 <div class="flexColumn">
+                     <div class="uploadBlockRR">  
+                        <label for="image" class="secondaryLabel">Vocab Word Image</label>
+                        <input type="file" class="uploadInput" id="image" value="image" name="image"> 
+                    </div>
+                    <div class="uploadBlockRR"> 
+                        <label for="audioT" class="secondaryLabel">Vocab Word Introduction Audio</label>
+                        <input type="file" id="audioT" class="uploadInput" value="audioTis" name="audioTis">
+                    </div>
+                     
+                </div>
+
+            </div>   
+            <div class="block5">
+                <div class="flexColumn">
+                    <div class="uploadBlockRR">
+                        <label for="audioQ" class="secondaryLabel">Question Audio</label>
+                        <input type="file" id="audioQ" class="uploadInput" value="audioQ" name="audioQ">
+                    </div>
+                    <div class="uploadBlockRR">
+                        <label for="audioN" class="secondaryLabel">The Correction Audio</label>
+                        <input type="file" id="audioN" class="uploadInput" value="audioN" name="audioN">  
+                    </div>  
+                </div>
+            </div>
+        </div>   
+        <div class="uploadBlockRR padding1">
+            <label for="folderUpload" class="secondaryLabel">Upload by Folder</label>
+            <input type="file" id="folderUpload" webkitdirectory = "true" multiple class="uploadInput" value="folderUpload" name="folderUpload">  
+           
+        </div>
+        <div class="moveRight padding2">
+            <button id="submitButton" type="button">Upload New Vocab Word</button> 
+        </div>           
+    </div>  
+    
+</form>       
+    <div class="container">
+        <h2>Vocab Word Preview/Edit</h2>
+        <div>
+            <div class="previewContainer">
+                <div>
+                    <div class="mainSelector">
+                        <label for="existingVocabWords" class="primaryLabel">Select vocab word to edit</label>
+                        <select name="existingVocabWords" id="existingVocabWords" class="selection" > 
+                            <option value="">Vocab Words</option>
+                        </select>
+                    </div>
+                    <h3 id="description">Description: No vocab word has been selected.</h3>
+                    <h3 id="kind">Category: No vocab word has been selected.</h3>
+                </div>
+                <div class="imagecontainer">
+                    <img src="" alt="">
+                </div> 
+                    <div class="deleteButtonContainer border">
+                        <h3 class="deleteHeading">Delete VOCAB WORD</h4>
+                        <p class="description">Delete and completely remove all element of the word</p>
+                        <button type="button" id="deleteVW" class="deleteButton">DELETE</button>
+                    </div>
+            </div>
+            <div class="audioPreviewContainer">
+                <div class="flex">
+                    <div>
+                        <h3 class="preview">Play Introduction Audio</h3>
+                        <audio src="" controls id="audioTis"></audio>
+                    </div> 
+                </div>   
+                <div class="flex">
+                    <div>
+                        <h3 class="preview">Play Question Audio</h3>
+                        <audio src="" controls id="audioQPreview"></audio>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div>
+                        <h3 class="preview">Play Correction Audio</h3>
+                        <audio src="" controls id="audioNPreview"></audio>
+                    </div> 
+                </div>
+            </div>
+            <div class="flex">
+                <div>
+                    <input type="text" id="newVWDescription" name="description" placeholder="Enter New Description">
+                    <button type="button" class="deleteButton" id="changeVWDescription">Change</button>
+                </div>
+            </div>
+            <div class="deleteContainer divider">
+                    <form method="put" enctype="multipart/form-data" id="newImageForm">
+                        <div class="uploadBlock">  
+                            <label for="image">Change Image</label>
+                            <input type="file" class="uploadInput replaceInput" id="newImage" value="newImage" name="newImage"> 
+                            <button type="button" id="replaceImage" class="deleteButton">Replace</button>
+                        </div>
+                    </form>
+                    <form method="put" id="newAudioTisForm" enctype="multipart/form-data">
+                        <div class="uploadBlock">
+                            <label for="audioT">Introduction Audio</label>
+                            <input type="file" id="newAudioTis" class="uploadInput replaceInput" value="newAudioTis" name="newAudioTis">
+                            <button type="button" id="replaceAudioTis" class="deleteButton">Replace</button>
+                        </div>
+                    </form>
+                    <form method="put" id="newAudioQForm" enctype="multipart/form-data">
+                        <div class="uploadBlock">
+                            <label for="audioQ">Question Audio</label>
+                            <input type="file" id="newAudioQ" class="uploadInput replaceInput" value="newAudioQ" name="newAudioQ">
+                            <button type="button" id="replaceAudioQ" class="deleteButton">Replace</button>        
+                        </div> 
+                    </form>
+                    <form method="put" id="newAudioNForm" enctype="multipart/form-data">
+                        <div class="uploadBlock">
+                            <label for="audioN">The Correction Audio</label>
+                            <input type="file" id="newAudioN" class="uploadInput replaceInput" value="newAudioN" name="newAudioN">  
+                            <button type="button" id="replaceAudioN" class="deleteButton">Replace</button>
+                        </div>    
+                    </form>
+            </div>
+           
+                <div class="gridColumnWide divider">
+                        <div class="activityBox1"> 
+                            <div class="activityBox3">                            
+                                <h2>Currently Selected Demo</h2>
+                                <h2 id="activityToEdit2">No Demo Selected</h2>  
+                            </div>
+
+                            <div class="activityBox2">
+                                <input type="text" id="newActivityName" name="newActivityName" placeholder="Enter New Activity Name">
+                                <button type="button" class="deleteButton" id="changeActivityName">Change</button>
+                            </div>
+                            </div>
+                            <div class="flexColumn">
+                                <div class="deleteButtonContainer border">
+                                    <h3 class="deleteHeading">Delete Demo</h4>
+                                        <p class="description">Delete the entire demo including all vocab words associated with it</p>
+                                        <button type="button" id="deleteActivity" class="deleteButton">DELETE</button>
+                                </div>
+                            </div>
+                            <div class="activityBox4 span2">
+                                <h3 id="language">Language</h3>
+                                <div class="uploadBlock">
+                                    <label for="newActivityDate" class="primaryLabel">Language</label>
+                                    <div>
+                                        <input type="date" id="newActivityDate" name="newActivityDate" placeholder="Enter Language">
+                                        <button type="button" class="deleteButton" id="changeActivityDate">Change</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                </div>    
+            
+    </div>
+
+ <div class="flexSplit">
+    <div class="flex">
+        <% if (user.adminLevel > 0){ %>
+            <button onclick="window.location.href ='/admin';">Activity Admin</button>
+        <% } %>   
+        <% if (user.adminLevel > 0){ %>
+            <button onclick="window.location.href ='/admin/activityWaL';">WaL Admin</button>
+        <% } %>
+        <% if (user.adminLevel > 1){ %>
+            <button onclick="window.location.href ='/admin/schoolAdmin';">School Admin</button>
+        <% } %>
+        <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
+    </div>
+    <div class="navButtons">
+        <button onclick="window.location.href ='/student';" class="navButton">GP HOME</button>
+        <button onclick="window.location.href ='/logout';" class="navButton">Logout</button>
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/adminDemo.js"></script>
+
+
+</body>
+
+<!-- cSpell:ignore lexicarry -->

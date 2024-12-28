@@ -91,6 +91,9 @@
             <button onclick="window.location.href ='/admin/activityWaL';">WaL Admin</button>
         <% } %>
         <!--  <button onclick="window.location.href = 'admin/activityP';">Phrases Admin</button>   -->
+        <% if (user.adminLevel > 1){ %>
+        <button onclick="window.location.href='/admin/activityDemo';">Demos</button>
+        <% } %>
     </div>
     <div class="navButtons">
         <button onclick="window.location.href ='student';" class="navButton">GP HOME</button>

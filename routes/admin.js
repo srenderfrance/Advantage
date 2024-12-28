@@ -2,17 +2,19 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/auth");
 const adminController = require("../controllers/admin");
-const upload = require("../middleware/multer")
+const upload = require("../middleware/multer");
 const { ensureAuth } = require("../middleware/auth");
 
 router.get("/", ensureAuth, authController.getCohortAdmin);
-router.get("/schoolAdmin", ensureAuth, authController.getSchoolAdmin)
+router.get("/schoolAdmin", ensureAuth, authController.getSchoolAdmin);
 router.get("/activityWaL", ensureAuth, authController.getActivityWaLAdmin);
 router.get("/activityDD", ensureAuth, authController.getActivityDDAdmin);
 router.get("/activityP", ensureAuth, authController.getActivityPAdmin);
 /*router.get("/getCohorts", ensureAuth, adminController.getCohortInfo);*/
 router.get("/superAdmin", ensureAuth, authController.getSuperAdmin);
+router.get("/activityDemo", ensureAuth, authController.getAdminDemo);
 
+router.post("/postDemo", ensureAuth, adminController.createDemo);
 router.post("/getMaterialLoader", ensureAuth, adminController.getMaterialUploader);
 router.post("/preReg", ensureAuth, adminController.createReg);
 router.post("/newSchool", ensureAuth, adminController.createNewSchool);

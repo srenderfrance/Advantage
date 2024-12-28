@@ -1564,9 +1564,8 @@ module.exports.getActivities = async (req, res) => {
             delete element.reviewedBy; 
             activitiesAlpha.push(element);
       }}};
-   
 
-utils.sortAlpha(activitiesAlpha);
+   utils.sortAlpha(activitiesAlpha);
    
    if (activityTypes.WaL === true) {
       for (let i = 0; i < cohort.activities.length; i++) { 
@@ -1576,15 +1575,15 @@ utils.sortAlpha(activitiesAlpha);
          delete element.vocabWords;
          delete element.reviewedBy; 
          activitiesAlpha.push(element);
-   }};
-   }
+   }}};
+
    const activities = {
       activitiesAlpha: activitiesAlpha,
       activitiesWaLA: activitiesWaL,
-   }
+   };
    res.json({activitiesAlpha})
-} catch (error) {
-   console.log(error)
+   } catch (error) {
+   console.log(error);
 }};
 
 module.exports.createNewSchool = async (req, res) => {
@@ -1598,13 +1597,15 @@ console.log(req.body);
   } catch (error) {
     console.log(error);
   };
+  res.send();
+
 };
 
 module.exports.getMaterialUploader = async (req, res) => {
    try {
       const materialType = req.body.materialType;
       if (materialType === "demo"){
-         console.log("DEMO")
+         console.log("DEMO");
       } else if (materialType === "class"){
          console.log("CLASS");
       } else if (materialType === "activity"){
@@ -1613,6 +1614,14 @@ module.exports.getMaterialUploader = async (req, res) => {
          console.log("LIBRARY");
       };
 
+   } catch (error) {
+      console.log(error);
+   }
+};
+
+module.exports.createDemo = async (req, res) => {
+   try {
+      console.log(req.body.newDemo.language);
    } catch (error) {
       console.log(error);
    }

@@ -7,6 +7,8 @@ const PreReg = require('../models/preReg');
 const Category = require('../models/category');
 const utils = require('../controllers/utils');
 const crypto = require('crypto');
+const { Admin } = require('mongodb');
+const School = require('../models/school');
 
 
 //let adminCohortExport = {}
@@ -82,10 +84,25 @@ module.exports.getSchoolAdmin = async (req, res) => {
   //console.log(adminCohortExport)
 };
 
+module.exports.getAdminDemo = async (req, res) => {
+  let activities = [];
+  try {
+    const demos = await School.findOne({schoolName: "Demos"});
+    activities = demos.activities;
+  } catch (error) {
+    console.log(error);
+  }
+  res.render("activityDemo", {activities: activities, user: req.user});
+}
+
 module.exports.getSuperAdmin = async (req, res) => {
-  const cohorts = await Cohort.find();
-  res.render("superAdmin", {cohorts: cohorts, user: req.user});
-};
+  try {
+    const cohorts = await Cohort.find();
+    res.render("superAdmin", {cohorts: cohorts, user: req.user});
+ 
+  } catch (error) {
+    
+}};
 
 module.exports.getCohortAdmin = async (req, res) => {
   console.log('Get Cohort Admin Running')
