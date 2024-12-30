@@ -1,4 +1,4 @@
-document.querySelector("#selectActivity").addEventListener("change", populateDropDown1);
+document.querySelector("#selectDemo").addEventListener("change", populateDropDown1);
 document.querySelector('#activityName2').addEventListener('change', populateDropDown2)
 //document.querySelector("#existingVocabWords").addEventListener("change", populateExtraInfo);
 document.querySelector("#existingVocabWords").addEventListener("change", loadPreview);
@@ -43,7 +43,7 @@ async function createDemo (){
    console.log(language);
    console.log(activity);
    const newDemo = {
-      activity: activity,
+      description: activity,
       type: type,
       language: language,
       info: info,
@@ -66,7 +66,7 @@ async function uploadVocabWord (){
    console.log("Upload Vocab Word Is running");
    document.querySelector('#submitButton').disabled = true;
    const formElement = document.querySelector("#newVWForm");
-   const activity = document.querySelector("#selectActivity").value;
+   const activity = document.querySelector("#selectDemo").value;
    const form = new FormData(formElement);
    console.log(Array.from(formElement));
    const folderInput = document.querySelector('#folderUpload').value;
@@ -83,7 +83,7 @@ async function uploadVocabWord (){
       }};
 
       try {
-         const response = await fetch("/admin/createVocab", {method: 'POST',
+         const response = await fetch("/admin/demoVocab", {method: 'POST',
          body: form,});
 
          const data = await response.json();
@@ -136,7 +136,7 @@ async function uploadVocabWord (){
 
 async function populateDropDown1 () {
    console.log("populate1")
-   const activity = document.querySelector("#selectActivity").value;
+   const activity = document.querySelector("#selectDemo").value;
    const data = await getVocab(activity);
    console.log(data);
    vocabList = data.vocabList;
@@ -163,7 +163,7 @@ async function populateDropDown1 () {
       // Populates Activity Modification Section
       document.querySelector('#activityToEdit2').innerText = `Selected Activity: ${activity}`;
       document.querySelector('#activityToEdit2').style.textDecoration = 'none';
-      document.querySelector('#actSubT').innerText = `Sub-Type: ${activityInfo.subType}`;
+     // document.querySelector('#actSubT').innerText = `Sub-Type: ${activityInfo.subType}`;
       if (activityInfo.date !== null) {
          document.querySelector('#actDate').innerText = `Date: ${activityInfo.date}`;
       } else {
@@ -220,10 +220,10 @@ async function getVocab(activityD)  {
    console.log(activityD)
    if (activityD !== ''){
       try {
-         const response = await fetch("/admin/getVocabList", {
+         const response = await fetch("/admin/getDemoVocab", {
          method: 'PUT',
          headers: {"Content-Type": "application/json",},
-         body: JSON.stringify({activity: activityD}),
+         body: JSON.stringify({demo: activityD}),
          });
          const data = await response.json();
          console.log("data.vL")

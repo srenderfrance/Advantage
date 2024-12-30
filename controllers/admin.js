@@ -217,6 +217,7 @@ module.exports.postActivity = async (req, res) => {
            subType: "",
            activityNumber: req.body.activityNumber,
            additionalInfo: [],
+           language: null,
 
       };
       theCohort.activities.push(activity);
@@ -1622,8 +1623,55 @@ module.exports.getMaterialUploader = async (req, res) => {
 module.exports.createDemo = async (req, res) => {
    try {
       console.log(req.body.newDemo.language);
+      const language = req.body.newDemo.language;
+      const description = req.body.newDemo.description;
+      const info = req.body.newDemo.info;
+      const type = req.body.newDemo.type;
+      const date = new Date();
+      console.log(date);
+      
+      let school = await School.findOne({schoolName: "Demos"});
+      const activity = {
+           date: date,
+           description: description,
+           vocabWords: [],
+           reviewedBy: [],
+           type: type,
+           ready: false,
+           subType: "",
+           activityNumber: null,
+           additionalInfo: [],
+           language: language,
+
+      };
+      school.activities.push(activity);
+      await school.save();
    } catch (error) {
       console.log(error);
    }
+};
+
+module.exports.getDemos = async (req, res) => {
+   const school = await School.findOne({schoolName: "Demos"});
+   let demos = [];
+   school.activities.forEach(element => {
+      activity = {
+         description: element.description,
+         language: element.language,
+      };
+      demos.push(activity);
+   });
+   res.json(demos);
+};
+
+module.exports.createDemoVocab = async (req, res) => {
+   console.log("CREATE DEMO VOCAB");
+   console.log(req.body);
+   console.log(req.files.image);
+};
+
+module.exports.getDemoVocab = async (req, res) => {
+   console.log("GET DEMO VOCAB");
+   console.log(req.body);
 }
 //cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc

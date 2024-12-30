@@ -13,8 +13,10 @@ router.get("/activityP", ensureAuth, authController.getActivityPAdmin);
 /*router.get("/getCohorts", ensureAuth, adminController.getCohortInfo);*/
 router.get("/superAdmin", ensureAuth, authController.getSuperAdmin);
 router.get("/activityDemo", ensureAuth, authController.getAdminDemo);
+router.get("/getDemos", adminController.getDemos);
 
 router.post("/postDemo", ensureAuth, adminController.createDemo);
+router.post("/demoVocab", ensureAuth, upload.fields([{name: 'image', maxCount: 1}, {name:'audioQ', maxCount: 1}, {name: 'audioTis', maxCount: 1}, {name: 'audioN', maxCount: 1}]), adminController.createDemoVocab);
 router.post("/getMaterialLoader", ensureAuth, adminController.getMaterialUploader);
 router.post("/preReg", ensureAuth, adminController.createReg);
 router.post("/newSchool", ensureAuth, adminController.createNewSchool);
@@ -40,5 +42,6 @@ router.put("/getAdditionalInfo", ensureAuth, adminController.getAdditionalInfo);
 router.put("/deleteWaLActivity", ensureAuth, adminController.deleteWaLActivity);
 router.put("/deleteWaLMedia", ensureAuth, adminController.deleteWaLMedia);
 router.put("/getActivities", ensureAuth, adminController.getActivities);
+router.put("/getDemoVocab", ensureAuth, adminController.getDemoVocab);
 
 module.exports = router;

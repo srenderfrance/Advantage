@@ -53,8 +53,8 @@
                         <h2>Select Demo To Edit</h2>
                         <div class="container outlineNone aSelfCenter">
                             <div class="flex">
-                                <select name="activity" id="selectActivity" class="selection" required>
-                                    <option value="" disabled selected hidden>Choose an Activity</option>
+                                <select name="demo" id="selectDemo" class="selection" required>
+                                    <option value="" disabled selected hidden>Choose Demo</option>
                                 <% for(let i=0; i < activities.length; i++) {%>   
                                     <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
                                 <% } %>

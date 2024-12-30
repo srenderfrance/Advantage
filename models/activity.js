@@ -39,7 +39,10 @@ const ActivitySchema = new mongoose.Schema({
         type: Array,
         default: [ActivityWaLSchema],
     },
-    
+    language: {
+        type: String,
+        default: null,
+    }
 });
 const Activity = mongoose.model('Activity', ActivitySchema);
 

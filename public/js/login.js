@@ -56,6 +56,21 @@ function submitRegister (event) {
         document.querySelector("#registerForm").submit();
 }};
 
+async function getDemos () {
+    try {
+          const response = await fetch("/admin/getDemos", {method: 'GET',
+            headers: {"Content-Type": "application/json",},
+        });
+    const data = await response.json();
+    console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+  
+};
+
+getDemos();
+
 document.querySelector("#password2").addEventListener('keydown', submitRegister);
 document.querySelector("#password").addEventListener('keydown', submitLogin);
 document.querySelector("#passWordCheckBox").addEventListener('click', togglePassword);
