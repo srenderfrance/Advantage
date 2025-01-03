@@ -19,7 +19,7 @@ const SchoolSchema = new mongoose.Schema({
         type: Array,
         default: [],
     },
-    activities: {
+    modelActivities: {
         type: Array,
         default: [],
     },

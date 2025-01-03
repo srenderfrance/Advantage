@@ -8,8 +8,7 @@ const Category = require('../models/category');
 const utils = require('../controllers/utils');
 const crypto = require('crypto');
 const { Admin } = require('mongodb');
-const School = require('../models/school');
-
+const Schools = require('../models/school');
 
 //let adminCohortExport = {}
 module.exports.getLogin = (req, res) => {
@@ -77,18 +76,19 @@ module.exports.logout = (req, res, next) => {
 
 module.exports.getSchoolAdmin = async (req, res) => {
   const cohorts = await Cohort.find();
+  const schools = await Schools.find();
   //console.log (cohorts);
   //console.log(cohorts.length)
   //adminCohortExport = cohorts
-  res.render("schoolAdmin", {cohorts: cohorts, user: req.user} );
+  res.render("schoolAdmin", {cohorts: cohorts, schools: schools, user: req.user} );
   //console.log(adminCohortExport)
 };
 
 module.exports.getAdminDemo = async (req, res) => {
   let activities = [];
   try {
-    const demos = await School.findOne({schoolName: "Demos"});
-    activities = demos.activities;
+    const demos = await Schools.findOne({schoolName: "Demos"});
+    activities = demos.modelActivities;
   } catch (error) {
     console.log(error);
   }

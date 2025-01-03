@@ -1644,17 +1644,37 @@ module.exports.createDemo = async (req, res) => {
            language: language,
 
       };
-      school.activities.push(activity);
+      school.modelActivities.push(activity);
+      if (school.cohorts.length === 0) {
+         const newCohort = language.concat("Demos"); 
+         school.cohorts.push(newCohort);
+         const cohort = await Cohort.create({
+            cohortName: newCohort,
+            language: language,
+            startDate: 0,
+            activities: [activity], 
+            students: [],
+            school: "Demos",
+         });
+
+      } else {
+/*         for (let i = 0; i < school.cohorts.length; i++) {
+            const element = school.cohorts[i];
+            if ( element === language.concat("Demos")) {
+
+            }   
+         } school.cohorts
+      */}
       await school.save();
    } catch (error) {
       console.log(error);
-   }
+   };
 };
 
 module.exports.getDemos = async (req, res) => {
    const school = await School.findOne({schoolName: "Demos"});
    let demos = [];
-   school.activities.forEach(element => {
+   school.modelActivities.forEach(element => {
       activity = {
          description: element.description,
          language: element.language,
