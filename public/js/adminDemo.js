@@ -1,4 +1,4 @@
-document.querySelector("#selectDemo").addEventListener("change", populateDropDown1);
+//document.querySelector("#selectDemo").addEventListener("change", populateDropDown1);
 document.querySelector('#activityName2').addEventListener('change', populateDropDown2)
 //document.querySelector("#existingVocabWords").addEventListener("change", populateExtraInfo);
 document.querySelector("#existingVocabWords").addEventListener("change", loadPreview);
@@ -58,15 +58,52 @@ async function createDemo (){
          const data = await response.json();
    } catch (error) {
      console.log(error); 
-   }
-}
+   };
+};
 
+async function getCohorts () {
+try {
+   const response = await fetch("/admin/getDemoCohorts", {
+      method: "GET",
+      headers: {'Accept': "application/json",},
+   });
+   cohortsArray = await response.json();
+   let cohort = "";
+   let activity = "";
+   for (let i = 0; i < cohortsArray.length; i++) {
+      const element = cohortsArray[i];
+      document.getElementById(element).addEventListener("change", (event) => {
+         const selection = event.currentTarget;
+         console.log(selection.value);
+         cohort = selection.id;
+         activity = selection.value;
+         document.querySelector('#selectedActivity').innerText = activity;
+         document.querySelector('#selectedCohort').innerText = cohort;
+         cohortsArray.forEach(element => {
+           if (element != cohort) {
+            const selectorE = document.getElementById(element);
+             selectorE.value = "Choose a Demo";
+           };
+         });
+         populateDropDown1();
+      });
+      
+   };
+
+} catch (error) {
+  console.log(error); 
+}};
+
+function selectActivity (){
+   console.log("SelectActivity");
+};
 //Old Code
 async function uploadVocabWord (){
    console.log("Upload Vocab Word Is running");
    document.querySelector('#submitButton').disabled = true;
    const formElement = document.querySelector("#newVWForm");
-   const activity = document.querySelector("#selectDemo").value;
+   const activity = document.querySelector("#selectedActivity").innerText;
+   //const cohort = document.querySelector('selectedCohort').value;
    const form = new FormData(formElement);
    console.log(Array.from(formElement));
    const folderInput = document.querySelector('#folderUpload').value;
@@ -115,7 +152,7 @@ async function uploadVocabWord (){
       document.querySelector("#audioT").value = "";
       document.querySelector("#audioN").value = "";
       document.querySelector("#newVocabWord").value = "";
-      document.querySelector("#category").value = "";
+      //document.querySelector("#category").value = "";
       document.querySelector("#vwToLink").value = "";
       document.querySelector("#activityName2").value = "";
       document.querySelector('#folderUpload').value = "";
@@ -136,8 +173,12 @@ async function uploadVocabWord (){
 
 async function populateDropDown1 () {
    console.log("populate1")
-   const activity = document.querySelector("#selectDemo").value;
-   const data = await getVocab(activity);
+   const activity = document.querySelector("#selectedActivity").innerText;
+   const cohort = document.querySelector("#selectedCohort").innerText;
+   console.log("activity!!!");
+   console.log(activity);
+   console.log(cohort);
+   const data = await getVocab();
    console.log(data);
    vocabList = data.vocabList;
    console.log(vocabList)
@@ -152,8 +193,8 @@ async function populateDropDown1 () {
       }
       dropDownSelector.insertAdjacentHTML("beforeend", `${toInsert}`);
           
-      document.querySelector('#activityToEdit').innerText = `Selected Activity: ${activity}`;
-      document.querySelector('#activityToEdit').style.textDecoration = 'none';
+      //document.querySelector('#activityToEdit').innerText = `Selected Activity: ${activity}`;
+      //document.querySelector('#activityToEdit').style.textDecoration = 'none';
       
       const audioNodes = document.querySelectorAll(".audioPreviewContainer audio");
       console.log("Checking ActivityInfo")
@@ -164,16 +205,7 @@ async function populateDropDown1 () {
       document.querySelector('#activityToEdit2').innerText = `Selected Activity: ${activity}`;
       document.querySelector('#activityToEdit2').style.textDecoration = 'none';
      // document.querySelector('#actSubT').innerText = `Sub-Type: ${activityInfo.subType}`;
-      if (activityInfo.date !== null) {
-         document.querySelector('#actDate').innerText = `Date: ${activityInfo.date}`;
-      } else {
-      document.querySelector('#actDate').innerText = `Date: None`;
-      };
-      if (activityInfo.number !== null) {
-         document.querySelector('#actNumber').innerText = `Activity Number: ${activityInfo.number}`;
-      } else {
-         document.querySelector('#actNumber').innerText = `Activity Number: None`;
-      }
+      
       for (let i = 0; i < audioNodes.length; i++) {
          const element = audioNodes[i];
          element.src = "";
@@ -183,7 +215,6 @@ async function populateDropDown1 () {
       document.querySelector("#kind").innerText = "";
       document.querySelector(".imageContainer img").src = "Category: No vocab word has been selected.";
       document.querySelector("#newVWDescription").value = "";
-      document.querySelector("#newVWCategory").value = "";
       
       console.log("NEW TIS")
       console.log(document.querySelector("#newAudioTis").value);
@@ -212,18 +243,19 @@ async function populateDropDown2 () {
 }
 //const cohort = document.querySelector("#cohort").value;
 
-async function getVocab(activityD)  {
+async function getVocab()  {
    console.log("getVocab is running")
-   //console.log('activity');
-   //console.log(activity);
-   //console.log(typeof(activity))
-   console.log(activityD)
+   const activityD = document.querySelector("#selectedActivity").innerText;
+   const cohortD = document.querySelector("#selectedCohort").innerText;
+   console.log("ActivityD");
+   console.log(activityD);
+   console.log(document.querySelector("#selectedActivity"));
    if (activityD !== ''){
       try {
          const response = await fetch("/admin/getDemoVocab", {
          method: 'PUT',
          headers: {"Content-Type": "application/json",},
-         body: JSON.stringify({demo: activityD}),
+         body: JSON.stringify({demo: activityD, cohort: cohortD}),
          });
          const data = await response.json();
          console.log("data.vL")
@@ -771,5 +803,5 @@ async function getActivities () {
 
 */
 
-
+getCohorts();
 //cSpell:ignore cloudinary cloudinaryid durl eurl

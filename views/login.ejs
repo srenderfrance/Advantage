@@ -58,13 +58,18 @@
     </div>
             <h3></h3>
             <div class="demoSelect">
-                <label for="demoSelect" class="primaryLabel">Choose a demo. </label>    
-                    <select name="demo" id="demoSelect" required>
-                        <option value="">Language Options</option>
-                        <option value="english">English</option>
-                        <option value="spanish">Spanish</option>
-                        <option value="albanian">Albanian</option>
-                    </select>
+                <div class="flexContainer">
+                <form action="/demo" method="POST" >
+                    <label for="demoSelect" class="primaryLabel">Choose a demo. </label>    
+                        <select name="demo" id="demoSelect" required>
+                        <option value="">Demo Options</option>
+                        <% for (let i = 0; i < demos.length; i++) { %>
+                            <option value="<%=demos[i]%>"><%=demos[i]%></option>
+                        <% } %>
+                        </select>
+                    <button type="submit" id="demoButton">Select</button>
+                </form>
+                </div>
             </div>
 </div>
 <script type="text/javascript" src="/js/login.js"></script>

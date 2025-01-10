@@ -13,7 +13,7 @@ const ObjectId = require('mongodb').ObjectId;
 const multer = require("multer");
 const crypto = require('crypto');
 const utils = require('../controllers/utils');
-const School = require('../models/school');
+const Schools = require('../models/school');
 //const Category = require('../models/category');
 
 
@@ -1592,9 +1592,9 @@ module.exports.createNewSchool = async (req, res) => {
 console.log(req.body);
       const schoolName = req.body.newSchool;
       console.log(schoolName);
-      const school = School.create ({
-      schoolName: schoolName,
-    });
+      const school = await Schools.create ({
+         schoolName: schoolName,
+      });
   } catch (error) {
     console.log(error);
   };
@@ -1628,9 +1628,10 @@ module.exports.createDemo = async (req, res) => {
       const info = req.body.newDemo.info;
       const type = req.body.newDemo.type;
       const date = new Date();
+      const cohortName = language.concat("Demos");
       console.log(date);
       
-      let school = await School.findOne({schoolName: "Demos"});
+      let school = await Schools.findOne({schoolName: "Demos"});
       const activity = {
            date: date,
            description: description,
@@ -1646,10 +1647,10 @@ module.exports.createDemo = async (req, res) => {
       };
       school.modelActivities.push(activity);
       if (school.cohorts.length === 0) {
-         const newCohort = language.concat("Demos"); 
-         school.cohorts.push(newCohort);
+         console.log("NO Cohorts");
+         school.cohorts.push(cohortName);
          const cohort = await Cohort.create({
-            cohortName: newCohort,
+            cohortName: cohortName,
             language: language,
             startDate: 0,
             activities: [activity], 
@@ -1658,13 +1659,35 @@ module.exports.createDemo = async (req, res) => {
          });
 
       } else {
-/*         for (let i = 0; i < school.cohorts.length; i++) {
+         let alreadyExists = false;
+         console.log(alreadyExists);
+         console.log("First");
+         for (let i = 0; i < school.cohorts.length; i++) {
             const element = school.cohorts[i];
-            if ( element === language.concat("Demos")) {
-
-            }   
-         } school.cohorts
-      */}
+            if (element === cohortName){
+               let cohort = await Cohort.findOne({cohortName: cohortName});
+               console.log(cohort);
+               cohort.activities.push(activity);
+               await cohort.save();
+               alreadyExists = true;
+               console.log(alreadyExists);
+               console.log("Second");
+         }};
+         if (alreadyExists === false){
+            console.log("Already Exists: False");
+            console.log(cohortName);
+            console.log(school.cohorts);
+            school.cohorts.push(cohortName);
+            console.log(school.cohorts);
+            const cohort = await Cohort.create({
+               cohortName: cohortName,
+               language: language,
+               startDate: 0,
+               activities: [activity], 
+               students: [],
+               schoolName: "Demos",
+         })};
+      };
       await school.save();
    } catch (error) {
       console.log(error);
@@ -1672,7 +1695,7 @@ module.exports.createDemo = async (req, res) => {
 };
 
 module.exports.getDemos = async (req, res) => {
-   const school = await School.findOne({schoolName: "Demos"});
+   const school = await Schools.findOne({schoolName: "Demos"});
    let demos = [];
    school.modelActivities.forEach(element => {
       activity = {
@@ -1688,10 +1711,218 @@ module.exports.createDemoVocab = async (req, res) => {
    console.log("CREATE DEMO VOCAB");
    console.log(req.body);
    console.log(req.files.image);
+   const bodyInfo = Object.keys(req.body);
+   let activity = "";
+   let cohort = "";
+   bodyInfo.forEach(element => {
+      if (element != "description" && element != "vwToLink" && req.body[element] != "Choose a Demo"){
+         cohort = element;
+         activity = req.body[element];
+      };
+   });
+   console.log(cohort);
+   console.log(activity);
+
+  try {
+      let theCohort = await Cohort.findOne({cohortName: cohort});
+
+      let existingLinks = [];
+      const vwToLink = parseInt(req.body.vwToLink);
+     
+      console.log('theCohort.vocabWords.length');
+      console.log(theCohort.vocabWords.length);
+      
+      let newIdent
+      if(theCohort.vocabWords.length === 0){
+         newIdent = 1;
+      } else { for (let i = 1; i <= theCohort.vocabWords.length + 1; i++) {
+         if(theCohort.vocabWords.some(vw => vw.ident === i) === false){
+            newIdent = i;
+            break;
+         }}};
+      let vocabWord = {
+        description: req.body.description,
+        category: req.body.category,
+        imageUrl: '',
+        cloudinaryIdImage: '',
+        audioTis: '',
+        cloudinaryIdTis: '',
+        audioQ: '',
+        cloudinaryIdQ: '',
+        audioN: '',
+        cloudinaryIdN: '',
+        reviewedBy: [],
+        vocabType: 'new',
+        linkedVocab: [],
+        ident: newIdent,
+        specialInfo: {}  
+      };
+      if (req.body.vocabType === 'other'){
+         vocabWord.vocabType = 'other';
+      } else if (req.body.vocabType === 'individual'){
+         if (typeof(req.body.newVocabCB === 'undefined')){
+            vocabWord.vocabType = 'other';
+      }};
+      // linking audio files with previous VW
+      if (req.body.vwToLink !== ''){
+         for (let i = 0; i < theCohort.vocabWords.length; i++) {
+            const element = theCohort.vocabWords[i];
+            if (element.ident === vwToLink){
+               //vocabWord.imageUrl = element.imageUrl;
+               vocabWord.cloudinaryIdImage = element.cloudinaryIdImage;
+               vocabWord.audioTis = element.audioTis;
+               vocabWord.cloudinaryIdTis = element.cloudinaryIdTis;
+               vocabWord.audioQ = element.audioQ;
+               vocabWord.cloudinaryIdQ = element.cloudinaryIdQ;
+               vocabWord.audioN = element.audioN;
+               vocabWord.cloudinaryIdN = element.cloudinaryIdN;
+               existingLinks = element.linkedVocab;
+               vocabWord.linkedVocab = existingLinks;
+               vocabWord.linkedVocab.push(vwToLink);
+               console.log("exiting Links");
+               console.log(existingLinks);
+      }}};
+
+         let activityLocation   
+         for (let i = 0; i < theCohort.activities.length; i++) {
+         const element = theCohort.activities[i];
+         
+         if (element.description === activity){
+            element.vocabWords.push(vocabWord.ident);
+            activityLocation = i;
+            console.log(activityLocation)
+         }};
+
+   
+      if (typeof req.files.image !== 'undefined') {
+         const resultI = await cloudinary.uploader.upload(req.files.image[0].path, {resource_type: "auto"});
+         vocabWord.imageUrl = resultI.secure_url;
+         vocabWord.cloudinaryIdImage = resultI.public_id;
+         
+      };
+
+      if (typeof req.files.audioTis !== 'undefined') {
+         const result = await cloudinary.uploader.upload(req.files.audioTis[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdTis = result.public_id;
+         vocabWord.audioTis = result.secure_url;
+      };
+
+      if (typeof req.files.audioQ !== 'undefined'){
+         const result2 = await cloudinary.uploader.upload(req.files.audioQ[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdQ = result2.public_id;
+         vocabWord.audioQ = result2.secure_url;
+      };
+
+      if ( typeof req.files.audioN !== 'undefined') {
+         const result3 = await cloudinary.uploader.upload(req.files.audioN[0].path, { resource_type: "auto"});
+         vocabWord.cloudinaryIdN = result3.public_id;
+         vocabWord.audioN = result3.secure_url;
+      };
+      
+      theCohort.vocabWords.push(vocabWord);
+      theCohort.markModified('vocabWords');
+      theCohort.markModified('activities');
+      await theCohort.save();
+
+//There were issues getting all changes to save in the DB the second call and save seemed to help. NOT ideal, but it works for now.
+      
+      let demoCohort = await Cohort.findOne({cohortName: cohort});
+
+      console.log("newIdent");
+      console.log(newIdent);
+      console.log("vocabWord.Ident")
+      console.log(vocabWord.ident);
+      console.log('Description');
+      console.log(activity);
+    
+      for (let i2 = 0; i2 < existingLinks.length; i2++){
+         const existingLINK = existingLinks[i2];            
+         for (let index = 0; index < demoCohort.vocabWords.length; index++) {
+            const element2 = demoCohort.vocabWords[index];
+            if (element2.ident === existingLINK){
+               element2.linkedVocab.push(vocabWord.ident);
+               //cohort.markModified(`vocabWords[${index}].linkedVocab`);
+               console.log("element2.linkedVocab");
+               console.log(element2.linkedVocab);
+               break;
+      }}}
+      console.log('activity location')
+      console.log(activityLocation);
+      console.log(demoCohort.activities[activityLocation]);
+      demoCohort.markModified('vocabWords')
+
+      await demoCohort.save();
+
+   } catch (error) {
+      console.log('catch')
+      console.log(error)   
+   }
+
+
+   console.log('ready to redirect');
+   res.json({activity});
+
 };
 
 module.exports.getDemoVocab = async (req, res) => {
    console.log("GET DEMO VOCAB");
-   console.log(req.body);
+   console.log(req.body.demo);
+ try {
+      const activityDescription = req.body.demo;
+      const cohort = await Cohort.findOne({cohortName: req.body.cohort});
+      console.log(cohort.activities.length);
+      let activityInfo = {
+         date: Date,
+         subType: "",
+         number: Number,
+      };
+      let activityVocab
+      let vocabList = [];
+         for (let i = 0; i < cohort.activities.length; i++) {
+            const element = cohort.activities[i];
+            if (element.description === activityDescription){
+               console.log(element)
+               activityVocab = element.vocabWords;
+               activityInfo.date = element.date;
+               activityInfo.subType = element.subType;
+               activityInfo.number = element.activityNumber;
+            }};
+      //console.log("activityVocab")
+      //console.log(activityVocab);
+      if (activityVocab !== undefined){
+      for (let i = 0; i < activityVocab.length; i++) {
+         const element1 = activityVocab[i];
+
+         //console.log("element 1");
+        // console.log(element1);
+
+         for (let i = 0; i < cohort.vocabWords.length; i++) {
+            const element2 = cohort.vocabWords[i];
+
+           // console.log("element2");
+           // console.log(element2);
+
+            if(element1 === element2.ident) {
+               vocabList.push(element2);
+      }}}}; 
+   
+   console.log(activityInfo);
+   res.json({vocabList: vocabList, activityInfo: activityInfo});
+
+} catch (error) {
+   console.log(error);
+}
+   };
+
+
+
+module.exports.getDemoCohorts = async (req, res) => {
+   try {
+      const school = await Schools.findOne({schoolName: "Demos"});
+      const demoCohorts = school.cohorts;
+      res.json(demoCohorts);
+   } catch (error) {
+     console.log(error);
+   };
 }
 //cSpell:ignore cloudinary cloudinaryid durl eurl rurl subdoc

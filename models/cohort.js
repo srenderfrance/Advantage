@@ -4,15 +4,14 @@ const ActivitySubdocSchema = require('../models/activity');
 
 
 const CohortSchema = new mongoose.Schema({
-    school: {
-        type: String,
-        unique: true,
-        required: true,
-    },
     cohortName: {
         type: String, 
         unique: true,
         required: true
+    },
+    schoolName: {
+        type: String,
+        required: true,
     },
     language: {
         type: String,

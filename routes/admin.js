@@ -5,6 +5,7 @@ const adminController = require("../controllers/admin");
 const upload = require("../middleware/multer");
 const { ensureAuth } = require("../middleware/auth");
 
+
 router.get("/", ensureAuth, authController.getCohortAdmin);
 router.get("/schoolAdmin", ensureAuth, authController.getSchoolAdmin);
 router.get("/activityWaL", ensureAuth, authController.getActivityWaLAdmin);
@@ -14,6 +15,7 @@ router.get("/activityP", ensureAuth, authController.getActivityPAdmin);
 router.get("/superAdmin", ensureAuth, authController.getSuperAdmin);
 router.get("/activityDemo", ensureAuth, authController.getAdminDemo);
 router.get("/getDemos", adminController.getDemos);
+router.get("/getDemoCohorts", adminController.getDemoCohorts);
 
 router.post("/postDemo", ensureAuth, adminController.createDemo);
 router.post("/demoVocab", ensureAuth, upload.fields([{name: 'image', maxCount: 1}, {name:'audioQ', maxCount: 1}, {name: 'audioTis', maxCount: 1}, {name: 'audioN', maxCount: 1}]), adminController.createDemoVocab);

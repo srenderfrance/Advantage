@@ -65,9 +65,21 @@ async function getDemos () {
     console.log(data);
     } catch (error) {
         console.log(error);
-    }
-  
+    };
 };
+
+/*async function tryDemo () {
+    try {
+        const demoSelection = document.querySelector("#demoSelect").value;
+        console.log(demoSelection);
+        const response = await fetch("/demo", {method: 'POST',
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify({demoSelection: demoSelection}),
+        });
+    } catch (error) {
+       console.log(error);
+    };
+};*/
 
 getDemos();
 
@@ -75,3 +87,4 @@ document.querySelector("#password2").addEventListener('keydown', submitRegister)
 document.querySelector("#password").addEventListener('keydown', submitLogin);
 document.querySelector("#passWordCheckBox").addEventListener('click', togglePassword);
 document.querySelector('#passwordCheckBox2').addEventListener('click', togglePassword2);
+//document.querySelector('#demoButton').addEventListener('click', tryDemo);

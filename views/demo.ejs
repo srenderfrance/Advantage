@@ -1,0 +1,47 @@
+<head>   
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/styleStudy.css">
+    <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+	
+</head>
+<Header>
+    <H1 id="title">Demo <%= activity %></H1>
+</Header>
+<body class="coolBackground">
+
+<section class="vocabContainer" id="end">
+    <% for(let i=0; i < vocabList.length; i++) {%> 
+        <div id="A<%= 1 + i %>" style="background-image: url('<%= vocabList[i].imageUrl %>')">
+            <audio src="<%= vocabList[i].audioQ %>" id="audioQ<%= 1 + i %>"></audio>
+            <audio src="<%= vocabList[i].audioN %>" id="audioN<%= 1 + i %>"></audio>
+            <audio src="<%= vocabList[i].audioTis %>" id="audioTis<%= 1 + i %>"></audio> 
+        </div>
+    <% } %>
+
+       
+
+</section>
+
+<div class="controls controlContainer">
+    <div class="Controls"> 
+        <button class="control" id="review" type="button" disabled>Review</button>
+        <button class="control" id="start" type="button" disabled>Learn</button>
+    </div>
+    <div class="controls">
+        <button class="control" id="repeatThat" type="button" disabled>Repeat the Question</button>
+        <button class="control" id="undo" type="button" disabled>Remove Last Error</button>
+    </div>
+    <div class="controls">
+        <button class="contorl" id="showAll" type="button" disabled>Show All</button>
+        <button class="control" id="select" type="button" disabled>Select Vocab Word</button>
+        <button class="control" id="addSelection" type="button" disabled>Add Selected Words</button>
+    </div>
+</div>   
+
+
+<div class="navFoot">
+    <button type="button" class='navButton' id='back'>Back to Login</button>
+</div>
+
+<script type="text/javascript" src="/js/demo.js"></script>
+</body>

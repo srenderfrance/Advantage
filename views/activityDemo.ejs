@@ -53,12 +53,13 @@
                         <h2>Select Demo To Edit</h2>
                         <div class="container outlineNone aSelfCenter">
                             <div class="flex">
-                                <select name="demo" id="selectDemo" class="selection" required>
-                                    <option value="" disabled selected hidden>Choose Demo</option>
-                                <% for(let i=0; i < activities.length; i++) {%>   
-                                    <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                                <% } %>
-                                </select> 
+                            <% for(let i=0; i < cohorts.length; i++) {%>
+                                <label for="demoCohorts<%=i%>" class="primaryLabel"> <%=cohorts[i].cohort%> </label> 
+                                <% for(let i2=0; i2 < cohorts[i].activities.length; i2++) {%> 
+                                    <select name="<%=cohorts[i].cohort%>" id="<%=cohorts[i].cohort%>" class="selection">
+                                        <option value="Choose a Demo">Choose a Demo</option>
+                                        <option value="<%=cohorts[i].activities[i2].description %>"><%=cohorts[i].activities[i2].description %> </option> <% } %>
+                                    </select> <% } %>
                             </div>
                         </div>
                     </div>
@@ -71,8 +72,15 @@
         
            
            
-        <div>
-            <h3 id="activityToEdit">No Demo Selected</h3>
+        <div class="flex">
+            <div class="flex">
+                <h3>Cohort: </h3>
+                <h3 id="selectedCohort"id="selectedCohort"> No Cohort Selected</h3>
+            </div>
+            <div class="flex">
+                <h3>Demo: </h3>
+                <h3 id="selectedActivity"> No Demo Selected</h3>
+            </div>
         </div>
         <div class="container uploadGrid" id="uploadContainer">
             
@@ -88,9 +96,7 @@
                     <div class="container outlineNone">
                         <select name="activity2" id="activityName2" class="selection">
                             <option value="" disabled selected hidden>Choose a Demo</option>
-                        <% for(let i=0; i < activities.length; i++) {%>   
-                            <option value="<%=activities[i].description %>"><%= activities[i].description %></option>
-                        <% } %>
+                        
                         </select> 
                     </div>   
                     <div class="mainSelector" >

@@ -9,14 +9,28 @@ const utils = require('../controllers/utils');
 const crypto = require('crypto');
 const { Admin } = require('mongodb');
 const Schools = require('../models/school');
+const School = require('../models/school');
 
 //let adminCohortExport = {}
-module.exports.getLogin = (req, res) => {
+module.exports.getLogin = async (req, res) => {
+  try {
+    demoCohorts = await Cohort.find({school: "Demos"});
+    console.log(demoCohorts[0].language);
+    let demosArray = [];
+    for (let i = 0; i < demoCohorts.length; i++) {
+      const element = demoCohorts[i];
+      for (let i2 = 0; i2 < element.activities.length; i2++) {
+        const ele = element.activities[i2];
+        const demo = `${ele.description} (${element.language})`;
+        console.log("demo element");
+        console.log(demo);
+        demosArray.push(demo);    
+    }}; 
+    res.render("login.ejs", {demos: demosArray}); 
 
-
-   res.render("login.ejs", {
-     title: "Login",
-   });  
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports.postPreRegister = async (req, res, next) => {//I think this should be renamed?
@@ -85,15 +99,81 @@ module.exports.getSchoolAdmin = async (req, res) => {
 };
 
 module.exports.getAdminDemo = async (req, res) => {
-  let activities = [];
+  let cohorts = [];
   try {
-    const demos = await Schools.findOne({schoolName: "Demos"});
-    activities = demos.modelActivities;
+    const demoSchool = await Schools.findOne({schoolName: "Demos"});
+    const cohortNames = demoSchool.cohorts;
+    for (let i = 0; i < cohortNames.length; i++) {
+      const element = cohortNames[i];
+      const cohort = await Cohort.findOne({cohortName: element});
+      const infoNeeded = {
+        cohort: cohort.cohortName,
+        activities: cohort.activities
+      };
+      cohorts.push(infoNeeded);
+    };
   } catch (error) {
     console.log(error);
   }
-  res.render("activityDemo", {activities: activities, user: req.user});
-}
+  res.render("activityDemo", {cohorts: cohorts, user: req.user});
+};
+
+module.exports.runDemo = async (req, res) => {
+  try {
+    console.log(req.body);
+    const selectionArray = req.body.demo.split(" ");
+    console.log(selectionArray);
+    const activityDescription = selectionArray[0];
+    const cohort = selectionArray[1].slice(1, -1);
+    console.log(cohort);
+    const theCohort = await Cohort.findOne({language: cohort});
+    console.log(theCohort.language);
+
+    let activityVocab = [];
+    let vocabList = [];
+    let activity
+   
+      for (let i = 0; i < theCohort.activities.length; i++){
+        if(theCohort.activities[i].description === activityDescription){
+          activity = theCohort.activities[i];
+        }};
+
+    const reviewDD = async function (){
+      activityVocab = activity.vocabWords;
+      for (let i = 0; i < activityVocab.length; i++) {
+        const activityWord = activityVocab[i];
+        for (let index = 0; index < theCohort.vocabWords.length; index++) {
+          const vocabWord = theCohort.vocabWords[index];
+            if(activityWord === vocabWord.ident){
+              vocabList.push(vocabWord);
+      }}}; 
+
+      res.render('demo', {vocabList: vocabList, activity: activityDescription});
+    };
+
+    const reviewWaL = function() {
+      console.log(req.body.activity);
+      res.render('studyWaL', {student: req.user, activity: activity});
+    };
+
+        
+         if (activity.hasOwnProperty('type')){
+            console.log(activity.type)
+            if (activity.type === "WaL"){
+               console.log("running WaL");
+               reviewWaL();
+            } else if (activity.type === "DD"){
+               console.log("Running DD");
+               reviewDD();
+            } else {
+               console.log('This Activity type has not ben set up yet.')
+            };
+            } else {reviewDD()};
+    
+  } catch (error) {
+    console.log(error);
+  };
+};
 
 module.exports.getSuperAdmin = async (req, res) => {
   try {
