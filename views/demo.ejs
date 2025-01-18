@@ -4,8 +4,18 @@
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
 	
 </head>
-<Header>
-    <H1 id="title">Demo <%= activity %></H1>
+<Header class="notFlex">
+    <div class="demoHeader">
+        <div>
+            <span id="demo" class="demoHeader2">Demo Language:</span>
+            <span id="language" class="demoHeader2"> <%= language %></span>
+        </div>
+        <div>
+            <span class="demoHeader2">Activity:</span>
+            <span id="activity" class="demoHeader2"><%= activity %></span>
+        </div>
+         
+    </div>
 </Header>
 <body class="coolBackground">
 

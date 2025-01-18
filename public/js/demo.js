@@ -104,10 +104,13 @@ let engine = {}
     
     engine.createActivity = async function(){
         try {
-            const activity = document.querySelector("#title").innerText;
-            const response = await fetch("/student/getVocabList", {method: 'PUT',
-            headers: {"Content-Type": "application/json",},
-            body: JSON.stringify({activity: activity}),
+            const activity = "demo";
+            const language = document.querySelector("#language").innerText;
+            console.log("CreateActivity");
+            console.log(activity);
+            const response = await fetch("/getVocabList", {method: 'PUT',
+            headers: { "Content-Type": "application/json", accept: "application/json",},
+            body: JSON.stringify({activity: activity, language: language}),
                     });
             const data = await response.json();
             console.log(data)
@@ -119,9 +122,9 @@ let engine = {}
            
             console.log(`activity is ${this.activity}`)
             console.log(engine.vocabList); 
-            //console.log(engine.theDozen.length)
+            console.log(engine.theDozen.length)
             const diff = engine.theDozen.length - engine.vocabList.length;
-           // console.log(`diff = ${diff}`);
+            console.log(`diff = ${diff}`);
             if(diff > 0) {
                 for (let index = 0; index < diff; index++) {
                     engine.theDozen.pop();
@@ -146,15 +149,15 @@ let engine = {}
                     engine.linkedVocab.push(vw);
             }};
             
-            console.log('LINKED VOCAB CREATED')
-            console.log(engine.linkedVocab);
+            console.log('To Introduce')
+            console.log(engine.toIntroduce);
 
             document.getElementById('review').disabled = false;  
             document.getElementById('start').disabled = false;
             document.getElementById('undo').disabled = true;
             document.getElementById('repeatThat').disabled = true;
-            document.getElementById('select').disabled = false;
-            document.getElementById('showAll').disabled = false; 
+            document.getElementById('select').disabled = true;
+            document.getElementById('showAll').disabled = true; 
             
             console.log('Done')
         
@@ -183,7 +186,14 @@ let engine = {}
         
     };
     
-    engine.introductions = function(){
+    engine.introductions = async function(){
+
+        if (document.getElementById('end').classList.contains('end')){
+            console.log("end is True");
+            document.getElementById('end').classList.remove('end');
+            engine.reset();
+            await engine.createActivity();
+        };
         document.getElementById('review').disabled = true;
         document.getElementById('start').disabled = true;
         document.getElementById('select').disabled = true;  
@@ -427,8 +437,14 @@ let engine = {}
 
     };
 
-    engine.reviewAll = function() {
-        document.getElementById('end').classList.remove('end');
+    engine.reviewAll = async function() {
+
+        if (document.getElementById('end').classList.contains('end')){
+            console.log("end is True");
+            document.getElementById('end').classList.remove('end');
+            engine.reset();
+            await engine.createActivity();
+        };
         document.querySelector('#repeatThat').disabled = false;
         document.getElementById('review').disabled = true;
         document.getElementById('start').disabled = true;
@@ -687,84 +703,34 @@ let engine = {}
             });
             document.querySelector('#repeatThat').disabled = true;
             document.getElementById('review').disabled = false;
-            document.getElementById('select').disabled = false;  
+            document.getElementById('start').disabled = false;
+            document.getElementById('select').disabled = true;  
             document.getElementById('addSelection').disabled = true; 
             };     
-    engine.selectWord = function(Event){
-        engine.makeVisibleAll();
-        engine.theDozen.forEach(element => {
-                if (element.visual == Event.currentTarget) {
-                    element.visual.classList.toggle('selected');
-                    console.log(element)
-                    element.introduction.play()};
-    })};
-    engine.makeSelections = function(){
-        document.getElementById('end').classList.remove('end');
-       
-        document.getElementById('addSelection').disabled = false;
-        let visualArray = engine.theDozen.map(element => element.visual);
-        engine.userReviewResults.wordsSelected.forEach(element1 => {
-            engine.theDozen.forEach(element2 => {
-                if (element1 == element2.ident){
-                    element2.visual.classList.add('selected');
-            }})});
-        visualArray.forEach(element => {
-            element.removeEventListener('click', engine.evaluateResponse);
-            element.addEventListener('click', engine.selectWord);
-            element.removeEventListener('click', engine.simpleIntro);
-        });
-        engine.makeVisibleAll()                      
-    };
-                    
-    engine.finalizeSelection = async function() {
-         
-        console.log('finalize Selection')
-        console.log(engine.theDozen)
-
-        let selection = [];
-        engine.theDozen.forEach(element => {
-            console.log(element.visual.classList.contains('selected'))
-            if (element.visual.classList.contains('selected')){
-                selection.push(element.ident)
-                element.visual.classList.remove('selected')};
-        })
-    engine.userReviewResults.wordsSelected = selection;              
-    console.log(`Words Selected: ${engine.userReviewResults.wordsSelected.length}`);
-    console.log(engine.userReviewResults.wordsSelected);
-    document.getElementById('addSelection').disabled = true; 
-    let visualArray = engine.theDozen.map(element => element.visual);
-    visualArray.forEach(element => {
-        element.removeEventListener('click', engine.selectWord);
-        element.addEventListener('click', engine.simpleIntro)});
-    };         
     
-    engine.saveAndRedirect = async function(){
-        try {
-            document.querySelector("#sendResults").disabled = true;
-            console.log(engine.userReviewResults);
-            infoToSend = engine.userReviewResults;
-            const response = await fetch("/student/reviewResults", {method: 'POST',
-                headers: {"Content-Type": "application/json",},    
-                body: JSON.stringify({infoToSend: infoToSend}),
-            })
-            console.log('this is save and redirect response')
-            console.log(response)   
-            window.location = response.url;
-    } catch (error) {
-            console.log(error)
-        }
-    };
-    
+   
     engine.backToLogin = async function(){
         try {
-            window.confirm("Are you sure you do not want to save before leaving?");
             const response = await fetch("/", {method: 'GET',
         })
         window.location = response.url;
         } catch (error) {
           console.log(error);  
         };
-    }
+    };
+
+    engine.reset = function (){
+        engine.theDozen = [wOne, wTwo, wThree, wFour, wFive, wSix, wSeven, wEight, wNine, wTen, wEleven, wTwelve];
+        engine.toIntroduce = [wOne, wTwo, wThree, wFour, wFive, wSix, wSeven, wEight, wNine, wTen, wEleven, wTwelve];
+        engine.newWord = engine.toIntroduce[0]; //The word being introduced for the first time.
+        engine.introduced = []; //The array of vocabWords that has already been introduced.
+        engine.questionList = [];
+        engine.currentQuestion = engine.questionList[0]; //The vocab word that is the correct answer to the most recent question.
+        engine.lastTwo = [engine.introduced[0], engine.introduced[1]];
+        engine.vocabList = [];
+        engine.linkedVocab = [];       
+           
+    };
             
 engine.createActivity();    
 

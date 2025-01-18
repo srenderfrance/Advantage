@@ -148,7 +148,7 @@ module.exports.runDemo = async (req, res) => {
               vocabList.push(vocabWord);
       }}}; 
 
-      res.render('demo', {vocabList: vocabList, activity: activityDescription});
+      res.render('demo', {vocabList: vocabList, activity: activityDescription, language: cohort});
     };
 
     const reviewWaL = function() {

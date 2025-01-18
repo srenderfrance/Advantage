@@ -301,15 +301,39 @@ module.exports.getSelectedVocab = async (req, res) => {//needs to be tested
  };
   
  module.exports.getVocabList = async (req, res) => {
-   try {
       console.log('this is getVocab');
-      console.log(req.user.currentVocabList);
-      const vocabList = req.user.currentVocabList;
-      console.log(vocabList);
-      res.json({vocabList: vocabList});
+      console.log(req.body.activity);
+      let activity = [];
+   try { 
+      let vocabList = [];
+      if (Object.keys(req.body).includes("language")){
+         const cohort = await Cohort.findOne({language: req.body.language});
+      for (let i = 0; i < cohort.activities.length; i++) {
+            const element = cohort.activities[i];
+            if (element.description = req.body.activity){
+               activity = element;
+      }};
+ 
+      activityVocab = activity.vocabWords;
+      for (let i = 0; i < activityVocab.length; i++) {
+        const activityWord = activityVocab[i];
+        for (let index = 0; index < cohort.vocabWords.length; index++) {
+          const vocabWord = cohort.vocabWords[index];
+            if(activityWord === vocabWord.ident){
+              vocabList.push(vocabWord);
+      }}}; 
+        
+        
+         res.json({vocabList: vocabList});
+
+      } else {
+         console.log(req.user.currentVocabList);
+         const vocabList = req.user.currentVocabList;
+         console.log(vocabList);
+         res.json({vocabList: vocabList});
  
      
-   } catch (error) {
+   }} catch (error) {
       console.log(error);
    };
 };
