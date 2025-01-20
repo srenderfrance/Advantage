@@ -68,6 +68,7 @@ try {
       headers: {'Accept': "application/json",},
    });
    cohortsArray = await response.json();
+   console.log(cohortsArray)
    let cohort = "";
    let activity = "";
    for (let i = 0; i < cohortsArray.length; i++) {

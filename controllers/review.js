@@ -10,6 +10,7 @@ const cloudinary = require('../middleware/cloudinary');
 const { format } = require('morgan');
 const ObjectId = require('mongodb').ObjectId;
 const utils = require('../controllers/utils');
+const School = require('../models/school');
 
 
 module.exports.getStudent = async (req, res) => {
@@ -307,7 +308,8 @@ module.exports.getSelectedVocab = async (req, res) => {//needs to be tested
    try { 
       let vocabList = [];
       if (Object.keys(req.body).includes("language")){
-         const cohort = await Cohort.findOne({language: req.body.language});
+         const cohortName = `${req.body.language}Demos`
+         const cohort = await Cohort.findOne({cohortName: cohortName});
       for (let i = 0; i < cohort.activities.length; i++) {
             const element = cohort.activities[i];
             if (element.description = req.body.activity){

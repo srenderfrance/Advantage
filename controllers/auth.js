@@ -14,7 +14,7 @@ const School = require('../models/school');
 //let adminCohortExport = {}
 module.exports.getLogin = async (req, res) => {
   try {
-    demoCohorts = await Cohort.find({school: "Demos"});
+    demoCohorts = await Cohort.find({schoolName: "Demos"});
     console.log(demoCohorts[0].language);
     let demosArray = [];
     for (let i = 0; i < demoCohorts.length; i++) {
@@ -106,12 +106,13 @@ module.exports.getAdminDemo = async (req, res) => {
     for (let i = 0; i < cohortNames.length; i++) {
       const element = cohortNames[i];
       const cohort = await Cohort.findOne({cohortName: element});
-      const infoNeeded = {
+      if (cohort.activities.length > 0){
+        const infoNeeded = {
         cohort: cohort.cohortName,
         activities: cohort.activities
       };
       cohorts.push(infoNeeded);
-    };
+      }};
   } catch (error) {
     console.log(error);
   }
@@ -119,35 +120,49 @@ module.exports.getAdminDemo = async (req, res) => {
 };
 
 module.exports.runDemo = async (req, res) => {
+  let activityVocab = [];
+  let vocabList = [];
+  let activity
+  let theCohort ={};
   try {
     console.log(req.body);
     const selectionArray = req.body.demo.split(" ");
-    console.log(selectionArray);
-    const activityDescription = selectionArray[0];
-    const cohort = selectionArray[1].slice(1, -1);
-    console.log(cohort);
-    const theCohort = await Cohort.findOne({language: cohort});
-    console.log(theCohort.language);
-
-    let activityVocab = [];
-    let vocabList = [];
-    let activity
-   
-      for (let i = 0; i < theCohort.activities.length; i++){
-        if(theCohort.activities[i].description === activityDescription){
-          activity = theCohort.activities[i];
+    //console.log(selectionArray);
+    let descriptionArray = [];
+    for (let i = 0; i < selectionArray.length - 1; i++) {
+      const element = selectionArray[i];
+      descriptionArray.push(element) 
+    };
+    const activityDescription = descriptionArray.join(" ");
+    const cohort = selectionArray[selectionArray.length -1].slice(1, -1);
+    const demoSchool = await Schools.findOne({schoolName: "Demos"});
+    //console.log(demoSchool.cohorts)
+    
+    for (let i = 0; i <demoSchool.cohorts.length; i++) {
+      const element = demoSchool.cohorts[i];
+      
+      if (element.slice(0, -5) === cohort){
+        theCohort = await Cohort.findOne({cohortName: element})
+        for (let i2 = 0; i2 < theCohort.activities.length; i2++){
+          if(theCohort.activities[i2].description === activityDescription){
+            activity = theCohort.activities[i2];
         }};
+    }};
+
+   
 
     const reviewDD = async function (){
+      console.log("REVIEW DD")
       activityVocab = activity.vocabWords;
+      console.log(activityVocab[0])
       for (let i = 0; i < activityVocab.length; i++) {
         const activityWord = activityVocab[i];
         for (let index = 0; index < theCohort.vocabWords.length; index++) {
+          //console.log(theCohort.vocabWords[index])
           const vocabWord = theCohort.vocabWords[index];
             if(activityWord === vocabWord.ident){
               vocabList.push(vocabWord);
       }}}; 
-
       res.render('demo', {vocabList: vocabList, activity: activityDescription, language: cohort});
     };
 
@@ -156,7 +171,7 @@ module.exports.runDemo = async (req, res) => {
       res.render('studyWaL', {student: req.user, activity: activity});
     };
 
-        
+        console.log(activity)
          if (activity.hasOwnProperty('type')){
             console.log(activity.type)
             if (activity.type === "WaL"){

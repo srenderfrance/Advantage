@@ -104,7 +104,7 @@ let engine = {}
     
     engine.createActivity = async function(){
         try {
-            const activity = "demo";
+            const activity = document.querySelector("#activity").innerText;
             const language = document.querySelector("#language").innerText;
             console.log("CreateActivity");
             console.log(activity);
@@ -731,8 +731,12 @@ let engine = {}
         engine.linkedVocab = [];       
            
     };
+    engine.showPop = function (){
+        document.getElementById('help').click();
             
+    }
 engine.createActivity();    
+engine.showPop();
 
 
 //document.querySelector('#showAll').addEventListener('click', engine.makeVisibleAll);

@@ -135,13 +135,31 @@ filter: blur(1.5px);
   display: flex;
   padding-bottom: 5px;
   justify-content: space-evenly;
-  font-size: 2rem;
+  margin-bottom: .5rem;
+  font-size: 2.2rem; 
+  text-shadow: 0px 8px 10px rgb(70, 70, 70);
+
+
+
 }
 
 .demoHeader2 {
   margin-left: .5rem;
+
 }
 
 .notFlex {
   display: block;
+}
+
+dialog:popover-open {
+  width: 50vw;
+  padding: 12px;
+}
+
+dialog > p {
+  font-size: 1.5rem;
+}
+::backdrop {
+ background:rgb(68, 149, 220, .7);
 }

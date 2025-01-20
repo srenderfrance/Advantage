@@ -1914,12 +1914,18 @@ module.exports.getDemoVocab = async (req, res) => {
 }
    };
 
-
-
 module.exports.getDemoCohorts = async (req, res) => {
    try {
       const school = await Schools.findOne({schoolName: "Demos"});
-      const demoCohorts = school.cohorts;
+      const demoCohorts = [];
+      const cohortNames = school.cohorts;
+      for (let i = 0; i < cohortNames.length; i++) {
+         const element = cohortNames[i];
+         const cohort = await Cohort.findOne({cohortName: element});
+         if (cohort.activities.length > 0){
+            demoCohorts.push(element);
+         };
+      };
       res.json(demoCohorts);
    } catch (error) {
      console.log(error);

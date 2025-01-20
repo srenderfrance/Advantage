@@ -33,9 +33,10 @@
 </section>
 
 <div class="controls controlContainer">
-    <div class="Controls"> 
+    <div class="Controls" id="demoControls"> 
         <button class="control" id="review" type="button" disabled>Review</button>
         <button class="control" id="start" type="button" disabled>Learn</button>
+        <button class="control" popovertarget="dialogPop" id="help" type="button">Help</button>
     </div>
     <div class="controls">
         <button class="control" id="repeatThat" type="button" disabled>Repeat the Question</button>
@@ -47,7 +48,10 @@
         <button class="control" id="addSelection" type="button" disabled>Add Selected Words</button>
     </div>
 </div>   
-
+<dialog id="dialogPop" popover>
+    <h1>Welcome to the Advantage demo area.</h1>
+    <p>There are two options available in this demo. If you click the "Learn" button it will simulate what would happen in an in person Rough and Ready style activity. While if you click the "Review" button you will review the activity like you would at the end of a Rough and Ready style activity.</p>
+</dialog>
 
 <div class="navFoot">
     <button type="button" class='navButton' id='back'>Back to Login</button>
