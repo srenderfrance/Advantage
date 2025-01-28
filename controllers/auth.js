@@ -15,7 +15,6 @@ const School = require('../models/school');
 module.exports.getLogin = async (req, res) => {
   try {
     demoCohorts = await Cohort.find({schoolName: "Demos"});
-    console.log(demoCohorts[0].language);
     let demosArray = [];
     for (let i = 0; i < demoCohorts.length; i++) {
       const element = demoCohorts[i];
